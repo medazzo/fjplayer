@@ -1,0 +1,36 @@
+<html>
+<head>
+ <link href="../node_modules/video.js/dist/video-js/video-js.css" rel="stylesheet">
+ <link href="video-js.css" rel="stylesheet">
+ <link href="playlist.css" rel="stylesheet">
+ <link href="demo.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="video-holder centered" >
+  <video id="MainVid" class="video-js  vjs-enable-enlarge  vjs-default-skin"
+               controls preload="auto" width="60%" height="264"
+               data-setup=""
+               poster="">               
+  </video>
+  <div class="playlist-components">
+    <div class="playlist">
+      <ul></ul>
+    </div>
+   
+    <div class="button-holder">
+      <span id="prev">Prev</span>
+      <span id="next">Next</span>
+    </div>
+  
+  </div>
+</div>
+
+<script type="text/javascript"  src="../node_modules/jquery/dist/jquery.min.js" ></script>
+<script type="text/javascript"  src="../node_modules/video.js/dist/video-js/video.js"></script>
+<script type="text/javascript"  src="demo.js"></script>
+<script type="text/javascript"  src="playlist.js"></script> 
+
+
+</body>
+</html>
