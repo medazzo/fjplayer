@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+<title>Video/Audio</title>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link rel='stylesheet' type='text/css' href='../dist/fjplayer.css' />
+
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src='../dist/fjplayer.js'></script>
+
+
+<script type='text/javascript'>
+
+$(document).ready(function() {
+	$('video').videoPlayer({
+		'playerWidth' : 0.77,
+		'videoClass' : 'fjvideo'	
+	});
+});
+
+</script>
+
+</head>
+<body>
+		<video>
+			<source id='mp4'   src="http://media.w3.org/2010/05/sintel/trailer.mp4"   type='video/mp4'>
+		 	<!--  <source id='mp4'   src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4" type='video/mp4'>	  -->
+			<track label="English" kind="subtitles" srclang="en" src="sintel-en.vtt" default>
+			<track src="thumbs.vtt" kind="metadata" default >		
+		</video>
+
+</body>
+</html>
