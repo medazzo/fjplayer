@@ -1,0 +1,5 @@
+
+
+We use https://github.com/vlanard/videoscripts to generate webvtt with thumbnail sprites jpg, like :
+
+python ~/git/fjplayer.js/videoscripts-master/sprites/makesprites.py  /opt/dash/movies/bbb_trailer_1080p.mov

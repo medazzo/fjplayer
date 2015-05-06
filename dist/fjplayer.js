@@ -23,10 +23,15 @@ var ThumbPluginStart = function(barID,spanThumbID) {
 
   //callbacks
   function render(e) {
-
   // first we convert from mouse to time position ..
-  var p = (e.pageX - b.offsetLeft) * v.duration / 480;
- 
+  // get bar rectangle
+  var rect = b.getBoundingClientRect();
+  var p = (e.pageX - rect.left ) * (  v.duration / (rect.right - rect.left) );
+  //console.info("mouse >>",e.pageX , e.pageY ,"Bar left start point ",rect.left ,"buttom",rect.bottom,v.height,"position  ",  (e.pageX - rect.left )," >> Time Position : ",p);
+
+  if ( ( p > (v.duration + 2)) || (p < 0) )//some error ?
+  	return ; 
+
   // ..then we find the matching cue..
   var c = v.textTracks[index].cues;
   for (var i=0; i<c.length; i++) {
@@ -34,41 +39,19 @@ var ThumbPluginStart = function(barID,spanThumbID) {
           break;
       };
   }
- 
+  //console.info( b.offsetTop,"found cue @ ",i," >>",c[i] ); 
   // ..next we unravel the JPG url and fragment query..
   var url =c[i].text.split('#')[0];
   var xywh = c[i].text.substr(c[i].text.indexOf("=")+1).split(',');
  
   // ..and last we style the thumbnail overlay
+  // console.info("b.offsetTop >>",b.offsetTop, "b.offsetBottom ",b.offsetBottom);
   t.style.backgroundImage = 'url('+c[i].text.split('#')[0]+')';
   t.style.backgroundPosition = '-'+xywh[0]+'px -'+xywh[1]+'px';
-  t.style.left = e.pageX - xywh[2]/2+'px';
-  t.style.top = b.offsetTop - xywh[3]+8+'px';
+  t.style.left = e.pageX -rect.left - xywh[2]/2+'px';
+  t.style.top = b.offsetTop - (xywh[3] *1.5)+'px';
   t.style.width = xywh[2]+'px';
   t.style.height = xywh[3]+'px';
-
-  /*
-    // find the current cue
-    console.log("metadata track found  >> ",v.textTracks[index]);
-    var c = v.textTracks[index].cues;
-    if(!c.length) { return; }
-    // convert from mouse to time position
-    var p = (e.pageX-b.offsetLeft) * v.duration / 480;
-    //find the cue
-    for (var i=0; i<c.length; i++) {
-        if(c[i].startTime <= p && c[i].endTime > p) {
-            break;
-        };
-    }
-    // style the element
-    var xywh = c[i].text.substr(c[i].text.indexOf("=")+1).split(',');
-    t.style.backgroundImage = 'url('+c[i].text.split('#')[0]+')';
-    t.style.backgroundPosition = '-'+xywh[0]+'px -'+xywh[1]+'px';
-    t.style.left = e.pageX - v.width + b.offsetLeft + xywh[2]/2 +'px';
-    t.style.top = b.offsetTop - xywh[3]-20+'px';
-    t.style.width = xywh[2]+'px';
-    t.style.height = xywh[3]+'px';
-    */
   };
 
   function show() {
@@ -161,10 +144,10 @@ var ThumbPluginStart = function(barID,spanThumbID) {
 				
 				// Video information
 				var $spc = $(this)[0], // Specific video
-					$duration = $spc.duration, // Video Duration
+					$duration = $spc.duration, // Video Duration					
 					$volume = $spc.volume, // Video volume
-					currentTime;
-				
+					currentTime;				
+
 				// Some other misc variables to check when things are happening
 				var $mclicking = false, 
 				    $vclicking = false, 
@@ -237,8 +220,8 @@ var ThumbPluginStart = function(barID,spanThumbID) {
 					// tminutes and tseconds are the total mins and seconds.
 					var seconds = 0,
 						minutes = Math.floor(time / 60),
-						tminutes = Math.round($duration / 60),
-						tseconds = Math.round(($duration) - (tminutes*60));
+						tminutes = Math.trunc($duration / 60),
+						tseconds = Math.trunc(($duration) - (tminutes*60));			
 					
 					// If time exists (well, video time)
 					if(time) {
