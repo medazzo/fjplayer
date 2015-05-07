@@ -1,0 +1,62 @@
+Making dir: /home/medazzo/git/fjplayer.js/videoscripts-master/sprites/thumbs/bbb_trailer_1080p_vtt
+START [2015-05-07 00:36:02.749299] : ffmpeg -i /opt/dash/movies/bbb_trailer_1080p.mov -f image2 -bt 20M -vf fps=1/11 -aspect 16:9 /home/medazzo/git/fjplayer.js/videoscripts-master/sprites/thumbs/bbb_trailer_1080p_vtt/tv%03d.jpg 
+END   [2015-05-07 00:36:06.009140]
+ffmpeg version 2.5.3 Copyright (c) 2000-2015 the FFmpeg developers
+  built on Mar  1 2015 02:21:38 with gcc 4.9.1 (Ubuntu 4.9.1-16ubuntu6)
+  configuration: --prefix=/home/medazzo/ffmpeg_build --extra-cflags=-I/home/medazzo/ffmpeg_build/include --extra-ldflags=-L/home/medazzo/ffmpeg_build/lib --bindir=/bin --enable-gpl --enable-libass --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame --enable-libopus --enable-libtheora --enable-libvorbis --enable-libx264 --enable-nonfree --enable-swscale --disable-debug --disable-ffprobe
+  libavutil      54. 15.100 / 54. 15.100
+  libavcodec     56. 13.100 / 56. 13.100
+  libavformat    56. 15.102 / 56. 15.102
+  libavdevice    56.  3.100 / 56.  3.100
+  libavfilter     5.  2.103 /  5.  2.103
+  libswscale      3.  1.101 /  3.  1.101
+  libswresample   1.  1.100 /  1.  1.100
+  libpostproc    53.  3.100 / 53.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/opt/dash/movies/bbb_trailer_1080p.mov':
+  Metadata:
+    major_brand     : qt  
+    minor_version   : 537199360
+    compatible_brands: qt  
+    creation_time   : 2008-03-18 12:02:23
+  Duration: 00:00:33.00, start: 0.000000, bitrate: 7485 kb/s
+    Stream #0:0(eng): Video: h264 (Main) (avc1 / 0x31637661), yuv420p(tv, bt709), 1920x1080, 7162 kb/s, 25 fps, 25 tbr, 600 tbn, 1200 tbc (default)
+    Metadata:
+      creation_time   : 2008-03-18 12:02:23
+      handler_name    : Apple Alias Data Handler
+      encoder         : H.264
+    Stream #0:1(eng): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, 5.1, fltp, 428 kb/s (default)
+    Metadata:
+      creation_time   : 2008-03-18 12:02:23
+      handler_name    : Apple Alias Data Handler
+[swscaler @ 0x31300c0] deprecated pixel format used, make sure you did set range correctly
+Output #0, image2, to '/home/medazzo/git/fjplayer.js/videoscripts-master/sprites/thumbs/bbb_trailer_1080p_vtt/tv%03d.jpg':
+  Metadata:
+    major_brand     : qt  
+    minor_version   : 537199360
+    compatible_brands: qt  
+    encoder         : Lavf56.15.102
+    Stream #0:0(eng): Video: mjpeg, yuvj420p(pc), 1920x1080 [SAR 1:1 DAR 16:9], q=2-31, 200 kb/s, 0.09 fps, 0.09 tbn, 0.09 tbc (default)
+    Metadata:
+      creation_time   : 2008-03-18 12:02:23
+      handler_name    : Apple Alias Data Handler
+      encoder         : Lavc56.13.100 mjpeg
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> mjpeg (native))
+Press [q] to stop, [?] for help
+frame=    0 fps=0.0 q=0.0 size=N/A time=00:00:00.00 bitrate=N/A    frame=    1 fps=1.0 q=2.2 size=N/A time=00:00:11.00 bitrate=N/A    frame=    1 fps=0.7 q=2.2 size=N/A time=00:00:11.00 bitrate=N/A    frame=    2 fps=1.0 q=1.6 size=N/A time=00:00:22.00 bitrate=N/A    frame=    2 fps=0.8 q=1.6 size=N/A time=00:00:22.00 bitrate=N/A    frame=    3 fps=1.0 q=1.6 size=N/A time=00:00:33.00 bitrate=N/A    frame=    4 fps=1.2 q=1.6 Lsize=N/A time=00:00:44.00 bitrate=N/A    
+video:770kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+
+4 thumbs written in /home/medazzo/git/fjplayer.js/videoscripts-master/sprites/thumbs/bbb_trailer_1080p_vtt
+START [2015-05-07 00:36:06.010499] : mogrify -geometry 160x /home/medazzo/git/fjplayer.js/videoscripts-master/sprites/thumbs/bbb_trailer_1080p_vtt/tv002.jpg /home/medazzo/git/fjplayer.js/videoscripts-master/sprites/thumbs/bbb_trailer_1080p_vtt/tv001.jpg /home/medazzo/git/fjplayer.js/videoscripts-master/sprites/thumbs/bbb_trailer_1080p_vtt/tv004.jpg /home/medazzo/git/fjplayer.js/videoscripts-master/sprites/thumbs/bbb_trailer_1080p_vtt/tv003.jpg 
+END   [2015-05-07 00:36:06.369036]
+
+START [2015-05-07 00:36:06.369501] : identify -format "%g - %f
+" /home/medazzo/git/fjplayer.js/videoscripts-master/sprites/thumbs/bbb_trailer_1080p_vtt/tv002.jpg 
+END   [2015-05-07 00:36:06.377715]
+160x90+0+0 - tv002.jpg
+
+
+START [2015-05-07 00:36:06.378196] : montage /home/medazzo/git/fjplayer.js/videoscripts-master/sprites/thumbs/bbb_trailer_1080p_vtt/tv*.jpg -tile 2x2 -geometry 160x90+0+0 /home/medazzo/git/fjplayer.js/videoscripts-master/sprites/thumbs/bbb_trailer_1080p_vtt/bbb_trailer_1080p_thumbs.jpg 
+END   [2015-05-07 00:36:06.421908]
+
+Wrote: /home/medazzo/git/fjplayer.js/videoscripts-master/sprites/thumbs/bbb_trailer_1080p_vtt/bbb_trailer_1080p_thumbs.vtt
