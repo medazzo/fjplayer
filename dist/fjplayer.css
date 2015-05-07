@@ -182,7 +182,7 @@ video {
 	border-radius:2px;
 }
 .player .closedcaption  { 
-	padding: 0 0 0 2%;		
+	padding: 0 0 0 0;		
 }
 .player .closedcaption:before {
 	width: 5%;
@@ -219,13 +219,13 @@ video {
 	height: 100%;	
 }
 .player .play  {
-padding: 0 2% 0 1%;	
+padding: 0 2% 0 3%;	
 }
 .player .play:before {
     content: "\f04b";
 }
 .player .pause  {
-padding: 0 2% 0 1%;	
+padding: 0 2% 0 3%;	
 }
 .player .pause:before {
     content: "\f04c";
@@ -254,8 +254,8 @@ padding: 0 2% 0 1%;
 /* -------------------  PROGRESS --------------------- */
 .player .progress {
 	width: 65%;
-	height: 15%;
-	top:-20%;
+	height: 20%;
+	top:-8%;
 }
 .player .progress-bar {
 }
@@ -299,7 +299,7 @@ padding: 0 2% 0 1%;
 }
 .player .volume-holder {
 	display: none; /* only in the start*/
-	width: 6px;
+	width: 10%;
 	position: absolute;
 	left: 50%;
 	top: -100px;
