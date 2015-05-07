@@ -14,8 +14,27 @@
 /* We can use https://github.com/vlanard/videoscripts to generate webvtt with thumbnail sprites jpg */
 $(document).ready(function() {
 	$('video').videoPlayer({
-		'playerWidth' : 0.77,
-		'videoClass' : 'fjvideo'	
+		'playerWidth' : 0.6,
+		'videoClass' : 'fjvideo',
+		'videoId' : 'videoID',
+		'thumbs' : true ,
+		'substitles' :true, 
+		'overlay':true,
+		'overlays': [
+			{
+				'oid':'ad_data',
+				'showAt': 5,
+				'duration': 5,
+				'animate': true
+
+			},
+			{
+				'oid':'ad_data',
+				'showAt': 15,
+				'duration': 5,
+				'animate': false
+			}
+		]	
 	});
 });
 
@@ -23,16 +42,16 @@ $(document).ready(function() {
 
 </head>
 <body>
-		<video id='videoID'>
-			<source id='mp4'   src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4" type='video/mp4'>	 
-			<track label="English"  kind="subtitles" srclang="en" src="sintel-en.vtt" default>
-			<track label="Deutsch"  kind="subtitles" srclang="de" src="sintel-de.vtt">
-			<track label="Español"  kind="subtitles" srclang="es" src="sintel-es.vtt">
-			<track src="thumbs.vtt" kind="metadata" default >		
-		</video>
-		<!-- ADS -->
-		 <div id="ad_data" class="adDataBlock" onclick="location.href='http://www.google.co.ma';" style="cursor:pointer;"> <img src="2000px-Smiley.svg.png" alt="Smiley face" width="42" height="42"> Your ADS is Here; clikc to go to google !</div>  
-    	<div id="ad_info" class="adInfoBlock"  ></div>
+	<video id='videoID'  >
+		<source id='mp4'   src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4" type='video/mp4'>	 
+		<track label="English"  kind="subtitles" srclang="en" src="sintel-en.vtt" default>
+		<track label="Deutsch"  kind="subtitles" srclang="de" src="sintel-de.vtt">
+		<track label="Español"  kind="subtitles" srclang="es" src="sintel-es.vtt">
+		<track src="thumbs.vtt" kind="metadata" default >		 
+	</video>
+	<!-- ADS -->
+	 <div id="ad_data" class="adDataBlock" onclick="location.href='http://www.google.co.ma';" style="cursor:pointer;"> <img src="2000px-Smiley.svg.png" alt="Smiley face" width="42" height="42"> Your ADS is Here; clikc to go to google !</div>  
+	
 
 </body>
 </html>

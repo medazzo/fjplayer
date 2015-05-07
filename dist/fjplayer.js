@@ -2,13 +2,84 @@
 (function($) {
 
 	//subtitles Menu MgtPlugin Function
-	var SubsMgrluginStart = function(VidID,spanThumbID) {
-		var v =  document.querySelector(VideoID);
-
+	var SubsMgrPluginStart = function(VidID,CCBtnID,videoContainerID) {
+		//vars		
+		var v = document.querySelector(VidID);
+		var videoContainer = document.querySelector(videoContainerID);
+		var subtitles = document.querySelector(CCBtnID);
+		var subsExist = false ;
+		console.info("Dump Var subtitles ", subtitles);
 		//hide all subs 
 		for (var i = 0; i < v.textTracks.length; i++) {
-		   v.textTracks[i].mode = 'hidden';
+		   	if ( v.textTracks[i].kind == 'subtitles' ){
+		   		subsExist = true ;
+		   		v.textTracks[i].mode = 'hidden';
+		   		console.info("Hide subtitles Subs @ ",v.textTracks[i].kind ," for Lang " ,v.textTracks[i].language );
+		   	}
+		}	
+
+		// Creates and returns a menu item for the subtitles language menu
+		var subtitleMenuButtons = [];
+		var createMenuItem = function(id, lang, label) {
+			var listItem = document.createElement('li');
+			var button = listItem.appendChild(document.createElement('button'));
+			button.setAttribute('id', id);
+			button.className = 'subtitles-button';
+			if (lang.length > 0) 
+				button.setAttribute('lang', lang);
+			button.value = label;
+			button.setAttribute('data-state', 'inactive');
+			button.appendChild(document.createTextNode(label));
+			button.addEventListener('click', function(e) {
+				// Set all buttons to inactive
+				subtitleMenuButtons.map(function(v, i, a) {
+					subtitleMenuButtons[i].setAttribute('data-state', 'inactive');
+				});
+				// Find the language to activate
+				var lang = this.getAttribute('lang');
+				console.info(" selected Lang is ", lang);
+				for (var i = 0; i < v.textTracks.length; i++) {
+					// For the 'subtitles-off' button, the first condition will never match so all will subtitles be turned off
+					if (v.textTracks[i].language == lang) {
+						v.textTracks[i].mode = 'showing';
+						this.setAttribute('data-state', 'active');
+						console.info(" selected lang found : setting to showing ");
+						break;
+					}
+					 else if(  v.textTracks[i].kind == 'subtitles' ){
+						v.textTracks[i].mode = 'hidden';
+					}					
+				}
+				console.info(" Done  !");
+				subtitlesMenu.style.display = 'none';
+			});
+			subtitleMenuButtons.push(button);
+			return listItem;
 		}
+
+		// set Menu
+		var subtitlesMenu;
+		if ( (subsExist == true ) && ( v.textTracks ) ) {
+			var df = document.createDocumentFragment();
+			var subtitlesMenu = df.appendChild(document.createElement('ul'));
+			subtitlesMenu.className = 'subtitles-menu';
+			subtitlesMenu.appendChild(createMenuItem('subtitles-off', '', 'Off'));
+			for (var i = 0; i < v.textTracks.length; i++) {
+				if ( v.textTracks[i].kind == 'subtitles' ) {
+					subtitlesMenu.appendChild(createMenuItem('subtitles-' + v.textTracks[i].language,
+						 v.textTracks[i].language, v.textTracks[i].label));
+				}
+			}
+			videoContainer.appendChild(subtitlesMenu);
+		}
+		
+		subtitles.addEventListener('click', function(e) {
+			console.info("on click Event of CC");
+			if (subtitlesMenu) {				
+				var show = (subtitlesMenu.style.display == 'block' ? 'none' : 'block');				
+				subtitlesMenu.style.display = show;
+			}
+		});
 	}
 
 	//Overlay used for Ads or information Plugin Api ; ex OverlayPluginShowAds('ad_info','ad_data','videoID',5,10);
@@ -119,7 +190,7 @@
 		
 				
 		var settings = {  
-			playerWidth : '0.68', // Default is 68%
+			playerWidth : '0.5', // Default is 68%
 			videoClass : 'fjvideo'  // Video Class
 		}
 		
@@ -139,7 +210,7 @@
 				var $settings = settings;
 				
 				// Wrap the video in a div with the class of your choosing
-				$this.wrap('<div class="'+$settings.videoClass+'"></div>');
+				$this.wrap('<div id="'+$settings.videoClass+'" class="'+$settings.videoClass+'"></div>');
 				
 			
 				// Select the div we just wrapped our video in for easy selection.
@@ -179,7 +250,9 @@
 				     + '<div  id="fs" class="controls goCancel-fullscreen go-fullscreen"> '
 				       + '<a href="#"> </a>'
 				     + '</div>'
-				   + '</div>').appendTo($that);
+				   + '</div>'
+				   + '<div id="ad_info" class="adInfoBlock"  ></div>'
+				   ).appendTo($that);
 				
 				}
 				
@@ -676,12 +749,15 @@
 				
 				});
 				
-			
+			//subs menu 
+			SubsMgrPluginStart('#videoID','#subtitles','#'+$settings.videoClass);
+
 			// Run the ThumbPluginStart function
 			ThumbPluginStart('#videoID',"#bar","#thumb");
 
 			// show ADS
-			OverlayPluginShowAds('#ad_info','#ad_data','#videoID',5,10, false );
+			OverlayPluginShowAds('#ad_info','#ad_data','#videoID',15,5, false );
+			OverlayPluginShowAds('#ad_info','#ad_data','#videoID',5,5, true );
 
 			// Listen for fullscreen change events (from other controls, e.g. right clicking on the video itself)
 			document.addEventListener('fullscreenchange', function(e) {
