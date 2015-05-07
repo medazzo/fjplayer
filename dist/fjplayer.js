@@ -1,69 +1,119 @@
 
 (function($) {
 
-// A quick function for binding the animation of the volume icon
-var ThumbPluginStart = function(barID,spanThumbID) {
-  var v =  document.querySelector("video");
-  var b =  document.querySelector(barID);
-  var t =  document.querySelector(spanThumbID);
-  var  index = -1 ;
-  
-  // looking for metadata tracks
-  for (var i = 0; i < v.textTracks.length; i++) {
-  {
-    if ( v.textTracks[i].kind == 'metadata' ){       
-      index = i ; 
-      console.log("metadata track found @ ",index, v.textTracks[i]);
-      b.addEventListener('mouseover',show,false);
-      b.addEventListener('mouseout',hide,false);
-      b.addEventListener('mousemove',render,false);
-      break ;
-    }
-  }
+	//subtitles Menu MgtPlugin Function
+	var SubsMgrluginStart = function(VidID,spanThumbID) {
+		var v =  document.querySelector(VideoID);
 
-  //callbacks
-  function render(e) {
-  // first we convert from mouse to time position ..
-  // get bar rectangle
-  var rect = b.getBoundingClientRect();
-  var p = (e.pageX - rect.left ) * (  v.duration / (rect.right - rect.left) );
-  //console.info("mouse >>",e.pageX , e.pageY ,"Bar left start point ",rect.left ,"buttom",rect.bottom,v.height,"position  ",  (e.pageX - rect.left )," >> Time Position : ",p);
+		//hide all subs 
+		for (var i = 0; i < v.textTracks.length; i++) {
+		   v.textTracks[i].mode = 'hidden';
+		}
+	}
 
-  if ( ( p > (v.duration + 2)) || (p < 0) )//some error ?
-  	return ; 
+	//Overlay used for Ads or information Plugin Api ; ex OverlayPluginShowAds('ad_info','ad_data','videoID',5,10);
+	var OverlayPluginShowAds = function(InfoID, DataID, VideoID, showAt, showDuration,animate){
+		//info
+		console.info (" an Overlay is added @ ",showAt," sec for ",showDuration," sec.");
+		var video= document.querySelector(VideoID);
+		video.addEventListener('progress', 
+			function() {			
+			if( ( video.currentTime > showAt ) && ( video.currentTime < (showAt+1) ) ) {			
+				StartAds();
+				return ;
+			}
+		}, false);	
+	
+		function upInfo(){	
+		console.log("updating @@@ ", showDuration);		
+			if ( showDuration > 0 ) {
+				$(InfoID).html('you ads will end in '+showDuration+' sec');
+				showDuration --;				
+			}else{ return; }	
+		}
 
-  // ..then we find the matching cue..
-  var c = v.textTracks[index].cues;
-  for (var i=0; i<c.length; i++) {
-      if(c[i].startTime <= p && c[i].endTime > p) {
-          break;
-      };
-  }
-  //console.info( b.offsetTop,"found cue @ ",i," >>",c[i] ); 
-  // ..next we unravel the JPG url and fragment query..
-  var url =c[i].text.split('#')[0];
-  var xywh = c[i].text.substr(c[i].text.indexOf("=")+1).split(',');
- 
-  // ..and last we style the thumbnail overlay
-  // console.info("b.offsetTop >>",b.offsetTop, "b.offsetBottom ",b.offsetBottom);
-  t.style.backgroundImage = 'url('+c[i].text.split('#')[0]+')';
-  t.style.backgroundPosition = '-'+xywh[0]+'px -'+xywh[1]+'px';
-  t.style.left = e.pageX -rect.left - xywh[2]/2+'px';
-  t.style.top = b.offsetTop - (xywh[3] *1.5)+'px';
-  t.style.width = xywh[2]+'px';
-  t.style.height = xywh[3]+'px';
-  };
+		function StartAds() {
+			var secTimeout = showDuration  *1000;			
+			var refreshId = null;
+			// show ads
+			$(DataID).show();
+			$(InfoID).show();
+			$(InfoID).html('you ads will end in '+showDuration+' sec');
+			// hide ads after timeout
+			if ( animate == true )
+				refreshId = setInterval( upInfo ,1000);
+			//timeout
+			setTimeout(function(){
+				console.log("Ending @@@ ", showDuration);
+				$(DataID).fadeOut('slow');
+				$(InfoID).fadeOut('slow');
+				if ( animate == true )
+					clearInterval (refreshId);
+			},secTimeout);
+		}
+	}
 
-  function show() {
-    t.style.visibility = 'visible';
-  };
+	// Thumbs WebVtt Plugin Function
+	var ThumbPluginStart = function(VideoID,barID,spanThumbID) {
+		var v =  document.querySelector(VideoID);
+		var b =  document.querySelector(barID);
+		var t =  document.querySelector(spanThumbID);
+		var  index = -1 ;
 
-  function hide() {
-    t.style.visibility = 'hidden';
-  };
-    }
+		// looking for metadata tracks
+		for (var i = 0; i < v.textTracks.length; i++) 
+		{
+			if ( v.textTracks[i].kind == 'metadata' ){       
+			  index = i ; 
+			  //console.log("metadata track found @ index ",index);
+			  b.addEventListener('mouseover',show,false);
+			  b.addEventListener('mouseout',hide,false);
+			  b.addEventListener('mousemove',render,false);
+			  break ;
+			}
+		}
 
-};
+		//callbacks
+		function render(e) {
+			// first we convert from mouse to time position ..
+			// get bar rectangle
+			var rect = b.getBoundingClientRect();
+			var p = (e.pageX - rect.left ) * (  v.duration / (rect.right - rect.left) );
+			//console.info("mouse >>",e.pageX , e.pageY ,"Bar left start point ",rect.left ,"buttom",rect.bottom,v.height,"position  ",  (e.pageX - rect.left )," >> Time Position : ",p);
+
+			if ( ( p > (v.duration + 2)) || (p < 0) )//some error ?
+				return ; 
+
+			// ..then we find the matching cue..
+			var c = v.textTracks[index].cues;
+			for (var i=0; i<c.length; i++) {
+			  if(c[i].startTime <= p && c[i].endTime > p) {
+			      break;
+			  };
+			}
+			//console.info( b.offsetTop,"found cue @ ",i," >>",c[i] ); 
+			// ..next we unravel the JPG url and fragment query..
+			var url =c[i].text.split('#')[0];
+			var xywh = c[i].text.substr(c[i].text.indexOf("=")+1).split(',');
+
+			// ..and last we style the thumbnail overlay
+			// console.info("b.offsetTop >>",b.offsetTop, "b.offsetBottom ",b.offsetBottom);
+			t.style.backgroundImage = 'url('+c[i].text.split('#')[0]+')';
+			t.style.backgroundPosition = '-'+xywh[0]+'px -'+xywh[1]+'px';
+			t.style.left = e.pageX -rect.left - xywh[2]/2+'px';
+			t.style.top = b.offsetTop - (xywh[3] *1.5)+'px';
+			t.style.width = xywh[2]+'px';
+			t.style.height = xywh[3]+'px';
+		};
+
+		function show() {
+			t.style.visibility = 'visible';
+		};
+
+		function hide() {
+			t.style.visibility = 'hidden';
+		};
+	}
 
 	$.fn.videoPlayer = function(options) {
 		
@@ -628,7 +678,10 @@ var ThumbPluginStart = function(barID,spanThumbID) {
 				
 			
 			// Run the ThumbPluginStart function
-			ThumbPluginStart("#bar","#thumb");
+			ThumbPluginStart('#videoID',"#bar","#thumb");
+
+			// show ADS
+			OverlayPluginShowAds('#ad_info','#ad_data','#videoID',5,10, false );
 
 			// Listen for fullscreen change events (from other controls, e.g. right clicking on the video itself)
 			document.addEventListener('fullscreenchange', function(e) {

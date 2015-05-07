@@ -2,11 +2,11 @@
 <html>
 <head>
 
-<title>Video/Audio</title>
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<title>fjplayer.js</title>
+<link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
 <link rel='stylesheet' type='text/css' href='../dist/fjplayer.css' />
 
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
 <script src='../dist/fjplayer.js'></script>
 
 
@@ -23,11 +23,16 @@ $(document).ready(function() {
 
 </head>
 <body>
-		<video>
+		<video id='videoID'>
 			<source id='mp4'   src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4" type='video/mp4'>	 
-			<track label="English" kind="subtitles" srclang="en" src="sintel-en.vtt" default>
+			<track label="English"  kind="subtitles" srclang="en" src="sintel-en.vtt" default>
+			<track label="Deutsch"  kind="subtitles" srclang="de" src="sintel-de.vtt">
+			<track label="Español"  kind="subtitles" srclang="es" src="sintel-es.vtt">
 			<track src="thumbs.vtt" kind="metadata" default >		
 		</video>
+		<!-- ADS -->
+		 <div id="ad_data" class="adDataBlock" onclick="location.href='http://www.google.co.ma';" style="cursor:pointer;"> <img src="2000px-Smiley.svg.png" alt="Smiley face" width="42" height="42"> Your ADS is Here; clikc to go to google !</div>  
+    	<div id="ad_info" class="adInfoBlock"  ></div>
 
 </body>
 </html>
