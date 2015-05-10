@@ -4,6 +4,8 @@
 angular.module('fjplayer', []).
 controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,function ($scope,$filter,$interval,$document) {
     //
+    $scope.videoReady = false ;
+
     $scope.isPlaylist = false ;
     $scope.isPlaying = false ;
     $scope.isFullScreen = false ;
@@ -27,6 +29,18 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
 
     $scope.video =  document.getElementById('videoID');
 
+    $scope.video.addEventListener('loadeddata', function() {
+      $scope.$apply(function () {          
+          $scope.movieTTime  = $scope.video.duration ;
+          $scope.movieCTime  = $scope.video.currentTime ;
+          $scope.movieBuffered = $scope.video.buffered;
+          $scope.volume = $scope.video.volume;          
+          $scope.videoReady = true;          
+          $scope.goPlay();
+          console.log("Video is loaded and can be played ; READY", $scope.videoReady);
+      })       
+    }, false);
+
     $scope.video.addEventListener('timeupdate', function () {
       $scope.$apply(function () {          
           $scope.movieTTime  = $scope.video.duration ;
@@ -37,7 +51,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
           $scope.prgressPercentage = ($scope.movieCTime / $scope.movieTTime )*100;          
           if( $scope.movieCTime == $scope.movieTTime ){
             console.log(" END >", $scope.prgressPercentage);
-            cope.isPlaying  =  false;
+            $scope.isPlaying  =  false;
           }
         })
     }); 
@@ -109,7 +123,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
     for (var i = 0; i < $scope.v.textTracks.length; i++) {
       if ( $scope.v.textTracks[i].kind == 'metadata' ){       
         $scope.indexThumbsTrack = i ; 
-        console.log("metadata track found @ index ",$scope.indexThumbsTrack);        
+        //console.log("metadata track found @ index ",$scope.indexThumbsTrack);        
         break ;
       }
     };

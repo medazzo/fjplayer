@@ -1,3 +1,18 @@
+/* spinner and animation */
+body {
+		background: black;
+}
+.loading {
+	width:270px;
+	height:200px;
+	position:absolute;
+	left:50%;
+	top:50%;
+	margin:-75px 0 0 -135px;
+	background: black;
+    color: white;
+    font-size:0.85em;
+}
 
 /* ---------------------- ADS style ------------------- */
 .adInfoBlock {  
@@ -54,33 +69,24 @@
 }
 /* ---------------------- Fjplayer style ------------------- */
 .fjplayer {
-	/*background: black;*/
+	background: black;
 	position: absolute; 
 	width: 100%; 
 	height: 100%; 
 	overflow: hidden; 
 }
-.fjcontrols-panel-notifier {
-  background: rgba(42,42,42,0.75);
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  position: absolute;   
-  top: 10%;
-  left: 10%;
-  right: 10%;
-  bottom: 5%; 
-  width: 80%;
-  text-align: center;  
+.fjcontrols-panel-hover-transition {
+	-webkit-transition: opacity 0.4s  ease-in-out;
+   	-moz-transition: opacity 0.4s  ease-in-out;
+	-ms-transition: opacity 0.4s  ease-in-out;
+ 	-o-transition: opacity 0.4s  ease-in-out;
+	transition: opacity 0.4s  ease-in-out;
 }
 .fjcontrols-panel {
 	position: absolute; 		
 	border-radius: 5px;
 	bottom: 2%;
 	opacity: 0;
-	-webkit-transition: opacity 0.4s ease-in;
-   	-moz-transition: opacity 0.4s ease-in;
-	-ms-transition: opacity 0.4s ease-in;
- 	-o-transition: opacity 0.4s ease-in;
-	transition: opacity 0.4s ease-in;
 	background:rgba(20, 20, 20, 1);
 	width: 60%;
 	margin-left: 20%;
@@ -88,10 +94,6 @@
 	float: left;
 }
 .fjcontrols-panel:hover {
-	opacity: 1;
-	z-index: 2147483647;
-}
-.fjcontrols-panel-notifier:hover  .fjcontrols-panel {
 	opacity: 1;
 	z-index: 2147483647;
 }
