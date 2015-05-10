@@ -4,164 +4,51 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-
-<title>fjplayer.js</title>
-<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css ">
-<script src="../bower_components/jquery/dist/jquery.min.js"></script>
-<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
- <script type="text/javascript" src="../bower_components/angular/angular.js"></script> 
- <script type="text/javascript" src="fjplayer.angular.js"></script>
-<script type='text/javascript'>
-
-'use strict';
-
-angular.module('fjplayerdemo', [
-    'fjplayer'
-]);
-
-
-$(document).ready(function() {
-	var done = false ;
-	var timeout = undefined;
-	
-	$('.fjplayer').mousemove(function(event){
-    	if(done == false ){
-    		console.log("Moving Overs fjplayer ",event.pageX + ", " + event.pageY ,'at >',new Date());
-    		$('.fjcontrols-panel').css({'opacity':1}	);
-    		done = true;
-    		clearTimeout(timeout);
-    		timeout = setTimeout(  
-    			function(){ 
-					console.log(" >>>>> Hiding Again !! ",new Date());
-					$('.fjcontrols-panel').css({'opacity':0, 'z-index':2147483647});
-					done= false ;
-    			},
-    			 3000);
-    	}else{
-    		console.log(" >>>>> DONE !! ");
-    	}
-	});
-});
-
-</script>
-<style type="text/css">
-.fjplayer {
-	background: black;
-	position: absolute; 
-	width: 100%; 
-	height: 100%; 
-	overflow: hidden; 
-}
-.fjcontrols-panel {
-	position: absolute; 		
-	border-radius: 5px;
-	bottom: 2%;
-	opacity: 0;
-	-webkit-transition: opacity 1s ease-in;
-   	-moz-transition: opacity 1s ease-in;
-	-ms-transition: opacity 1s ease-in;
- 	-o-transition: opacity 1s ease-in;
-	transition: opacity 1s ease-in;
-	background:rgba(20, 20, 20, 0.8);
-	width: 60%;
-	margin-left: 20%;
-	display: relative;
-	float: left;
-}
-.fjcontrols-panel-controls {
-	width: 100%;
-	position:relative;
-	cursor: pointer;
-}
-.fjcontrols-control {
-	color: #8F9B9E;
-	position:relative;
-	cursor: pointer;	
-	float: left;	
-	height: 100%;
-	border-right:1px solid #2A2A2A;
-}
-.fjcontrols-control-right {
-	float: right;		
-	border-left:1px solid #2A2A2A;
-	border-right:none;
-}
-.fjcontrols-control-text{
-	font-size: 1.5em;
-	cursor:auto;
-	margin-top: 1%;
-	padding-left: 1%;
-	padding-right: 1%;
-	border-left:none;
-	border-right:none;
-}
-.fjcontrols-control-text-small{
-	font-size: 1em;
-	line-height: 2;
-}
-#hprogressbar {	
-	width: 90%;
-	background-color: rgba(42,42,42,0.75);  
-	border-radius: 5px; /* (height of inner div) / 2 + padding */
-	padding: 1px;
-	margin-left: 5%;
-	margin-right: 5%;
-	margin-top: 1%;
-	margin-bottom: 1%;
-	cursor: auto;
-}
-#hprogressbar > div {
-   background-color:  #FF1515;
-   width: 40%; /* Adjust with JavaScript */
-   height: 10px;
-   border-radius: 5px;
-}
-#vprogressbar {	
-	visibility: hidden;
-	width: 10%;
-	height: 40%;
-	background-color: rgba(42,42,42,0.75);  
-	border-radius: 5px; /* (height of inner div) / 2 + padding */
-	padding: 1px;
-	margin-left: 5%;
-	margin-right: 5%;
-	margin-top: 1%;
-	margin-bottom: 1%;
-	cursor: auto;
-}
-#vprogressbar > div {
-	visibility: hidden;
-	background-color:  #33b5d5;
-	width: 40%; /* Adjust with JavaScript */
-	height: 10px;
-	border-radius: 5px;
-}
-hr {
-	margin-top: 5px;
-	margin-bottom: -1px;
-	border-right: 0px none;
-	border-width: 1px 0px 0px;
-	border-style: solid none none;
-	opacity:0.75;
-	border-color: #2A2A2A -moz-use-text-color -moz-use-text-color;
-}
-video {
-	position: absolute; 
-	width: 100%; 
-	height: 100%; 
-	overflow: hidden; 
-}
-/* hide controls panel on fullscreen with WebKit 
-video::-webkit-media-controls-panel {
-  display:none !important;
-}*/
-</style>
+	<title>fjplayer.js</title>
+	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css ">
+	<link rel="stylesheet" href="fjplayer.angular.css">
+	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../bower_components/angular/angular.js"></script> 
+	<script type="text/javascript" src="fjplayer.angular.js"></script>
+	<script type='text/javascript'>
+		'use strict';
+		angular.module('fjplayerdemo', [
+		    'fjplayer'
+		]);
+/*
+		$(document).ready(function() {
+			$('.fjcontrols-panel').css({'opacity':1}	);
+		
+			var done = false ;
+			var timeout = undefined;
+			
+			$('.fjplayer').mousemove(function(event){
+		    	if(done == false ){
+		    		console.log("Moving Overs fjplayer ",event.pageX + ", " + event.pageY ,'at >',new Date());
+		    		$('.fjcontrols-panel').css({'opacity':1}	);
+		    		done = true;
+		    		clearTimeout(timeout);
+		    		timeout = setTimeout(  
+		    			function(){ 
+							console.log(" >>>>> Hiding Again !! ",new Date());
+							$('.fjcontrols-panel').css({'opacity':0, 'z-index':2147483647});
+							done= false ;
+		    			},
+		    			 3000);
+		    	}else{
+		    		console.log(" >>>>> DONE !! ");
+		    	}
+			});		
+		});*/
+	</script>
 </head>
 <body ng-app='fjplayerdemo'>
+<div class="fjcontrols-panel-notifier"></div>
 <div id="" class="fjplayer" ng-controller='fjplayerCtrl'>
-	<video id='videoID' controls >
+	<video id='videoID' >
 		<source id='mp4'   src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4" type='video/mp4'>	 
-		<track label="English"  kind="subtitles" srclang="en" src="sintel-en.vtt" default>
+		<track label="English"  kind="subtitles" srclang="en" src="sintel-en.vtt" >
 		<track label="Deutsch"  kind="subtitles" srclang="de" src="sintel-de.vtt">
 		<track label="Español"  kind="subtitles" srclang="es" src="sintel-es.vtt">
 		<track src="thumbs.vtt" kind="metadata" default >		 
@@ -169,44 +56,59 @@ video::-webkit-media-controls-panel {
 
 	<div class="fjcontrols-panel ">
 		<div class=" fjcontrols-panel-controls ">
-			<div id="hprogressbar" >
-		    	<div></div>
-		    </div> 
+			<div id="hprogressbar" 
+						ng-click="goSeek($event)"
+         				ng-mouseleave="goHideThumbs($event)"
+         				ng-mousemove="goRenderThumbs($event)"
+         				ng-mouseover="goShowThumbs($event)" >
+		    	<div ng-style="{ 'width': prgressPercentage + '%' }"></div>
+		    </div> 		    
 		</div>
 		<hr>
 		<div class="fjcontrols-panel-controls">
-			<div class="fjcontrols-control">
-				<i class="glyphicon glyphicon-fast-backward btn-lg"></i>
+			<div class="fjcontrols-control" ng-show='isPlaylist'>
+				<i class="glyphicon glyphicon-fast-backward btn-lg" ng-click="goPrevPlaylist()" ></i>
 			</div>
 			
 			<div class="fjcontrols-control">
-				<i class="glyphicon glyphicon-play btn-lg"></i>
+				<i class="glyphicon  btn-lg"  ng-click="goPlay()"  ng-class="{true:'glyphicon-pause', false: 'glyphicon-play'}[isPlaying]"></i>
 			</div>		
-			<div class="fjcontrols-control">
-				<i class="glyphicon glyphicon-fast-forward btn-lg"></i>
+
+			<div class="fjcontrols-control" ng-show='isPlaylist'>
+				<i class="glyphicon glyphicon-fast-forward btn-lg"  ng-click="goNextPlaylist()"></i>
 			</div>
+			
 			<div  class="fjcontrols-control fjcontrols-control-text">
 				<span>   {{ movieTile }} </span>
 			</div>	
+			
 			<div  class="fjcontrols-control fjcontrols-control-right">
-				<i class="glyphicon glyphicon-fullscreen btn-lg"></i>
+				<i class="glyphicon btn-lg"  ng-click="goFullScreen()" ng-class="{true:'glyphicon-resize-small', false: 'glyphicon-resize-full'}[isFullScreen]"></i>
 			</div>		
+			
 			<div  class="fjcontrols-control fjcontrols-control-right">
-				<i class="glyphicon glyphicon-subtitles btn-lg"></i>
+				<i class="glyphicon glyphicon-subtitles btn-lg"  ng-click="goSubtitles()" ></i>
 			</div>
+			
 			<div  class="fjcontrols-control fjcontrols-control-right">
-				<i class="glyphicon glyphicon-volume-up btn-lg"></i>
+				<i class="glyphicon glyphicon-volume-up btn-lg"  ng-click="goVolume()" ></i>
 			</div>			
+			
 			<div  class="fjcontrols-control fjcontrols-control-right fjcontrols-control-text fjcontrols-control-text-small">
-				<span id="ctime">{{ movieCTime }}</span>
+				<span id="ctime">{{ movieCTime | duration }}</span>
 				<span>/</span>
-				<span id="ttime">{{ movieTTime }}</span>
+				<span id="ttime">{{ movieTTime | duration }}</span>
 			</div>		
 		</div>
 	</div>
+	<!-- thumbs -->
+	<div>
+		<span class="thumbsBlock"  id="thumb" ></span>	
+		<span class="thumbsBlock"  id="current" >{{thumbTime | duration}}</span>	
+	</div>
 	<!-- ADS -->
-	 <div id="ad_data" class="adDataBlock">{{ AdsData }}</div>  
-	 <div id="ad_info" class="adInfoBlock" >{{ AdsInfo }}</div>
+	 <div id="ad_data" class="adDataBlock" ng-show='isAdsDataHidden'>{{ AdsData }}</div>  
+	 <div id="ad_info" class="adInfoBlock" ng-show='isAdsInfoHidden'>{{ AdsInfo }}</div>
 	 <!-- VOLUME -->
 	<div id="vprogressbar" >
     	<div></div>
