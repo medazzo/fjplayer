@@ -9,6 +9,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
     $scope.isPlaylist = false ;
     $scope.isPlaying = false ;
     $scope.isFullScreen = false ;
+    $scope.isFullScreenSupported = true ;
 
     $scope.prgressPercentage = 0;
 
@@ -29,6 +30,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
 
     $scope.video =  document.getElementById('videoID');
 
+
     $scope.video.addEventListener('loadeddata', function() {
       $scope.$apply(function () {          
           $scope.movieTTime  = $scope.video.duration ;
@@ -38,6 +40,14 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
           $scope.videoReady = true;          
           $scope.goPlay();
           console.log("Video is loaded and can be played ; READY", $scope.videoReady);
+
+          // Check if fullscreen supported. If it's not just don't show the fullscreen icon.
+          if(!$scope.video.requestFullscreen && 
+             !$scope.video.mozRequestFullScreen &&
+             !$scope.video.webkitRequestFullScreen) {
+                $scope.isFullScreenSupported  = false;
+          }
+
       })       
     }, false);
 
@@ -78,11 +88,31 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
     };
 
     $scope.goFullScreen  = function () {
-      if( $scope.isFullScreen === true )
+      // If fullscreen mode is active...  
+      if ($scope.isFullScreen == true ) {
+        // ...exit fullscreen mode
+        // (Note: this can only be called on document)
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+        else if (document.webkitCancelFullScreen) document.webkitCancelFullScreen();
+        else if (document.msExitFullscreen) document.msExitFullscreen();
         $scope.isFullScreen  =  false;
-      else
+      }
+      else {
+        // ...otherwise enter fullscreen mode
+        // (Note: can be called on document, but here the specific element is used as it will also ensure that the element's children, e.g. the custom controls, go fullscreen also)
+        if ($scope.video.requestFullscreen) $scope.video.requestFullscreen();
+        else if ($scope.video.mozRequestFullScreen) $scope.video.mozRequestFullScreen();
+        else if ($scope.video.webkitRequestFullScreen) {
+          // Safari 5.1 only allows proper fullscreen on the video element. This also works fine on other WebKit browsers as the following CSS (set in styles.css) hides the default controls that appear again, and 
+          // ensures that our custom controls are visible:
+          // figure[data-fullscreen=true] video::-webkit-media-controls { display:none !important; }
+          // figure[data-fullscreen=true] .controls { z-index:2147483647; }
+          $scope.video.webkitRequestFullScreen();
+        }
+        else if ($scope.video.msRequestFullscreen) $scope.video.msRequestFullscreen();
         $scope.isFullScreen  =  true;
-    
+      }     
     };
 
     $scope.goSubtitles  = function () {

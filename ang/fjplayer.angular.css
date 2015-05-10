@@ -83,6 +83,7 @@ body {
 	transition: opacity 0.4s  ease-in-out;
 }
 .fjcontrols-panel {
+	z-index: 2147483647;
 	position: absolute; 		
 	border-radius: 5px;
 	bottom: 2%;
@@ -94,8 +95,7 @@ body {
 	float: left;
 }
 .fjcontrols-panel:hover {
-	opacity: 1;
-	z-index: 2147483647;
+	opacity: 1;	
 }
 .fjcontrols-panel-controls {
 	width: 100%;

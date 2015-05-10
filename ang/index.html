@@ -60,7 +60,7 @@
 					<span>   {{ movieTile }} </span>
 				</div>	
 				
-				<div  class="fjcontrols-control fjcontrols-control-right">
+				<div  class="fjcontrols-control fjcontrols-control-right" ng-show='isFullScreenSupported'>
 					<i class="glyphicon btn-lg"  ng-click="goFullScreen()" ng-class="{true:'glyphicon-resize-small', false: 'glyphicon-resize-full'}[isFullScreen]"></i>
 				</div>		
 				
