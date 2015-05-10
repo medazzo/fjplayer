@@ -100,9 +100,11 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
 
     // init 
     $scope.indexThumbsTrack = -1 ;
+    $scope.td = document.getElementById('thumbDiv');
     $scope.t = document.getElementById('thumb');
     $scope.v = document.getElementById('videoID');
     $scope.b = document.getElementById('hprogressbar');
+    
     // looking for metadata tracks
     for (var i = 0; i < $scope.v.textTracks.length; i++) {
       if ( $scope.v.textTracks[i].kind == 'metadata' ){       
@@ -117,13 +119,13 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
     $scope.goShowThumbs = function ($event) {
         if($scope.indexThumbsTrack == -1 )
           return;
-        $scope.t.style.visibility = 'visible';
+        $scope.td.style.visibility = 'visible';
     };
 
     $scope.goHideThumbs = function ($event) {
       if($scope.indexThumbsTrack == -1 )
         return;
-      $scope.t.style.visibility = 'hidden';
+      $scope.td.style.visibility = 'hidden';
     };
 
     $scope.goRenderThumbs = function ($event) {        
@@ -138,7 +140,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
         return ; 
       //update ui
       $scope.thumbTime = p;
-      console.log(">>>>>>>>> CURRENT :", $scope.thumbTime ,">>>>>>>>> CURRENT :", p);
+      //console.log(">>>>>>>>> CURRENT :", $scope.thumbTime ,">>>>>>>>> CURRENT :", p);
       // ..then we find the matching cue..
       var c = $scope.v.textTracks[$scope.indexThumbsTrack].cues;
       if( c == null) //track eleme,t is not supprted : Firefox 
@@ -149,22 +151,24 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
             break;
         };
       }
-      console.info( $scope.b.offsetTop,"found cue @ ",i," >>",c[i] ); 
+      //console.info( $scope.b.offsetTop,"found cue @ ",i," >>",c[i] ); 
       // ..next we unravel the JPG url and fragment query..
       var url =c[i].text.split('#')[0];
       var xywh = c[i].text.substr(c[i].text.indexOf("=")+1).split(',');
 
       // ..and last we style the thumbnail overlay
-      console.info("$scope.b.offsetTop >>",$scope.b.offsetTop, "$scope.b.offsetBottom ",$scope.b.offsetBottom ," and is ",xywh);
+      //console.info("$scope.b.offsetTop >>",$scope.b.offsetTop, "$scope.b.offsetBottom ",$scope.b.offsetBottom ," and is ",xywh);
       $scope.t.style.backgroundImage = 'url('+c[i].text.split('#')[0]+')';
       $scope.t.style.backgroundPosition = '-'+xywh[0]+'px -'+xywh[1]+'px';
-      $scope.t.style.left = $event.pageX   - xywh[2]/2+'px';
-      $scope.t.style.top = rect.top  - (xywh[3] *1.5)+'px'     
       $scope.t.style.width = xywh[2]+'px';
       $scope.t.style.height = xywh[3]+'px';
+      
+      $scope.td.style.left = $event.pageX   - xywh[2]/2+'px';
+      $scope.td.style.top = rect.top  - (xywh[3] *1.5)+'px'     
+      $scope.td.style.width = xywh[2]+'px';    
+      //$scope.td.style.height = xywh[3]+20;'px'; // noneed : managed by css
 
-
-       console.info("Settled height ",xywh[3]+'px',"current rect ", $scope.t.getBoundingClientRect());
+      //console.info("Settled height ",xywh[3]+'px',"current rect ", $scope.t.getBoundingClientRect());
     };
 }]).
 filter('duration', function() {

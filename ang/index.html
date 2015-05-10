@@ -16,31 +16,6 @@
 		angular.module('fjplayerdemo', [
 		    'fjplayer'
 		]);
-/*
-		$(document).ready(function() {
-			$('.fjcontrols-panel').css({'opacity':1}	);
-		
-			var done = false ;
-			var timeout = undefined;
-			
-			$('.fjplayer').mousemove(function(event){
-		    	if(done == false ){
-		    		console.log("Moving Overs fjplayer ",event.pageX + ", " + event.pageY ,'at >',new Date());
-		    		$('.fjcontrols-panel').css({'opacity':1}	);
-		    		done = true;
-		    		clearTimeout(timeout);
-		    		timeout = setTimeout(  
-		    			function(){ 
-							console.log(" >>>>> Hiding Again !! ",new Date());
-							$('.fjcontrols-panel').css({'opacity':0, 'z-index':2147483647});
-							done= false ;
-		    			},
-		    			 3000);
-		    	}else{
-		    		console.log(" >>>>> DONE !! ");
-		    	}
-			});		
-		});*/
 	</script>
 </head>
 <body ng-app='fjplayerdemo'>
@@ -102,9 +77,9 @@
 		</div>
 	</div>
 	<!-- thumbs -->
-	<div>
+	<div class="thumbsBlockDiv" id="thumbDiv">
 		<span class="thumbsBlock"  id="thumb" ></span>	
-		<span class="thumbsBlock"  id="current" >{{thumbTime | duration}}</span>	
+		<span class="thumbsBlockTime"  id="current" >{{thumbTime | duration}}</span>
 	</div>
 	<!-- ADS -->
 	 <div id="ad_data" class="adDataBlock" ng-show='isAdsDataHidden'>{{ AdsData }}</div>  
