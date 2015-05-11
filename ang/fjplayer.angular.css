@@ -130,7 +130,7 @@ body {
 }
 #hprogressbar {	
 	width: 90%;
-	background-color: rgba(42,42,42,0.75);  
+	background-color: #8F9B9E;  
 	border-radius: 5px; /* (height of inner div) / 2 + padding */
 	padding: 1px;
 	margin-left: 5%;
@@ -145,25 +145,23 @@ body {
    height: 10px;
    border-radius: 5px;
 }
-#vprogressbar {	
-	visibility: hidden;
-	width: 10%;
-	height: 40%;
-	background-color: rgba(42,42,42,0.75);  
+#vprogressbar {		
+	display: none;
+	width: 15%;
+	background-color: #8F9B9E; 
 	border-radius: 5px; /* (height of inner div) / 2 + padding */
 	padding: 1px;
-	margin-left: 5%;
+	margin-left: 80%;
 	margin-right: 5%;
 	margin-top: 1%;
 	margin-bottom: 1%;
 	cursor: auto;
 }
-#vprogressbar > div {
-	visibility: hidden;
-	background-color:  #33b5d5;
-	width: 0%; /* Adjust with JavaScript */
-	height: 10px;
-	border-radius: 5px;
+#vprogressbar > div {	
+   background-color:  #FF1515;
+   width: 80%; /* Adjust with JavaScript */
+   height: 10px;
+   border-radius: 5px;
 }
 hr {
 	margin-top: 5px;

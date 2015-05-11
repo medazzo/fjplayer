@@ -5,13 +5,15 @@ angular.module('fjplayer', []).
 controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,function ($scope,$filter,$interval,$document) {
     //
     $scope.videoReady = false ;
-
+    $scope.showingVolumeBar = false ;
     $scope.isPlaylist = false ;
     $scope.isPlaying = false ;
     $scope.isFullScreen = false ;
     $scope.isFullScreenSupported = true ;
 
+
     $scope.prgressPercentage = 0;
+    $scope.volumePercentage = 80;
 
     $scope.movieTile  = "My titre de films ";
 
@@ -39,7 +41,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
           $scope.volume = $scope.video.volume;          
           $scope.videoReady = true;          
           $scope.goPlay();
-          console.log("Video is loaded and can be played ; READY", $scope.videoReady);
+          console.log("Video is loaded and can be played ; READY", $scope.videoReady,"volume ",$scope.volume);
 
           // Check if fullscreen supported. If it's not just don't show the fullscreen icon.
           if(!$scope.video.requestFullscreen && 
@@ -116,10 +118,6 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
     };
 
     $scope.goSubtitles  = function () {
-    
-    };
-
-    $scope.goVolume = function () {
     
     };
 
@@ -214,6 +212,34 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
 
       //console.info("Settled height ",xywh[3]+'px',"current rect ", $scope.t.getBoundingClientRect());
     };
+
+    //Volume
+    $scope.goShowProgressBar = function (){    
+      $scope.showingVolumeBar = false ;
+      console.log(">>> $scope.goShowProgressBar ",$scope.showingVolumeBar);
+    };
+    $scope.goShowVolumeBar = function (){
+      var vb = document.getElementById('vprogressbar');
+      vb.style.display = 'block' ;
+      $scope.showingVolumeBar = true ;
+      console.log(">>> $scope.showingVolumeBar ",$scope.showingVolumeBar);
+    };
+    $scope.goMuteVolume = function () {
+      console.log(">>> $scope.goMuteVolume ",$scope.showingVolumeBar);
+    };
+    $scope.goSetVolume = function ($event){
+      console.log(">>> $scope.goSetVolume ",$scope.showingVolumeBar);
+    };
+    $scope.setVolumeProgressLevel = function($event){
+      console.log(">>> $scope.setVolumeProgressLevel ",$scope.showingVolumeBar);
+    };
+    $scope.goSetVolumeBtn = function ($event){
+      console.log(">>> $scope.goSetVolumeBtn ",$scope.showingVolumeBar);
+    };
+   
+
+
+
 }]).
 filter('duration', function() {
  return function(secDuration) {

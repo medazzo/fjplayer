@@ -19,7 +19,7 @@
 	</script>
 </head>
 <body ng-app='fjplayerdemo'>
-<div ng-controller='fjplayerCtrl'>
+<div id="fjplayerWrapper" ng-controller='fjplayerCtrl'>
 	<div class="loading" ng-hide='videoReady'>
 		<span > Forja Player Loading ....</span>
 	</div>
@@ -33,15 +33,25 @@
 		</video>
 
 		<div  id="MainControlPanel" class="fjcontrols-panel " ng-class="{true:'fjcontrols-panel-hover-transition', false: ''}[isPlaying]">
-			<div class=" fjcontrols-panel-controls " >
+			<div class=" fjcontrols-panel-controls" ng-hide='showingVolumeBar'>
 				<div id="hprogressbar" 
 							ng-click="goSeek($event)"
 	         				ng-mouseleave="goHideThumbs($event)"
 	         				ng-mousemove="goRenderThumbs($event)"
 	         				ng-mouseover="goShowThumbs($event)" >
 			    	<div ng-style="{ 'width': prgressPercentage + '%' }"></div>
-			    </div> 		    
-			</div>
+			    </div> 	
+			</div>    	    
+			<div class=" fjcontrols-panel-controls" ng-show='showingVolumeBar'>
+				<!-- VOLUME BAR -->
+				<div id="vprogressbar"
+						ng-click="goSetVolume($event)"
+						ng-mouseleave="goShowProgressBar()"
+						ng-mouseover="goShowVolumeBar()"
+						ng-mousemove="setVolumeProgressLevel($event)" >
+			    	<div    ng-style="{ 'width': volumePercentage + '%' }"></div>
+			    </div>
+			</div>	
 			<hr>
 			<div class="fjcontrols-panel-controls">
 				<div class="fjcontrols-control" ng-show='isPlaylist'>
@@ -68,10 +78,12 @@
 					<i class="glyphicon glyphicon-subtitles btn-lg"  ng-click="goSubtitles()" ></i>
 				</div>
 				
-				<div  class="fjcontrols-control fjcontrols-control-right">
-					<i class="glyphicon glyphicon-volume-up btn-lg"  ng-click="goVolume()" ></i>
-				</div>			
-				
+				<div  class="fjcontrols-control fjcontrols-control-right" 
+							ng-mouseleave="goShowProgressBar()"
+	         				ng-mouseover="goShowVolumeBar()"
+	         				ng-click="goMuteVolume()" >
+					<i class="glyphicon glyphicon-volume-up btn-lg"  ></i>
+			    </div>						
 				<div  class="fjcontrols-control fjcontrols-control-right fjcontrols-control-text fjcontrols-control-text-small">
 					<span id="ctime">{{ movieCTime | duration }}</span>
 					<span>/</span>
@@ -84,6 +96,7 @@
 			<span class="thumbsBlock"  id="thumb" ></span>	
 			<span class="thumbsBlockTime"  id="current" >{{thumbTime | duration}}</span>
 		</div>
+	
 		<!-- ADS -->
 		 <div id="ad_data" class="adDataBlock" ng-show='isAdsDataHidden'>{{ AdsData }}</div>  
 		 <div id="ad_info" class="adInfoBlock" ng-show='isAdsInfoHidden'>{{ AdsInfo }}</div>
