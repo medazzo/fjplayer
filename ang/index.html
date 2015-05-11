@@ -109,7 +109,7 @@
 				sub :
 				<ul class="subtitles-menu" >
 					<li ng-repeat="sub in tracksArray.subs">
-						<div  ng-click='setSubs(sub.index)' ng-class="{true:'subtitles-menu-item-actif', false: 'subtitles-menu-item'}[{{sub.actif}}]" > 	{{sub.label}} 
+						<div  ng-click='setSubs(sub.index)' ng-class="{true:'subtitles-menu-item-actif', false: 'subtitles-menu-item'}[sub.actif]" > 	{{sub.label}} 
 						</div>
 					</li>
 				</ul>	
@@ -118,7 +118,7 @@
 				audio :
 				<ul  class="subtitles-menu">
 					<li ng-repeat="audio in tracksArray.audio">
-						<div  ng-click='setAudio(audio.index)' ng-class="{true:'subtitles-menu-item-actif', false: 'subtitles-menu-item'}[{{audio.actif}}]" > 	{{audio.label}} 
+						<div  ng-click='setAudio(audio.index)' ng-class="{true:'subtitles-menu-item-actif', false: 'subtitles-menu-item'}[audio.actif]" > 	{{audio.label}} 
 						</div>
 						</li>
 				</ul>	
