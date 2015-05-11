@@ -46,10 +46,10 @@
 				<!-- VOLUME BAR -->
 				<div id="vprogressbar"
 						ng-click="goSetVolume($event)"
-						ng-mouseleave="goShowProgressBar()"
-						ng-mouseover="goShowVolumeBar()"
+						ng-mouseleave="goHideVolumeBar()"
+						ng-mouseover="goUseVolumeBar()"
 						ng-mousemove="setVolumeProgressLevel($event)" >
-			    	<div    ng-style="{ 'width': volumePercentage + '%' }"></div>
+			    	<div    ng-style="{ 'width': volumePercentage + '%' }"  ng-mouseover="goShowVolumeBar()"  ></div>
 			    </div>
 			</div>	
 			<hr>

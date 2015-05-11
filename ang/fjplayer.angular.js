@@ -2,10 +2,12 @@
 'use strict';
 
 angular.module('fjplayer', []).
-controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,function ($scope,$filter,$interval,$document) {
+controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeout' ,
+            function ($scope,$filter,$interval,$document,$timeout) {
     //
     $scope.videoReady = false ;
     $scope.showingVolumeBar = false ;
+    $scope.usingVolumeBar = false ;
     $scope.isPlaylist = false ;
     $scope.isPlaying = false ;
     $scope.isFullScreen = false ;
@@ -86,7 +88,15 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
           }
         })
     }); 
-
+    $scope.video.addEventListener('ended', function () {
+      // TODO  ..      
+    });
+    $scope.video.addEventListener('error', function () {
+      // TODO  ..      
+    });
+    $scope.video.addEventListener('waiting', function () {
+      // TODO  ..      
+    });
     $scope.goPlay  = function () {
       if( $scope.isPlaying === true )
       {
@@ -227,41 +237,55 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
       $scope.td.style.left = $event.pageX   - xywh[2]/2+'px';
       $scope.td.style.top = rect.top  - (xywh[3] *1.5)+'px'     
       $scope.td.style.width = xywh[2]+'px';    
-      //$scope.td.style.height = xywh[3]+20;'px'; // noneed : managed by css
+      //$scope.td.style.height = xywh[3]+20;'px'; // not needed : managed by css
 
       //console.info("Settled height ",xywh[3]+'px',"current rect ", $scope.t.getBoundingClientRect());
     };
 
     //Volume
-    $scope.goShowProgressBar = function (){    
-      $scope.showingVolumeBar = false ;
-      console.log(">>> $scope.goShowProgressBar ",$scope.showingVolumeBar);
+    $scope.goShowProgressBar = function (){  
+      $timeout(function() {
+        if (  $scope.usingVolumeBar == false ) {
+          $scope.showingVolumeBar = false ; 
+        }
+        //console.log(">>> after setTimeout $scope.goShowProgressBar ",$scope.showingVolumeBar, $scope.usingVolumeBar);
+      }, 1000);        
+        
     };
     $scope.goShowVolumeBar = function (){
       var vb = document.getElementById('vprogressbar');
       vb.style.display = 'block' ;
       $scope.showingVolumeBar = true ;
-      console.log(">>> $scope.showingVolumeBar ",$scope.showingVolumeBar);
+      //console.log(">>> $scope.showingVolumeBar ",$scope.showingVolumeBar);
     };
+    $scope.goUseVolumeBar = function(){
+      $scope.usingVolumeBar = true ;
+      //console.log(">>> $scope.goUseVolumeBar ",$scope.usingVolumeBar);
+    }
+    $scope.goHideVolumeBar = function(){
+      $scope.usingVolumeBar = false ;
+      $scope.showingVolumeBar = false ; 
+      //console.log(">>> $scope.goHideVolumeBar ",$scope.showingVolumeBar, $scope.usingVolumeBar);
+    }
     $scope.goMuteVolume = function () {
-      console.log(">>> $scope.goMuteVolume ",$scope.showingVolumeBar);
+      //console.log(">>> $scope.goMuteVolume ",$scope.showingVolumeBar);
         if($scope.volumePercentage == 0 )
           $scope.setVolume( 100 );          
         else
           $scope.setVolume( 0 );          
     };
     $scope.goSetVolume = function ($event){
-      console.log(">>> $scope.goSetVolume ",$scope.showingVolumeBar);
+      //Not needed ; done without clicking, set volume is done with just hovering
     };
     $scope.setVolumeProgressLevel = function($event){
-      console.log(">>> $scope.setVolumeProgressLevel ",$scope.showingVolumeBar);
+      //console.log(">>> $scope.setVolumeProgressLevel X,Y ",$event.pageX,$event.pageY);
+      var bv = document.getElementById('vprogressbar');
+      var rect = bv.getBoundingClientRect();
+      //console.log(">>> $scope.setVolumeProgressLevel rect of progress ",rect);
+      var vp =(($event.pageX - rect.left) / rect.width) * 100 ;
+      //console.log(">>> Volume percentage ",vp);
+      $scope.setVolume (vprogressbar);
     };
-    $scope.goSetVolumeBtn = function ($event){
-      console.log(">>> $scope.goSetVolumeBtn ",$scope.showingVolumeBar);
-    };
-   
-
-
 
 }]).
 filter('duration', function() {
