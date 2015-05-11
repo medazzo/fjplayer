@@ -121,13 +121,51 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
       }     
     };
 
+    //Overlay used for Ads or information Plugin Api ; ex OverlayPluginShowAds('ad_info','ad_data','videoID',5,10);
+    var OverlayPluginShowAds = function(InfoID, DataID, VideoID, showAt, showDuration,animate){
+    //info
+    console.info (" an Overlay is added @ ",showAt," sec for ",showDuration," sec.");
+    var video= document.getElementById(VideoID);
+    video.addEventListener('progress', 
+      function() {      
+      if( ( video.currentTime > showAt ) && ( video.currentTime < (showAt+1) ) ) {      
+        StartAds();
+        return ;
+      }
+    }, false);  
+  
+    function upInfo(){  
+    console.log("updating @@@ ", showDuration);   
+      if ( showDuration > 0 ) {
+        $(InfoID).html('you ads will end in '+showDuration+' sec');
+        showDuration --;        
+      }else{ return; }  
+    }
 
+    function StartAds() {
+      var secTimeout = showDuration  *1000;     
+      var refreshId = null;
+      // show ads
+      $(DataID).show();
+      $(InfoID).show();
+      $(InfoID).html('you ads will end in '+showDuration+' sec');
+      // hide ads after timeout
+      if ( animate == true )
+        refreshId = setInterval( upInfo ,1000);
+      //timeout
+      setTimeout(function(){
+        console.log("Ending @@@ ", showDuration);
+        $(DataID).fadeOut('slow');
+        $(InfoID).fadeOut('slow');
+        if ( animate == true )
+          clearInterval (refreshId);
+      },secTimeout);
+    }
+  };
     $scope.goPrevPlaylist  = function () {
-    
     };
 
     $scope.goNextPlaylist  = function () {
-    
     };
 
     $scope.goFullScreen  = function () {
@@ -221,6 +259,11 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
           console.log(" > audio are ",$scope.audioArray);
         }
       }
+
+      //set Ads
+        // show ADS
+      OverlayPluginShowAds('#ad_info','#ad_data','videoID',15,5, false );
+      OverlayPluginShowAds('#ad_info','#ad_data','videoID',5,5, true );
     };
 
     // Thumbs WebVtt Plugin Function
@@ -317,7 +360,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     };
 
     //subtitles and setting 
-    $scope.goSubtitles  = function () {            
+    $scope.goSettingMenu  = function () {            
       console.info("arrays tracks ", $scope.tracksArray );
       var menudiv = document.getElementById('settingMenuDiv');
       // second call :to  hide 
