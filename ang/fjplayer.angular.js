@@ -2,8 +2,10 @@
 'use strict';
 
 angular.module('fjplayer', []).
-controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeout' ,
-            function ($scope,$filter,$interval,$document,$timeout) {
+controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeout' ,'$sce',
+            function ($scope,$filter,$interval,$document,$timeout,$sce) {
+
+     $scope.fjplayerTag ="Fjplayer.js"         
     //
     $scope.videoReady = false ;
     $scope.showingVolumeBar = false ;
@@ -34,6 +36,9 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
 
     $scope.AdsData ="";
     $scope.AdsInfo ="";
+
+    $scope.ccSubMenu = $sce.trustAsHtml(  '   <p>CC :<ul><li>hola </li><li>hila </li></ul></p>');
+    $scope.langSubMenu = $sce.trustAsHtml( '<p>Lang :<ul><li>hola- </li><li>hila- </li></ul></p>');
 
     $scope.video =  document.getElementById('videoID');
 
@@ -146,9 +151,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
       }     
     };
 
-    $scope.goSubtitles  = function () {
-    
-    };
+
 
     $scope.goSeek = function ($event) {  
         var rect = $scope.b.getBoundingClientRect();
@@ -192,14 +195,12 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
           return;
         $scope.td.style.visibility = 'visible';
     };
-
     $scope.goHideThumbs = function ($event) {
       if($scope.indexThumbsTrack == -1 )
         return;
       $scope.td.style.visibility = 'hidden';
     };
-
-    $scope.goRenderThumbs = function ($event) {        
+    $scope.goRenderThumbs = function ($event) {   
       if($scope.indexThumbsTrack == -1 )
         return;
 
@@ -250,7 +251,6 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         }
         //console.log(">>> after setTimeout $scope.goShowProgressBar ",$scope.showingVolumeBar, $scope.usingVolumeBar);
       }, 1000);        
-        
     };
     $scope.goShowVolumeBar = function (){
       var vb = document.getElementById('vprogressbar');
@@ -274,9 +274,6 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         else
           $scope.setVolume( 0 );          
     };
-    $scope.goSetVolume = function ($event){
-      //Not needed ; done without clicking, set volume is done with just hovering
-    };
     $scope.setVolumeProgressLevel = function($event){
       //console.log(">>> $scope.setVolumeProgressLevel X,Y ",$event.pageX,$event.pageY);
       var bv = document.getElementById('vprogressbar');
@@ -284,9 +281,18 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
       //console.log(">>> $scope.setVolumeProgressLevel rect of progress ",rect);
       var vp =(($event.pageX - rect.left) / rect.width) * 100 ;
       //console.log(">>> Volume percentage ",vp);
-      $scope.setVolume (vprogressbar);
+      $scope.setVolume (vp);
     };
 
+    //subtitles and setting 
+    $scope.goSubtitles  = function () {      
+      var menudiv = document.getElementById('settingMenuDiv');
+      var subsBtn = document.getElementById('subsBtnId');
+      var rect = subsBtn.getBoundingClientRect();
+      menudiv.style.left = rect.left +'px';
+      menudiv.style.top = rect.top  - (rect.height *2.5)+'px'           
+      menudiv.style.visibility = 'visible';
+    };
 }]).
 filter('duration', function() {
  return function(secDuration) {

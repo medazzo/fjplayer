@@ -44,8 +44,7 @@
 			</div>    	    
 			<div class=" fjcontrols-panel-controls" ng-show='showingVolumeBar'>
 				<!-- VOLUME BAR -->
-				<div id="vprogressbar"
-						ng-click="goSetVolume($event)"
+				<div id="vprogressbar"						
 						ng-mouseleave="goHideVolumeBar()"
 						ng-mouseover="goUseVolumeBar()"
 						ng-mousemove="setVolumeProgressLevel($event)" >
@@ -75,7 +74,7 @@
 				</div>		
 				
 				<div  class="fjcontrols-control fjcontrols-control-right">
-					<i class="glyphicon glyphicon-subtitles btn-lg"  ng-click="goSubtitles()" ></i>
+					<i id="subsBtnId" class="glyphicon glyphicon-subtitles btn-lg"  ng-click="goSubtitles()" ></i>
 				</div>
 				
 				<div  class="fjcontrols-control fjcontrols-control-right" 
@@ -92,6 +91,11 @@
 				</div>		
 			</div>
 		</div>
+		<!-- setting menu -->
+		<div class="settingMenuDiv" id="settingMenuDiv">
+			<div class="settingMenuSubMenuLeft"  id="settingMenuCC" ng-bind-html='ccSubMenu'></div>
+			<div class="settingMenuSubMenuRight"  id="settingMenulang" ng-bind-html='langSubMenu'></div>
+		</div>
 		<!-- thumbs -->
 		<div class="thumbsBlockDiv" id="thumbDiv">
 			<span class="thumbsBlock"  id="thumb" ></span>	
@@ -101,10 +105,7 @@
 		<!-- ADS -->
 		 <div id="ad_data" class="adDataBlock" ng-show='isAdsDataHidden'>{{ AdsData }}</div>  
 		 <div id="ad_info" class="adInfoBlock" ng-show='isAdsInfoHidden'>{{ AdsInfo }}</div>
-		 <!-- VOLUME -->
-		<div id="vprogressbar" >
-	    	<div></div>
-	    </div> 
+
 	</div>
 </div>	
 </body>
