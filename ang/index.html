@@ -9,9 +9,21 @@
 	<link rel="stylesheet" href="fjplayer.angular.css">
 	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="../bower_components/angular/angular.js"></script> 
+	<script src="../bower_components/angular/angular.min.js"></script>
+	<script type="text/javascript" src="../utils/base64.js"></script> 
+	<script type="text/javascript" src="../utils/dash.debug.js"></script> 
 	<script type="text/javascript" src="fjplayer.angular.js"></script>
 	<script type='text/javascript'>
+
+	/*
+	http://dash.edgesuite.net/envivio/dashpr/clear/Manifest.mpd
+	http://www.digitalprimates.net/dash/streams/gpac/mp4-main-multi-mpd-AV-NBS.mpd
+	http://www.digitalprimates.net/dash/streams/mp4-live-template/mp4-live-mpd-AV-BS.mpd
+	http://dash.edgesuite.net/dash264/TestCases/3b/sony/SNE_DASH_CASE3B_SD_REVISED.mpd
+	http://dash.edgesuite.net/dash264/TestCases/4b/qualcomm/3/Solekai.mpd ->
+	http://dash.edgesuite.net/akamai/test/caption_test/ElephantsDream/elephants_dream_480p_heaac5_1.mpd -->caption
+	http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd --> complete 
+	*/
 		'use strict';
 		angular.module('fjplayerdemo', [
 		    'fjplayer'
@@ -25,7 +37,7 @@
 	</div>
 	<div ng-show='videoReady' class="fjplayer" >
 		<video id='videoID' >
-			<source id='mp4'   src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4" type='video/mp4'>	 
+ 			 <source src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4" type='video/mp4'>	 
 			<track label="English"  kind="subtitles" srclang="en" src="sintel-en.vtt" >
 			<track label="Deutsch"  kind="subtitles" srclang="de" src="sintel-de.vtt">
 			<track label="Español"  kind="subtitles" srclang="es" src="sintel-es.vtt">
@@ -73,7 +85,7 @@
 					<i class="glyphicon btn-lg"  ng-click="goFullScreen()" ng-class="{true:'glyphicon-resize-small', false: 'glyphicon-resize-full'}[isFullScreen]"></i>
 				</div>		
 				
-				<div  class="fjcontrols-control fjcontrols-control-right">
+				<div  class="fjcontrols-control fjcontrols-control-right" ng-show='isContainsSubs || isContainsLangs'>
 					<i id="subsBtnId" class="glyphicon glyphicon-cog btn-lg"  ng-click="goSubtitles()" ></i>
 				</div>
 				
@@ -92,12 +104,28 @@
 			</div>
 		</div>
 		<!-- setting menu -->
-		<div class="settingMenuDiv" id="settingMenuDiv">
-			<div class="settingMenuSubMenuLeft"  id="settingMenuCC" ng-bind-html='ccSubMenu'></div>
-			<div class="settingMenuSubMenuRight"  id="settingMenulang" ng-bind-html='langSubMenu'></div>
+		<div  ng-show='isContainsSubs || isContainsLangs' class="settingMenuDiv" id="settingMenuDiv">
+			<div class="settingMenuSubMenuLeft"  id="settingMenuCC" ng-show='isContainsSubs'>
+				sub :
+				<ul class="subtitles-menu" >
+					<li ng-repeat="sub in tracksArray.subs">
+						<div  ng-click='setSubs(sub.index)' ng-class="{true:'subtitles-menu-item-actif', false: 'subtitles-menu-item'}[{{sub.actif}}]" > 	{{sub.label}} 
+						</div>
+					</li>
+				</ul>	
+			</div>
+			<div class="settingMenuSubMenuRight"  id="settingMenulang" ng-show='isContainsLangs'>
+				audio :
+				<ul  class="subtitles-menu">
+					<li ng-repeat="audio in tracksArray.audio">
+						<div  ng-click='setAudio(audio.index)' ng-class="{true:'subtitles-menu-item-actif', false: 'subtitles-menu-item'}[{{audio.actif}}]" > 	{{audio.label}} 
+						</div>
+						</li>
+				</ul>	
+			</div>
 		</div>
 		<!-- thumbs -->
-		<div class="thumbsBlockDiv" id="thumbDiv">
+		<div ng-show='isContainsThumbs' class="thumbsBlockDiv" id="thumbDiv">
 			<span class="thumbsBlock"  id="thumb" ></span>	
 			<span class="thumbsBlockTime"  id="current" >{{thumbTime | duration}}</span>
 		</div>

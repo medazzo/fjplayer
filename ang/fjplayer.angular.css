@@ -42,25 +42,21 @@ body {
   padding: 50px 0;
   z-index: 2147483647;
 }
-/* ---------------------- Menu style --------------------- */
-/*.settingMenuDiv{
-	position: absolute;
-	color: #8F9B9E;
-	background:rgba(20, 20, 20, 1);
-	float: left;
-	font-size: 1.5em;
-	visibility: hidden;	
-	padding: 5px;	
-	border-radius: 5px; 	
-	z-index: 2147483647;	
+
+/* -------------------  CC SUBTITLES --------------------- */
+.subtitles-menu-item-actif {
+	cursor: pointer;
+	text-align:left;
+	border-radius:2px;
+	opacity:0.5;
 }
-.settingMenuSubMenu {
-   float: left;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #000000;
-    margin-left: 10px;
-}*/
+.subtitles-menu-item {
+	cursor: pointer;
+	text-align:left;
+	border-radius:2px;
+	opacity:1;
+}
+/* ---------------------- Menu style --------------------- */
 .settingMenuDiv{
 	position: absolute;
 	color: #8F9B9E;
@@ -74,12 +70,16 @@ body {
 }
 .settingMenuSubMenuLeft {
     float: left;
+    width: 100%;
+    color: #8F9B9E;
 	border-right:1px solid #2A2A2A; 
     padding-right: 5px;
     padding-left: 5px;
 }
 .settingMenuSubMenuRight {
-    float: left;	 
+    float: left;
+    color: #8F9B9E;
+    width: 100%;
 	border-left:1px solid #2A2A2A;  
     padding-left: 5px;
     padding-right: 5px;
