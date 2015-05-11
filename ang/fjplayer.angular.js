@@ -11,6 +11,9 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
     $scope.isFullScreen = false ;
     $scope.isFullScreenSupported = true ;
 
+    $scope.VolLevelUp = true ;
+    $scope.VolLevelDown = false ;
+    $scope.VolLevelOff = false ;
 
     $scope.prgressPercentage = 0;
     $scope.volumePercentage = 80;
@@ -32,13 +35,29 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
 
     $scope.video =  document.getElementById('videoID');
 
-
+    $scope.setVolume = function(newVolumePercentage){
+      $scope.video.volume =  (newVolumePercentage /100);
+      $scope.volumePercentage = newVolumePercentage ;
+      if(newVolumePercentage == 0 ){
+        $scope.VolLevelUp = false ;
+        $scope.VolLevelDown = false ;
+        $scope.VolLevelOff = true ;
+      }else if  (newVolumePercentage > 60 ){
+        $scope.VolLevelUp = true ;
+        $scope.VolLevelDown = false ;
+        $scope.VolLevelOff = false ;
+      } else {
+        $scope.VolLevelUp = false ;
+        $scope.VolLevelDown = true ;
+        $scope.VolLevelOff = false ;
+      }
+    };
     $scope.video.addEventListener('loadeddata', function() {
       $scope.$apply(function () {          
           $scope.movieTTime  = $scope.video.duration ;
           $scope.movieCTime  = $scope.video.currentTime ;
           $scope.movieBuffered = $scope.video.buffered;
-          $scope.volume = $scope.video.volume;          
+          $scope.setVolume( $scope.video.volume * 100 );          
           $scope.videoReady = true;          
           $scope.goPlay();
           console.log("Video is loaded and can be played ; READY", $scope.videoReady,"volume ",$scope.volume);
@@ -226,6 +245,10 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,functio
     };
     $scope.goMuteVolume = function () {
       console.log(">>> $scope.goMuteVolume ",$scope.showingVolumeBar);
+        if($scope.volumePercentage == 0 )
+          $scope.setVolume( 100 );          
+        else
+          $scope.setVolume( 0 );          
     };
     $scope.goSetVolume = function ($event){
       console.log(">>> $scope.goSetVolume ",$scope.showingVolumeBar);

@@ -82,7 +82,8 @@
 							ng-mouseleave="goShowProgressBar()"
 	         				ng-mouseover="goShowVolumeBar()"
 	         				ng-click="goMuteVolume()" >
-					<i class="glyphicon glyphicon-volume-up btn-lg"  ></i>
+					<i class="glyphicon btn-lg"
+					 ng-class="{'glyphicon-volume-up': VolLevelUp, 'glyphicon-volume-down': VolLevelDown, 'glyphicon-volume-off': VolLevelOff }"></i>
 			    </div>						
 				<div  class="fjcontrols-control fjcontrols-control-right fjcontrols-control-text fjcontrols-control-text-small">
 					<span id="ctime">{{ movieCTime | duration }}</span>
