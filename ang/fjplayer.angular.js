@@ -39,15 +39,73 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     $scope.movieBuffered = 0;
     $scope.volume = 0;
 
+    $scope.idleMouseTimer;          
+    $scope.isCursorHidden = false ;
+
     $scope.AdsData =$sce.trustAsHtml( '<div onclick="location.href="http://www.google.co.ma";" style="cursor:pointer;">'+
                       '<img src="2000px-Smiley.svg.png" alt="Smiley face" width="42" height="42">'+
                       'Your ADS is Here; clikc to go to google !</div>' );
     $scope.AdsInfo ="";
 
-    $scope.video =  document.getElementById('videoID');
-    $scope.td = document.getElementById('thumbDiv');
-    $scope.t = document.getElementById('thumb');      
-    $scope.b = document.getElementById('hprogressbar');
+    $scope.Initialize = function() {
+      // Init
+      $scope.video = document.getElementById('videoID');
+      $scope.td    = document.getElementById('thumbDiv');
+      $scope.t     = document.getElementById('thumb');      
+      $scope.b     = document.getElementById('hprogressbar');
+
+      $scope.video.addEventListener('loadeddata', function() {
+        $scope.$apply(function () {          
+            $scope.movieTTime  = $scope.video.duration ;
+            $scope.movieCTime  = $scope.video.currentTime ;
+            $scope.movieBuffered = $scope.video.buffered;
+            $scope.setVolume( $scope.video.volume * 100 );          
+            $scope.videoReady = true;          
+            $scope.goPlay();
+            console.log("Video is loaded and can be played ; READY", $scope.videoReady,"volume ",$scope.volume);
+            $scope.loadModuleMetadata();          
+        })       
+      }, false);
+      $scope.video.addEventListener('timeupdate', function () {
+        $scope.$apply(function () {          
+            $scope.movieTTime  = $scope.video.duration ;
+            $scope.movieCTime  = $scope.video.currentTime ;
+            $scope.movieBuffered = $scope.video.buffered;
+            $scope.volume = $scope.video.volume;
+
+            $scope.prgressPercentage = ($scope.movieCTime / $scope.movieTTime )*100;          
+            if( $scope.movieCTime == $scope.movieTTime ){
+              console.log(" END >", $scope.prgressPercentage);
+              $scope.isPlaying  =  false;
+            }
+          })
+      }); 
+      
+      $scope.video.addEventListener('pause', function () {
+        console.info('pause on video !!');
+        // TODO  ..      
+      });
+      
+      $scope.video.addEventListener('play', function () {
+        console.info('play on video !!');
+        // TODO  ..      
+      });
+      
+      $scope.video.addEventListener('ended', function () {
+        // TODO  ..      
+      });
+      
+      $scope.video.addEventListener('error', function () {
+        console.error('error on video !!');
+        // TODO  ..      
+      });
+      
+      $scope.video.addEventListener('waiting', function () {
+        // TODO  ..      
+      });
+
+    };
+
 /* only for dash
     var url = "http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd ";
     //http://dash.edgesuite.net/dash264/TestCases/1c/qualcomm/2/MultiRate.mpd";
@@ -57,7 +115,6 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     player.attachView(document.querySelector("#videoID"));
     player.attachSource(url);
 */
-
     $scope.setVolume = function(newVolumePercentage){
       $scope.video.volume =  (newVolumePercentage /100);
       $scope.volumePercentage = newVolumePercentage ;
@@ -75,56 +132,10 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         $scope.VolLevelOff = false ;
       }
     };
-    $scope.video.addEventListener('loadeddata', function() {
-      $scope.$apply(function () {          
-          $scope.movieTTime  = $scope.video.duration ;
-          $scope.movieCTime  = $scope.video.currentTime ;
-          $scope.movieBuffered = $scope.video.buffered;
-          $scope.setVolume( $scope.video.volume * 100 );          
-          $scope.videoReady = true;          
-          $scope.goPlay();
-          console.log("Video is loaded and can be played ; READY", $scope.videoReady,"volume ",$scope.volume);
-          $scope.loadModuleMetadata();          
-      })       
-    }, false);
-    $scope.video.addEventListener('timeupdate', function () {
-      $scope.$apply(function () {          
-          $scope.movieTTime  = $scope.video.duration ;
-          $scope.movieCTime  = $scope.video.currentTime ;
-          $scope.movieBuffered = $scope.video.buffered;
-          $scope.volume = $scope.video.volume;
-
-          $scope.prgressPercentage = ($scope.movieCTime / $scope.movieTTime )*100;          
-          if( $scope.movieCTime == $scope.movieTTime ){
-            console.log(" END >", $scope.prgressPercentage);
-            $scope.isPlaying  =  false;
-          }
-        })
-    }); 
-    $scope.video.addEventListener('pause', function () {
-      console.info('pause on video !!');
-      // TODO  ..      
-    });
-    $scope.video.addEventListener('play', function () {
-      console.info('play on video !!');
-      // TODO  ..      
-    });
-    $scope.video.addEventListener('ended', function () {
-      // TODO  ..      
-    });
-    $scope.video.addEventListener('error', function () {
-      console.error('error on video !!');
-      // TODO  ..      
-    });
-    $scope.video.addEventListener('waiting', function () {
-      // TODO  ..      
-    });
-
     $scope.goBackHistory = function (){
       console.log("Doing back !!");
       $window.history.back();
      };
-
     $scope.goPlay  = function () {
       if( $scope.isPlaying === true )
       {
@@ -139,45 +150,45 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
 
     //Overlay used for Ads or information Plugin Api ; ex OverlayPluginShowAds('ad_info','ad_data','videoID',5,10);
     var OverlayPluginShowAds = function(InfoID, DataID, VideoID, showAt, showDuration,animate){
-    //info
-    console.info (" an Overlay is added @ ",showAt," sec for ",showDuration," sec.");
-    var video= document.getElementById(VideoID);
-    video.addEventListener('progress', 
-      function() {      
-      if( ( video.currentTime > showAt ) && ( video.currentTime < (showAt+1) ) ) {      
-        StartAds();
-        return ;
-      }
-    }, false);  
   
-    function upInfo(){  
-    console.log("updating @@@ ", showDuration);   
-      if ( showDuration > 0 ) {
-        $scope.AdsInfo = $sce.trustAsHtml( 'you ads will end in '+showDuration+' sec');
-        showDuration --;        
-      }else{ return; }  
-    }
+      console.info (" an Overlay is added @ ",showAt," sec for ",showDuration," sec.");
+      var video= document.getElementById(VideoID);
+      video.addEventListener('progress', 
+        function() {      
+        if( ( video.currentTime > showAt ) && ( video.currentTime < (showAt+1) ) ) {      
+          StartAds();
+          return ;
+        }
+      }, false);  
+  
+      function upInfo(){  
+      console.log("updating @@@ ", showDuration);   
+        if ( showDuration > 0 ) {
+          $scope.AdsInfo = $sce.trustAsHtml( 'you ads will end in '+showDuration+' sec');
+          showDuration --;        
+        }else{ return; }  
+      }
 
-    function StartAds() {
-      var secTimeout = showDuration  *1000;     
-      var refreshId = null;
-      // show ads
-      $scope.isAdsDataHidden = false ;
-      $scope.isAdsInfoHidden = false ;
-       $scope.AdsInfo =$sce.trustAsHtml( 'you ads will end in '+showDuration+' sec');
-      // hide ads after timeout
-      if ( animate == true )
-        refreshId = $interval( upInfo ,1000);
-      //timeout
-      $timeout(function(){
-        console.log("Ending @@@ ", showDuration);
-        $scope.isAdsDataHidden = true ;
-        $scope.isAdsInfoHidden = true ;
+      function StartAds() {
+        var secTimeout = showDuration  *1000;     
+        var refreshId = null;
+        // show ads
+        $scope.isAdsDataHidden = false ;
+        $scope.isAdsInfoHidden = false ;
+         $scope.AdsInfo =$sce.trustAsHtml( 'you ads will end in '+showDuration+' sec');
+        // hide ads after timeout
         if ( animate == true )
-          $interval.cancel (refreshId);
-      },secTimeout);
-    }
-  };
+          refreshId = $interval( upInfo ,1000);
+        //timeout
+        $timeout(function(){
+          console.log("Ending @@@ ", showDuration);
+          $scope.isAdsDataHidden = true ;
+          $scope.isAdsInfoHidden = true ;
+          if ( animate == true )
+            $interval.cancel (refreshId);
+        },secTimeout);
+      }
+    };
     $scope.goPrevPlaylist  = function () {
     };
 
@@ -437,8 +448,6 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     };
 
     //Manage mouse ; to hide when idle : 
-    $scope.idleMouseTimer;          
-    $scope.isCursorHidden = false ;
     $scope.goManageMouseActivity  = function($event){
       //console.log(">>  Managing mouse move ");
       //console.log(">> show cursor ");      
@@ -486,5 +495,20 @@ run(function() { // instance-injector
   // You can have as many of these as you want.
   // You can only inject instances (not Providers)
   // into run blocks
+}).
+directive('fjPlayerjs',function( ) {
+  return {
+    restrict: 'E',
+    scope: {
+      fjplayerdesc: '@'
+    },
+    templateUrl: 'fjplayer-template.html',
+    controller: 'fjplayerCtrl'  ,  
+    link: function(scope, iElement, iAttrs) {
+    console.info(" ATTR >>>>", iAttrs.fjplayerdesc);
+    scope.Initialize();
+    console.info("Starting !!!");
+    }
+  }
 });
 
