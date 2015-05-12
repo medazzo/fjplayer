@@ -14,9 +14,24 @@ body {
     font-size:0.85em;
 }
 
+/* ---------------------- Back Button  style ------------------- */
+.backButtonBlock {	
+  position: absolute; 
+  border: 1px;
+  top: 50px; 
+  left: 20px;    
+  opacity: 1;
+  color: #8F9B9E;
+  text-align: center;
+  border-radius: 50%;	
+  text-align: center;    
+  background:rgba(20, 20, 20, 1);
+  z-index: 2147483647;
+  cursor: pointer;
+}
+
 /* ---------------------- ADS style ------------------- */
-.adInfoBlock {  
-  display: none; 		
+.adInfoBlock {  		
   position: absolute;   
   color: red;
   top: 10px;
@@ -28,7 +43,6 @@ body {
   z-index: 2147483647;
 }
 .adDataBlock {
-  display: none; 
   position: absolute; 
   border: 1px;
   top: 100px; 
@@ -42,7 +56,13 @@ body {
   padding: 50px 0;
   z-index: 2147483647;
 }
-
+.ad-hiding-transition  {
+	-webkit-transition: opacity 0.4s  ease-in-out;
+   	-moz-transition: opacity 0.4s  ease-in-out;
+	-ms-transition: opacity 0.4s  ease-in-out;
+ 	-o-transition: opacity 0.4s  ease-in-out;
+	transition: opacity 0.4s  ease-in-out;	
+}
 /* -------------------  CC SUBTITLES --------------------- */
 .subtitles-menu-item-actif {
 	cursor: pointer;
@@ -123,27 +143,25 @@ body {
 	height: 100%; 
 	overflow: hidden; 
 }
-.fjcontrols-panel-hover-transition {
-	-webkit-transition: opacity 0.4s  ease-in-out;
-   	-moz-transition: opacity 0.4s  ease-in-out;
-	-ms-transition: opacity 0.4s  ease-in-out;
- 	-o-transition: opacity 0.4s  ease-in-out;
-	transition: opacity 0.4s  ease-in-out;
+.fjcontrols-hiding-transition  {
+	-webkit-transition:  0.4s  ease-in-out;
+   	-moz-transition:  0.4s  ease-in-out;
+	-ms-transition:  0.4s  ease-in-out;
+ 	-o-transition:  0.4s  ease-in-out;
+	transition:  0.4s  ease-in-out;
+	opacity: 0 !important ;
 }
 .fjcontrols-panel {
 	z-index: 2147483647;
 	position: absolute; 		
 	border-radius: 5px;
 	bottom: 2%;
-	opacity: 0;
+	opacity: 1;
 	background:rgba(20, 20, 20, 1);
 	width: 60%;
 	margin-left: 20%;
 	display: relative;
 	float: left;
-}
-.fjplayer:hover .fjcontrols-panel {
-	opacity: 1;	
 }
 .fjcontrols-panel-controls {
 	width: 100%;

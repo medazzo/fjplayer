@@ -30,8 +30,8 @@
 		]);
 	</script>
 </head>
-<body  ng-app='fjplayerdemo'  ng-class="{true:'cursorHidden', false: 'cursorShowing'}[isCursorHidden]">
-<div id="fjplayerWrapper" ng-controller='fjplayerCtrl'>
+<body  ng-app='fjplayerdemo'  ng-controller='fjplayerCtrl'>
+<div id="fjplayerWrapper"  ng-class="{'cursorHidden':isCursorHidden}">
 	<div class="loading" ng-hide='videoReady'>
 		<span > Forja Player Loading ....</span>
 	</div>
@@ -44,7 +44,7 @@
 			<track src="thumbs.vtt" kind="metadata" default >		 
 		</video>
 
-		<div  id="MainControlPanel" class="fjcontrols-panel " ng-class="{true:'fjcontrols-panel-hover-transition', false: ''}[isPlaying]">
+		<div  id="MainControlPanel" class="fjcontrols-panel " ng-class="{'fjcontrols-hiding-transition ':isCursorHidden}" >
 			<div class=" fjcontrols-panel-controls" ng-hide='showingVolumeBar'>
 				<div id="hprogressbar" 
 							ng-click="goSeek($event)"
@@ -129,10 +129,18 @@
 			<span class="thumbsBlock"  id="thumb" ></span>	
 			<span class="thumbsBlockTime"  id="current" >{{thumbTime | duration}}</span>
 		</div>
-	
+		<!-- BACK Btn -->
+		<div class="backButtonBlock" ng-class="{'fjcontrols-hiding-transition ':isCursorHidden}" ng-clivk="goBackHistory()">
+			<i class="glyphicon btn-lg glyphicon-arrow-left"></i>
+		</div>
+		
 		<!-- ADS -->
-		 <div id="ad_data" class="adDataBlock" ng-show='isAdsDataHidden'>{{ AdsData }}</div>  
-		 <div id="ad_info" class="adInfoBlock" ng-show='isAdsInfoHidden'>{{ AdsInfo }}</div>
+		 <div id="ad_data" class="adDataBlock ad-hiding-transition" ng-hide='isAdsDataHidden'>
+		 	<p ng-bind-html="AdsData"></p>
+		 </div>  
+		 <div id="ad_info" class="adInfoBlock" ng-hide='isAdsInfoHidden'>
+		 	<p ng-bind-html="AdsInfo"></p>
+	 	</div>
 
 	</div>
 </div>	

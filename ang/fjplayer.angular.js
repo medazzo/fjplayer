@@ -28,8 +28,8 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
 
     $scope.movieTile  = "My titre de films ";
 
-    $scope.isAdsDataHidden = false ;
-    $scope.isAdsInfoHidden = false ;
+    $scope.isAdsDataHidden = true ;
+    $scope.isAdsInfoHidden = true ;
 
     $scope.thumbTime  = 0;
     $scope.tracksArray  = {"subs":[],"audio":[]};
@@ -39,7 +39,9 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     $scope.movieBuffered = 0;
     $scope.volume = 0;
 
-    $scope.AdsData ="";
+    $scope.AdsData =$sce.trustAsHtml( '<div onclick="location.href="http://www.google.co.ma";" style="cursor:pointer;">'+
+                      '<img src="2000px-Smiley.svg.png" alt="Smiley face" width="42" height="42">'+
+                      'Your ADS is Here; clikc to go to google !</div>' );
     $scope.AdsInfo ="";
 
     $scope.video =  document.getElementById('videoID');
@@ -99,6 +101,14 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
           }
         })
     }); 
+    $scope.video.addEventListener('pause', function () {
+      console.info('pause on video !!');
+      // TODO  ..      
+    });
+    $scope.video.addEventListener('play', function () {
+      console.info('play on video !!');
+      // TODO  ..      
+    });
     $scope.video.addEventListener('ended', function () {
       // TODO  ..      
     });
@@ -109,6 +119,12 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     $scope.video.addEventListener('waiting', function () {
       // TODO  ..      
     });
+
+    $scope.goBackHistory = function (){
+      history.back();
+      $scope.apply();
+     };
+
     $scope.goPlay  = function () {
       if( $scope.isPlaying === true )
       {
@@ -137,7 +153,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     function upInfo(){  
     console.log("updating @@@ ", showDuration);   
       if ( showDuration > 0 ) {
-        $(InfoID).html('you ads will end in '+showDuration+' sec');
+        $scope.AdsInfo = $sce.trustAsHtml( 'you ads will end in '+showDuration+' sec');
         showDuration --;        
       }else{ return; }  
     }
@@ -146,19 +162,19 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
       var secTimeout = showDuration  *1000;     
       var refreshId = null;
       // show ads
-      $(DataID).show();
-      $(InfoID).show();
-      $(InfoID).html('you ads will end in '+showDuration+' sec');
+      $scope.isAdsDataHidden = false ;
+      $scope.isAdsInfoHidden = false ;
+       $scope.AdsInfo =$sce.trustAsHtml( 'you ads will end in '+showDuration+' sec');
       // hide ads after timeout
       if ( animate == true )
-        refreshId = setInterval( upInfo ,1000);
+        refreshId = $interval( upInfo ,1000);
       //timeout
-      setTimeout(function(){
+      $timeout(function(){
         console.log("Ending @@@ ", showDuration);
-        $(DataID).fadeOut('slow');
-        $(InfoID).fadeOut('slow');
+        $scope.isAdsDataHidden = true ;
+        $scope.isAdsInfoHidden = true ;
         if ( animate == true )
-          clearInterval (refreshId);
+          $interval.cancel (refreshId);
       },secTimeout);
     }
   };
@@ -262,8 +278,8 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
 
       //set Ads
         // show ADS
-      OverlayPluginShowAds('#ad_info','#ad_data','videoID',15,5, false );
-      OverlayPluginShowAds('#ad_info','#ad_data','videoID',5,5, true );
+      OverlayPluginShowAds('#ad_info','#ad_data','videoID',15,50, true );
+      OverlayPluginShowAds('#ad_info','#ad_data','videoID',5,5, false );
     };
 
     // Thumbs WebVtt Plugin Function
@@ -424,18 +440,18 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     $scope.idleMouseTimer;          
     $scope.isCursorHidden = false ;
     $scope.goManageMouseActivity  = function($event){
-      console.log(">>  Managing mouse move ");
-      console.log(">> show cursor ");
+      //console.log(">>  Managing mouse move ");
+      //console.log(">> show cursor ");      
       $scope.isCursorHidden = false ;
       //angular.element('body').css('cursor', 'auto');      
-      console.log(">> cancel previous timeout");
+      //console.log(">> cancel previous timeout");
       $timeout.cancel($scope.idleMouseTimer);
-      console.log(">> trigger a new timeout to hide cursor after 3 sec  ");
+      //console.log(">> trigger a new timeout to hide cursor after 3 sec  ");
       $scope.idleMouseTimer = $timeout(function() {
         //angular.element('body').css('cursor', 'none');
         $scope.isCursorHidden = true ;
         console.log(">> hide cursor ");
-        }, 1000);      
+        }, 3000);      
     };
 
 }]).
