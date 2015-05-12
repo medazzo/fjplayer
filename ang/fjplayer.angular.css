@@ -110,6 +110,12 @@ body {
 	display: inline-block;
 }
 /* ---------------------- Fjplayer style ------------------- */
+.cursorHidden {
+	cursor: none !important ;
+}
+.cursorShowing {
+	cursor: auto !important ;
+}
 .fjplayer {
 	background: black;
 	position: absolute; 
@@ -136,7 +142,7 @@ body {
 	display: relative;
 	float: left;
 }
-.fjcontrols-panel:hover {
+.fjplayer:hover .fjcontrols-panel {
 	opacity: 1;	
 }
 .fjcontrols-panel-controls {

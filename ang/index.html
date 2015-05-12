@@ -30,12 +30,12 @@
 		]);
 	</script>
 </head>
-<body ng-app='fjplayerdemo'>
+<body  ng-app='fjplayerdemo'  ng-class="{true:'cursorHidden', false: 'cursorShowing'}[isCursorHidden]">
 <div id="fjplayerWrapper" ng-controller='fjplayerCtrl'>
 	<div class="loading" ng-hide='videoReady'>
 		<span > Forja Player Loading ....</span>
 	</div>
-	<div ng-show='videoReady' class="fjplayer" >
+	<div ng-show='videoReady' class="fjplayer"  ng-mousemove="goManageMouseActivity($event)">
 		<video id='videoID' >
  			 <source src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4" type='video/mp4'>	 
 			<track label="English"  kind="subtitles" srclang="en" src="sintel-en.vtt" >

@@ -419,6 +419,25 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
       var menudiv = document.getElementById('settingMenuDiv');
       menudiv.style.visibility = 'hidden';
     };
+
+    //Manage mouse ; to hide when idle : 
+    $scope.idleMouseTimer;          
+    $scope.isCursorHidden = false ;
+    $scope.goManageMouseActivity  = function($event){
+      console.log(">>  Managing mouse move ");
+      console.log(">> show cursor ");
+      $scope.isCursorHidden = false ;
+      //angular.element('body').css('cursor', 'auto');      
+      console.log(">> cancel previous timeout");
+      $timeout.cancel($scope.idleMouseTimer);
+      console.log(">> trigger a new timeout to hide cursor after 3 sec  ");
+      $scope.idleMouseTimer = $timeout(function() {
+        //angular.element('body').css('cursor', 'none');
+        $scope.isCursorHidden = true ;
+        console.log(">> hide cursor ");
+        }, 1000);      
+    };
+
 }]).
 filter('duration', function() {
  return function(secDuration) {
