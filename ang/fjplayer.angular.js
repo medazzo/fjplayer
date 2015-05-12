@@ -164,6 +164,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             if( $scope.movieCTime == $scope.movieTTime ){
               console.debug(" END >", $scope.prgressPercentage);
               $scope.isPlaying  =  false;
+              $scope.video.play();
             }
           })
        };
@@ -272,8 +273,6 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
       }
     };
     $scope.goPrevPlaylist  = function () {
-      console.debug("Going Prev ");
-      
        //pause
         if( $scope.isPlaying === true )
         {
@@ -284,8 +283,10 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
       if( $scope.PlaylistCurrentIndex > 0 ) {
         $scope.PlaylistCurrentIndex -- ;
       }else  {
-        $scope.PlaylistCurrentIndex  = $scope.PlaylistItemsCount ;
+        $scope.PlaylistCurrentIndex  = ( $scope.PlaylistItemsCount - 1) ;
       }
+
+      console.debug("Going Prev ",$scope.PlaylistCurrentIndex , $scope.PlaylistItemsCount);
       $scope.StartConfPlayAt($scope.PlaylistCurrentIndex);
 
       //play
@@ -293,9 +294,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
       $scope.video.play();
     };
 
-    $scope.goNextPlaylist  = function () {
-      console.debug("Going Next ");
-      
+    $scope.goNextPlaylist  = function () {      
       //pause
         if( $scope.isPlaying === true )
         {
@@ -303,11 +302,12 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
           $scope.video.pause();
         }
       
-      if( $scope.PlaylistCurrentIndex < $scope.PlaylistItemsCount) {
+      if( $scope.PlaylistCurrentIndex < ( $scope.PlaylistItemsCount - 1) ) {
       $scope.PlaylistCurrentIndex ++ ;
       }else  {
         $scope.PlaylistCurrentIndex  = 0 ;
       }
+      console.debug("Going Next ",$scope.PlaylistCurrentIndex , $scope.PlaylistItemsCount);
       $scope.StartConfPlayAt($scope.PlaylistCurrentIndex);
 
       //play
