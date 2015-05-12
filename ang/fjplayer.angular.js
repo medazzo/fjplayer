@@ -4,57 +4,144 @@
 angular.module('fjplayer', []).
 controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeout' ,'$sce','$window',
             function ($scope,$filter,$interval,$document,$timeout,$sce,$window) {
-
-     $scope.fjplayerTag ="Fjplayer.js"         
-    //
+    //  globa player Metadata
+    $scope.fjplayerTag ="Fjplayer.js"         
+    $scope.isPlaylist = false ;
+    $scope.PlaylistItemsCount = 0 ;
+    $scope.PlaylistCurrentIndex = 0 ;
+    //  current playing Metadata
     $scope.videoReady = false ;
     $scope.showingVolumeBar = false ;
-    $scope.usingVolumeBar = false ;
-    $scope.isPlaylist = false ;
+    $scope.usingVolumeBar = false ;    
     $scope.isPlaying = false ;
     $scope.isFullScreen = false ;
     $scope.isFullScreenSupported = true ;
-
     $scope.isContainsSubs = false ;
     $scope.isContainsLangs = false ;
     $scope.isContainsThumbs = false ;
-
     $scope.VolLevelUp = true ;
     $scope.VolLevelDown = false ;
     $scope.VolLevelOff = false ;
-
     $scope.prgressPercentage = 0;
     $scope.volumePercentage = 80;
-
-    $scope.movieTile  = "My titre de films ";
-
+    $scope.movieTile  = "";
     $scope.isAdsDataHidden = true ;
     $scope.isAdsInfoHidden = true ;
-
     $scope.thumbTime  = 0;
     $scope.tracksArray  = {"subs":[],"audio":[]};
-    
     $scope.movieCTime = 0;
     $scope.movieTTime  = 0;
     $scope.movieBuffered = 0;
     $scope.volume = 0;
-
     $scope.idleMouseTimer;          
     $scope.isCursorHidden = false ;
-
-    $scope.AdsData =$sce.trustAsHtml( '<div onclick="location.href="http://www.google.co.ma";" style="cursor:pointer;">'+
-                      '<img src="2000px-Smiley.svg.png" alt="Smiley face" width="42" height="42">'+
-                      'Your ADS is Here; clikc to go to google !</div>' );
+    $scope.AdsData =""
     $scope.AdsInfo ="";
-
-    $scope.Initialize = function() {
-      // Init
-      $scope.video = document.getElementById('videoID');
+    
+    $scope.parseConfAndStart = function(conf){
+      // Init ui global 
       $scope.td    = document.getElementById('thumbDiv');
       $scope.t     = document.getElementById('thumb');      
       $scope.b     = document.getElementById('hprogressbar');
 
-      $scope.video.addEventListener('loadeddata', function() {
+      //get conf
+      $scope.configuration = angular.fromJson(conf);
+      //set globals 
+      if($scope.configuration.playlist)
+      {
+        if($scope.configuration.playlist.length < 1  ) // error 
+        {
+            console.error("BAD conf , no media found !");
+            confconsole.error(conf);
+        }
+        else if($scope.configuration.playlist.length > 1 ){
+          $scope.isPlaylist = true ;
+          $scope.PlaylistItemsCount = $scope.configuration.playlist.length;
+          $scope.PlaylistCurrentIndex = 0 ;
+          $scope.StartConfPlayAt($scope.PlaylistCurrentIndex);
+        }
+        else 
+          $scope.isPlaylist = false ;
+        $scope.PlaylistCurrentIndex = 0 ;
+          $scope.StartConfPlayAt($scope.PlaylistCurrentIndex);
+      }
+      else
+      {
+          console.error("BAD conf , no media found !");
+          confconsole.error(conf);
+      }
+      
+    };
+    $scope.StartConfPlayAt = function (index){   
+      console.debug('will play item at index   ',index); 
+      //set video the first one only : for the moment       
+      var wrapper = document.getElementById('videoWrapper');     
+      // clean old childs
+      while (wrapper.firstChild) {
+         wrapper.removeChild(wrapper.firstChild);
+      }   
+      //clean array 
+      $scope.tracksArray = {"subs":[],"audio":[]};  
+
+      //Create the new video 
+      var media = document.createElement('video');
+      media.preload = true;
+      wrapper.appendChild(media);  
+      $scope.video = media
+      //set cbx's
+      $scope.Initialize();
+      //add new child
+      if($scope.configuration.playlist[index].type === 'dash'){
+          console.debug('found a dash source ');
+          var context = new Dash.di.DashContext();
+          var player = new MediaPlayer(context);
+          player.startup();
+          player.attachView($scope.video);
+          player.attachSource($scope.configuration.playlist[index].src);
+      }else {
+          console.debug('found not a dash source ');
+          var source = document.createElement('source');
+          source.src = $scope.configuration.playlist[index].src;
+          source.type = $scope.configuration.playlist[index].type;
+          $scope.video.appendChild(source);  
+      }
+      //set  thumbs 
+      if($scope.configuration.playlist[index].thumbs ){
+         var track = document.createElement('track');
+         track.src = $scope.configuration.playlist[index].thumbs ;
+         track.kind  ='metadata' ;
+         $scope.video.appendChild(track); 
+      }
+      //set  subs 
+      if($scope.configuration.playlist[index].substitles ){
+        for (var i =0; i< $scope.configuration.playlist[index].substitles.length ;i++) 
+        {
+          var track = document.createElement('track');
+          track.kind='subtitles';
+          track.src = $scope.configuration.playlist[index].substitles[i].src ;
+          track.srclang = $scope.configuration.playlist[index].substitles[i].srclang ;
+          track.label = $scope.configuration.playlist[index].substitles[i].label ;
+          $scope.video.appendChild(track); 
+       }
+      }
+      //set tile 
+      $scope.movieTile = $scope.configuration.playlist[index].title ;
+      //set overlays  
+      if($scope.configuration.playlist[index].overlays ){
+        for (var i =0; i< $scope.configuration.playlist[index].overlays.length ;i++) 
+        {
+          OverlayPluginShowAds( $scope.configuration.playlist[index].overlays[i].data,
+                                $scope.configuration.playlist[index].overlays[i].showAt,
+                                $scope.configuration.playlist[index].overlays[i].duration,
+                                $scope.configuration.playlist[index].overlays[i].animate );
+       }
+      }
+      console.debug(">>>  wrapper is  ",wrapper ) ;
+    };
+    $scope.Initialize = function() {
+      console.debug(">>>  Initialize ing ") ;
+  
+      var cbxLoadedData = function() {
         $scope.$apply(function () {          
             $scope.movieTTime  = $scope.video.duration ;
             $scope.movieCTime  = $scope.video.currentTime ;
@@ -62,12 +149,12 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             $scope.setVolume( $scope.video.volume * 100 );          
             $scope.videoReady = true;          
             $scope.goPlay();
-            console.log("Video is loaded and can be played ; READY", $scope.videoReady,"volume ",$scope.volume);
+            console.debug("Video is loaded and can be played ; READY", $scope.videoReady,"volume ",$scope.volume);
             $scope.loadModuleMetadata();          
         })       
-      }, false);
-      $scope.video.addEventListener('timeupdate', function () {
-        $scope.$apply(function () {          
+      };
+      var cbxTimeUpdate = function() {
+         $scope.$apply(function () {          
             $scope.movieTTime  = $scope.video.duration ;
             $scope.movieCTime  = $scope.video.currentTime ;
             $scope.movieBuffered = $scope.video.buffered;
@@ -75,24 +162,28 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
 
             $scope.prgressPercentage = ($scope.movieCTime / $scope.movieTTime )*100;          
             if( $scope.movieCTime == $scope.movieTTime ){
-              console.log(" END >", $scope.prgressPercentage);
+              console.debug(" END >", $scope.prgressPercentage);
               $scope.isPlaying  =  false;
             }
           })
-      }); 
-      
+       };
+      $scope.video.addEventListener('loadeddata', cbxLoadedData , false);      
+      $scope.video.addEventListener('timeupdate', cbxTimeUpdate);       
       $scope.video.addEventListener('pause', function () {
-        console.info('pause on video !!');
+        console.debug('pause on video !!');
         // TODO  ..      
       });
       
       $scope.video.addEventListener('play', function () {
-        console.info('play on video !!');
+        console.debug('play on video !!');
         // TODO  ..      
       });
       
       $scope.video.addEventListener('ended', function () {
-        // TODO  ..      
+        //go next 
+        if ( $scope.isPlaylist ){
+          $scope.goNextPlaylist();
+        }
       });
       
       $scope.video.addEventListener('error', function () {
@@ -106,15 +197,6 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
 
     };
 
-/* only for dash
-    var url = "http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd ";
-    //http://dash.edgesuite.net/dash264/TestCases/1c/qualcomm/2/MultiRate.mpd";
-    var context = new Dash.di.DashContext();
-    var player = new MediaPlayer(context);
-    player.startup();
-    player.attachView(document.querySelector("#videoID"));
-    player.attachSource(url);
-*/
     $scope.setVolume = function(newVolumePercentage){
       $scope.video.volume =  (newVolumePercentage /100);
       $scope.volumePercentage = newVolumePercentage ;
@@ -133,7 +215,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
       }
     };
     $scope.goBackHistory = function (){
-      console.log("Doing back !!");
+      console.debug("Doing back !!");
       $window.history.back();
      };
     $scope.goPlay  = function () {
@@ -147,22 +229,22 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         $scope.video.play(); 
       }     
     };
-
-    //Overlay used for Ads or information Plugin Api ; ex OverlayPluginShowAds('ad_info','ad_data','videoID',5,10);
-    var OverlayPluginShowAds = function(InfoID, DataID, VideoID, showAt, showDuration,animate){
+    
+    var OverlayPluginShowAds = function(data, showAt, showDuration,animate){
   
-      console.info (" an Overlay is added @ ",showAt," sec for ",showDuration," sec.");
-      var video= document.getElementById(VideoID);
-      video.addEventListener('progress', 
+      $scope.AdsData = $sce.trustAsHtml( data );
+      console.debug (" an Overlay is added @ ",showAt," sec for ",showDuration," sec.");
+     
+      $scope.video.addEventListener('progress', 
         function() {      
-        if( ( video.currentTime > showAt ) && ( video.currentTime < (showAt+1) ) ) {      
+        if( ( $scope.video.currentTime > showAt ) && ( $scope.video.currentTime < (showAt+1) ) ) {      
           StartAds();
           return ;
         }
       }, false);  
   
       function upInfo(){  
-      console.log("updating @@@ ", showDuration);   
+      console.debug("updating @@@ ", showDuration);   
         if ( showDuration > 0 ) {
           $scope.AdsInfo = $sce.trustAsHtml( 'you ads will end in '+showDuration+' sec');
           showDuration --;        
@@ -181,7 +263,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
           refreshId = $interval( upInfo ,1000);
         //timeout
         $timeout(function(){
-          console.log("Ending @@@ ", showDuration);
+          console.debug("Ending @@@ ", showDuration);
           $scope.isAdsDataHidden = true ;
           $scope.isAdsInfoHidden = true ;
           if ( animate == true )
@@ -190,9 +272,48 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
       }
     };
     $scope.goPrevPlaylist  = function () {
+      console.debug("Going Prev ");
+      
+       //pause
+        if( $scope.isPlaying === true )
+        {
+          $scope.isPlaying  =  false;      
+          $scope.video.pause();
+        }
+
+      if( $scope.PlaylistCurrentIndex > 0 ) {
+        $scope.PlaylistCurrentIndex -- ;
+      }else  {
+        $scope.PlaylistCurrentIndex  = $scope.PlaylistItemsCount ;
+      }
+      $scope.StartConfPlayAt($scope.PlaylistCurrentIndex);
+
+      //play
+      $scope.isPlaying  =  true;      
+      $scope.video.play();
     };
 
     $scope.goNextPlaylist  = function () {
+      console.debug("Going Next ");
+      
+      //pause
+        if( $scope.isPlaying === true )
+        {
+          $scope.isPlaying  =  false;      
+          $scope.video.pause();
+        }
+      
+      if( $scope.PlaylistCurrentIndex < $scope.PlaylistItemsCount) {
+      $scope.PlaylistCurrentIndex ++ ;
+      }else  {
+        $scope.PlaylistCurrentIndex  = 0 ;
+      }
+      $scope.StartConfPlayAt($scope.PlaylistCurrentIndex);
+
+      //play
+      $scope.isPlaying  =  true;      
+      $scope.video.play();
+        
     };
 
     $scope.goFullScreen  = function () {
@@ -226,7 +347,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     $scope.goSeek = function ($event) {  
         var rect = $scope.b.getBoundingClientRect();
         var p = ($event.pageX - rect.left ) * (  $scope.video.duration / (rect.right - rect.left) );
-          
+        console.debug("seek to ", p , "sec ") ;
         //pause
         if( $scope.isPlaying === true )
         {
@@ -271,7 +392,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
           }
           else
           {
-            console.log ("unknown type of tracks ",$scope.video.textTracks[i].kind)
+            console.debug ("unknown type of tracks ",$scope.video.textTracks[i].kind)
           }
         } 
       }
@@ -283,14 +404,10 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
           $scope.isContainsLangs = true ;
           newObj = {"label" : $scope.video.audioTracks[i].language ,"index":i , "actif":true}; 
           $scope.tracksArray.audio.push(  newObj);
-          console.log(" > audio are ",$scope.audioArray);
+          console.debug(" > audio are ",$scope.audioArray);
         }
       }
 
-      //set Ads
-        // show ADS
-      OverlayPluginShowAds('#ad_info','#ad_data','videoID',15,50, true );
-      OverlayPluginShowAds('#ad_info','#ad_data','videoID',5,5, false );
     };
 
     // Thumbs WebVtt Plugin Function
@@ -314,7 +431,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         return ; 
       //update ui
       $scope.thumbTime = p;
-      //console.log(">>>>>>>>> CURRENT :", $scope.thumbTime ,">>>>>>>>> CURRENT :", p);
+      //console.debug(">>>>>>>>> CURRENT :", $scope.thumbTime ,">>>>>>>>> CURRENT :", p);
       // ..then we find the matching cue..
       var c = $scope.video.textTracks[$scope.indexThumbsTrack].cues;
       if( c == null) //track eleme,t is not supprted : Firefox 
@@ -325,13 +442,13 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             break;
         };
       }
-      //console.info( $scope.b.offsetTop,"found cue @ ",i," >>",c[i] ); 
+      //console.debug( $scope.b.offsetTop,"found cue @ ",i," >>",c[i] ); 
       // ..next we unravel the JPG url and fragment query..
       var url =c[i].text.split('#')[0];
       var xywh = c[i].text.substr(c[i].text.indexOf("=")+1).split(',');
 
       // ..and last we style the thumbnail overlay
-      //console.info("$scope.b.offsetTop >>",$scope.b.offsetTop, "$scope.b.offsetBottom ",$scope.b.offsetBottom ," and is ",xywh);
+      //console.debug("$scope.b.offsetTop >>",$scope.b.offsetTop, "$scope.b.offsetBottom ",$scope.b.offsetBottom ," and is ",xywh);
       $scope.t.style.backgroundImage = 'url('+c[i].text.split('#')[0]+')';
       $scope.t.style.backgroundPosition = '-'+xywh[0]+'px -'+xywh[1]+'px';
       $scope.t.style.width = xywh[2]+'px';
@@ -342,7 +459,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
       $scope.td.style.width = xywh[2]+'px';    
       //$scope.td.style.height = xywh[3]+20;'px'; // not needed : managed by css
 
-      //console.info("Settled height ",xywh[3]+'px',"current rect ", $scope.t.getBoundingClientRect());
+      //console.debug("Settled height ",xywh[3]+'px',"current rect ", $scope.t.getBoundingClientRect());
     };
 
     //Volume
@@ -351,44 +468,44 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         if (  $scope.usingVolumeBar == false ) {
           $scope.showingVolumeBar = false ; 
         }
-        //console.log(">>> after setTimeout $scope.goShowProgressBar ",$scope.showingVolumeBar, $scope.usingVolumeBar);
+        //console.debug(">>> after setTimeout $scope.goShowProgressBar ",$scope.showingVolumeBar, $scope.usingVolumeBar);
       }, 1000);        
     };
     $scope.goShowVolumeBar = function (){
       var vb = document.getElementById('vprogressbar');
       vb.style.display = 'block' ;
       $scope.showingVolumeBar = true ;
-      //console.log(">>> $scope.showingVolumeBar ",$scope.showingVolumeBar);
+      //console.debug(">>> $scope.showingVolumeBar ",$scope.showingVolumeBar);
     };
     $scope.goUseVolumeBar = function(){
       $scope.usingVolumeBar = true ;
-      //console.log(">>> $scope.goUseVolumeBar ",$scope.usingVolumeBar);
+      //console.debug(">>> $scope.goUseVolumeBar ",$scope.usingVolumeBar);
     }
     $scope.goHideVolumeBar = function(){
       $scope.usingVolumeBar = false ;
       $scope.showingVolumeBar = false ; 
-      //console.log(">>> $scope.goHideVolumeBar ",$scope.showingVolumeBar, $scope.usingVolumeBar);
+      //console.debug(">>> $scope.goHideVolumeBar ",$scope.showingVolumeBar, $scope.usingVolumeBar);
     }
     $scope.goMuteVolume = function () {
-      //console.log(">>> $scope.goMuteVolume ",$scope.showingVolumeBar);
+      //console.debug(">>> $scope.goMuteVolume ",$scope.showingVolumeBar);
         if($scope.volumePercentage == 0 )
           $scope.setVolume( 100 );          
         else
           $scope.setVolume( 0 );          
     };
     $scope.setVolumeProgressLevel = function($event){
-      //console.log(">>> $scope.setVolumeProgressLevel X,Y ",$event.pageX,$event.pageY);
+      //console.debug(">>> $scope.setVolumeProgressLevel X,Y ",$event.pageX,$event.pageY);
       var bv = document.getElementById('vprogressbar');
       var rect = bv.getBoundingClientRect();
-      //console.log(">>> $scope.setVolumeProgressLevel rect of progress ",rect);
+      //console.debug(">>> $scope.setVolumeProgressLevel rect of progress ",rect);
       var vp =(($event.pageX - rect.left) / rect.width) * 100 ;
-      //console.log(">>> Volume percentage ",vp);
+      //console.debug(">>> Volume percentage ",vp);
       $scope.setVolume (vp);
     };
 
     //subtitles and setting 
     $scope.goSettingMenu  = function () {            
-      console.info("arrays tracks ", $scope.tracksArray );
+      console.debug("arrays tracks ", $scope.tracksArray );
       var menudiv = document.getElementById('settingMenuDiv');
       // second call :to  hide 
       if(menudiv.style.visibility === 'visible')
@@ -401,15 +518,15 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
       menudiv.style.visibility = 'visible';
     };
     $scope.setSubs = function( index) {
-        console.log("Setting Subs to index ", index );
+        console.debug("Setting Subs to index ", index );
         //json array 
         for (var i=0; i< $scope.tracksArray.subs.length; i++) {
           if($scope.tracksArray.subs[i].index == index ){
-            console.log("actif to true index ", i  );
+            console.debug("actif to true index ", i  );
             $scope.tracksArray.subs[i].actif = true ;
           }
           else {
-            console.log("actif to false index ", i  );
+            console.debug("actif to false index ", i  );
             $scope.tracksArray.subs[i].actif = false ;
           }
         }
@@ -426,7 +543,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         menudiv.style.visibility = 'hidden';
     };
     $scope.setAudio = function( index) {
-      console.log("Setting Audio to index ", index );
+      console.debug("Setting Audio to index ", index );
       //json array 
       for (var i=0; i< $scope.tracksArray.audio.length; i++) {
         if($scope.tracksArray.audio[i].index == index )
@@ -449,17 +566,17 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
 
     //Manage mouse ; to hide when idle : 
     $scope.goManageMouseActivity  = function($event){
-      //console.log(">>  Managing mouse move ");
-      //console.log(">> show cursor ");      
+      //console.debug(">>  Managing mouse move ");
+      //console.debug(">> show cursor ");      
       $scope.isCursorHidden = false ;
       //angular.element('body').css('cursor', 'auto');      
-      //console.log(">> cancel previous timeout");
+      //console.debug(">> cancel previous timeout");
       $timeout.cancel($scope.idleMouseTimer);
-      //console.log(">> trigger a new timeout to hide cursor after 3 sec  ");
+      //console.debug(">> trigger a new timeout to hide cursor after 3 sec  ");
       $scope.idleMouseTimer = $timeout(function() {
         //angular.element('body').css('cursor', 'none');
         $scope.isCursorHidden = true ;
-        console.log(">> hide cursor ");
+        console.debug(">> hide cursor ");
         }, 3000);      
     };
 
@@ -484,18 +601,6 @@ filter('duration', function() {
       }    
   };
 }).
-config(function() { // provider-injector
-  // This is an example of config block.
-  // You can have as many of these as you want.
-  // You can only inject Providers (not instances)
-  // into config blocks.
-}).
-run(function() { // instance-injector
-  // This is an example of a run block.
-  // You can have as many of these as you want.
-  // You can only inject instances (not Providers)
-  // into run blocks
-}).
 directive('fjPlayerjs',function( ) {
   return {
     restrict: 'E',
@@ -504,10 +609,9 @@ directive('fjPlayerjs',function( ) {
     },
     templateUrl: 'fjplayer-template.html',
     controller: 'fjplayerCtrl'  ,  
-    link: function(scope, iElement, iAttrs) {
-    console.info(" ATTR >>>>", iAttrs.fjplayerdesc);
-    scope.Initialize();
-    console.info("Starting !!!");
+    link: function(scope, iElement, iAttrs) {    
+    scope.parseConfAndStart(iAttrs.fjplayerdesc);
+    console.debug("Starting !!!");
     }
   }
 });

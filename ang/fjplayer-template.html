@@ -3,13 +3,8 @@
 		<span > Forja Player Loading ....</span>
 	</div>
 	<div ng-show='videoReady' class="fjplayer"  ng-mousemove="goManageMouseActivity($event)">
-		<video id='videoID' >
- 			 <source src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4" type='video/mp4'>	 
-			<track label="English"  kind="subtitles" srclang="en" src="sintel-en.vtt" >
-			<track label="Deutsch"  kind="subtitles" srclang="de" src="sintel-de.vtt">
-			<track label="Español"  kind="subtitles" srclang="es" src="sintel-es.vtt">
-			<track src="thumbs.vtt" kind="metadata" default >		 
-		</video>
+		<div id='videoWrapper' >
+		</div>
 
 		<div  id="MainControlPanel" class="fjcontrols-panel " ng-class="{'fjcontrols-hiding-transition ':isCursorHidden}" >
 			<div class=" fjcontrols-panel-controls" ng-hide='showingVolumeBar'>
