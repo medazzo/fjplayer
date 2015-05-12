@@ -2,8 +2,8 @@
 'use strict';
 
 angular.module('fjplayer', []).
-controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeout' ,'$sce',
-            function ($scope,$filter,$interval,$document,$timeout,$sce) {
+controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeout' ,'$sce','$window',
+            function ($scope,$filter,$interval,$document,$timeout,$sce,$window) {
 
      $scope.fjplayerTag ="Fjplayer.js"         
     //
@@ -121,8 +121,8 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     });
 
     $scope.goBackHistory = function (){
-      history.back();
-      $scope.apply();
+      console.log("Doing back !!");
+      $window.history.back();
      };
 
     $scope.goPlay  = function () {
