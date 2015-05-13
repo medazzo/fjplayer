@@ -271,75 +271,69 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             this.td.style.width = xywh[2]+'px'; 
         }  
     };
-    $scope.fjOverlays = function( data, showAt, showDuration,animate){
-        this.adData = data ,
-        this.showAt = showAt ,
-        this.showDuration = showDuration ,
-        this.animate = animate ,
-        this.started = false,
-        this.finished = false , 
-        this.refreshId = null ,
-        this.exitId  = null,
-        this.finishId = null,
-        self = this ,
+    $scope.fjOverlays = function( _data, _showAt, _showDuration, _animate){
+        var adData = _data ,
+        showAt = _showAt ,
+        showDuration = _showDuration ,
+        animate = _animate ,
+        started = false,
+        finished = false , 
+        refreshId = null ,
+        handler = null,
 
-        this.onProgress=function(e) {
+        onTmUpdate=function(e) {
             $scope.$apply(function () {
-                if( ( $scope.video.currentTime > self.showAt ) && ( $scope.video.currentTime < (self.showAt+1) ) ) { 
-                    self.started  = true ; 
-                    self.StartAds();
+                if( (!started) && ( $scope.video.currentTime > showAt ) && ( $scope.video.currentTime < (showAt+1) ) ) { 
+                    started  = true ; 
+                    StartAds();
+                    // hide ads after timeout
+                    refreshId = $interval( upInfo ,1000);
+                    console.debug(">> refreshId",refreshId);
                     return ;
                 }
             });
         },
-        this.pause = function(){
-            if (this.finished == false && this.started == true){
-               $interval.cancel(this.refreshId);
-               $timeout.cancel(this.finishId );
-            }
-        },
-        this.resume = function(){
-            if (this.finished == false && this.started == true){
-                this.refreshId = $interval( this.upInfo ,1000);
-                this.finishId = $timeout( this.finish() ,secTimeout);
-            }
-        },
-        this.trigger = function(){
+        trigger = function(){
             $scope.isAdsDataHidden = true ;                 
             $scope.isAdsInfoHidden = true ;
-            $scope.video.addEventListener("progress", this.onProgress.bind(this));            
+            handler = onTmUpdate.bind($scope.video);            
+            $scope.video.addEventListener("timeupdate",handler,false);            
         },
-        this.finish = function(){ 
-            console.debug("Ending @@@ ", self.showDuration);
-            $scope.isAdsDataHidden = true ;
-            $scope.isAdsInfoHidden = true ;
-            self.finished  = true ;
-            if ( self.animate == true )
-                $interval.cancel (self.refreshId);        
+        upInfo = function(){             
+                if ( showDuration > 0 ) {
+                    $scope.AdsInfo = $sce.trustAsHtml( 'your ads will end in '+showDuration+' sec');
+                    showDuration --;        
+                }
+                else
+                {
+                    console.debug("Ending @@@ ", showDuration);
+                    $scope.isAdsDataHidden = true ;
+                    $scope.isAdsInfoHidden = true ;
+                    finished  = true ; 
+                    console.debug(" Finishing Overlay >> refreshId",refreshId);  
+                    //finish  
+                    $interval.cancel (refreshId);                     
+                    $scope.video.removeEventListener("timeupdate", handler,false);
+                }            
         },
-        this.upInfo = function(){  
-            console.debug("updating @@@ ", self.showDuration);   
-            if ( self.showDuration > 0 ) {
-                $scope.AdsInfo = $sce.trustAsHtml( 'your ads will end in '+self.showDuration+' sec');
-                self.showDuration --;        
-            }
-        },
-        this.StartAds = function() {
-            var secTimeout = self.showDuration  *1000;     
+        StartAds = function() {
+            var secTimeout = showDuration  *1000;   
+            $scope.AdsInfo =$sce.trustAsHtml( 'you ads will end in '+showDuration+' sec');         
             // show ads
-            if(self.data !== null){
+            if(adData != null){
+                console.debug('Data re not null ! ');
                 $scope.isAdsDataHidden = false ;
-                 $scope.AdsData = $sce.trustAsHtml( data );
+                $scope.AdsData = $sce.trustAsHtml( adData );
             }
-            if ( self.animate == true )
+            if ( animate == true ) {
+                console.debug('Animation is  Activated ! ');             
                 $scope.isAdsInfoHidden = false ;
-            $scope.AdsInfo =$sce.trustAsHtml( 'you ads will end in '+self.showDuration+' sec');
-            console.debug('you ads will end in '+self.showDuration+' sec');
-            // hide ads after timeout
-            self.refreshId = $interval( this.upInfo ,1000);
-            //timeout
-            self.finishId = $timeout( this.finish() ,self.secTimeout);
-        }        
+                
+            }
+            console.debug('you ads will end in '+showDuration+' sec', $scope.isAdsInfoHidden,"<<>>",$scope.isAdsInfoHidden);            
+        };
+        console.debug("fjOverlays : overlay triggred to start @ ",showAt, " for ",showDuration, "sec ");
+        trigger();        
     };
     $scope.fjVideo= function(mediaConf){	
 		this.media = mediaConf,
@@ -455,8 +449,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             //check : if Ads ; sow bar info with countdown
             if(this.media.class == "ads"){
                 console.debug("setTracks : Setting overlays  class > ADS ");            
-                $scope.overlays[0] = new $scope.fjOverlays( null ,0,$scope.movieTTime,true );   
-                $scope.overlays[0].trigger();
+                $scope.overlays[0] = new $scope.fjOverlays( null ,0,$scope.movieTTime,true );                   
             }
             else 
             {
@@ -464,12 +457,10 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
                 {   console.debug("setTracks : Setting overlays  class > Movie ",this.media.overlays.length);            
                     for (i =0; i< this.media.overlays.length ;i++) 
                     {
-                        $scope.overlays[i] = $scope.fjOverlays( this.media.overlays[i].data,
+                        $scope.overlays[i] = new $scope.fjOverlays( this.media.overlays[i].data,
                                                 this.media.overlays[i].showAt,
                                                 this.media.overlays[i].duration,
-                                                this.media.overlays[i].animate );
-                        $scope.overlays[i].trigger();
-
+                                                this.media.overlays[i].animate );                        
                     }
                 }
             }           
@@ -590,6 +581,9 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         //clean Manager :fjthumb, setting menu
         delete $scope.settingMenuMgr;
         delete $scope.thumbMgr;
+        delete $scope.overlays ;
+         $scope.overlays = new Array();
+
         //reset tags 
         $scope.isContainsSubs = false ;
         $scope.isContainsLangs = false ;
