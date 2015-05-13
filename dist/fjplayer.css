@@ -1,11 +1,37 @@
+/* spinner and animation */
 body {
-	font-size: 62.5%;
-	padding: 0;
-	margin: 0;
+		background: black;
 }
+.loading {
+	width:270px;
+	height:200px;
+	position:absolute;
+	left:50%;
+	top:50%;
+	margin:-75px 0 0 -135px;
+	background: black;
+    color: white;
+    font-size:0.85em;
+}
+
+/* ---------------------- Back Button  style ------------------- */
+.backButtonBlock {	
+  position: absolute; 
+  border: 1px;
+  top: 50px; 
+  left: 20px;    
+  opacity: 1;
+  color: #8F9B9E;
+  text-align: center;
+  border-radius: 50%;	
+  text-align: center;    
+  background:rgba(20, 20, 20, 1);
+  z-index: 2147483647;
+  cursor: pointer;
+}
+
 /* ---------------------- ADS style ------------------- */
-.adInfoBlock {  
-  display: none; 		
+.adInfoBlock {  		
   position: absolute;   
   color: red;
   top: 10px;
@@ -17,7 +43,6 @@ body {
   z-index: 2147483647;
 }
 .adDataBlock {
-  display: none; 
   position: absolute; 
   border: 1px;
   top: 100px; 
@@ -31,328 +56,195 @@ body {
   padding: 50px 0;
   z-index: 2147483647;
 }
-/* ---------------------- ADS style ------------------- */
-.player {
-	background: rgba(42,42,42,0.75);
-	box-sizing: border-box;
-	border-radius: 5px;
-	height: 70%;
-	-moz-box-sizing: border-box;
-	float: left;
-	font-family: Arial, sans-serif;
+.ad-hiding-transition  {
+	-webkit-transition: opacity 0.4s  ease-in-out;
+   	-moz-transition: opacity 0.4s  ease-in-out;
+	-ms-transition: opacity 0.4s  ease-in-out;
+ 	-o-transition: opacity 0.4s  ease-in-out;
+	transition: opacity 0.4s  ease-in-out;	
+}
+/* -------------------  CC SUBTITLES --------------------- */
+.subtitles-menu-item-actif {
+	cursor: pointer;
+	text-align:left;
+	border-radius:2px;
+	opacity:0.5;
+}
+.subtitles-menu-item {
+	cursor: pointer;
+	text-align:left;
+	border-radius:2px;
+	opacity:1;
+}
+/* ---------------------- Menu style --------------------- */
+.settingMenuDiv{
 	position: absolute;
-	padding: 0;
-	bottom: 2%;
-	height: 4%;
-	z-index: 2;
-	opacity: 1;
-	box-shadow: 0 0 10px rgba(0,0,0,0.3);
-	-webkit-transition: opacity 0.3s ease-in;
-	transition: opacity 0.3s ease-in;
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	user-select: none;
+	color: #8F9B9E;
+	background:rgba(20, 20, 20, 1);
+	float: left;
+	font-size: 1em;
+	visibility: hidden;	
+	padding: 5px;	
+	border-radius: 5px; 	
+	z-index: 2147483647;	
+}
+.settingMenuSubMenuLeft {
+    float: left;
+    width: 100%;
+    color: #8F9B9E;
+	border-right:1px solid #2A2A2A; 
+    padding-right: 5px;
+    padding-left: 5px;
+}
+.settingMenuSubMenuRight {
+    float: left;
+    color: #8F9B9E;
+    width: 100%;
+	border-left:1px solid #2A2A2A;  
+    padding-left: 5px;
+    padding-right: 5px;
+}
+/* ---------------------- Thumbs style --------------------- */
+.thumbsBlockDiv{
+	position: absolute;
+	display: table;	
+	visibility: hidden;	
+	background:rgba(20, 20, 20, 1);	
+	border-radius: 2px; 	
+	z-index: 2147483647;	
+}
+.thumbsBlock {
+	display: table-cell;
+	border-radius: 2px; 
+    vertical-align: top;	
+	display: inline-block;
 }
 
+.thumbsBlockTime {
+	display: table-cell;
+    vertical-align: top;	
+	float: left;
+	color: white;
+	margin-left: 40%;
+	font-size: 1em;
+	display: inline-block;
+}
+/* ---------------------- Fjplayer style ------------------- */
+.cursorHidden {
+	cursor: none !important ;
+}
+.cursorShowing {
+	cursor: auto !important ;
+}
+.fjplayer {
+	background: black;
+	position: absolute; 
+	width: 100%; 
+	height: 100%; 
+	overflow: hidden; 
+}
+.fjcontrols-hiding-transition  {
+	-webkit-transition:  0.4s  ease-in-out;
+   	-moz-transition:  0.4s  ease-in-out;
+	-ms-transition:  0.4s  ease-in-out;
+ 	-o-transition:  0.4s  ease-in-out;
+	transition:  0.4s  ease-in-out;
+	opacity: 0 !important ;
+}
+.fjcontrols-panel {
+	z-index: 2147483647;
+	position: absolute; 		
+	border-radius: 5px;
+	bottom: 2%;
+	opacity: 1;
+	background:rgba(20, 20, 20, 1);
+	width: 80%;
+	margin-left: 10%;
+	display: relative;
+	float: left;
+}
+.fjcontrols-panel-controls {
+	width: 100%;
+	position:relative;
+	cursor: pointer;
+}
+.fjcontrols-control {
+	color: #8F9B9E;
+	position:relative;
+	cursor: pointer;	
+	float: left;	
+	height: 100%;
+	border-right:1px solid #2A2A2A;
+}
+.fjcontrols-control-right {
+	float: right;		
+	border-left:1px solid #2A2A2A;
+	border-right:none;
+}
+.fjcontrols-control-text{
+	font-size: 1.5em;
+	cursor:auto;
+	margin-top: 1%;
+	padding-left: 1%;
+	padding-right: 1%;
+	border-left:none;
+	border-right:none;
+}
+.fjcontrols-control-text-small{
+	font-size: 1em;
+	line-height: 2;
+}
+#hprogressbar {	
+	width: 80%;
+	background-color: #8F9B9E;  
+	border-radius: 5px; /* (height of inner div) / 2 + padding */
+	padding: 1px;
+	margin-left: 10%;
+	margin-right: 10%;
+	margin-top: 1%;
+	margin-bottom: 1%;
+	cursor: auto;
+}
+#hprogressbar > div {
+   background-color:  #FF1515;
+   width: 40%; /* Adjust with JavaScript */
+   height: 10px;
+   border-radius: 5px;
+}
+#vprogressbar {		
+	display: none;
+	width: 15%;
+	background-color: #8F9B9E; 
+	border-radius: 5px; /* (height of inner div) / 2 + padding */
+	padding: 1px;
+	margin-left: 80%;
+	margin-right: 5%;
+	margin-top: 1%;
+	margin-bottom: 1%;
+	cursor: auto;
+}
+#vprogressbar > div {	
+   background-color:  #FF1515;
+   width: 80%; /* Adjust with JavaScript */
+   height: 10px;
+   border-radius: 5px;
+}
+hr {
+	margin-top: 5px;
+	margin-bottom: -1px;
+	border-right: 0px none;
+	border-width: 1px 0px 0px;
+	border-style: solid none none;
+	opacity:0.75;
+	border-color: #2A2A2A -moz-use-text-color -moz-use-text-color;
+}
 video {
 	position: absolute; 
 	width: 100%; 
 	height: 100%; 
 	overflow: hidden; 
-
 }
-.fjvideo {
-	/*background: #676767;*/
-	background: #000000;
-	position: absolute; 
-	position: fixed; 
-	right: 0; 
-	bottom: 0;
-	min-width: 100%;
-	min-height: 100%;
-	width: auto;
-	height: auto;	
-}
-
-.fjvideo:hover .player {
-	opacity: 1;
-}
-/* -------------------  COMMON --------------------- */
-.player .controls  {
-	position:relative;
-	cursor: pointer;
-	float: left;	
-	height: 100%;
-} 
-.player .controls:before   {
-    display: block;
-    position: relative;
-    font-family: FontAwesome;
-    top: 20%;    
-    font-size: 20px;
-    color: rgba(231, 228, 228, 0.9);
-}
-.player .time  {
-	position:relative;
-	float: left;	
-	height: 100%;
-	width: 6%;
-	display: block;
-	font-size: 1.3em;
-    top: 20%;    
-    color: #33b5d5;
-} 
-.player .hprogress {
-	border-radius: 5px;
-	background: #676767;
-	box-shadow: inset 0 -5px 10px rgba(0,0,0,0.1);
-	font-variant: normal;
-	margin: 2% 0 0 0;	
-}
-.player .hprogress:before   {
-    display: block;
-    position: relative;
-    top: 20%;    
- }
-
-.player .hprogress-bar {
-	background: #33b5d5;
-	box-shadow: inset -30px 0px 69px -20px #89f6f5;
-	border-radius: 5px;
-	height: 100%;
-	position: relative;
-	z-index: 999;
-	width: 0;
-}
-.player .vprogress {
-	background:  #676767;
-	width: 5px;
-	box-shadow: inset 0px 0px 5px rgba(0,0,0,0.3);
-	margin: 5px auto;
-	height: 90px;
-	border-radius: 5px;
-	position: relative;
-	cursor: pointer;
-}
-.player .vprogress:before   {
-    display: block;
-    position: relative;
-    width: 20%;    
- }
-.player .vprogress-bar {
-	background: #33b5d5;
-	box-shadow: inset -30px 0px 69px -20px #89f6f5;
-	border-radius: 5px;
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	bottom: 0;
-}
-/* */
-#thumb span   {	
-	padding: 0 1% 0 1%;
-}
-
-/* -------------------  CC SUBTITLES --------------------- */
-.subtitles-menu li button[data-state="active"] {
-	opacity:0.5;
-}
-.subtitles-menu {
-	display:none;
-	position:absolute;
-	bottom:8%;
-	right:13%;	
-	list-style-type:none;
-	margin:0;
-	padding:0;
-	width:100px;
-	padding:10px;
-}
-.subtitles-menu li {
-	padding:1px 1px 1px 1px 
-	text-align:center;
-}
-.subtitles-menu li button {
-	background: rgba(42,42,42,0.75);
-	color:#33b5d5;
-	cursor:pointer;
-	width:90%;	
-	-moz-border-radius:2px;
-	-webkit-border-radius:2px;
-	border-radius:2px;
-}
-.player .closedcaption  { 
-	padding: 0 0 0 0;		
-}
-.player .closedcaption:before {
-	width: 5%;
-    content: "\f013";
-}
-/* -------------------   FULL SCREEN --------------------- */
-.player .goCancel-fullscreen {
-	position: relative;
-	float: left;
-	width: 3%;
-	height: 100%;	
-}
-
-.player .go-fullscreen  {	
-	padding: 0 1% 0 1%;
-}
-.player .go-fullscreen:before {
-	width: 5%;
-    content: "\f0b2";
-}
-
-.player .cancel-fullscreen  {	
-	padding: 0 1% 0 1%;
-}
-.player .cancel-fullscreen:before {
-	width: 5%;
-    content: "\f096";
-}
-/* -------------------  PAUSE PLAY --------------------- */
-.player .play-pause {
-	position: relative;
-	float: left;
-	width: 3%;
-	height: 100%;	
-}
-.player .play  {
-padding: 0 2% 0 3%;	
-}
-.player .play:before {
-    content: "\f04b";
-}
-.player .pause  {
-padding: 0 2% 0 3%;	
-}
-.player .pause:before {
-    content: "\f04c";
-}
-.player .play, .player .pause {
-	-webkit-transition: all 0.2s ease-out;
-}
-.player .play:hover {
-	text-shadow: 0 0 5px #fff;
-}
-.player .play:active, .pause:active span {
-	text-shadow: 0 0 7px #fff;
-}
-.player .pause:hover span {
-	box-shadow: 0 0 5px #fff;
-}
- .player .pause:active span {
-	box-shadow: 0 0 7px #fff;
-}
-/* -------------------  TIME --------------------- */
-.player .ttime  {   
-	float: right; 	
-}
-.player .ctime  { 		
-}
-/* -------------------  PROGRESS --------------------- */
-.player .progress {
-	width: 65%;
-	height: 20%;
-	top:-8%;
-}
-.player .progress-bar {
-}
-.player [class^="buffered"] {
-	background: rgba(255,255,255,0.1);
-	position: absolute;
-	top: 0;
-	left: 30px;
-	height: 100%;
-	border-radius: 5px;
-	z-index: 1;
-}
-/* -------------------  VOLUME --------------------- */
-.player .volume-up  {
-	padding: 0 0 0 2%;	
-}
-.player .volume-up:before {
-    content: "\f028";
-}
-.player .volume-down  {
-	padding: 0 0 0 2%;	
-}
-.player .volume-down:before {
-    content: "\f027";
-}
-.player .volume-off {
-	padding: 0 0 0 2%;	
-}
-.player .volume-off:before {
-    content: "\f026";
-}
-.player .volume {
-	padding: 0 0 0 1%;
-	position: relative;
-	float: left;
-	width: 4%;
-	height: 100%;	
-}
-.player .volume-icon {
-	padding: 0 0 0 20%;	
-}
-.player .volume-holder {
-	display: none; /* only in the start*/
-	width: 10%;
-	position: absolute;
-	left: 50%;
-	top: -100px;
-}
-.player .volume-bar-holder {
-}
-.player .volume-bar {
-}
-
-/*-------------------- Thumb Plugin ----------------------------------*/
-#thumb {
-  display: block;
-  position: relative;
-  visibility: hidden;
-  background-color: #000;
-  box-shadow: 0 0 5px rgba(0,0,0,0.5);
-}
-/*-------------------- fullscreen ------------------------------------*/
-
 /* hide controls panel on fullscreen with WebKit */
-
-video::--webkit-media-controls-overlay-enclosure {
-	bottom: 6% !important ;
-}
 video::-webkit-media-controls-panel {
   display:none !important;
 }
-
-html:-ms-fullscreen {
-	width:100%;
-}
-
-:-webkit-full-screen {
-	background-color:transparent;
-}
-:-webkit-full-screen + .player  {
-	position:absolute;
-	bottom:2%;
-	width:100%;	
-	z-index:2147483647;  	
-}
-:-moz-full-screen  + .player  {	
-	z-index:2147483647;  		
-}
-:-webkit-full-screen + .player .controls:before   {
-    top: 20%;    
-    font-size: 40px;
-}
-:-webkit-full-screen + .player .hprogress { 
-	width: 10px;
-}
-:-webkit-full-screen +.player .time  {	
-	font-size: 2.4em;
-} 
-
-

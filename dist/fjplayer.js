@@ -1,782 +1,703 @@
 
-(function($) {
+'use strict';
 
-	//subtitles Menu MgtPlugin Function
-	var SubsMgrPluginStart = function(VidID,CCBtnID,videoContainerID) {
-		//vars		
-		var v = document.querySelector(VidID);
-		var videoContainer = document.querySelector(videoContainerID);
-		var subtitles = document.querySelector(CCBtnID);
-		var subsExist = false ;
-		console.info("Dump Var subtitles ", subtitles);
-		//hide all subs 
-		for (var i = 0; i < v.textTracks.length; i++) {
-		   	if ( v.textTracks[i].kind == 'subtitles' ){
-		   		subsExist = true ;
-		   		v.textTracks[i].mode = 'hidden';
-		   		console.info("Hide subtitles Subs @ ",v.textTracks[i].kind ," for Lang " ,v.textTracks[i].language );
-		   	}
-		}	
+angular.module('fjplayer', []).
+controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeout' ,'$sce','$window',
+            function ($scope,$filter,$interval,$document,$timeout,$sce,$window) {
 
-		// Creates and returns a menu item for the subtitles language menu
-		var subtitleMenuButtons = [];
-		var createMenuItem = function(id, lang, label) {
-			var listItem = document.createElement('li');
-			var button = listItem.appendChild(document.createElement('button'));
-			button.setAttribute('id', id);
-			button.className = 'subtitles-button';
-			if (lang.length > 0) 
-				button.setAttribute('lang', lang);
-			button.value = label;
-			button.setAttribute('data-state', 'inactive');
-			button.appendChild(document.createTextNode(label));
-			button.addEventListener('click', function(e) {
-				// Set all buttons to inactive
-				subtitleMenuButtons.map(function(v, i, a) {
-					subtitleMenuButtons[i].setAttribute('data-state', 'inactive');
-				});
-				// Find the language to activate
-				var lang = this.getAttribute('lang');
-				console.info(" selected Lang is ", lang);
-				for (var i = 0; i < v.textTracks.length; i++) {
-					// For the 'subtitles-off' button, the first condition will never match so all will subtitles be turned off
-					if (v.textTracks[i].language == lang) {
-						v.textTracks[i].mode = 'showing';
-						this.setAttribute('data-state', 'active');
-						console.info(" selected lang found : setting to showing ");
-						break;
-					}
-					 else if(  v.textTracks[i].kind == 'subtitles' ){
-						v.textTracks[i].mode = 'hidden';
-					}					
-				}
-				console.info(" Done  !");
-				subtitlesMenu.style.display = 'none';
-			});
-			subtitleMenuButtons.push(button);
-			return listItem;
-		}
+    //Global
+    $scope.fjplayerTag ="Fjplayer.js"   
+    $scope.tdObj ;
+    $scope.tiObj ;
+    $scope.pbObj ;    
+    $scope.volObj ;
+    $scope.menuObj ;
+    $scope.playerItems ; 
+    $scope.settingBtn;
+    $scope.medias= new Array();
+    $scope.VolumeMgr;
+    $scope.settingMenuMgr;
+    $scope.thumbMgr;
+    $scope.overlays = new Array();
+    $scope.isPlaylist = false ;
+    $scope.PlaylistCurrentIndex = 0;
+    $scope.isFullScreen = false ;
+    $scope.isFullScreenSupported = true ;
 
-		// set Menu
-		var subtitlesMenu;
-		if ( (subsExist == true ) && ( v.textTracks ) ) {
-			var df = document.createDocumentFragment();
-			var subtitlesMenu = df.appendChild(document.createElement('ul'));
-			subtitlesMenu.className = 'subtitles-menu';
-			subtitlesMenu.appendChild(createMenuItem('subtitles-off', '', 'Off'));
-			for (var i = 0; i < v.textTracks.length; i++) {
-				if ( v.textTracks[i].kind == 'subtitles' ) {
-					subtitlesMenu.appendChild(createMenuItem('subtitles-' + v.textTracks[i].language,
-						 v.textTracks[i].language, v.textTracks[i].label));
-				}
-			}
-			videoContainer.appendChild(subtitlesMenu);
-		}
-		
-		subtitles.addEventListener('click', function(e) {
-			console.info("on click Event of CC");
-			if (subtitlesMenu) {				
-				var show = (subtitlesMenu.style.display == 'block' ? 'none' : 'block');				
-				subtitlesMenu.style.display = show;
-			}
-		});
-	}
+    //  current playing Metadata
+    $scope.videoReady = false ;
+    $scope.showingVolumeBar = false ;
+    $scope.usingVolumeBar = false ;    
+    $scope.isPlaying = false ;
+    $scope.isVideoisAds = false ;
+    $scope.isContainsSubs = false ;
+    $scope.isContainsLangs = false ;
+    $scope.isContainsThumbs = false ;
+    $scope.VolLevelUp = true ;
+    $scope.VolLevelDown = false ;
+    $scope.VolLevelOff = false ;
+    $scope.prgressPercentage = 0;
+    $scope.volumePercentage = 80;
+    $scope.movieTitle  = "";
+    $scope.isAdsDataHidden = true ;
+    $scope.isAdsInfoHidden = true ;
+    $scope.thumbTime  = 0;
+    $scope.tracksArray  = {"subs":[],"audio":[]};
+    $scope.movieCTime = 0;
+    $scope.movieTTime  = 0;
+    $scope.movieBuffered = 0;
+    $scope.volume = 0;
+    $scope.idleMouseTimer;          
+    $scope.isCursorHidden = false ;
+    $scope.AdsData =""
+    $scope.AdsInfo ="";
 
-	//Overlay used for Ads or information Plugin Api ; ex OverlayPluginShowAds('ad_info','ad_data','videoID',5,10);
-	var OverlayPluginShowAds = function(InfoID, DataID, VideoID, showAt, showDuration,animate){
-		//info
-		console.info (" an Overlay is added @ ",showAt," sec for ",showDuration," sec.");
-		var video= document.querySelector(VideoID);
-		video.addEventListener('progress', 
-			function() {			
-			if( ( video.currentTime > showAt ) && ( video.currentTime < (showAt+1) ) ) {			
-				StartAds();
-				return ;
-			}
-		}, false);	
-	
-		function upInfo(){	
-		console.log("updating @@@ ", showDuration);		
-			if ( showDuration > 0 ) {
-				$(InfoID).html('you ads will end in '+showDuration+' sec');
-				showDuration --;				
-			}else{ return; }	
-		}
+    $scope.prepareUI = function (){
+        $scope.tdObj    = document.getElementById('thumbDiv');
+        $scope.tiObj    = document.getElementById('thumbImgBlock');      
+        $scope.pbObj    = document.getElementById('hprogressbar');
+        $scope.video    = document.getElementById('fjVidMain');
+        $scope.volObj   = document.getElementById('vprogressbar');
+        $scope.menuObj  = document.getElementById('settingMenuDiv');
+        $scope.settingBtn = document.getElementById('subsBtnId');
 
-		function StartAds() {
-			var secTimeout = showDuration  *1000;			
-			var refreshId = null;
-			// show ads
-			$(DataID).show();
-			$(InfoID).show();
-			$(InfoID).html('you ads will end in '+showDuration+' sec');
-			// hide ads after timeout
-			if ( animate == true )
-				refreshId = setInterval( upInfo ,1000);
-			//timeout
-			setTimeout(function(){
-				console.log("Ending @@@ ", showDuration);
-				$(DataID).fadeOut('slow');
-				$(InfoID).fadeOut('slow');
-				if ( animate == true )
-					clearInterval (refreshId);
-			},secTimeout);
-		}
-	}
+          // Check if fullscreen supported. If it's not just don't show the fullscreen icon.
+        if(!$scope.video.requestFullscreen && 
+         !$scope.video.mozRequestFullScreen &&
+         !$scope.video.webkitRequestFullScreen) {
+            $scope.isFullScreenSupported  = false;
+        }
+    };
+    $scope.fjMouseMgr  = function($event){  
+        if($scope.isVideoisAds == true ) {
+            $scope.isCursorHidden = true ;
+        }
+        else
+        {
+            $scope.isCursorHidden = false ;      
+            $timeout.cancel($scope.idleMouseTimer);      
+            $scope.idleMouseTimer = $timeout(function() {        
+                    $scope.isCursorHidden = true ;        
+                }, 3000);      
+        }
+    };
+    $scope.checkPlaylistAndStart = function(items, startIdx){
+        //check
+        if ( items == null){
+            console.error("BAD conf , no media found !");
+            console.error(items);
+        }
+        //get conf
+        $scope.playerItems = angular.fromJson(items).playlist;
+        console.debug($scope.playerItems.length);
+        
+        //settings
+        if($scope.playerItems.length > 1 ){
+            $scope.isPlaylist = true ;            
+        } else {
+            $scope.isPlaylist = false ;            
+        }
+        //Evt Mge
+        $scope.SetVideoEvents();
+        //volume Mgr 
+        $scope.VolumeMgr = new $scope.fjVolume($scope.volObj );
+        //create objects
+        for (var i=0;i < $scope.playerItems.length ; i++){
+            $scope.medias[i] =  new $scope.fjVideo($scope.playerItems[i] );               
+        }
+        //start @ startIdx
+        $scope.PlaylistCurrentIndex = startIdx ;        
+        console.debug( $scope.PlaylistCurrentIndex  ,$scope.medias[$scope.PlaylistCurrentIndex].media );
+        
+        $scope.medias[$scope.PlaylistCurrentIndex].Startup();
+        $scope.medias[$scope.PlaylistCurrentIndex].setTracks();
+        $scope.medias[$scope.PlaylistCurrentIndex].View();         
+    }
+    $scope.fjVolume = function(volumebar){
+        this.vb = volumebar,
 
-	// Thumbs WebVtt Plugin Function
-	var ThumbPluginStart = function(VideoID,barID,spanThumbID) {
-		var v =  document.querySelector(VideoID);
-		var b =  document.querySelector(barID);
-		var t =  document.querySelector(spanThumbID);
-		var  index = -1 ;
+        this.goShowProgressBar = function (){  
+            $timeout(function() {
+                if (  $scope.usingVolumeBar == false ) {
+                    $scope.showingVolumeBar = false ; 
+                }
+            }, 1000);        
+        },
+        this.goShowVolumeBar = function (){
+            this.vb.style.display = 'block' ;
+            $scope.showingVolumeBar = true ;
+        },
+        this.goUseVolumeBar = function(){
+            $scope.usingVolumeBar = true ;
+        },
+        this.goHideVolumeBar = function(){
+            $scope.usingVolumeBar = false ;
+            $scope.showingVolumeBar = false ;  
+            $scope.volumePercentage = 100 ;         
+        },
+        this.goMuteVolume = function () {        
+            if($scope.volumePercentage == 0 )
+                this.setVolume( 100 );          
+            else
+                this.setVolume( 0 );          
+        },
+        this.setVolumeProgressLevel = function($event){
+            // need ti get object now when it shown
+            var bv = document.getElementById('vprogressbar');
+            var rect = bv.getBoundingClientRect();            
+            var vp =(($event.pageX - rect.left) / rect.width) * 100 ;        
+            this.setVolume (vp);
+        },
+        this.setVolume = function(newVolumePercentage){
+            $scope.video.volume =  (newVolumePercentage /100);
+            $scope.volumePercentage = newVolumePercentage ;
+            if(newVolumePercentage == 0 ){
+                $scope.VolLevelUp = false ;
+                $scope.VolLevelDown = false ;
+                $scope.VolLevelOff = true ;
+            }else if  (newVolumePercentage > 60 ){
+                $scope.VolLevelUp = true ;
+                $scope.VolLevelDown = false ;
+                $scope.VolLevelOff = false ;
+            } else {
+                $scope.VolLevelUp = false ;
+                $scope.VolLevelDown = true ;
+                $scope.VolLevelOff = false ;
+            }
+        }
+    };
+    $scope.fjSettingMenu = function( menuObj, settingBtnObj){         
+        this.menudiv = menuObj, 
+        this.menuBtn = settingBtnObj ,
+      
+        this.goSettingMenu  = function () {         
+            // second call :to  hide 
+            if(this.menudiv.style.visibility == 'visible')
+                this.menudiv.style.visibility = 'hidden';  
 
-		// looking for metadata tracks
-		for (var i = 0; i < v.textTracks.length; i++) 
-		{
-			if ( v.textTracks[i].kind == 'metadata' ){       
-			  index = i ; 
-			  //console.log("metadata track found @ index ",index);
-			  b.addEventListener('mouseover',show,false);
-			  b.addEventListener('mouseout',hide,false);
-			  b.addEventListener('mousemove',render,false);
-			  break ;
-			}
-		}
+            var rect = this.menuBtn.getBoundingClientRect();
+            this.menudiv.style.left = rect.left +'px';
+            this.menudiv.style.top = rect.top  - (rect.height * Math.max($scope.tracksArray.subs.length,
+                     $scope.tracksArray.audio.length))+'px'           
+            this.menudiv.style.visibility = 'visible';
+        },
+        this.setSubs = function( index) {
+            //json array 
+            for (var i=0; i< $scope.tracksArray.subs.length; i++) {
+                if($scope.tracksArray.subs[i].index == index ){
+                    $scope.tracksArray.subs[i].actif = true ;
+                }
+                else {
+                    $scope.tracksArray.subs[i].actif = false ;
+                }
+            }
+            //video array
+            for (var i=0; i< $scope.video.textTracks.length; i++) {
+                if (i == index) {
+                    $scope.video.textTracks[i].mode = 'showing';
+                } else {
+                    $scope.video.textTracks[i].mode = 'hidden';
+                }
+            }
+            //finish
+            this.menudiv.style.visibility = 'hidden';
+        },
+        this.setAudio = function( index) {
+            //json array 
+            for (var i=0; i< $scope.tracksArray.audio.length; i++) {
+                if($scope.tracksArray.audio[i].index == index )
+                    $scope.tracksArray.audio[i].actif = true ;
+                else 
+                    $scope.tracksArray.audio[i].actif = false ;
+            }
+            //video array
+            for (var i=0; i< $scope.video.videoTracks.length; i++) {
+                if (i == index) {
+                    $scope.video.videoTracks[i].selected = true;
+                } else {
+                    $scope.video.videoTracks[i].selected = false;
+                }
+            }
+            //finish
+            this.menudiv.style.visibility = 'hidden';
+        }
+    };
+    $scope.fjThumbs = function(thumbImg, thumbDiv , progressBar){
+        this.td = thumbDiv,
+        this.t = thumbImg,
+        this.b = progressBar, 
 
-		//callbacks
-		function render(e) {
-			// first we convert from mouse to time position ..
-			// get bar rectangle
-			var rect = b.getBoundingClientRect();
-			var p = (e.pageX - rect.left ) * (  v.duration / (rect.right - rect.left) );
-			//console.info("mouse >>",e.pageX , e.pageY ,"Bar left start point ",rect.left ,"buttom",rect.bottom,v.height,"position  ",  (e.pageX - rect.left )," >> Time Position : ",p);
+        this.goShowThumbs = function () {
+            this.td.style.visibility = 'visible';            
+        },
+        this.goHideThumbs = function () {      
+            this.td.style.visibility = 'hidden';
+        },
+        this.goRenderThumbs = function ($event) {   
+            // first we convert from mouse to time position ..
+            var rect = this.b.getBoundingClientRect();
+            var p = ($event.pageX - rect.left ) * (  $scope.video.duration / (rect.right - rect.left) );     
+            if ( ( p > ($scope.video.duration + 2)) || (p < 0) ) {//some error ?
+                console.error (" Position is bigger than duration >>" ,p, scope.video.duration);
+                return ; 
+            }
+            //update ui
+              $scope.thumbTime = p;
+            // ..then we find the matching cue..
+            var c = $scope.video.textTracks[$scope.indexThumbsTrack].cues;
+            if( c == null) {//track eleme,t is not supprted : Firefox 
+                console.error (" cues is null @ ",$scope.indexThumbsTrack," not supported , Firefox ?");
+                return;
+            }
 
-			if ( ( p > (v.duration + 2)) || (p < 0) )//some error ?
-				return ; 
+            for (var i=0; i<c.length; i++) 
+            {
+                if(c[i].startTime <= p && c[i].endTime > p) {
+                   break;
+                };
+            }
+            // ..next we unravel the JPG url and fragment query..
+            var url =c[i].text.split('#')[0];
+            var xywh = c[i].text.substr(c[i].text.indexOf("=")+1).split(',');
 
-			// ..then we find the matching cue..
-			var c = v.textTracks[index].cues;
-			for (var i=0; i<c.length; i++) {
-			  if(c[i].startTime <= p && c[i].endTime > p) {
-			      break;
-			  };
-			}
-			//console.info( b.offsetTop,"found cue @ ",i," >>",c[i] ); 
-			// ..next we unravel the JPG url and fragment query..
-			var url =c[i].text.split('#')[0];
-			var xywh = c[i].text.substr(c[i].text.indexOf("=")+1).split(',');
+            // ..and last we style the thumbnail overlay
+            this.t.style.backgroundImage = 'url('+c[i].text.split('#')[0]+')';
+            this.t.style.backgroundPosition = '-'+xywh[0]+'px -'+xywh[1]+'px';
+            this.t.style.width = xywh[2]+'px';
+            this.t.style.height = xywh[3]+'px';
 
-			// ..and last we style the thumbnail overlay
-			// console.info("b.offsetTop >>",b.offsetTop, "b.offsetBottom ",b.offsetBottom);
-			t.style.backgroundImage = 'url('+c[i].text.split('#')[0]+')';
-			t.style.backgroundPosition = '-'+xywh[0]+'px -'+xywh[1]+'px';
-			t.style.left = e.pageX -rect.left - xywh[2]/2+'px';
-			t.style.top = b.offsetTop - (xywh[3] *1.5)+'px';
-			t.style.width = xywh[2]+'px';
-			t.style.height = xywh[3]+'px';
-		};
+            this.td.style.left = $event.pageX   - xywh[2]/2+'px';
+            this.td.style.top = rect.top  - (xywh[3] *1.5)+'px'     
+            this.td.style.width = xywh[2]+'px'; 
+        }  
+    };
+    $scope.fjOverlays = function( _data, _showAt, _showDuration, _animate){
+        var adData = _data ,
+        showAt = _showAt ,
+        showDuration = _showDuration ,
+        animate = _animate ,
+        started = false,
+        finished = false , 
+        refreshId = null ,
+        handler = null,
 
-		function show() {
-			t.style.visibility = 'visible';
-		};
+        onTmUpdate=function(e) {
+            $scope.$apply(function () {
+                if( (!started) && ( $scope.video.currentTime > showAt ) && ( $scope.video.currentTime < (showAt+1) ) ) { 
+                    started  = true ; 
+                    if(showDuration == -1 ) // correct duration
+                        showDuration = Math.trunc($scope.video.duration);
+                    StartAds();
+                    // hide ads after timeout
+                    refreshId = $interval( upInfo ,1000);
+                    console.debug(">> refreshId",refreshId);
+                    return ;
+                }
+            });
+        },
+        trigger = function(){
+            $scope.isAdsDataHidden = true ;                 
+            $scope.isAdsInfoHidden = true ;
+            handler = onTmUpdate.bind($scope.video);            
+            $scope.video.addEventListener("timeupdate",handler,false);            
+        },
+        upInfo = function(){             
+                if ( showDuration > 0 ) {
+                    $scope.AdsInfo = $sce.trustAsHtml( 'your ads will end in '+showDuration+' sec');
+                    showDuration --;        
+                }
+                else
+                {
+                    console.debug("Ending @@@ ", showDuration);
+                    $scope.isAdsDataHidden = true ;
+                    $scope.isAdsInfoHidden = true ;
+                    finished  = true ; 
+                    console.debug(" Finishing Overlay >> refreshId",refreshId);  
+                    //finish  
+                    $interval.cancel (refreshId);                     
+                    $scope.video.removeEventListener("timeupdate", handler,false);
+                }            
+        },
+        StartAds = function() {
+            var secTimeout = showDuration  *1000;   
+            $scope.AdsInfo =$sce.trustAsHtml( 'you ads will end in '+showDuration+' sec');         
+            // show ads
+            if(adData != null){
+                console.debug('Data re not null ! ');
+                $scope.isAdsDataHidden = false ;
+                $scope.AdsData = $sce.trustAsHtml( adData );
+            }
+            if ( animate == true ) {
+                console.debug('Animation is  Activated ! ');             
+                $scope.isAdsInfoHidden = false ;
+                
+            }
+            console.debug('you ads will end in '+showDuration+' sec', $scope.isAdsInfoHidden,"<<>>",$scope.isAdsInfoHidden);            
+        };
+        console.debug("fjOverlays : overlay triggred to start @ ",showAt, " for ",showDuration, "sec ");
+        trigger();        
+    };
+    $scope.fjVideo= function(mediaConf){	
+		this.media = mediaConf,
+   
+		this.Startup=function(){
+            $scope.movieTitle = this.media.title ;
+            if(this.media.type == 'dash')
+            {
+                console.debug("Startup for Dash ");
+    		    this.context =  new Dash.di.DashContext();
+    			this.player  =  new MediaPlayer(this.context);		
+    			this.player.startup();
+            }
+            else
+            {
+                console.debug("Startup for NON Dash ");
+                var source = document.createElement('source');
+                source.src = this.media.src;
+                source.type = this.media.type;
+                $scope.video.appendChild(source);  
+            }
+		},
+		this.View=function(){      
+            if(this.media.type == 'dash')
+            {
+                console.debug("View for Dash ");
+    			this.player.attachView($scope.video);
+    			this.player.setAutoPlay(true);
+    			this.player.attachSource(this.media.src);
+    			this.player.setAutoSwitchQuality(true);	
+            }
+            else
+            {
+                console.debug("View for NON Dash ");
+                $scope.video.play();
+            }
+		},
+        this.setTracks = function(){
+            var newObj , i ;
+            console.debug("setTracks ");
+            $scope.movieTTime  =$scope.video.duration ;
+            $scope.movieCTime  = $scope.video.currentTime ;
+            $scope.movieBuffered = $scope.video.buffered;
+            $scope.VolumeMgr.setVolume( $scope.video.volume * 100 );          
+                       
+            //set  thumbs 
+            if(this.media.thumbs )
+            {
+                console.debug("setTracks : Setting thumbs ");
+                $scope.thumbMgr = new $scope.fjThumbs( $scope.tiObj, $scope.tdObj , $scope.pbObj);
+                //
+                var track = document.createElement('track');
+                track.src = this.media.thumbs ;
+                track.kind  ='metadata' ;
+                $scope.video.appendChild(track); 
+            }
+            //set  subs 
+            if(this.media.substitles )
+            {
+                console.debug("setTracks : Setting substitles  ",this.media.substitles.length );
+                for (i =0; i< this.media.substitles.length ;i++) 
+                {
+                    var track = document.createElement('track');
+                    track.kind='subtitles';
+                    track.src = this.media.substitles[i].src ;
+                    track.srclang = this.media.substitles[i].srclang ;
+                    track.label = this.media.substitles[i].label ;
+                    $scope.video.appendChild(track); 
+                }
+            }
+            $scope.video.load();            
+            console.debug("after inserting tracks in video , we have > ",$scope.video);
+            // looking for audio tracks 
+            if($scope.video.audioTracks) {    
+                console.debug("setTracks : Setting audioTracks  ",scope.video.audioTracks.length );            
+                for (i = 0; i < $scope.video.audioTracks.length; i++) {
+                    $scope.isContainsLangs = true ;
+                    newObj = {"label" : $scope.video.audioTracks[i].language ,"index":i , "actif":true}; 
+                    $scope.tracksArray.audio.push(  newObj);                    
+                }
+            }
+            // looking for metadata  & subtitles tracks
+            if($scope.video.textTracks) {
+                newObj ={"label" : "off", "index":-1 , "actif":true};
+                $scope.tracksArray.subs.push(newObj);
+                for (i = 0; i < $scope.video.textTracks.length; i++) 
+                {
+                    if ( $scope.video.textTracks[i].kind == 'metadata' )
+                    {       
+                        $scope.indexThumbsTrack = i ; 
+                        console.debug(">>>> thumb track found @ ", i ,">> ",$scope.video.textTracks[i]);
+                        $scope.isContainsThumbs = true ;
+                    }
+                    else if($scope.video.textTracks[i].kind == 'subtitles' )
+                    {
+                        newObj =  {"label" : $scope.video.textTracks[i].label ,"index":i, "actif":false} ;            
+                        $scope.tracksArray.subs.push( newObj);            
+                        $scope.isContainsSubs = true ;
+                    }
+                    else
+                    {
+                        console.debug ("unknown type of tracks ",$scope.video.textTracks[i].kind)
+                    }
+                } 
+                if ($scope.isContainsSubs || $scope.isContainsLangs) {
+                    $scope.SettingMenuMgr = new $scope.fjSettingMenu($scope.menuObj , $scope.settingBtn);
+                    $scope.SettingMenuMgr.setSubs(-1);
+                }
 
-		function hide() {
-			t.style.visibility = 'hidden';
-		};
-	}
+            }
 
-	$.fn.videoPlayer = function(options) {
-		
-				
-		var settings = {  
-			playerWidth : '0.5', // Default is 68%
-			videoClass : 'fjvideo'  // Video Class
-		}
-		
-		// Extend the options so they work with the plugin
-		if(options) {
-			$.extend(settings, options);
-		}
-		
-		
-		// For each so that we keep chainability.
-		return this.each(function() {	
-			
-			$(this)[0].addEventListener('loadedmetadata', function() {
-			
-				// Basic Variables 
-				var $this = $(this);
-				var $settings = settings;
-				
-				// Wrap the video in a div with the class of your choosing
-				$this.wrap('<div id="'+$settings.videoClass+'" class="'+$settings.videoClass+'"></div>');
-				
-			
-				// Select the div we just wrapped our video in for easy selection.
-				var $that = $this.parent('.'+$settings.videoClass);
-				
-				// The Structure of our video player
-				{
-				
-				$( '<div class="player">'
-				     + '<div class="controls play-pause play">'
-				       + '<a href="#"> </a>'
-				     + '</div>'
-	     	         + '<div class=" time">'	
-				       + '<span class=" ctime">00:00</span>'
-				     + '</div>'
-				     + '<div id="bar" class="controls hprogress progress">'
-				       + '<div class="controls hprogress-bar progress-bar">'
-				       + '</div>'
-				       + '<span id="thumb" class="controls" ></span>'
-				     + '</div>'
-			 		 + '<div class="time">'
-				       + '<span class=" ttime">00:00</span>'
-				     + '</div>'	
-				     + '<div class="controls volume">'
-				       + '<div class="controls volume-holder">'
-				         + '<div class="controls vprogress volume-bar-holder">'
-				           + '<div class="controls vprogress-bar volume-bar">'
-				           + '</div>'
-				         + '</div>'
-				       + '</div>'
-				       + '<div   class="controls volume-icon volume-up">'
-				       + '</div>'
-				     + '</div>'
-				     + '<div id="subtitles" class="controls closedcaption " data-state="subtitles"> '
-				       + '<a href="#"> </a>'
-				     + '</div>'
-				     + '<div  id="fs" class="controls goCancel-fullscreen go-fullscreen"> '
-				       + '<a href="#"> </a>'
-				     + '</div>'
-				   + '</div>'
-				   + '<div id="ad_info" class="adInfoBlock"  ></div>'
-				   ).appendTo($that);
-				
-				}
-				
-				
-				// Width of the video
-				$videoWidth = $this.width();
-				$that.width($videoWidth+'px');
-				
-				// Set width of the player based on previously noted settings
-				$that.find('.player').css({'width' : ($settings.playerWidth*100)+'%', 'left' : ((100-$settings.playerWidth*100)/2)+'%'});
-				
-				
-				// Video information
-				var $spc = $(this)[0], // Specific video
-					$duration = $spc.duration, // Video Duration					
-					$volume = $spc.volume, // Video volume
-					currentTime;				
+            //setoverlays
+            //check : if Ads ; show bar info with countdown and hide controls 
+            if(this.media.class == "ads"){
+                $scope.isVideoisAds = true ;
+                console.debug("setTracks : Setting overlays  class > ADS >");            
+                $scope.overlays[0] = new $scope.fjOverlays( null ,0,-1,true );                   
+            }
+            else 
+            {   $scope.isVideoisAds = false ;
+                if(this.media.overlays )
+                {   console.debug("setTracks : Setting overlays  class > Movie ",this.media.overlays.length);            
+                    for (i =0; i< this.media.overlays.length ;i++) 
+                    {
+                        $scope.overlays[i] = new $scope.fjOverlays( this.media.overlays[i].data,
+                                                this.media.overlays[i].showAt,
+                                                this.media.overlays[i].duration,
+                                                this.media.overlays[i].animate );                        
+                    }
+                }
+            }           
+        }
+	}; 
+    $scope.goPrevPlaylist  = function () {
+        //pause
+        if( $scope.isPlaying == true )
+        {
+            $scope.isPlaying  =  false;      
+            $scope.video.pause();
+        }
 
-				// Some other misc variables to check when things are happening
-				var $mclicking = false, 
-				    $vclicking = false, 
-				    $vidhover = false,
-				    $volhover = false, 
-				    $playing = false, 
-				    $drop = false,
-				    $begin = false,
-				    $draggingProgess = false,
-				    $storevol,	
-				    x = 0, 
-				    y = 0, 
-				    vtime = 0, 
-				    updProgWidth = 0, 
-				    volume = 0;
-				    
-				// Setting the width, etc of the player
-				var $volume = $spc.volume;
-				
-				// So the user cant select text in the player
-				$that.bind('selectstart', function() { return false; });
-						
-				// Set some widths
-				var progWidth = $that.find('.progress').width();
-				
+        $scope.cleanVideoObject();
 
-				var bufferLength = function() {
-				
-					// The buffered regions of the video
-					var buffered = $spc.buffered;
-					
-					// Rest all buffered regions everytime this function is run
-					$that.find('[class^=buffered]').remove();
-					
-					// If buffered regions exist
-					if(buffered.length > 0) {
-							
-						// The length of the buffered regions is i
-						var i = buffered.length;
-							
-						while(i--) {
-							// Max and min buffers
-							$maxBuffer = buffered.end(i);
-							$minBuffer = buffered.start(i);
-									
-							// The offset and width of buffered area				
-							var bufferOffset = ($minBuffer / $duration) * 100;			
-							var bufferWidth = (($maxBuffer - $minBuffer) / $duration) * 100;
-											
-							// Append the buffered regions to the video
-							$('<div class="buffered"></div>').css({"left" : bufferOffset+'%', 'width' : bufferWidth+'%'}).appendTo($that.find('.progress'));
-							
-						}
-					}
-				} 
-				
-				// Run the buffer function
-				bufferLength();
-				
-				// The timing function, updates the time.
-				var timeUpdate = function($ignore) {
-					
-					// The current time of the video based on progress bar position
-					var time = Math.round(($('.progress-bar').width() / progWidth) * $duration);
-					
-					// The 'real' time of the video
-					var curTime = $spc.currentTime;
-					
-					// Seconds are set to 0 by default, minutes are the time divided by 60
-					// tminutes and tseconds are the total mins and seconds.
-					var seconds = 0,
-						minutes = Math.floor(time / 60),
-						tminutes = Math.trunc($duration / 60),
-						tseconds = Math.trunc(($duration) - (tminutes*60));			
-					
-					// If time exists (well, video time)
-					if(time) {
-						// seconds are equal to the time minus the minutes
-						seconds = Math.round(time) - (60*minutes);
-						
-						// So if seconds go above 59
-						if(seconds > 59) {
-							// Increase minutes, reset seconds
-							seconds = Math.round(time) - (60*minutes);
-							if(seconds == 60) {
-								minutes = Math.round(time / 60); 
-								seconds = 0;
-							}
-						}
-						
-					} 
-					
-					// Updated progress width
-					updProgWidth = (curTime / $duration) * progWidth
-					
-					// Set a zero before the number if its less than 10.
-					if(seconds < 10) { seconds = '0'+seconds; }
-					if(tseconds < 10) { tseconds = '0'+tseconds; }
-					
-					// A variable set which we'll use later on
-					if($ignore != true) {
-						$that.find('.progress-bar').css({'width' : updProgWidth+'px'});			
-					}
-					
-					// Update times
-					$that.find('.ctime').html(minutes+':'+seconds) 
-					$that.find('.ttime').html(tminutes+':'+tseconds);
-				
-					// If playing update buffer value
-					if($spc.currentTime > 0 && $spc.paused == false && $spc.ended == false) {
-						bufferLength();
-					}
-					
-				}
-				
-				// Run the timing function twice, once on init and again when the time updates.
-				timeUpdate();
-				$spc.addEventListener('timeupdate', timeUpdate);
-								
-				// When the user clicks play, bind a click event	
-				$that.find('.play-pause').bind('click', function() {
-					
-					// Set up a playing variable
-					if($spc.currentTime > 0 && $spc.paused == false && $spc.ended == false) {
-						$playing = false;
-					} else { $playing = true; }
-					
-					// If playing, etc, change classes to show pause or play button
-					if($playing == false) {
-						$spc.pause();
-						$(this).addClass('play').removeClass('pause');
-						bufferLength();
-					} else {
-						$begin = true;
-						$spc.play();
-						$(this).addClass('pause').removeClass('play');
-					} 				
-					
-				});
-				
-				
-				// Bind a function to the progress bar so the user can select a point in the video
-				$that.find('.progress').bind('mousedown', function(e) {
-					
-					// Progress bar is being clicked
-					$mclicking = true;
-					
-					// If video is playing then pause while we change time of the video
-					if($playing == true) {
-						$spc.pause();
-					}
-					
-					// The x position of the mouse in the progress bar 
-					x = e.pageX - $that.find('.progress').offset().left;
-					
-					// Update current time
-					currentTime = (x / progWidth) * $duration;
-					
-					$spc.currentTime = currentTime;
-					
-				});
-				
-				// When the user clicks on the volume bar holder, initiate the volume change event
-				$that.find('.volume-bar-holder').bind('mousedown', function(e) {
-					
-					// Clicking of volume is true
-					$vclicking = true;
-					
-					// Y position of mouse in volume slider
-					y = $that.find('.volume-bar-holder').height() - (e.pageY - $that.find('.volume-bar-holder').offset().top);
-					
-					// Return false if user tries to click outside volume area
-					if(y < 0 || y > $(this).height()) {
-						$vclicking = false;
-						return false;
-					}
-					
-					// Update CSS to reflect what's happened
-					$that.find('.volume-bar').css({'height' : y+'px'});
-					$that.find('.volume-button').css({'top' : (y-($that.find('.volume-button').height()/2))+'px'});
-					 
-					// Update some variables
-					$spc.volume = $that.find('.volume-bar').height() / $(this).height();
-					$storevol = $that.find('.volume-bar').height() / $(this).height();
-					$volume = $that.find('.volume-bar').height() / $(this).height();
-					
-					// Run a little animation for the volume icon.
-					volanim();
-					
-				});
-				
-				// A quick function for binding the animation of the volume icon
-				var volanim = function() {
-				
-					// Check where volume is and update class depending on that.
-					for(var i = 0; i < 1; i += 0.1) {
-									
-						var fi = parseInt(Math.floor(i*10)) / 10;
-						var volid = (fi * 10)+1;
-						
-						if($volume == 1) {
-							if($volhover == true) {
-								$that.find('.volume-icon').removeClass().addClass('controls volume-icon volume-icon-hover volume-up');
-							} else {
-								$that.find('.volume-icon').removeClass().addClass('controls volume-icon volume-up');
-							}
-						}
-						else if($volume == 0) {
-							if($volhover == true) {
-								$that.find('.volume-icon').removeClass().addClass('controls volume-icon volume-icon-hover volume-off');
-							} else {
-								$that.find('.volume-icon').removeClass().addClass('controls volume-icon volume-off');
-							}
-						}
-						else if($volume > (fi-0.1) && volume < fi && !$that.find('.volume-icon').hasClass('v-change-'+volid)) {
-							if($volhover == true) {
-								$that.find('.volume-icon').removeClass().addClass('controls  volume-icon volume-icon-hover volume-down');	
-							} else {
-								$that.find('.volume-icon').removeClass().addClass('controls  volume-icon volume-down');	
-							}
-						}		
-						
-					}
-				}
-				// Run the volanim function
-				volanim();
-				
-				// Check if the user is hovering over the volume button
-				$that.find('.volume').hover(function() {
-					$volhover = true;
-				}, function() {
-					$volhover = false;
-				});
-				
-				
-				// For usability purposes then bind a function to the body assuming that the user has clicked mouse
-				// down on the progress bar or volume bar
-				$('body, html').bind('mousemove', function(e) {
-					
-					// Hide the player if video has been played and user hovers away from video
-					if($begin == true) {
-						$that.hover(function() {
-							$that.find('.player').stop(true, false).animate({'opacity' : '1'}, 0.5);
-						}, function() {
-							$that.find('.player').stop(true, false).animate({'opacity' : '0'}, 0.5);
-						});
-					}
-					
-					// For the progress bar controls
-					if($mclicking == true) {	
-						
-						// Dragging is happening
-						$draggingProgress = true;
-						// The thing we're going to apply to the CSS (changes based on conditional statements);
-						var progMove = 0;
-						
-						// Updated x posititon the user is at
-						x = e.pageX - $that.find('.progress').offset().left;
-						
-						// If video is playing
-						if($playing == true) {
-							// And the current time is less than the duration				
-							if(currentTime < $duration) {		
-								// Then the play-pause icon should definitely be a pause button 
-								$that.find('.play-pause').addClass('pause').removeClass('play');
-							}
-						}
-						
-						
-						if(x < 0) { // If x is less than 0 then move the progress bar 0px
-							progMove = 0;
-							$spc.currentTime = 0;
-						} 
-						else if(x > progWidth) { // If x is more than the progress bar width then set progMove to progWidth
-							$spc.currentTime = $duration;
-							progMove = progWidth;	
-						}
-						else { // Otherwise progMove is equal to the mouse x coordinate
-							progMove = x;
-							currentTime = (x / progWidth) * $duration;
-							$spc.currentTime = currentTime;	
-						}
-						
-						// Change CSS based on previous conditional statement
-						$that.find('.progress-bar').css({'width' : $progMove+'px'});
-						
-					}
-					
-					// For the volume controls
-					if($vclicking == true) {	
-						
-						// The position of the mouse on the volume slider
-						y = $that.find('.volume-bar-holder').height() - (e.pageY - $that.find('.volume-bar-holder').offset().top);
-						
-						// The position the user is moving to on the slider.
-						var volMove = 0;
-						
-						// If the volume holder box is hidden then just return false
-						if($that.find('.volume-holder').css('display') == 'none') {
-							$vclicking = false;
-							return false;
-						}
-						
-						// Add the hover class to the volume icon
-						if(!$that.find('.volume-icon').hasClass('volume-icon-hover')) {
-							$that.find('.volume-icon').addClass('volume-icon-hover');
-						}
-						
-						
-						if(y < 0 || y == 0) { // If y is less than 0 or equal to 0 then volMove is 0.
-							
-							$volume = 0; 
-							volMove = 0;
-							
-							$that.find('.volume-icon').removeClass().addClass('controls volume-icon volume-icon-hover volume-up');
-							
-						} else if(y > $(this).find('.volume-bar-holder').height() || (y / $that.find('.volume-bar-holder').height()) == 1) { // If y is more than the height then volMove is equal to the height
-							
-							$volume = 1; 
-							volMove = $that.find('.volume-bar-holder').height();
-							
-							$that.find('.volume-icon').removeClass().addClass('controls volume-icon volume-icon-hover volume-down');
-							
-						} else { // Otherwise volMove is just y
-						
-							$volume = $that.find('.volume-bar').height() / $that.find('.volume-bar-holder').height();
-							volMove = y;
-							
-						}
-					
-						// Adjust the CSS based on the previous conditional statmeent
-						$that.find('.volume-bar').css({'height' : volMove+'px'});
-						$that.find('.volume-button').css({'top' : (volMove+$that.find('.volume-button').height())+'px'});
-						
-						// Run the animation function
-						volanim();
-						
-						// Change the volume and store volume
-						// Store volume is the volume the user last had in place
-						// in case they want to mute the video, unmuting will then
-						// return the user to their previous volume.
-						$spc.volume = $volume;
-						$storevol = $volume;
-						
-						
-					}
-					
-					// If the user hovers over the volume controls, then fade in or out the volume
-					// icon hover class
-					
-					if($volhover == false) {
-						
-						$that.find('.volume-holder').stop(true, false).fadeOut(100);
-						$that.find('.volume-icon').removeClass('volume-icon-hover');	
-						
-					}
-					
-					else {
-						$that.find('.volume-icon').addClass('volume-icon-hover');
-						$that.find('.volume-holder').fadeIn(100);			
-					}
-					
-						
-				})	
-				
-				// When the video ends the play button becomes a pause button
-				$spc.addEventListener('ended', function() {
-					
-					$playing = false;
-					
-					// If the user is not dragging
-					if($draggingProgress == false) {
-						$that.find('.play-pause').addClass('play').removeClass('pause');
-					}
-					
-				});
-				
-				// If the user clicks on the volume icon, mute the video, store previous volume, and then
-				// show previous volume should they click on it again.
-				$that.find('.volume-icon').bind('mousedown', function() {
-					
-					$volume = $spc.volume; // Update volume
-					
-					// If volume is undefined then the store volume is the current volume
-					if(typeof $storevol == 'undefined') {
-						 $storevol = $spc.volume;
-					}
-					
-					// If volume is more than 0
-					if($volume > 0) {
-						// then the user wants to mute the video, so volume will become 0
-						$spc.volume = 0; 
-						$volume = 0;
-						$that.find('.volume-bar').css({'height' : '0'});
-						volanim();
-					}
-					else {
-						// Otherwise user is unmuting video, so volume is now store volume.
-						$spc.volume = $storevol;
-						$volume = $storevol;
-						$that.find('.volume-bar').css({'height' : ($storevol*100)+'%'});
-						volanim();
-					}
-					
-					
-				});
-				
-				
-				// If the user lets go of the mouse, clicking is false for both volume and progress.
-				// Also the video will begin playing if it was playing before the drag process began.
-				// We're also running the bufferLength function
-				$('body, html').bind('mouseup', function(e) {
-					
-					$mclicking = false;
-					$vclicking = false;
-					$draggingProgress = false;
-					
-					if($playing == true) {	
-						$spc.play();
-					}
-					
-					bufferLength();
-				});
+        if( $scope.PlaylistCurrentIndex > 0 )
+            $scope.PlaylistCurrentIndex -- ;        
+        else 
+            $scope.PlaylistCurrentIndex  = ( $scope.playerItems.length - 1) ;        
 
+        console.debug("Going Prev ",$scope.PlaylistCurrentIndex , "/" ,$scope.playerItems.length -1);   
+        $scope.medias[$scope.PlaylistCurrentIndex].Startup();
+        $scope.medias[$scope.PlaylistCurrentIndex].setTracks();
+        $scope.medias[$scope.PlaylistCurrentIndex].View();         
+    };
+    $scope.goNextPlaylist  = function () {      
+        //pause
+        if( $scope.isPlaying == true )
+        {
+            $scope.isPlaying  =  false;      
+            $scope.video.pause();
+        }
 
-				// Checks if the document is currently in fullscreen mode
-				var isFullScreen = function() {
-					return !!(document.fullScreen || document.webkitIsFullScreen || document.mozFullScreen || document.msFullscreenElement || document.fullscreenElement);
-				}
+        $scope.cleanVideoObject();
 
-				// Set the video container's fullscreen state
-				var setFullscreenData = function(state) {
-					// When the user clicks play, bind a click event	
-					var fullscreen = $that.find('.goCancel-fullscreen');
-											
-					// If playing, etc, change classes to show pause or play button
-					if(state == false) {
-						fullscreen.addClass('go-fullscreen').removeClass('cancel-fullscreen');
-					} else {
-						fullscreen.addClass('cancel-fullscreen').removeClass('go-fullscreen');
-					} 				
-				}	
-			
-				// Check if fullscreen supported. If it's not just don't show the fullscreen icon.
-				if(!$spc.requestFullscreen && !$spc.mozRequestFullScreen && !$spc.webkitRequestFullScreen) {
-					$('.goCancel-fullscreen').hide();
-				}
-				
-				// Requests fullscreen based on browser.
-				$('.goCancel-fullscreen').click(function() {			
-						// If fullscreen mode is active...	
-						if (isFullScreen()) {
-							// ...exit fullscreen mode
-							// (Note: this can only be called on document)
-							if (document.exitFullscreen) document.exitFullscreen();
-							else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
-							else if (document.webkitCancelFullScreen) document.webkitCancelFullScreen();
-							else if (document.msExitFullscreen) document.msExitFullscreen();
-							setFullscreenData(false);
-						}
-						else {
-							// ...otherwise enter fullscreen mode
-							// (Note: can be called on document, but here the specific element is used as it will also ensure that the element's children, e.g. the custom controls, go fullscreen also)
-							if ($spc.requestFullscreen) $spc.requestFullscreen();
-							else if ($spc.mozRequestFullScreen) $spc.mozRequestFullScreen();
-							else if ($spc.webkitRequestFullScreen) {
-								// Safari 5.1 only allows proper fullscreen on the video element. This also works fine on other WebKit browsers as the following CSS (set in styles.css) hides the default controls that appear again, and 
-								// ensures that our custom controls are visible:
-								// figure[data-fullscreen=true] video::-webkit-media-controls { display:none !important; }
-								// figure[data-fullscreen=true] .controls { z-index:2147483647; }
-								$spc.webkitRequestFullScreen();
-							}
-							else if ($spc.msRequestFullscreen) $spc.msRequestFullscreen();
-							setFullscreenData(true);
-						}
-				
-				});
-				
-			//subs menu 
-			SubsMgrPluginStart('#videoID','#subtitles','#'+$settings.videoClass);
+        if( $scope.PlaylistCurrentIndex < ( $scope.playerItems.length - 1) ) 
+            $scope.PlaylistCurrentIndex ++ ;
+        else
+            $scope.PlaylistCurrentIndex  = 0 ;
+        
+        console.debug("Going Next ",$scope.PlaylistCurrentIndex ,"/", $scope.playerItems.length -1);
+        $scope.medias[$scope.PlaylistCurrentIndex].Startup();
+        $scope.medias[$scope.PlaylistCurrentIndex].setTracks();
+        $scope.medias[$scope.PlaylistCurrentIndex].View(); 
+        
+    };
+    $scope.goFullScreen  = function () {
+        // If fullscreen mode is active...  
+        if ($scope.isFullScreen == true ) {
+            if (document.exitFullscreen)
+                document.exitFullscreen();
+            else if (document.mozCancelFullScreen)
+                document.mozCancelFullScreen();
+            else if (document.webkitCancelFullScreen)
+                document.webkitCancelFullScreen();
+            else if (document.msExitFullscreen) 
+                document.msExitFullscreen();
+            $scope.isFullScreen  =  false;
+        }
+        else 
+        {        
+            if ($scope.video.requestFullscreen) 
+                $scope.video.requestFullscreen();
+            else if ($scope.video.mozRequestFullScreen) 
+                $scope.video.mozRequestFullScreen();
+            else if ($scope.video.webkitRequestFullScreen)         
+            $scope.video.webkitRequestFullScreen();        
+            else if ($scope.video.msRequestFullscreen) 
+                $scope.video.msRequestFullscreen();
+            $scope.isFullScreen  =  true;
+        }     
+    };
+    $scope.goSeek = function ($event) {  
+        var rect = $scope.pbObj.getBoundingClientRect();
+        var p = ($event.pageX - rect.left ) * (  $scope.video.duration / (rect.right - rect.left) );
+        console.debug("seek to ", p , "sec ") ;
+        //pause
+        if( $scope.isPlaying == true )
+        {
+            $scope.isPlaying  =  false;      
+            $scope.video.pause();
+        }
 
-			// Run the ThumbPluginStart function
-			ThumbPluginStart('#videoID',"#bar","#thumb");
+        //change current time 
+        $scope.video.currentTime = p;
 
-			// show ADS
-			OverlayPluginShowAds('#ad_info','#ad_data','#videoID',15,5, false );
-			OverlayPluginShowAds('#ad_info','#ad_data','#videoID',5,5, true );
+        //play
+        $scope.isPlaying  =  true;
+        $scope.video.play(); 
+    };
+    $scope.goBackHistory = function (){  
+        $window.history.back();
+    };
+    $scope.goPlay  = function () {
+        if( $scope.isPlaying == true )
+        {
+            $scope.isPlaying  =  false;      
+            $scope.video.pause();
+        }
+        else 
+        {
+            $scope.isPlaying  =  true;
+            $scope.video.play();            
+        }     
+    }
 
-			// Listen for fullscreen change events (from other controls, e.g. right clicking on the video itself)
-			document.addEventListener('fullscreenchange', function(e) {
-				setFullscreenData(!!(document.fullScreen || document.fullscreenElement));
-			});
-			document.addEventListener('webkitfullscreenchange', function() {
-				setFullscreenData(!!document.webkitIsFullScreen);
-			});
-			document.addEventListener('mozfullscreenchange', function() {
-				setFullscreenData(!!document.mozFullScreen);
-			});
-			document.addEventListener('msfullscreenchange', function() {
-				setFullscreenData(!!document.msFullscreenElement);
-			});
-				
-			});
-			
-		});
-	
-	}
-	
-})(jQuery);
+    $scope.cleanVideoObject = function(){
+        //stop player         
+        $scope.video.pause();
+        //remove text tracks 
+        $scope.tracksArray  = {"subs":[],"audio":[]};
+        //clean video attribute
+        $scope.video.removeAttribute("src");// used by dash 
+        // clean all video children
+        while ($scope.video.firstChild) {
+            $scope.video.removeChild($scope.video.firstChild); // used by video
+        }
+        //clean Manager :fjthumb, setting menu
+        delete $scope.settingMenuMgr;
+        delete $scope.thumbMgr;
+        delete $scope.overlays ;
+         $scope.overlays = new Array();
+
+        //reset tags 
+        $scope.isContainsSubs = false ;
+        $scope.isContainsLangs = false ;
+        $scope.isContainsThumbs = false ;
+        $scope.prgressPercentage = 0;        
+        $scope.movieTitle  = "";
+        $scope.isAdsDataHidden = true ;
+        $scope.isAdsInfoHidden = true ;
+    };
+    $scope.onPlayVideoEvt=function(e) {
+        $scope.$apply(function () {
+            $scope.isPlaying = true ;
+            console.info(" PLAY EVENT >>> on SRC  " ,e.currentTarget.currentSrc);
+        });
+    },
+    $scope.onPauseVideoEvt=function(e) {
+        $scope.$apply(function () {
+            $scope.isPlaying = false;
+            console.info(" PAUSE EVENT >>> on SRC  " ,e.currentTarget.currentSrc);
+        });
+    };
+     $scope.onPauseVideoEvt=function(e) {
+        $scope.$apply(function () {
+            $scope.isPlaying = false;
+            console.info(" PAUSE EVENT >>> on SRC  " ,e.currentTarget.currentSrc);
+        });
+    };
+    $scope.onCanPlayVideoEvt=function(e) {
+        $scope.$apply(function () {          
+            $scope.movieTTime  = $scope.video.duration ;
+            $scope.movieCTime  = $scope.video.currentTime ;
+            $scope.movieBuffered = $scope.video.buffered;
+            $scope.VolumeMgr.setVolume( $scope.video.volume * 100 );                    
+            $scope.videoReady = true;
+            console.info(" CANPLAY EVENT >>> on SRC  " ,e.currentTarget.currentSrc);
+        });        
+        
+    };
+    $scope.onEndedVideoEvt=function(e) {
+        $scope.$apply(function () {
+            $scope.videoReady = false;
+            //go next 
+            if ( $scope.isPlaylist ){
+              $scope.goNextPlaylist();
+            }
+            console.info(" END EVENT >>> EVENT >>> on SRC  " ,e.currentTarget.currentSrc);
+        });
+    };
+    $scope.onLoadeddataVideoEvt=function(e) {
+               
+    };
+    $scope.onTimeupdateVideoEvt=function(e) {
+        $scope.$apply(function () {          
+            $scope.movieTTime  = $scope.video.duration ;
+            $scope.movieCTime  = $scope.video.currentTime ;
+            $scope.movieBuffered = $scope.video.buffered;
+            $scope.volume = $scope.video.volume;
+
+            $scope.prgressPercentage = ($scope.movieCTime / $scope.movieTTime )*100;          
+            if( $scope.movieCTime == $scope.movieTTime ){
+              console.debug(" END >", $scope.prgressPercentage);
+              $scope.isPlaying  =  false;
+            }
+        });
+    };
+    $scope.onErrorVideoEvt=function(e) {
+        console.info(" ERROR EVENT >>> " ,e);
+    };
+    $scope.SetVideoEvents = function() {            
+        $scope.video.addEventListener("error", $scope.onErrorVideoEvt.bind($scope.video));
+        $scope.video.addEventListener("canplay", $scope.onCanPlayVideoEvt.bind($scope.video));
+        $scope.video.addEventListener("loadeddata", $scope.onLoadeddataVideoEvt.bind($scope.video));
+        $scope.video.addEventListener("timeupdate", $scope.onTimeupdateVideoEvt.bind($scope.video));
+        $scope.video.addEventListener("play", $scope.onPlayVideoEvt.bind($scope.video));
+        $scope.video.addEventListener("pause", $scope.onPauseVideoEvt.bind($scope.video));
+        $scope.video.addEventListener("ended", $scope.onEndedVideoEvt.bind($scope.video));
+    };
+}]).
+filter('duration', function() {
+ return function(secDuration) {
+      var sec_num = parseInt(secDuration, 10); // don't forget the second param  
+      var hours   = Math.floor(sec_num / 3600);
+      var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+      var seconds = sec_num - (hours * 3600) - (minutes * 60);
+      
+
+      if (minutes < 10) {minutes = "0"+minutes;}
+      if (seconds < 10) {seconds = "0"+seconds;}
+      
+      if(hours == 0){
+        return (minutes+':'+seconds);
+      }
+      else {
+        if (hours < 10) { hours   = "0"+hours;}
+        return (hours+':'+minutes+':'+seconds);      
+      }    
+  };
+}).
+directive('fjPlayerjs',function( ) {
+  return {
+    restrict: 'E',
+    scope: {
+      fjplayerdesc: '@'
+    },
+    templateUrl: '../dist/fjplayer-tmpl.html',
+    controller: 'fjplayerCtrl'  ,  
+    link: function(scope, iElement, iAttrs) { 
+        scope.prepareUI();
+        scope.checkPlaylistAndStart(iAttrs.fjplayerdesc, 0);            
+        console.debug("Starting !!!");
+    }
+  }
+});
+
