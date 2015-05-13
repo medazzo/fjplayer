@@ -1,12 +1,9 @@
-# README #
+# **fjplayer.js** #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+### What is fjplayer.js ###
 
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* it's a 100 %customiazble video player base on html 5 video Player
+* it's support dash sources 
 
 ### how to use fjplayer.js ###
 
