@@ -29,6 +29,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     $scope.showingVolumeBar = false ;
     $scope.usingVolumeBar = false ;    
     $scope.isPlaying = false ;
+    $scope.isVideoisAds = false ;
     $scope.isContainsSubs = false ;
     $scope.isContainsLangs = false ;
     $scope.isContainsThumbs = false ;
@@ -67,19 +68,18 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             $scope.isFullScreenSupported  = false;
         }
     };
-    $scope.fjMouseMgr  = function($event){
-      //console.debug(">>  Managing mouse move ");
-      //console.debug(">> show cursor ");      
-      $scope.isCursorHidden = false ;
-      //angular.element('body').css('cursor', 'auto');      
-      //console.debug(">> cancel previous timeout");
-      $timeout.cancel($scope.idleMouseTimer);
-      //console.debug(">> trigger a new timeout to hide cursor after 3 sec  ");
-      $scope.idleMouseTimer = $timeout(function() {
-        //angular.element('body').css('cursor', 'none');
-        $scope.isCursorHidden = true ;
-        //console.debug(">> hide cursor ");
-        }, 3000);      
+    $scope.fjMouseMgr  = function($event){  
+        if($scope.isVideoisAds == true ) {
+            $scope.isCursorHidden = true ;
+        }
+        else
+        {
+            $scope.isCursorHidden = false ;      
+            $timeout.cancel($scope.idleMouseTimer);      
+            $scope.idleMouseTimer = $timeout(function() {        
+                    $scope.isCursorHidden = true ;        
+                }, 3000);      
+        }
     };
     $scope.checkPlaylistAndStart = function(items, startIdx){
         //check
@@ -285,6 +285,8 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             $scope.$apply(function () {
                 if( (!started) && ( $scope.video.currentTime > showAt ) && ( $scope.video.currentTime < (showAt+1) ) ) { 
                     started  = true ; 
+                    if(showDuration == -1 ) // correct duration
+                        showDuration = Math.trunc($scope.video.duration);
                     StartAds();
                     // hide ads after timeout
                     refreshId = $interval( upInfo ,1000);
@@ -446,13 +448,14 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             }
 
             //setoverlays
-            //check : if Ads ; sow bar info with countdown
+            //check : if Ads ; show bar info with countdown and hide controls 
             if(this.media.class == "ads"){
-                console.debug("setTracks : Setting overlays  class > ADS ");            
-                $scope.overlays[0] = new $scope.fjOverlays( null ,0,$scope.movieTTime,true );                   
+                $scope.isVideoisAds = true ;
+                console.debug("setTracks : Setting overlays  class > ADS >");            
+                $scope.overlays[0] = new $scope.fjOverlays( null ,0,-1,true );                   
             }
             else 
-            {
+            {   $scope.isVideoisAds = false ;
                 if(this.media.overlays )
                 {   console.debug("setTracks : Setting overlays  class > Movie ",this.media.overlays.length);            
                     for (i =0; i< this.media.overlays.length ;i++) 
