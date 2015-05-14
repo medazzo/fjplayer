@@ -23,6 +23,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     $scope.PlaylistCurrentIndex = 0;
     $scope.isFullScreen = false ;
     $scope.isFullScreenSupported = true ;
+    $scope.isVideoSeeking = false ;
     $scope.moviePoster ="" ;
     $scope.status ="Loading ....";
 
@@ -625,12 +626,6 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             console.info(" PAUSE EVENT >>> on SRC  " ,e.currentTarget.currentSrc);
         });
     };
-     $scope.onPauseVideoEvt=function(e) {
-        $scope.$apply(function () {
-            $scope.isPlaying = false;
-            console.info(" PAUSE EVENT >>> on SRC  " ,e.currentTarget.currentSrc);
-        });
-    };
     $scope.onCanPlayVideoEvt=function(e) {
         $scope.$apply(function () {          
             $scope.movieTTime  = $scope.video.duration ;
@@ -674,13 +669,13 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     $scope.onErrorVideoEvt=function(e) {
         console.info(" ERROR EVENT >>> " ,e);
     };
-      $scope.onSeekingVideoEvt=function(e) {
-        $scope.videoReady = false ;
+      $scope.onSeekingVideoEvt=function(e) {        
+        $scope.isVideoSeeking = true ; 
         $scope.status ="Seeking  ....";
         console.info(" onSeekingVideoEvt EVENT >>> " ,e.currentTarget.currentSrc);
     };
-      $scope.onSeekedVideoEvt=function(e) {
-        $scope.videoReady = true ;
+      $scope.onSeekedVideoEvt=function(e) {        
+        $scope.isVideoSeeking = false ;
         console.info(" onSeekedVideoEvt EVENT >>> " ,e.currentTarget.currentSrc);
     };
     $scope.SetVideoEvents = function() {            
@@ -692,7 +687,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         $scope.video.addEventListener("timeupdate", $scope.onTimeupdateVideoEvt.bind($scope.video));
         $scope.video.addEventListener("play", $scope.onPlayVideoEvt.bind($scope.video));
         $scope.video.addEventListener("pause", $scope.onPauseVideoEvt.bind($scope.video));
-        $scope.video.addEventListener("ended", $scope.onEndedVideoEvt.bind($scope.video));
+        $scope.video.addEventListener("ended", $scope.onEndedVideoEvt.bind($scope.video));      
     };
 }]).
 filter('duration', function() {
