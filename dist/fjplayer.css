@@ -1,17 +1,25 @@
 /* spinner and animation */
 body {
 		background: black;
+	
 }
+
 .loading {
-	width:270px;
-	height:200px;
-	position:absolute;
-	left:50%;
-	top:50%;
-	margin:-75px 0 0 -135px;
-	background: black;
-    color: white;
-    font-size:0.85em;
+	position: absolute; 
+	display: table;
+	min-width: 100%; 
+	min-height: 100%; 
+	color:red;
+	font-weight: bold;
+	overflow: hidden; 
+	opacity: 0.9;
+    font-size:2em;
+    text-align: center;
+ }
+.loading-info{
+	display: table-cell;
+  	vertical-align: middle;
+  	background-size: 100%;
 }
 
 /* ---------------------- Back Button  style ------------------- */
@@ -34,11 +42,12 @@ body {
 .adInfoBlock {  		
   position: absolute;   
   color: red;
-  top: 10px;
+  font-weight: bold;
+  top: 11px;
   text-align: center;
   font-size: 15px;
   background: rgba(42,42,42,0.75);
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  box-shadow: 3px 2px 2px #888888;
   width: 100%;  
   z-index: 2147483647;
 }
@@ -124,7 +133,7 @@ body {
 	display: table-cell;
     vertical-align: top;	
 	float: left;
-	color: white;
+	color: #8F9B9E;
 	margin-left: 40%;
 	font-size: 1em;
 	display: inline-block;

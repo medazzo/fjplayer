@@ -6,7 +6,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             function ($scope,$filter,$interval,$document,$timeout,$sce,$window) {
 
     //Global
-    $scope.fjplayerTag ="Fjplayer.js"   
+    $scope.fjplayerTag ="Fjplayer "   
     $scope.tdObj ;
     $scope.tiObj ;
     $scope.pbObj ;    
@@ -23,7 +23,8 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     $scope.PlaylistCurrentIndex = 0;
     $scope.isFullScreen = false ;
     $scope.isFullScreenSupported = true ;
-    $scope.status ="Loading";
+    $scope.moviePoster ="" ;
+    $scope.status ="Loading ....";
 
     //  current playing Metadata
     $scope.videoReady = false ;
@@ -86,10 +87,16 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         $scope.playerItems = angular.fromJson(items).playlist;
         console.debug($scope.playerItems.length);
         
+        if ( $scope.playerItems.length  == 0 )
+        {
+            console.error ("No items to play !!")
+            return ;
+        }
         //settings
         if($scope.playerItems.length > 1 ){
             $scope.isPlaylist = true ;            
         } else {
+            console.debug("length of items is ", $scope.playerItems.length );
             $scope.isPlaylist = false ;            
         }
         //Evt Mge
@@ -275,6 +282,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         finished = false , 
         refreshId = null ,
         handler = null,
+        txtduration,
 
         onTmUpdate=function(e) {
             $scope.$apply(function () {
@@ -293,13 +301,15 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         trigger = function(){
             $scope.isAdsDataHidden = true ;                 
             $scope.isAdsInfoHidden = true ;
+            txtduration = $filter('duration')(showDuration);
             handler = onTmUpdate.bind($scope.video);            
             $scope.video.addEventListener("timeupdate",handler,false);            
         },
         upInfo = function(){             
                 if ( showDuration > 0 ) {
-                    $scope.AdsInfo = $sce.trustAsHtml( 'your ads will end in '+showDuration+' sec');
-                    showDuration --;        
+                    $scope.AdsInfo = $sce.trustAsHtml( 'your ads will end in '+txtduration+' sec');
+                    showDuration --; 
+                    txtduration = $filter('duration')(showDuration);       
                 }
                 else
                 {
@@ -315,7 +325,8 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         },
         StartAds = function() {
             var secTimeout = showDuration  *1000;   
-            $scope.AdsInfo =$sce.trustAsHtml( 'you ads will end in '+showDuration+' sec');         
+            txtduration = $filter('duration')(showDuration);
+            $scope.AdsInfo =$sce.trustAsHtml( 'you ads will end in '+txtduration+' sec');         
             // show ads
             if(adData != null){
                 console.debug('Data re not null ! ');
@@ -327,9 +338,9 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
                 $scope.isAdsInfoHidden = false ;
                 
             }
-            console.debug('you ads will end in '+showDuration+' sec', $scope.isAdsInfoHidden,"<<>>",$scope.isAdsInfoHidden);            
+            console.debug('you ads will end in '+txtduration+' sec', $scope.isAdsInfoHidden,"<<>>",$scope.isAdsInfoHidden);            
         };
-        console.debug("fjOverlays : overlay triggred to start @ ",showAt, " for ",showDuration, "sec ");
+        console.debug("fjOverlays : overlay triggred to start @ ",showAt, " for ",txtduration, "sec ");
         trigger();        
     };
     $scope.fjVideo= function(mediaConf){	
@@ -376,6 +387,8 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             $scope.movieBuffered = $scope.video.buffered;
             $scope.VolumeMgr.setVolume( $scope.video.volume * 100 );          
                        
+            //set poster 
+            $scope.moviePoster = this.media.poster ;           
             //set  thumbs 
             if(this.media.thumbs )
             {
@@ -461,7 +474,8 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
                                                 this.media.overlays[i].animate );                        
                     }
                 }
-            }           
+            }
+            console.debug(" Vide is an ADS >", $scope.isVideoisAds )           ;
         }
 	}; 
     $scope.goPrevPlaylist  = function () {
@@ -471,7 +485,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             $scope.isPlaying  =  false;      
             $scope.video.pause();
         }
-
+        $scope.videoReady = false;
         $scope.cleanVideoObject();
 
         if( $scope.PlaylistCurrentIndex > 0 )
@@ -491,7 +505,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             $scope.isPlaying  =  false;      
             $scope.video.pause();
         }
-
+        $scope.videoReady = false;
         $scope.cleanVideoObject();
 
         if( $scope.PlaylistCurrentIndex < ( $scope.playerItems.length - 1) ) 
@@ -584,8 +598,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         //clean Manager :fjthumb, setting menu
         delete $scope.settingMenuMgr;
         delete $scope.thumbMgr;
-        delete $scope.overlays ;
-         $scope.overlays = new Array();
+        $scope.overlays.splice(0, $scope.overlays.length) ;         
 
         //reset tags 
         $scope.isContainsSubs = false ;
@@ -619,8 +632,10 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             $scope.movieTTime  = $scope.video.duration ;
             $scope.movieCTime  = $scope.video.currentTime ;
             $scope.movieBuffered = $scope.video.buffered;
-            $scope.VolumeMgr.setVolume( $scope.video.volume * 100 );                    
+            $scope.VolumeMgr.setVolume( $scope.video.volume * 100 );   
+
             $scope.videoReady = true;
+            
             console.info(" CANPLAY EVENT >>> on SRC  " ,e.currentTarget.currentSrc);
         });        
         
@@ -657,7 +672,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     };
       $scope.onSeekingVideoEvt=function(e) {
         $scope.videoReady = false ;
-        $scope.status ="Seeking";
+        $scope.status ="Seeking  ....";
         console.info(" onSeekingVideoEvt EVENT >>> " ,e.currentTarget.currentSrc);
     };
       $scope.onSeekedVideoEvt=function(e) {
@@ -705,10 +720,10 @@ directive('fjPlayerjs',function( ) {
     templateUrl: '../dist/fjplayer-tmpl.html',
     controller: 'fjplayerCtrl'  ,  
     link: function(scope, iElement, iAttrs) { 
-        scope.prepareUI();
-        scope.checkPlaylistAndStart(iAttrs.fjplayerdesc, 0);            
-        console.debug("Starting !!!");
+            scope.prepareUI();
+            scope.checkPlaylistAndStart(iAttrs.fjplayerdesc, 0);            
+            console.debug("Starting !!!");
+        }
     }
-  }
 });
 

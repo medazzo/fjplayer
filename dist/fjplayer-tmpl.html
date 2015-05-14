@@ -1,9 +1,9 @@
 <div id="fjplayerWrapper"  ng-class="{'cursorHidden':isCursorHidden}">
-	<div class="loading" ng-hide='videoReady'>
-		<span > Forja Player {{status}} ....</span>
+	<div class="loading"  ng-hide='videoReady' ng-style="{'background-image': 'url(' + moviePoster + ')' ,'background-repeat': 'no-repeat'}">
+		<div class= "loading-info">{{fjplayerTag}} : {{status}}</div>
 	</div>
 	<div ng-show='videoReady' class="fjplayer"  ng-mousemove="fjMouseMgr($event)">
-		<video id='fjVidMain' >
+		<video id='fjVidMain' poster='{{moviePoster}}' ng-click="goPlay()" >
 		</video>
 
 		<div  id="MainControlPanel" class="fjcontrols-panel " ng-class="{'fjcontrols-hiding-transition ':isCursorHidden}"  ng-hide="isVideoisAds">
@@ -26,7 +26,7 @@
 			</div>	
 			<hr>
 			<div class="fjcontrols-panel-controls">
-				<div class="fjcontrols-control" ng-show='isPlaylist'>
+				<div class="fjcontrols-control" ng-show='isPlaylist'> 
 					<i class="glyphicon glyphicon-fast-backward btn-lg" ng-click="goPrevPlaylist()" ></i>
 				</div>
 				
