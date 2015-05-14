@@ -505,6 +505,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             $scope.isPlaying  =  false;      
             $scope.video.pause();
         }
+        $scope.status ="Loading ....";
         $scope.videoReady = false;
         $scope.cleanVideoObject();
 

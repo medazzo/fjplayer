@@ -1,5 +1,5 @@
 <div id="fjplayerWrapper"  ng-class="{'cursorHidden':isCursorHidden}">
-	<div class="loading"  ng-hide='videoReady' ng-style="{'background-image': 'url(' + moviePoster + ')' ,'background-repeat': 'no-repeat'}">
+	<div class="loading"  ng-hide='videoReady' ng-style="{'background-image': 'url(' + moviePoster + ')' ,'background-size': '100%','background-repeat': 'no-repeat','background-size':'cover'}">
 		<div class= "loading-info">{{fjplayerTag}} : {{status}}</div>
 	</div>
 	<div ng-show='videoReady' class="fjplayer"  ng-mousemove="fjMouseMgr($event)">
