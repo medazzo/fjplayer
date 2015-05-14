@@ -69,18 +69,12 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         }
     };
     $scope.fjMouseMgr  = function($event){  
-        if($scope.isVideoisAds == true ) {
-            $scope.isCursorHidden = true ;
-        }
-        else
-        {
-            $scope.isCursorHidden = false ;      
+       $scope.isCursorHidden = false ;      
             $timeout.cancel($scope.idleMouseTimer);      
             $scope.idleMouseTimer = $timeout(function() {        
                     $scope.isCursorHidden = true ;        
-                }, 3000);      
-        }
-    };
+        }, 3000);      
+   };
     $scope.checkPlaylistAndStart = function(items, startIdx){
         //check
         if ( items == null){
