@@ -3,7 +3,7 @@
 		<div class= "loading-info">{{fjplayerTag}} : {{status}}</div>
 	</div>
 	<div ng-show='videoReady' class="fjplayer"  ng-mousemove="fjMouseMgr($event)">
-		<video id='fjVidMain' poster='{{moviePoster}}' ng-click="goPlay()" >
+		<video id='fjVidMain' poster='{{moviePoster}}' ng-click="goPlay()" ng-dblclick="goFullScreen()">
 		</video>
 
 		<div  id="MainControlPanel" class="fjcontrols-panel " ng-class="{'fjcontrols-hiding-transition ':isCursorHidden}"  ng-hide="isVideoisAds">

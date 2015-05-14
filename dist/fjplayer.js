@@ -520,6 +520,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         
     };
     $scope.goFullScreen  = function () {
+        console.info(" Asking to go Full Screen");
         // If fullscreen mode is active...  
         if ($scope.isFullScreen == true ) {
             if (document.exitFullscreen)
@@ -572,6 +573,8 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         $window.history.back();
     };
     $scope.goPlay  = function () {
+        if( $scope.isVideoisAds )//not supported 
+            return ;
         if( $scope.isPlaying == true )
         {
             $scope.isPlaying  =  false;      
