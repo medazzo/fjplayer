@@ -23,6 +23,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     $scope.PlaylistCurrentIndex = 0;
     $scope.isFullScreen = false ;
     $scope.isFullScreenSupported = true ;
+    $scope.status ="Loading";
 
     //  current playing Metadata
     $scope.videoReady = false ;
@@ -531,22 +532,27 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         }     
     };
     $scope.goSeek = function ($event) {  
-        var rect = $scope.pbObj.getBoundingClientRect();
-        var p = ($event.pageX - rect.left ) * (  $scope.video.duration / (rect.right - rect.left) );
-        console.debug("seek to ", p , "sec ") ;
-        //pause
-        if( $scope.isPlaying == true )
+        if($scope.video.seekable)
         {
-            $scope.isPlaying  =  false;      
-            $scope.video.pause();
+            var rect = $scope.pbObj.getBoundingClientRect();
+            var p = ($event.pageX - rect.left ) * (  $scope.video.duration / (rect.right - rect.left) );
+            console.debug("seek to ", p , "sec ") ;
+            //pause
+            if( $scope.isPlaying == true )
+            {
+                $scope.isPlaying  =  false;      
+                $scope.video.pause();
+            }            
+            //change current time 
+            $scope.video.currentTime = p;        
+            //play
+            $scope.isPlaying  =  true;
+            $scope.video.play(); 
         }
-
-        //change current time 
-        $scope.video.currentTime = p;
-
-        //play
-        $scope.isPlaying  =  true;
-        $scope.video.play(); 
+        else
+        {
+            console.warn("seek is no supported on this video ");
+        }
     };
     $scope.goBackHistory = function (){  
         $window.history.back();
@@ -649,8 +655,19 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     $scope.onErrorVideoEvt=function(e) {
         console.info(" ERROR EVENT >>> " ,e);
     };
+      $scope.onSeekingVideoEvt=function(e) {
+        $scope.videoReady = false ;
+        $scope.status ="Seeking";
+        console.info(" onSeekingVideoEvt EVENT >>> " ,e.currentTarget.currentSrc);
+    };
+      $scope.onSeekedVideoEvt=function(e) {
+        $scope.videoReady = true ;
+        console.info(" onSeekedVideoEvt EVENT >>> " ,e.currentTarget.currentSrc);
+    };
     $scope.SetVideoEvents = function() {            
         $scope.video.addEventListener("error", $scope.onErrorVideoEvt.bind($scope.video));
+        $scope.video.addEventListener("seeking", $scope.onSeekingVideoEvt.bind($scope.video));
+        $scope.video.addEventListener("seeked", $scope.onSeekedVideoEvt.bind($scope.video));
         $scope.video.addEventListener("canplay", $scope.onCanPlayVideoEvt.bind($scope.video));
         $scope.video.addEventListener("loadeddata", $scope.onLoadeddataVideoEvt.bind($scope.video));
         $scope.video.addEventListener("timeupdate", $scope.onTimeupdateVideoEvt.bind($scope.video));

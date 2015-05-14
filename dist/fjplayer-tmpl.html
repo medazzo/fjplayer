@@ -1,6 +1,6 @@
 <div id="fjplayerWrapper"  ng-class="{'cursorHidden':isCursorHidden}">
 	<div class="loading" ng-hide='videoReady'>
-		<span > Forja Player Loading ....</span>
+		<span > Forja Player {{status}} ....</span>
 	</div>
 	<div ng-show='videoReady' class="fjplayer"  ng-mousemove="fjMouseMgr($event)">
 		<video id='fjVidMain' >
