@@ -27,6 +27,9 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     $scope.moviePoster ="" ;
     $scope.status ="Loading ....";
 
+    //dash
+    $scope.dash_context =  null;
+    $scope.dash_player  =  null;
     //  current playing Metadata
     $scope.videoReady = false ;
     $scope.showingVolumeBar = false ;
@@ -352,9 +355,9 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             if(this.media.type == 'dash')
             {
                 console.debug("Startup for Dash ");
-    		    this.context =  new Dash.di.DashContext();
-    			this.player  =  new MediaPlayer(this.context);		
-    			this.player.startup();
+    		    $scope.dash_context =  new Dash.di.DashContext();
+    			$scope.dash_player  =  new MediaPlayer($scope.dash_context);		
+    			$scope.dash_player.startup();
             }
             else
             {
@@ -369,10 +372,10 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             if(this.media.type == 'dash')
             {
                 console.debug("View for Dash ");
-    			this.player.attachView($scope.video);
-    			this.player.setAutoPlay(true);
-    			this.player.attachSource(this.media.src);
-    			this.player.setAutoSwitchQuality(true);	
+    			$scope.dash_player.attachView($scope.video);
+    			$scope.dash_player.setAutoPlay(true);
+    			$scope.dash_player.attachSource(this.media.src);
+    			$scope.dash_player.setAutoSwitchQuality(true);	
             }
             else
             {
@@ -603,6 +606,10 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         //clean Manager :fjthumb, setting menu
         delete $scope.settingMenuMgr;
         delete $scope.thumbMgr;
+        //dash
+        $scope.dash_context =  null;
+        $scope.dash_player  =  null;
+        //overlays
         $scope.overlays.splice(0, $scope.overlays.length) ;         
 
         //reset tags 
