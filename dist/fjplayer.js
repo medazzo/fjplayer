@@ -1,4 +1,4 @@
-
+/*@license fjplayer v0.0.9 | (c) 20015, 2025 Forja Inc. | zarda.tv/license */
 'use strict';
 
 angular.module('fjplayer', []).
@@ -394,8 +394,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             //set poster 
             $scope.moviePoster = this.media.poster ;           
             //set  thumbs 
-            if(this.media.thumbs )
-            {
+            if(this.media.thumbs ){
                 console.debug("setTracks : Setting thumbs ");
                 $scope.thumbMgr = new $scope.fjThumbs( $scope.tiObj, $scope.tdObj , $scope.pbObj);
                 //
@@ -405,8 +404,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
                 $scope.video.appendChild(track); 
             }
             //set  subs 
-            if(this.media.substitles )
-            {
+            if(this.media.substitles ){
                 console.debug("setTracks : Setting substitles  ",this.media.substitles.length );
                 for (i =0; i< this.media.substitles.length ;i++) 
                 {
