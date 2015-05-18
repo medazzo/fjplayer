@@ -20,6 +20,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
     $scope.thumbMgr;
     $scope.overlays = new Array();
     $scope.isPlaylist = false ;
+    $scope.isPlaylistLoop = false ;
     $scope.PlaylistCurrentIndex = 0;
     $scope.isFullScreen = false ;
     $scope.isFullScreenSupported = true ;
@@ -88,6 +89,7 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
             console.error(items);
         }
         //get conf
+        $scope.isPlaylistLoop = angular.fromJson(items).loop;
         $scope.playerItems = angular.fromJson(items).playlist;
         console.debug($scope.playerItems.length);
         
@@ -490,10 +492,16 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         $scope.videoReady = false;
         $scope.cleanVideoObject();
 
-        if( $scope.PlaylistCurrentIndex > 0 )
+        if( $scope.PlaylistCurrentIndex > 0 ) {
             $scope.PlaylistCurrentIndex -- ;        
-        else 
+        }
+        else {
             $scope.PlaylistCurrentIndex  = ( $scope.playerItems.length - 1) ;        
+            if ($scope.isPlaylistLoop == false){
+                goBackHistory();
+                return ;
+            }
+        }
 
         console.debug("Going Prev ",$scope.PlaylistCurrentIndex , "/" ,$scope.playerItems.length -1);   
         $scope.medias[$scope.PlaylistCurrentIndex].Startup();
@@ -511,10 +519,16 @@ controller('fjplayerCtrl', ['$scope' ,'$filter','$interval','$document' ,'$timeo
         $scope.videoReady = false;
         $scope.cleanVideoObject();
 
-        if( $scope.PlaylistCurrentIndex < ( $scope.playerItems.length - 1) ) 
+        if( $scope.PlaylistCurrentIndex < ( $scope.playerItems.length - 1) ) {
             $scope.PlaylistCurrentIndex ++ ;
-        else
+        }
+        else {
             $scope.PlaylistCurrentIndex  = 0 ;
+            if ($scope.isPlaylistLoop == false){
+                goBackHistory();
+                return ;
+            }
+        }
         
         console.debug("Going Next ",$scope.PlaylistCurrentIndex ,"/", $scope.playerItems.length -1);
         $scope.medias[$scope.PlaylistCurrentIndex].Startup();
