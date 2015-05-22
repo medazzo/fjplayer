@@ -735,7 +735,7 @@ directive('fjPlayerjs',function( ) {
     scope: {
       fjplayerdesc: '@'
     },
-    templateUrl: '../dist/fjplayer-tmpl.html',
+    templateUrl: '/bower_components/fjplayer/dist/fjplayer-tmpl.html',
     controller: 'fjplayerCtrl'  ,  
     link: function(scope, iElement, iAttrs) { 
             scope.prepareUI();
