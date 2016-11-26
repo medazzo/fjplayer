@@ -1,0 +1,111 @@
+<div id="fjplayerWrapper"  ng-class="{'cursorHidden':isCursorHidden}">
+	
+	<div class="fjplayer"  ng-mousemove="fjMouseMgr($event)">
+	
+		<div class="loading"  ng-show='!videoReady || isVideoSeeking' ng-style="{'background-image': 'url(' + moviePoster + ')' ,'background-size': '100%','background-repeat': 'no-repeat','background-size':'cover'}">
+			<div class= "loading-info">{{fjplayerTag}} : {{status}}</div>
+		</div>
+
+		<video id='fjVidMain'  ng-hide='!videoReady || isVideoSeeking' poster='{{moviePoster}}' ng-click="goPlay()" ng-dblclick="goFullScreen()">
+		</video>
+
+		<div  id="MainControlPanel" ng-hide='!videoReady ||isVideoisAds' class="fjcontrols-panel " ng-class="{'fjcontrols-hiding-transition ':isCursorHidden}" >
+			<div class=" fjcontrols-panel-controls" ng-hide='showingVolumeBar'>
+				<div id="hprogressbar" 
+							ng-click="goSeek($event)"
+							ng-mouseleave="thumbMgr.goHideThumbs()" 
+							ng-mousemove="thumbMgr.goRenderThumbs($event)"
+							ng-mouseover="thumbMgr.goShowThumbs()" >
+			    	<div ng-style="{ 'width': prgressPercentage + '%' }"></div>
+			    </div> 	
+			</div>    	    
+			<div class=" fjcontrols-panel-controls" ng-show='showingVolumeBar'>
+				<div id="vprogressbar"						
+						ng-mouseleave="VolumeMgr.goHideVolumeBar()"
+						ng-mouseover="VolumeMgr.goUseVolumeBar()"
+						ng-mousemove="VolumeMgr.setVolumeProgressLevel($event)" >
+			    	<div    ng-style="{ 'width': volumePercentage + '%' }"  ng-mouseover="VolumeMgr.goShowVolumeBar()"  ></div>
+			    </div>
+			</div>	
+			<hr>
+			<div class="fjcontrols-panel-controls">
+				<div class="fjcontrols-control" ng-show='isPlaylist'> 
+					<i class="glyphicon glyphicon-fast-backward btn-lg" ng-click="goPrevPlaylist()" ></i>
+				</div>
+				
+				<div class="fjcontrols-control">
+					<i class="glyphicon  btn-lg"  ng-click="goPlay()"  ng-class="{true:'glyphicon-pause', false: 'glyphicon-play'}[isPlaying]"></i>
+				</div>		
+
+				<div class="fjcontrols-control" ng-show='isPlaylist'>
+					<i class="glyphicon glyphicon-fast-forward btn-lg"  ng-click="goNextPlaylist()"></i>
+				</div>
+				
+				<div  class="fjcontrols-control fjcontrols-control-text">
+					<span>   {{ movieTitle }} </span>
+				</div>	
+				
+				<div  class="fjcontrols-control fjcontrols-control-right" ng-show='isFullScreenSupported'>
+					<i class="glyphicon btn-lg"  ng-click="goFullScreen()" ng-class="{true:'glyphicon-resize-small', false: 'glyphicon-resize-full'}[isFullScreen]"></i>
+				</div>		
+				
+				<div  class="fjcontrols-control fjcontrols-control-right" ng-show='isContainsSubs || isContainsLangs'>
+					<i id="subsBtnId" class="glyphicon glyphicon-cog btn-lg"  ng-click="SettingMenuMgr.goSettingMenu()" ></i>
+				</div>
+				
+				<div  class="fjcontrols-control fjcontrols-control-right" 
+							ng-mouseleave="VolumeMgr.goShowProgressBar()"
+	         				ng-mouseover="VolumeMgr.goShowVolumeBar()"
+	         				ng-click="VolumeMgr.goMuteVolume()" >
+					<i class="glyphicon btn-lg"
+					 ng-class="{'glyphicon-volume-up': VolLevelUp, 'glyphicon-volume-down': VolLevelDown, 'glyphicon-volume-off': VolLevelOff }"></i>
+			    </div>						
+				<div  class="fjcontrols-control fjcontrols-control-right fjcontrols-control-text fjcontrols-control-text-small">
+					<span id="ctime">{{ movieCTime | duration }}</span>
+					<span>/</span>
+					<span id="ttime">{{ movieTTime | duration }}</span>
+				</div>		
+			</div>
+		</div>
+		<!-- setting menu -->
+		<div   ng-show='isContainsSubs || isContainsLangs' class="settingMenuDiv" id="settingMenuDiv">
+			<div class="settingMenuSubMenuLeft"  id="settingMenuCC" ng-show='isContainsSubs'>
+				sub :
+				<ul class="subtitles-menu" >
+					<li ng-repeat="sub in tracksArray.subs">
+						<div  ng-click='SettingMenuMgr.setSubs(sub.index)' 
+							ng-class="{true:'subtitles-menu-item-actif', false: 'subtitles-menu-item'}[sub.actif]" > {{sub.label}} 
+						</div>
+					</li>
+				</ul>	
+			</div>
+			<div class="settingMenuSubMenuRight"  id="settingMenulang" ng-show='isContainsLangs'>
+				audio :
+				<ul  class="subtitles-menu">
+					<li ng-repeat="audio in tracksArray.audio">
+						<div  ng-click='SettingMenuMgr.setAudio(audio.index)' 
+							ng-class="{true:'subtitles-menu-item-actif', false: 'subtitles-menu-item'}[audio.actif]" > {{audio.label}} 
+						</div>
+						</li>
+				</ul>	
+			</div>
+		</div>
+		<!-- thumbs -->
+		<div  ng-show='isContainsThumbs' class="thumbsBlockDiv" id="thumbDiv">
+			<span class="thumbsBlock"  id="thumbImgBlock" ></span>	
+			<span class="thumbsBlockTime"  id="current" >{{thumbTime | duration}}</span>
+		</div>
+		<!-- BACK Btn -->
+		<div ng-hide='!videoReady' class="backButtonBlock" ng-class="{'fjcontrols-hiding-transition ':isCursorHidden}" ng-click="goBackHistory()">
+			<i class="glyphicon btn-lg glyphicon-arrow-left"></i>
+		</div>
+		<!-- ADS -->
+		 <div id="ad_data" class="adDataBlock ad-hiding-transition" ng-hide='isAdsDataHidden'>
+		 	<p ng-bind-html="AdsData"></p>
+		 </div>  
+		 <div id="ad_info" class="adInfoBlock" ng-hide='isAdsInfoHidden'>
+		 	<p ng-bind-html="AdsInfo"></p>
+	 	</div>
+
+	</div>
+</div>	
