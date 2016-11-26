@@ -140,7 +140,10 @@
 
 
 
-### Who do I talk to? ###
+### how to install ###
 
-* Repo owner or admin
-* Other community or team contact
+* install node and npm
+* on terminal : $cd fjplayer
+* on terminal : $npm install
+* on terminal : $npm start
+* on browser  : open http://localhost:8000/demo

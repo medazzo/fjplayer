@@ -1,4 +1,3 @@
-/*@license fjplayer v0.0.9 | (c) 20015, 2025 Forja Inc. | zarda.tv/license */
 'use strict';
 
 angular.module('fjplayer', []).
