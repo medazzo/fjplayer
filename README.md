@@ -14,14 +14,8 @@
 ```
 #!html
 
-	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css ">
-	<link rel="stylesheet" href="../dist/fjplayer.css">
-	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
-	<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script src="../bower_components/angular/angular.min.js"></script>
-	<script type="text/javascript" src="../utils/base64.js"></script> 
-	<script type="text/javascript" src="../utils/dash.debug.js"></script> 
-	<script type="text/javascript" src="../dist/fjplayer.js"></script>
+ <link rel="stylesheet" href="../dist/fjplayer.all.css">
+ <script type="text/javascript" src="../dist/fjplayer.all.js"></script>
 ```
 
 ###  guidelines : your javascript ###
