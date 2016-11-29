@@ -2,6 +2,14 @@
   angular.module('demodir', ['fjplayer'])
       .
   controller('playerdemoCtrl', ['$scope', function($scope) {
+      $scope.getLength = function(arr) {
+          if (arr == undefined)
+              return 0;
+          else if (arr.length == undefined)
+              return 0;
+          else
+              return arr.length
+      };
       $scope.getNumber = function(num) {
           return new Array(num);
       };
