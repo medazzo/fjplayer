@@ -2,6 +2,7 @@
   angular.module('demodir', ['fjplayer'])
       .
   controller('playerdemoCtrl', ['$scope', function($scope) {
+
       $scope.getLength = function(arr) {
           if (arr == undefined)
               return 0;
@@ -15,11 +16,32 @@
       };
       $scope.onReset = function() {
           console.log("resetting playlist !!");
-          $scope.myvideodesc = $scope.myvideodescdefault;
+          $scope.fjLoop = $scope.myvideodescdefault.fjLoop;
+          $scope.fjAppId = $scope.myvideodescdefault.fjAppId;
+          $scope.items = $scope.myvideodescdefault.playlist;
       };
       $scope.PlayMe = function() {
           console.log("going to player !!");
-          window.open("player.html", "_self");
+          $scope.myvideodesc.fjLoop = $scope.fjLoop;
+          $scope.myvideodesc.fjAppId = $scope.fjAppId;
+          $scope.myvideodesc.playlist = $scope.items;
+          console.warn($scope.myvideodesc);
+          //window.open("player.html", "_self");
+      };
+      $scope.removeItem = function(item) {
+          console.log("remove item  !!", item);
+          var index = $scope.items.indexOf(item)
+          $scope.items.splice(index, 1);
+      };
+      $scope.removeSubs = function(item, sub) {
+          console.log("remove subs  !!", sub);
+          var ix = item.substitles.indexOf(sub)
+          item.substitles.splice(ix, 1);
+      };
+      $scope.removeOvers = function(item, over) {
+          console.log("remove over  !!", over);
+          var ix = item.overlays.indexOf(over)
+          item.overlays.splice(ix, 1);
       };
       /**  
       	.thumbs : 	if this option is not there , means there is no thumbs to show  ,thumbs are based on webvtt 
@@ -30,8 +52,8 @@
       			
       */
       $scope.myvideodescdefault = {
-          'loop': 'true',
-          'appID': '354687435468dfg73fd4g6f8d7h3fdg1he9t65',
+          'fjLoop': 'true',
+          'fjAppId': '354687435468dfg73fd4g6f8d7h3fdg1he9t65',
           'playlist': [{
               'class': 'ads',
               'type': 'video/mp4',
@@ -55,7 +77,7 @@
                   'data': '<div onclick="window.open(\'http://www.google.com\',\'_blank\')" style="cursor:pointer;"> <img src="img/2000px-Smiley.svg.png" alt="Smiley face" width="100" height="20"> Your ADS is Here; clikc to go to google !</div> ',
                   'showAt': 15,
                   'duration': 5,
-                  'animate': false
+                  'animate': 'false'
               }]
           }, {
               'class': 'ads',
@@ -87,7 +109,7 @@
                   'data': '<div onclick="location.href=\'http://www.google.com\';" style="cursor:pointer;"> <img src="img/2000px-Smiley.svg.png" alt="Smiley face" width="20" height="30"> Your ADS is Here; clikc to go to google !</div> ',
                   'showAt': 5,
                   'duration': 5,
-                  'animate': true
+                  'animate': 'true'
 
               }]
           }, {
@@ -99,6 +121,10 @@
           }]
       };
 
-
       $scope.myvideodesc = $scope.myvideodescdefault;
+      $scope.fjLoop = $scope.myvideodescdefault.fjLoop;
+      $scope.fjAppId = $scope.myvideodescdefault.fjAppId;
+      $scope.items = $scope.myvideodescdefault.playlist;
+      $scope.myvideodesc = $scope.myvideodescdefault;
+
   }]);

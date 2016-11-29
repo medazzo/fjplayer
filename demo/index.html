@@ -28,8 +28,8 @@
     </script>
 </head>
 
-<body ng-app="demodir" ng-controller="playerdemoCtrl">
-    <div class="container bootstrap ">
+<body ng-app="demodir" ng-controller="playerdemoCtrl" class="container">
+    <div class=" bootstrap ">
         <div class="row">
 
             <h1>Playlist </h1>
@@ -51,21 +51,23 @@
                             <div class="col-sm-3">
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" ng-model="myvideodesc.loop" ng-true-value="'true'" ng-false-value="'false'" > 
+                                        <input class="form-check-input" type="checkbox" ng-model="fjLoop" 
+                                        ng-true-value="'true'" ng-false-value="'false'" > 
                                     </label>
                                 </div>
                             </div>
                             <div class="col-sm-5"></div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-xs-4 col-form-label">AppID</label>
+                            <label class="col-xs-4 col-form-label">fjAppID</label>
                             <div class="col-xs-8">
-                                <input class="form-control" type="text" value="{{myvideodesc.appID}}">
+                                <input class="form-control" type="text" ng-model="fjAppId">
                             </div>
                         </div>
-                        <div ng-repeat=" item in myvideodesc.playlist ">
+                        <div ng-repeat=" item in items ">
                             <div class="col-xs-1">
-                                <h4> {{ $index }}</h4>
+                                <button class=" btn header-btn " ng-click="removeItem(item)">
+                                    <i class="fa fa-minus"></i>  </button>
                             </div>
                             <div class="col-xs-11">
                                 <hr class=" row">
@@ -108,8 +110,11 @@
                                 <div class="form-group raw">
                                     <label class="col-xs-4 col-form-label">Subtitles <span class="badge"> {{ getLength(item.substitles) }}</span></label>
                                     <div class="col-xs-8">
-                                        <div ng-repeat=" sub in item.substitles">
-                                            <hr class=" row">
+                                        <div ng-repeat=" sub in item.substitles" class=" row">
+                                            <div class="form-group row">
+                                                <button class="col-xs-4  btn header-btn " ng-click="removeSubs(item , sub)">
+                                                    <i class="fa fa-minus"></i>  </button>
+                                            </div>
                                             <div class="form-group row">
                                                 <label class="col-xs-4 col-form-label">Label</label>
                                                 <div class="col-xs-8">
@@ -135,7 +140,10 @@
                                     <label class="col-xs-4 col-form-label">Overlays <span class="badge"> {{ getLength(item.overlays) }}</span></label>
                                     <div class="col-xs-8">
                                         <div ng-repeat=" overlay in item.overlays">
-                                            <hr class=" row">
+                                            <div class="form-group row">
+                                                <button class="col-xs-4  btn header-btn " ng-click="removeOvers(item , overlay)">
+                                                    <i class="fa fa-minus"></i>  </button>
+                                            </div>
                                             <div class="form-group row">
                                                 <label class="col-xs-4 col-form-label">Data Html</label>
                                                 <div class="col-xs-8">
