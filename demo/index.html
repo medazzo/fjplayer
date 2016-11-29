@@ -1,113 +1,231 @@
-<!DOCTYPE html>
+<!DOCTYPE>
 <html>
 
 <head>
-    <!DOCTYPE HTML>
-    <html>
 
-    <head>
-        <title>fjplayer.js</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script>
+        jQuery(document).ready(function() {
+            jQuery('#subsMgt').on('click', '#hideshowSubs', function() {
+                jQuery('#SubsContent').toggle('show');
 
-        <link rel="stylesheet" href="../dist/fjplayer.all.css">
-        <script type="text/javascript" src="../dist/fjplayer.all.js"></script>
+            });
 
-        <script type='text/javascript'>
-            /*
-                                                            																																																																														http://dash.edgesuite.net/envivio/dashpr/clear/Manifest.mpd
-                                                            																																																																														http://www.digitalprimates.net/dash/streams/gpac/mp4-main-multi-mpd-AV-NBS.mpd
-                                                            																																																																														http://www.digitalprimates.net/dash/streams/mp4-live-template/mp4-live-mpd-AV-BS.mpd
-                                                            																																																																														http://dash.edgesuite.net/dash264/TestCases/3b/sony/SNE_DASH_CASE3B_SD_REVISED.mpd
-                                                            																																																																														http://dash.edgesuite.net/dash264/TestCases/4b/qualcomm/3/Solekai.mpd ->
-                                                            																																																																														http://dash.edgesuite.net/akamai/test/caption_test/ElephantsDream/elephants_dream_480p_heaac5_1.mpd -->caption
-                                                            																																																																														http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd --> complete 
-                                                            																																																																														*/
-            'use strict';
-            angular.module('demodir', ['fjplayer'])
-                .
-            controller('playerdemoCtrl', ['$scope', function($scope) {
+            jQuery('#oversMgt').on('click', '#hideshowOvers', function() {
+                jQuery('#OversContent').toggle('show');
 
-                /**  
-                	.thumbs : 	if this option is not there , means there is no thumbs to show  ,thumbs are based on webvtt 
-                							>We can use https://github.com/vlanard/videoscripts to generate webvtt with thumbnail sprites jpg
+            });
+        });
+    </script>
+</head>
 
-                	.substitles: option used to add subs more than eixtsing in the mpd or in the video stream from vtt files 
-                	.overlays :	this overlay may be used for ads or push info any thing other when a movie is playing 
-                			
-                */
-                $scope.myvideodesc = {
-                    'loop': 'true',
-                    'playlist': [{
-                        'class': 'ads',
-                        'type': 'video/mp4',
-                        'title': 'Ikea  Ads ',
-                        'poster': 'img/cap-ame.jpg',
-                        'src': 'videos/ikea-twins.mp4'
-                    }, {
+<body>
+    <div class="container bootstrap ">
+        <div class="row">
+            <div class="col-md-6">
+                <h1>Playlist </h1>
+            </div>
+            <!-- center left-->
+            <div class="col-md-6">
+                <div class="panel panel-default">
 
-                        'class': 'movie',
-                        'type': 'video/mp4',
-                        'title': 'sentinel Movie mp4 ',
-                        'poster': 'img/cap-ame.jpg',
-                        'src': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
-                        'thumbs': 'vtt/thumbs.vtt',
-                        'substitles': [{
-                            'label': 'English',
-                            'srclang': 'en',
-                            'src': 'vtt/sintel-en.vtt'
-                        }, ],
-                        'overlays': [{
-                            'data': '<div onclick="window.open(\'http://www.google.com\',\'_blank\')" style="cursor:pointer;"> <img src="img/2000px-Smiley.svg.png" alt="Smiley face" width="100" height="20"> Your ADS is Here; clikc to go to google !</div> ',
-                            'showAt': 15,
-                            'duration': 5,
-                            'animate': false
-                        }]
-                    }, {
-                        'class': 'ads',
-                        'type': 'video/mp4',
-                        'title': 'Berber  funny Ads ',
-                        'poster': 'img/berber.jpg',
-                        'src': 'videos/berber_pub.mp4'
-                    }, {
-                        'class': 'movie',
-                        'title': 'Sentinel Dash with multi subs natives, added vtt and thumbs',
-                        'type': 'dash',
-                        'poster': 'img/sintel.jpg',
-                        'src': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd',
-                        'thumbs': 'vtt/thumbs.vtt',
-                        'substitles': [{
-                            'label': 'English',
-                            'srclang': 'en',
-                            'src': 'vtt/sintel-en.vtt'
-                        }, {
-                            'label': 'Español',
-                            'srclang': 'es',
-                            'src': 'vtt/sintel-es.vtt'
-                        }, {
-                            'label': 'Deutsch',
-                            'srclang': 'de',
-                            'src': 'vtt/sintel-de.vtt'
-                        }],
-                        'overlays': [{
-                            'data': '<div onclick="location.href=\'http://www.google.com\';" style="cursor:pointer;"> <img src="img/2000px-Smiley.svg.png" alt="Smiley face" width="20" height="30"> Your ADS is Here; clikc to go to google !</div> ',
-                            'showAt': 5,
-                            'duration': 5,
-                            'animate': true
+                    <div class="panel-heading">
+                        <div class="row">
+                            <span class=" col-xs-2"></span>
+                            <a class=" col-xs-8 btn-fj btn header-btn "> New Item</a>
+                            <span class=" col-xs-2"></span>
+                        </div>
+                    </div>
 
-                        }]
-                    }, {
-                        'class': 'ads',
-                        'type': 'video/mp4',
-                        'title': 'Mercedes',
-                        'poster': 'img/dr2.jpg',
-                        'src': 'videos/mercedes.mp4'
-                    }]
-                };
-            }]);
-        </script>
-    </head>
+                    <div class="panel-body">
+                        <form>
+                            <div class="form-group row">
+                                <label class="col-xs-3 col-form-label">Title</label>
+                                <div class="col-xs-8">
+                                    <input class="form-control" type="text" value="Artisanal kale" id="titlet">
+                                </div>
+                                <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                            </div>
 
-    <body ng-app='demodir' ng-controller='playerdemoCtrl'>
-        <fj-playerjs fjplayerdesc='{{myvideodesc}}'></fj-playerjs>
-    </body>
+                            <hr class=" row">
 
-    </html>
+                            <div class="form-group row">
+                                <label class="col-xs-3 col-form-label">URL src</label>
+                                <div class="col-xs-8">
+                                    <input class="form-control" type="url" value="http://getbootstrap.com" id="srcurl">
+                                </div>
+                                <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-xs-3 col-form-label">Poster src</label>
+                                <div class="col-xs-8">
+                                    <input class="form-control" type="url" value="http://getbootstrap.com" id="posterurl">
+                                </div>
+                                <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-xs-3 col-form-label">Thuubs src</label>
+                                <div class="col-xs-8">
+                                    <input class="form-control" type="url" value="http://getbootstrap.com" id="thumbsurl">
+                                </div>
+                                <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                            </div>
+
+                            <hr class=" row">
+
+                            <div id="subsMgt" class="form-group row">
+                                <label class="col-xs-3 col-form-label">Subtitles</label>
+                                <div class="col-xs-8">
+                                    <input type="button" id="hideshowSubs" class=" header-btn " value="Add Subs"> </input>
+                                    <div id="SubsContent" style="display: none;">
+                                        <hr class=" row">
+                                        <div class="form-group row">
+                                            <label class="col-xs-3 col-form-label">Label</label>
+                                            <div class="col-xs-8">
+                                                <input class="form-control" type="text" value="Artisanal kale" id="subLaber">
+                                            </div>
+                                            <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xs-3 col-form-label"> src</label>
+                                            <div class="col-xs-8">
+                                                <input class="form-control" type="url" value="http://getbootstrap.com" id="srcurlsub">
+                                            </div>
+                                            <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-xs-3 col-form-label">src Lang</label>
+                                            <label class="form-check-inline col-sm-2">
+                                                <input class="form-check-input" type="radio" name="TargetRadioOptions" id="SubLangFr" value="targAds" checked> fr
+                                            </label>
+                                            <label class="form-check-inline col-sm-2">
+                                                <input class="form-check-input" type="radio" name="TargetRadioOptions" id="SubLangEn" value="targVod">en
+                                            </label>
+                                            <label class="form-check-inline col-sm-2">
+                                                <input class="form-check-input" type="radio" name="TargetRadioOptions" id="SubLangDe" value="targVod">de
+                                            </label>
+                                            <label class="form-check-inline col-sm-2">
+                                                <input class="form-check-input" type="radio" name="TargetRadioOptions" id="SubLangEs" value="targVod">es
+                                            </label>
+                                            <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                                        </div>
+
+                                        <div class="form-inline form-group  row ">
+                                            <div class="col-xs-2"></div>
+                                            <button type="submit" class=" col-XS-8 btn header-btn "><i class="fa fa-plus"></i>  Add</button>
+                                            <div class="col-XS-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                            </div>
+                            <hr class=" row">
+
+                            <div id="oversMgt" class="form-group row">
+                                <label class="col-xs-3 col-form-label">Overlays</label>
+                                <div class="col-xs-8">
+                                    <input type="button" id="hideshowOvers" class=" header-btn " value="Add Overs"> </input>
+
+                                    <div id="OversContent" style="display: none;">
+                                        <hr class=" row">
+                                        <div class="form-group row">
+                                            <label class="col-xs-3 col-form-label">Html </label>
+                                            <div class="col-xs-8">
+                                                <input class="form-control" type="text" value="<div>..</div>" id="OverlaysHtmldata">
+                                            </div>
+                                            <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xs-3 col-form-label"> show at </label>
+                                            <div class="col-xs-8">
+                                                <input type="number" name="when to show" id="secondsShowOvers" min="0" max="60">
+                                            </div>
+                                            <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xs-3 col-form-label"> Duration </label>
+                                            <div class="col-xs-8">
+                                                <input type="number" name="when to show" id="durationShowOvers" min="0" max="60">
+                                            </div>
+                                            <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-xs-3 col-form-label">Animate</label>
+                                            <div class="col-sm-3">
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="overAnimate" value="animate"> 
+                                                     </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-5"></div>
+                                            <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                                        </div>
+
+                                        <div class="form-inline form-group  row ">
+                                            <div class="col-xs-2"></div>
+                                            <button type="submit" class=" col-XS-8 btn header-btn "><i class="fa fa-plus"></i>  Add</button>
+                                            <div class="col-XS-2"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                            </div>
+
+                            <hr class=" row">
+
+                            <div class="form-group row">
+                                <label class="col-xs-3 col-form-label">Media Class</label>
+                                <label class="form-check-inline col-sm-3">
+                                    <input class="form-check-input" type="radio" name="TargetRadioOptions" id="targAdsId" value="targAds" checked> Ads
+                                </label>
+                                <label class="form-check-inline col-sm-3">
+                                    <input class="form-check-input" type="radio" name="TargetRadioOptions" id="targVodId" value="targVod">Vod
+                                </label>
+                                <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                            </div>
+
+
+                            <hr class=" row">
+
+
+                            <div class="form-group row">
+                                <label class="col-xs-3 col-form-label">Media Type</label>
+                                <label class="form-check-inline col-sm-3">
+                                    <input class="form-check-input" type="radio" name="TypeRadioOptions" id="typeMp4Id" value="typeMp4" checked> movie/mp4
+                                </label>
+                                <label class="form-check-inline col-sm-3">
+                                    <input class="form-check-input" type="radio" name="TypeRadioOptions" id="typeDashId" value="typeDash">dash
+                                </label>
+                                <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                            </div>
+
+
+                            <hr class=" row">
+                        </form>
+
+                    </div>
+                    <!--/panel-body-->
+                    <div class="panel-footer" *ngIf="selectedStream">
+                        <div class="form-inline form-group  row ">
+                            <div class="col-xs-2"></div>
+                            <button type="submit" class=" col-XS-8 btn header-btn "><i class="fa fa-plus"></i>  Add</button>
+                            <div class="col-XS-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/row-->
+    </div>
+    <!-- /container -->
+</body>
+
+</html>
