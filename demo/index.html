@@ -2,12 +2,19 @@
 <html>
 
 <head>
-
+    <title>fjplayer demo</title>
+    <link rel="stylesheet" href="../dist/fjplayer.all.css">
+    <script type="text/javascript" src="../dist/fjplayer.all.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="./fjdemo.js"></script>
     <script>
         jQuery(document).ready(function() {
+            $('#ParentContainer').scroll(function() {
+                $('#FixedDiv').css('top', $(this).scrollTop());
+            });
+
             jQuery('#subsMgt').on('click', '#hideshowSubs', function() {
                 jQuery('#SubsContent').toggle('show');
 
@@ -21,15 +28,94 @@
     </script>
 </head>
 
-<body>
+<body ng-app="demodir" ng-controller="playerdemoCtrl">
     <div class="container bootstrap ">
         <div class="row">
-            <div class="col-md-6">
-                <h1>Playlist </h1>
+
+            <h1>Playlist </h1>
+            <hr class=" row">
+            <div class="col-md-7">
+                <div class="panel panel-default">
+
+                    <div class="panel-heading">
+                        <div class="row">
+                            <span class=" col-xs-2"></span>
+                            <a class=" col-xs-8 btn-fj btn header-btn "> Current Playlist </a>
+                            <span class=" col-xs-2"></span>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="form-group row">
+                            <label class="col-xs-4 col-form-label">Looping </label>
+                            <div class="col-sm-3">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" id="overAnimate" value="looping" checked="{{myvideodesc.loop}}" readonly> 
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-xs-4 col-form-label">AppID</label>
+                            <div class="col-xs-8">
+                                <input class="form-control" type="text" value="{{myvideodesc.appID}}" readonly>
+                            </div>
+                        </div>
+                        <div ng-repeat=" n in getNumber(myvideodesc.playlist.length) track by $index">
+                            <div class="col-xs-1">
+                                <h4> {{ $index }}</h4>
+                            </div>
+                            <div class="col-xs-11">
+                                <hr class=" row">
+                                <div class="form-group row">
+                                    <label class="col-xs-4 col-form-label">Title</label>
+                                    <div class="col-xs-8">
+                                        <input class="form-control" type="text" value="{{myvideodesc.playlist[$index].title}}" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xs-4 col-form-label">Class</label>
+                                    <div class="col-xs-8">
+                                        <input class="form-control" type="text" value="{{myvideodesc.playlist[$index].class}}" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xs-4 col-form-label">Type</label>
+                                    <div class="col-xs-8">
+                                        <input class="form-control" type="text" value="{{myvideodesc.playlist[$index].type}}" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xs-4 col-form-label">URL src</label>
+                                    <div class="col-xs-8">
+                                        <input class="form-control" type="url" value="{{myvideodesc.playlist[$index].src}}" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xs-4 col-form-label">Poster src</label>
+                                    <div class="col-xs-8">
+                                        <input class="form-control" type="url" value="{{myvideodesc.playlist[$index].poster}}" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xs-4 col-form-label">Thumbs src</label>
+                                    <div class="col-xs-8">
+                                        <input class="form-control" type="url" value="{{myvideodesc.playlist[$index].thumbs}}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class=" row">
+                    </div>
+                    <div class="panel-footer">
+                    </div>
+                </div>
             </div>
             <!-- center left-->
-            <div class="col-md-6">
-                <div class="panel panel-default">
+            <div class="col-md-5">
+                <div class="panel panel-default" style="position: fixed;">
 
                     <div class="panel-heading">
                         <div class="row">
@@ -182,7 +268,7 @@
                             <hr class=" row">
 
                             <div class="form-group row">
-                                <label class="col-xs-3 col-form-label">Media Class</label>
+                                <label class="col-xs-3 col-form-label"> Class</label>
                                 <label class="form-check-inline col-sm-3">
                                     <input class="form-check-input" type="radio" name="TargetRadioOptions" id="targAdsId" value="targAds" checked> Ads
                                 </label>
@@ -197,9 +283,9 @@
 
 
                             <div class="form-group row">
-                                <label class="col-xs-3 col-form-label">Media Type</label>
+                                <label class="col-xs-3 col-form-label"> Type</label>
                                 <label class="form-check-inline col-sm-3">
-                                    <input class="form-check-input" type="radio" name="TypeRadioOptions" id="typeMp4Id" value="typeMp4" checked> movie/mp4
+                                    <input class="form-check-input" type="radio" name="TypeRadioOptions" id="typeMp4Id" value="typeMp4" checked> mp4
                                 </label>
                                 <label class="form-check-inline col-sm-3">
                                     <input class="form-check-input" type="radio" name="TypeRadioOptions" id="typeDashId" value="typeDash">dash
