@@ -13,6 +13,14 @@
       $scope.getNumber = function(num) {
           return new Array(num);
       };
+      $scope.onReset = function() {
+          console.log("resetting playlist !!");
+          $scope.myvideodesc = $scope.myvideodescdefault;
+      };
+      $scope.PlayMe = function() {
+          console.log("going to player !!");
+          window.open("player.html", "_self");
+      };
       /**  
       	.thumbs : 	if this option is not there , means there is no thumbs to show  ,thumbs are based on webvtt 
       							>We can use https://github.com/vlanard/videoscripts to generate webvtt with thumbnail sprites jpg

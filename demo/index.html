@@ -51,7 +51,7 @@
                             <div class="col-sm-3">
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" id="overAnimate" value="looping" checked="{{myvideodesc.loop}}" > 
+                                        <input class="form-check-input" type="checkbox" ng-model="myvideodesc.loop" ng-true-value="'true'" ng-false-value="'false'" > 
                                     </label>
                                 </div>
                             </div>
@@ -63,7 +63,7 @@
                                 <input class="form-control" type="text" value="{{myvideodesc.appID}}">
                             </div>
                         </div>
-                        <div ng-repeat=" n in getNumber(myvideodesc.playlist.length) track by $index">
+                        <div ng-repeat=" item in myvideodesc.playlist ">
                             <div class="col-xs-1">
                                 <h4> {{ $index }}</h4>
                             </div>
@@ -72,86 +72,86 @@
                                 <div class="form-group row">
                                     <label class="col-xs-4 col-form-label">Title</label>
                                     <div class="col-xs-8">
-                                        <input class="form-control" type="text" value="{{myvideodesc.playlist[$index].title}}">
+                                        <input class="form-control" type="text" ng-model="item.title">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-xs-4 col-form-label">Class</label>
                                     <div class="col-xs-8">
-                                        <input class="form-control" type="text" value="{{myvideodesc.playlist[$index].class}}" readonly>
+                                        <input class="form-control" type="text" ng-model="item.class" readonly>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-xs-4 col-form-label">Type</label>
                                     <div class="col-xs-8">
-                                        <input class="form-control" type="text" value="{{myvideodesc.playlist[$index].type}}" readonly>
+                                        <input class="form-control" type="text" ng-model="item.type" readonly>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-xs-4 col-form-label">URL src</label>
                                     <div class="col-xs-8">
-                                        <input class="form-control" type="url" value="{{myvideodesc.playlist[$index].src}}">
+                                        <input class="form-control" type="url" ng-model="item.src">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-xs-4 col-form-label">Poster src</label>
                                     <div class="col-xs-8">
-                                        <input class="form-control" type="url" value="{{myvideodesc.playlist[$index].poster}}">
+                                        <input class="form-control" type="url" ng-model="item.poster">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-xs-4 col-form-label">Thumbs src</label>
                                     <div class="col-xs-8">
-                                        <input class="form-control" type="url" value="{{myvideodesc.playlist[$index].thumbs}}">
+                                        <input class="form-control" type="url" ng-model="item.thumbs">
                                     </div>
                                 </div>
                                 <div class="form-group raw">
-                                    <label class="col-xs-4 col-form-label">Subtitles <span class="badge"> {{ getLength(myvideodesc.playlist[$index].substitles) }}</span></label>
+                                    <label class="col-xs-4 col-form-label">Subtitles <span class="badge"> {{ getLength(item.substitles) }}</span></label>
                                     <div class="col-xs-8">
-                                        <div ng-repeat=" sub in myvideodesc.playlist[$index].substitles">
+                                        <div ng-repeat=" sub in item.substitles">
                                             <hr class=" row">
                                             <div class="form-group row">
                                                 <label class="col-xs-4 col-form-label">Label</label>
                                                 <div class="col-xs-8">
-                                                    <input class="form-control" type="text" value="{{sub.label}}">
+                                                    <input class="form-control" type="text" ng-model="sub.label">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-xs-4 col-form-label">Lang</label>
                                                 <div class="col-xs-8">
-                                                    <input class="form-control" type="text" value="{{sub.srclang}}" readonly>
+                                                    <input class="form-control" type="text" ng-model="sub.srclang" readonly>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-xs-4 col-form-label"> src</label>
                                                 <div class="col-xs-8">
-                                                    <input class="form-control" type="url" value="{{sub.src}}">
+                                                    <input class="form-control" type="url" ng-model="sub.src">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group raw">
-                                    <label class="col-xs-4 col-form-label">Overlays <span class="badge"> {{ getLength(myvideodesc.playlist[$index].overlays) }}</span></label>
+                                    <label class="col-xs-4 col-form-label">Overlays <span class="badge"> {{ getLength(item.overlays) }}</span></label>
                                     <div class="col-xs-8">
-                                        <div ng-repeat=" overlay in myvideodesc.playlist[$index].overlays">
+                                        <div ng-repeat=" overlay in item.overlays">
                                             <hr class=" row">
                                             <div class="form-group row">
                                                 <label class="col-xs-4 col-form-label">Data Html</label>
                                                 <div class="col-xs-8">
-                                                    <input class="form-control" type="text" value="{{overlay.data}}">
+                                                    <input class="form-control" type="text" ng-model="overlay.data">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-xs-4 col-form-label">showAt</label>
                                                 <div class="col-xs-8">
-                                                    <input type="number" name="when to show" min="0" max="60" value="{{overlay.showAt}}"></input>
+                                                    <input type="number" name="when to show" min="0" max="60" ng-model="overlay.showAt">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-xs-4 col-form-label"> duration</label>
                                                 <div class="col-xs-8">
-                                                    <input type="number" name="when to show" min="0" max="60" value="{{overlay.duration}}">
+                                                    <input type="number" name="when to show" min="0" max="60" ng-model="overlay.duration">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -159,7 +159,7 @@
                                                 <div class="col-sm-3">
                                                     <div class="form-check">
                                                         <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox"   value="looping" checked="{{overlay.animate}}" > 
+                                                            <input class="form-check-input" type="checkbox"   ng-model="overlay.animate" ng-true-value="'true'" ng-false-value="'false'" > 
                                                         </label>
                                                     </div>
                                                 </div>
@@ -174,124 +174,124 @@
                     <div class="panel-footer">
                         <div class="form-inline form-group  row ">
                             <div class="col-xs-1"></div>
-                            <button type="submit" class=" col-xs-4 btn header-btn "><i class="fa fa-play"></i>  Play</button>
+                            <button class=" col-xs-4 btn header-btn " ng-click="PlayMe()"><i class="fa fa-play"></i>  Play</button>
                             <div class="col-xs-2"></div>
-                            <button type="submit" class=" col-xs-4 btn header-btn "><i class="fa fa-refresh"></i>  RESET</button>
-                            <div class="col-xs-1"></div>
+                            <button class=" col-xs-4 btn header-btn " ng-click="onReset()"><i class=" fa fa-refresh "></i> RESET</button>
+                            <div class="col-xs-1 "></div>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- center left-->
-            <div class="col-md-5">
-                <div class="panel panel-default" style="position: fixed;">
+            <div class="col-md-5 ">
+                <div class="panel panel-default " style="position: fixed; ">
 
-                    <div class="panel-heading">
-                        <div class="row">
-                            <span class=" col-xs-2"></span>
+                    <div class="panel-heading ">
+                        <div class="row ">
+                            <span class=" col-xs-2 "></span>
                             <a class=" col-xs-8 btn-fj btn header-btn "> New Item</a>
-                            <span class=" col-xs-2"></span>
+                            <span class=" col-xs-2 "></span>
                         </div>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body ">
                         <form>
-                            <div class="form-group row">
-                                <label class="col-xs-3 col-form-label">Title</label>
-                                <div class="col-xs-8">
-                                    <input class="form-control" type="text" value="Artisanal kale" id="titlet">
+                            <div class="form-group row ">
+                                <label class="col-xs-3 col-form-label ">Title</label>
+                                <div class="col-xs-8 ">
+                                    <input class="form-control " type="text " value="Artisanal kale " id="titlet ">
                                 </div>
-                                <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                                <span class="fa fa fa-question-circle-o col-sm-1 "></span>
                             </div>
 
-                            <hr class=" row">
+                            <hr class=" row ">
 
-                            <div class="form-group row">
-                                <label class="col-xs-3 col-form-label">URL src</label>
-                                <div class="col-xs-8">
-                                    <input class="form-control" type="url" value="http://getbootstrap.com" id="srcurl">
+                            <div class="form-group row ">
+                                <label class="col-xs-3 col-form-label ">URL src</label>
+                                <div class="col-xs-8 ">
+                                    <input class="form-control " type="url " value="http://getbootstrap.com " id="srcurl ">
                                 </div>
-                                <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                                <span class="fa fa fa-question-circle-o col-sm-1 "></span>
                             </div>
 
-                            <div class="form-group row">
-                                <label class="col-xs-3 col-form-label">Poster src</label>
-                                <div class="col-xs-8">
-                                    <input class="form-control" type="url" value="http://getbootstrap.com" id="posterurl">
+                            <div class="form-group row ">
+                                <label class="col-xs-3 col-form-label ">Poster src</label>
+                                <div class="col-xs-8 ">
+                                    <input class="form-control " type="url " value="http://getbootstrap.com " id="posterurl ">
                                 </div>
-                                <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                                <span class="fa fa fa-question-circle-o col-sm-1 "></span>
                             </div>
 
-                            <div class="form-group row">
-                                <label class="col-xs-3 col-form-label">Thumbs src</label>
-                                <div class="col-xs-8">
-                                    <input class="form-control" type="url" value="http://getbootstrap.com" id="thumbsurl">
+                            <div class="form-group row ">
+                                <label class="col-xs-3 col-form-label ">Thumbs src</label>
+                                <div class="col-xs-8 ">
+                                    <input class="form-control " type="url " value="http://getbootstrap.com " id="thumbsurl ">
                                 </div>
-                                <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                                <span class="fa fa fa-question-circle-o col-sm-1 "></span>
                             </div>
 
-                            <hr class=" row">
+                            <hr class=" row ">
 
-                            <div id="subsMgt" class="form-group row">
-                                <label class="col-xs-3 col-form-label">Subtitles</label>
-                                <div class="col-xs-8">
-                                    <input type="button" id="hideshowSubs" class=" header-btn " value="Add Subs"> </input>
-                                    <div id="SubsContent" style="display: none;">
-                                        <hr class=" row">
-                                        <div class="form-group row">
-                                            <label class="col-xs-3 col-form-label">Label</label>
-                                            <div class="col-xs-8">
-                                                <input class="form-control" type="text" value="Artisanal kale" id="subLaber">
+                            <div id="subsMgt " class="form-group row ">
+                                <label class="col-xs-3 col-form-label ">Subtitles</label>
+                                <div class="col-xs-8 ">
+                                    <input type="button " id="hideshowSubs " class=" header-btn " value="Add Subs "> </input>
+                                    <div id="SubsContent " style="display: none; ">
+                                        <hr class=" row ">
+                                        <div class="form-group row ">
+                                            <label class="col-xs-3 col-form-label ">Label</label>
+                                            <div class="col-xs-8 ">
+                                                <input class="form-control " type="text " value="Artisanal kale " id="subLaber ">
                                             </div>
-                                            <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                                            <span class="fa fa fa-question-circle-o col-sm-1 "></span>
                                         </div>
-                                        <div class="form-group row">
-                                            <label class="col-xs-3 col-form-label"> src</label>
-                                            <div class="col-xs-8">
-                                                <input class="form-control" type="url" value="http://getbootstrap.com" id="srcurlsub">
+                                        <div class="form-group row ">
+                                            <label class="col-xs-3 col-form-label "> src</label>
+                                            <div class="col-xs-8 ">
+                                                <input class="form-control " type="url " value="http://getbootstrap.com " id="srcurlsub ">
                                             </div>
-                                            <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                                            <span class="fa fa fa-question-circle-o col-sm-1 "></span>
                                         </div>
 
-                                        <div class="form-group row">
-                                            <label class="col-xs-3 col-form-label">src Lang</label>
-                                            <label class="form-check-inline col-sm-2">
-                                                <input class="form-check-input" type="radio" name="TargetRadioOptions" id="SubLangFr" value="targAds" checked> fr
+                                        <div class="form-group row ">
+                                            <label class="col-xs-3 col-form-label ">src Lang</label>
+                                            <label class="form-check-inline col-sm-2 ">
+                                                <input class="form-check-input " type="radio " name="TargetRadioOptions " id="SubLangFr " value="targAds " checked> fr
                                             </label>
-                                            <label class="form-check-inline col-sm-2">
-                                                <input class="form-check-input" type="radio" name="TargetRadioOptions" id="SubLangEn" value="targVod">en
+                                            <label class="form-check-inline col-sm-2 ">
+                                                <input class="form-check-input " type="radio " name="TargetRadioOptions " id="SubLangEn " value="targVod ">en
                                             </label>
-                                            <label class="form-check-inline col-sm-2">
-                                                <input class="form-check-input" type="radio" name="TargetRadioOptions" id="SubLangDe" value="targVod">de
+                                            <label class="form-check-inline col-sm-2 ">
+                                                <input class="form-check-input " type="radio " name="TargetRadioOptions " id="SubLangDe " value="targVod ">de
                                             </label>
-                                            <label class="form-check-inline col-sm-2">
-                                                <input class="form-check-input" type="radio" name="TargetRadioOptions" id="SubLangEs" value="targVod">es
+                                            <label class="form-check-inline col-sm-2 ">
+                                                <input class="form-check-input " type="radio " name="TargetRadioOptions " id="SubLangEs " value="targVod ">es
                                             </label>
-                                            <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                                            <span class="fa fa fa-question-circle-o col-sm-1 "></span>
                                         </div>
 
-                                        <div class="form-inline form-group  row ">
-                                            <div class="col-xs-2"></div>
-                                            <button type="submit" class=" col-XS-8 btn header-btn "><i class="fa fa-plus"></i>  Add</button>
-                                            <div class="col-XS-2"></div>
+                                        <div class="form-inline form-group row ">
+                                            <div class="col-xs-2 "></div>
+                                            <button type="submit " class=" col-XS-8 btn header-btn "><i class="fa fa-plus "></i>  Add</button>
+                                            <div class="col-XS-2 "></div>
                                         </div>
                                     </div>
                                 </div>
-                                <span class="fa fa fa-question-circle-o col-sm-1"></span>
+                                <span class="fa fa fa-question-circle-o col-sm-1 "></span>
                             </div>
-                            <hr class=" row">
+                            <hr class=" row ">
 
-                            <div id="oversMgt" class="form-group row">
-                                <label class="col-xs-3 col-form-label">Overlays</label>
-                                <div class="col-xs-8">
-                                    <input type="button" id="hideshowOvers" class=" header-btn " value="Add Overs"> </input>
+                            <div id="oversMgt " class="form-group row ">
+                                <label class="col-xs-3 col-form-label ">Overlays</label>
+                                <div class="col-xs-8 ">
+                                    <input type="button " id="hideshowOvers " class=" header-btn " value="Add Overs "> </input>
 
-                                    <div id="OversContent" style="display: none;">
-                                        <hr class=" row">
-                                        <div class="form-group row">
-                                            <label class="col-xs-3 col-form-label">Html </label>
-                                            <div class="col-xs-8">
-                                                <input class="form-control" type="text" value="<div>..</div>" id="OverlaysHtmldata">
+                                    <div id="OversContent " style="display: none; ">
+                                        <hr class=" row ">
+                                        <div class="form-group row ">
+                                            <label class="col-xs-3 col-form-label ">Html </label>
+                                            <div class="col-xs-8 ">
+                                                <input class="form-control " type="text " value="<div>..</div>" id="OverlaysHtmldata">
                                             </div>
                                             <span class="fa fa fa-question-circle-o col-sm-1"></span>
                                         </div>
