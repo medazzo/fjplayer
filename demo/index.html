@@ -9,26 +9,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="./fjdemo.js"></script>
-    <script>
-        jQuery(document).ready(function() {
-            $('#ParentContainer').scroll(function() {
-                $('#FixedDiv').css('top', $(this).scrollTop());
-            });
-
-            jQuery('#subsMgt').on('click', '#hideshowSubs', function() {
-                jQuery('#SubsContent').toggle('show');
-
-            });
-
-            jQuery('#oversMgt').on('click', '#hideshowOvers', function() {
-                jQuery('#OversContent').toggle('show');
-
-            });
-        });
-    </script>
 </head>
 
-<body ng-app="demodir" ng-controller="playerdemoCtrl" class="container">
+<body ng-app="demodir" ng-controller="demoUICtrl" class="container">
     <div class=" bootstrap ">
         <div class="row">
 
@@ -107,7 +90,21 @@
                                         <input class="form-control" type="url" ng-model="item.thumbs">
                                     </div>
                                 </div>
-                                <div class="form-group raw">
+                                <div class="form-group row  animate-hide" ng-show="isItemanAds(item)">
+                                    <label class="col-xs-4 col-form-label">Ads Link Url</label>
+                                    <div class="col-xs-8">
+                                        <input class="form-control" type="url" ng-model="item.adsLinkUrl">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row  animate-hide" ng-show="isItemanAds(item)">
+                                    <label class="col-xs-4 col-form-label">Escape Ads At</label>
+                                    <div class="col-xs-8">
+                                        <input class="form-control" type="number" ng-model="item.escapeAdsAt">
+                                    </div>
+                                </div>
+
+                                <div class="form-group raw  animate-hide" ng-hide="isItemanAds(item)">
                                     <label class="col-xs-4 col-form-label">Subtitles <span class="badge"> {{ getLength(item.substitles) }}</span></label>
                                     <div class="col-xs-8">
                                         <div ng-repeat=" sub in item.substitles" class=" row">
@@ -136,7 +133,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group raw">
+                                <div class="form-group raw  animate-hide" ng-hide="isItemanAds(item)">
                                     <label class="col-xs-4 col-form-label">Overlays <span class="badge"> {{ getLength(item.overlays) }}</span></label>
                                     <div class="col-xs-8">
                                         <div ng-repeat=" overlay in item.overlays">
@@ -192,7 +189,7 @@
             </div>
             <!-- center left-->
             <div class="col-md-5 ">
-                <div class="panel panel-default " style="position: fixed; ">
+                <div class="panel panel-default">
 
                     <div class="panel-heading ">
                         <div class="row ">
@@ -203,184 +200,229 @@
                     </div>
 
                     <div class="panel-body ">
-                        <form>
-                            <div class="form-group row ">
-                                <label class="col-xs-3 col-form-label ">Title</label>
-                                <div class="col-xs-8 ">
-                                    <input class="form-control " type="text " value="Artisanal kale " id="titlet ">
-                                </div>
-                                <span class="fa fa fa-question-circle-o col-sm-1 "></span>
+                        <div class="form-group row ">
+                            <label class="col-xs-4 col-form-label ">Title</label>
+                            <div class="col-xs-8 ">
+                                <input class="form-control " type="text " ng-model="newItem.title ">
                             </div>
+                        </div>
 
-                            <hr class=" row ">
-
-                            <div class="form-group row ">
-                                <label class="col-xs-3 col-form-label ">URL src</label>
-                                <div class="col-xs-8 ">
-                                    <input class="form-control " type="url " value="http://getbootstrap.com " id="srcurl ">
-                                </div>
-                                <span class="fa fa fa-question-circle-o col-sm-1 "></span>
+                        <div class="form-group row ">
+                            <label class="col-xs-4 col-form-label ">URL src</label>
+                            <div class="col-xs-8 ">
+                                <input class="form-control " type="url " ng-model="newItem.src ">
                             </div>
+                        </div>
 
-                            <div class="form-group row ">
-                                <label class="col-xs-3 col-form-label ">Poster src</label>
-                                <div class="col-xs-8 ">
-                                    <input class="form-control " type="url " value="http://getbootstrap.com " id="posterurl ">
-                                </div>
-                                <span class="fa fa fa-question-circle-o col-sm-1 "></span>
+                        <div class="form-group row ">
+                            <label class="col-xs-4 col-form-label ">Poster src</label>
+                            <div class="col-xs-8 ">
+                                <input class="form-control " type="url " ng-model="newItem.poster ">
                             </div>
+                        </div>
 
-                            <div class="form-group row ">
-                                <label class="col-xs-3 col-form-label ">Thumbs src</label>
-                                <div class="col-xs-8 ">
-                                    <input class="form-control " type="url " value="http://getbootstrap.com " id="thumbsurl ">
-                                </div>
-                                <span class="fa fa fa-question-circle-o col-sm-1 "></span>
+                        <div class="form-group row ">
+                            <label class="col-xs-4 col-form-label ">Thumbs src</label>
+                            <div class="col-xs-8 ">
+                                <input class="form-control " type="url " ng-model="newItem.thumbs ">
                             </div>
+                        </div>
 
-                            <hr class=" row ">
+                        <div class="form-group row  animate-hide" ng-show="IsnewItemAds()">
+                            <label class="col-xs-4 col-form-label ">Ads Link</label>
+                            <div class="col-xs-8 ">
+                                <input class="form-control " type="url " ng-model="newItem.adsLinkUrl ">
+                            </div>
+                        </div>
 
-                            <div id="subsMgt " class="form-group row ">
-                                <label class="col-xs-3 col-form-label ">Subtitles</label>
-                                <div class="col-xs-8 ">
-                                    <input type="button " id="hideshowSubs " class=" header-btn " value="Add Subs "> </input>
-                                    <div id="SubsContent " style="display: none; ">
-                                        <hr class=" row ">
-                                        <div class="form-group row ">
-                                            <label class="col-xs-3 col-form-label ">Label</label>
-                                            <div class="col-xs-8 ">
-                                                <input class="form-control " type="text " value="Artisanal kale " id="subLaber ">
-                                            </div>
-                                            <span class="fa fa fa-question-circle-o col-sm-1 "></span>
+                        <div class="form-group row  animate-hide" ng-show="IsnewItemAds()">
+                            <label class="col-xs-4 col-form-label ">Escape At</label>
+                            <div class="col-xs-8 ">
+                                <input type="number" ng-model="newItem.escapeAdsAt" min="0" max="60">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-xs-4 col-form-label"> Class</label>
+                            <label class="form-check-inline col-sm-3">
+                                    <input class="form-check-input" type="radio" name="ClassRadioOptions" ng-model="newItem.class"  value="ads" checked> Ads
+                                </label>
+                            <label class="form-check-inline col-sm-3">
+                                    <input class="form-check-input" type="radio" name="ClassRadioOptions" ng-model="newItem.class"  value="vod" >Vod
+                                </label>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-xs-4 col-form-label"> Type</label>
+                            <label class="form-check-inline col-sm-3">
+                                    <input class="form-check-input" type="radio" name="TypeRadioOptions"  ng-model="newItem.type" value="video/mp4" checked> mp4
+                                </label>
+                            <label class="form-check-inline col-sm-3">
+                                    <input class="form-check-input" type="radio" name="TypeRadioOptions" ng-model="newItem.type"  value="dash">dash
+                                </label>
+                        </div>
+
+                        <div class="form-group row  animate-hide" ng-hide="IsnewItemAds()">
+                            <label class="col-xs-4 col-form-label ">Subtitles  <span class="badge"> {{ getLength(newItem.substitles) }}</span></label>
+                            <div class="col-xs-8">
+                                <div ng-repeat=" sub in newItem.substitles" class=" row">
+                                    <div class="form-group row">
+                                        <button class="col-xs-4  btn header-btn " ng-click="removeSubs(newItem , sub)">
+                                                    <i class="fa fa-minus"></i>  </button>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xs-4 col-form-label">Label</label>
+                                        <div class="col-xs-8">
+                                            <input class="form-control" type="text" ng-model="sub.label">
                                         </div>
-                                        <div class="form-group row ">
-                                            <label class="col-xs-3 col-form-label "> src</label>
-                                            <div class="col-xs-8 ">
-                                                <input class="form-control " type="url " value="http://getbootstrap.com " id="srcurlsub ">
-                                            </div>
-                                            <span class="fa fa fa-question-circle-o col-sm-1 "></span>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xs-4 col-form-label">Lang</label>
+                                        <div class="col-xs-8">
+                                            <input class="form-control" type="text" ng-model="sub.srclang" readonly>
                                         </div>
-
-                                        <div class="form-group row ">
-                                            <label class="col-xs-3 col-form-label ">src Lang</label>
-                                            <label class="form-check-inline col-sm-2 ">
-                                                <input class="form-check-input " type="radio " name="TargetRadioOptions " id="SubLangFr " value="targAds " checked> fr
-                                            </label>
-                                            <label class="form-check-inline col-sm-2 ">
-                                                <input class="form-check-input " type="radio " name="TargetRadioOptions " id="SubLangEn " value="targVod ">en
-                                            </label>
-                                            <label class="form-check-inline col-sm-2 ">
-                                                <input class="form-check-input " type="radio " name="TargetRadioOptions " id="SubLangDe " value="targVod ">de
-                                            </label>
-                                            <label class="form-check-inline col-sm-2 ">
-                                                <input class="form-check-input " type="radio " name="TargetRadioOptions " id="SubLangEs " value="targVod ">es
-                                            </label>
-                                            <span class="fa fa fa-question-circle-o col-sm-1 "></span>
-                                        </div>
-
-                                        <div class="form-inline form-group row ">
-                                            <div class="col-xs-2 "></div>
-                                            <button type="submit " class=" col-XS-8 btn header-btn "><i class="fa fa-plus "></i>  Add</button>
-                                            <div class="col-XS-2 "></div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xs-4 col-form-label"> src</label>
+                                        <div class="col-xs-8">
+                                            <input class="form-control" type="url" ng-model="sub.src">
                                         </div>
                                     </div>
                                 </div>
-                                <span class="fa fa fa-question-circle-o col-sm-1 "></span>
                             </div>
-                            <hr class=" row ">
+                        </div>
 
-                            <div id="oversMgt " class="form-group row ">
-                                <label class="col-xs-3 col-form-label ">Overlays</label>
-                                <div class="col-xs-8 ">
-                                    <input type="button " id="hideshowOvers " class=" header-btn " value="Add Overs "> </input>
+                        <div class="form-group row  animate-hide" ng-hide="IsnewItemAds()">
+                            <label class="col-xs-4 col-form-label ">Overlays  <span class="badge"> {{ getLength(newItem.overlays) }}</span></label>
+                            <div class="col-xs-8">
+                                <div ng-repeat=" overlay in newItem.overlays" class=" row">
+                                    <div class="form-group row">
+                                        <button class="col-xs-4  btn header-btn " ng-click="removeOvers(newItem , overlay)">
+                                                    <i class="fa fa-minus"></i>  </button>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xs-4 col-form-label">Data Html</label>
+                                        <div class="col-xs-8">
+                                            <input class="form-control" type="text" ng-model="overlay.data">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xs-4 col-form-label">showAt</label>
+                                        <div class="col-xs-8">
+                                            <input type="number" name="when to show" min="0" max="60" ng-model="overlay.showAt">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xs-4 col-form-label"> duration</label>
+                                        <div class="col-xs-8">
+                                            <input type="number" name="when to show" min="0" max="60" ng-model="overlay.duration">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xs-4 col-form-label">animate </label>
+                                        <div class="col-sm-3">
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox"   ng-model="overlay.animate" ng-true-value="'true'" ng-false-value="'false'" > 
+                                                        </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                                    <div id="OversContent " style="display: none; ">
-                                        <hr class=" row ">
-                                        <div class="form-group row ">
-                                            <label class="col-xs-3 col-form-label ">Html </label>
-                                            <div class="col-xs-8 ">
-                                                <input class="form-control " type="text " value="<div>..</div>" id="OverlaysHtmldata">
-                                            </div>
-                                            <span class="fa fa fa-question-circle-o col-sm-1"></span>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-xs-3 col-form-label"> show at </label>
-                                            <div class="col-xs-8">
-                                                <input type="number" name="when to show" id="secondsShowOvers" min="0" max="60">
-                                            </div>
-                                            <span class="fa fa fa-question-circle-o col-sm-1"></span>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-xs-3 col-form-label"> Duration </label>
-                                            <div class="col-xs-8">
-                                                <input type="number" name="when to show" id="durationShowOvers" min="0" max="60">
-                                            </div>
-                                            <span class="fa fa fa-question-circle-o col-sm-1"></span>
-                                        </div>
+                        <div class="form-group row  animate-hide" ng-hide="IsnewItemAds()">
+                            <label class="col-xs-4 col-form-label "> New Subtitle</label>
+                            <div class="col-xs-8 ">
+                                <hr class=" row ">
+                                <div class="form-group row ">
+                                    <label class="col-xs-4 col-form-label ">Label</label>
+                                    <div class="col-xs-8 ">
+                                        <input class="form-control " type="text " ng-model="newsub.Label ">
+                                    </div>
+                                </div>
+                                <div class="form-group row ">
+                                    <label class="col-xs-4 col-form-label "> File</label>
+                                    <div class="col-xs-8 ">
+                                        <input class="form-control " type="url " ng-model="newsub.SrcUrl">
+                                    </div>
+                                </div>
 
-                                        <div class="form-group row">
-                                            <label class="col-xs-3 col-form-label">Animate</label>
-                                            <div class="col-sm-3">
-                                                <div class="form-check">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="overAnimate" value="animate"> 
+                                <div class="form-group row ">
+                                    <label class="col-xs-4 col-form-label ">Lang</label>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-inline col-sm-2 ">
+                                                <input class="form-check-input  " type="radio"  ng-model="newsub.lang" value="fr" checked> fr
+                                            </label>
+                                        <label class="form-check-inline col-sm-2 ">
+                                                <input class="form-check-input " type="radio" ng-model="newsub.lang"   value="en">en
+                                            </label>
+                                        <label class="form-check-inline col-sm-2 ">
+                                                <input class="form-check-input " type="radio" ng-model="newsub.lang"    value="de">de
+                                            </label>
+                                        <label class="form-check-inline col-sm-2 ">
+                                                <input class="form-check-input " type="radio"  ng-model="newsub.lang"  value="es">es
+                                            </label>
+                                    </div>
+                                </div>
+                                <div class="form-inline form-group row ">
+                                    <div class="col-xs-2 "></div>
+                                    <button type="submit " class=" col-xs-8 btn header-btn" ng-click="addSub()"><i class="fa fa-plus "></i>  Add</button>
+                                    <div class="col-xs-2 "></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row  animate-hide" ng-hide="IsnewItemAds()">
+                            <label class="col-xs-4 col-form-label "> New Overlays</label>
+                            <div class="col-xs-8 ">
+                                <hr class=" row ">
+                                <div class="form-group row ">
+                                    <label class="col-xs-4 col-form-label ">Html </label>
+                                    <div class="col-xs-8 ">
+                                        <input class="form-control " type="text" ng-model="newOver.data">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xs-4 col-form-label"> show at </label>
+                                    <div class="col-xs-8">
+                                        <input type="number" ng-model="newOver.ShowAt" min="0" max="60">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-xs-4 col-form-label"> Duration </label>
+                                    <div class="col-xs-8">
+                                        <input type="number" ng-model="newOver.duration" min="0" max="60">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-xs-4 col-form-label">Animate</label>
+                                    <div class="col-sm-3">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" ng-model="newOver.animate"> 
                                                      </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-5"></div>
-                                            <span class="fa fa fa-question-circle-o col-sm-1"></span>
-                                        </div>
-
-                                        <div class="form-inline form-group  row ">
-                                            <div class="col-xs-2"></div>
-                                            <button type="submit" class=" col-XS-8 btn header-btn "><i class="fa fa-plus"></i>  Add</button>
-                                            <div class="col-XS-2"></div>
                                         </div>
                                     </div>
-
+                                    <div class="col-sm-5"></div>
                                 </div>
-                                <span class="fa fa fa-question-circle-o col-sm-1"></span>
+
+                                <div class="form-inline form-group  row ">
+                                    <div class="col-xs-2"></div>
+                                    <button type="submit " class=" col-xs-8 btn header-btn" ng-click="addOver()"><i class="fa fa-plus "></i>  Add</button>
+                                    <div class="col-xs-2"></div>
+                                </div>
                             </div>
-
-                            <hr class=" row">
-
-                            <div class="form-group row">
-                                <label class="col-xs-3 col-form-label"> Class</label>
-                                <label class="form-check-inline col-sm-3">
-                                    <input class="form-check-input" type="radio" name="TargetRadioOptions" id="targAdsId" value="targAds" checked> Ads
-                                </label>
-                                <label class="form-check-inline col-sm-3">
-                                    <input class="form-check-input" type="radio" name="TargetRadioOptions" id="targVodId" value="targVod">Vod
-                                </label>
-                                <span class="fa fa fa-question-circle-o col-sm-1"></span>
-                            </div>
-
-
-                            <hr class=" row">
-
-
-                            <div class="form-group row">
-                                <label class="col-xs-3 col-form-label"> Type</label>
-                                <label class="form-check-inline col-sm-3">
-                                    <input class="form-check-input" type="radio" name="TypeRadioOptions" id="typeMp4Id" value="typeMp4" checked> mp4
-                                </label>
-                                <label class="form-check-inline col-sm-3">
-                                    <input class="form-check-input" type="radio" name="TypeRadioOptions" id="typeDashId" value="typeDash">dash
-                                </label>
-                                <span class="fa fa fa-question-circle-o col-sm-1"></span>
-                            </div>
-
-
-                            <hr class=" row">
-                        </form>
-
+                        </div>
                     </div>
                     <!--/panel-body-->
                     <div class="panel-footer">
                         <div class="form-inline form-group  row ">
                             <div class="col-xs-2"></div>
-                            <button type="submit" class=" col-XS-8 btn header-btn "><i class="fa fa-plus"></i>  Add</button>
-                            <div class="col-XS-2"></div>
+                            <button class=" col-xs-8 btn header-btn" ng-click="AddItem()"><i class="fa fa-plus"></i>  Add</button>
+                            <div class="col-xs-2"></div>
                         </div>
                     </div>
                 </div>
