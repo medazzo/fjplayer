@@ -1,70 +1,6 @@
   'use strict';
   angular.module('demodir', ['fjplayer'])
-      .service('Playlist', function() {
-          this.FjPlaylist = {};
-          this.getPlaylist = function() {
-              console.debug(" GEtter ", self.FjPlaylist);
-              return this.FjPlaylist;
-          };
-          this.setPlaylist = function(playlist) {
-              this.FjPlaylist = playlist;
-              console.debug(" Seter ", self.FjPlaylist);
-          };
-      })
-      .controller('playerdemoCtrl', ['$scope', 'Playlist', function($scope, Playlist) {
-          $scope.myvideodesc = Playlist.getPlaylist();
-          console.debug($scope.myvideodesc);
-      }])
-      .controller('demoUICtrl', ['$scope', 'Playlist', function($scope, Playlist) {
-
-          $scope.getLength = function(arr) {
-              if (arr == undefined)
-                  return 0;
-              else if (arr.length == undefined)
-                  return 0;
-              else
-                  return arr.length
-          };
-          $scope.getNumber = function(num) {
-              return new Array(num);
-          };
-          $scope.onReset = function() {
-              console.log("resetting playlist !!");
-              $scope.fjLoop = $scope.myvideodescdefault.fjLoop;
-              $scope.fjAppId = $scope.myvideodescdefault.fjAppId;
-              $scope.items = $scope.myvideodescdefault.playlist;
-          };
-          $scope.PlayMe = function() {
-              console.log("going to player !!");
-              $scope.myvideodesc = {};
-              $scope.myvideodesc.fjLoop = $scope.fjLoop;
-              $scope.myvideodesc.fjAppId = $scope.fjAppId;
-              $scope.myvideodesc.playlist = $scope.items;
-              console.warn($scope.myvideodesc);
-              Playlist.setPlaylist($scope.myvideodesc);
-              window.open("player.html", "_self");
-          };
-          $scope.removeItem = function(item) {
-              console.log("remove item  !!", item);
-              var index = $scope.items.indexOf(item)
-              $scope.items.splice(index, 1);
-          };
-          $scope.removeSubs = function(item, sub) {
-              console.log("remove subs  !!", sub);
-              var ix = item.substitles.indexOf(sub)
-              item.substitles.splice(ix, 1);
-          };
-          $scope.removeOvers = function(item, over) {
-              console.log("remove over  !!", over);
-              var ix = item.overlays.indexOf(over)
-              item.overlays.splice(ix, 1);
-          };
-          $scope.isItemanAds = function(item) {
-              if (item.class === 'ads')
-                  return true;
-              else
-                  return false;
-          };
+      .factory('Data', function() {
           /**  
           	.thumbs : 	if this option is not there , means there is no thumbs to show  ,thumbs are based on webvtt 
           							>We can use https://github.com/vlanard/videoscripts to generate webvtt with thumbnail sprites jpg
@@ -73,7 +9,7 @@
           	.overlays :	this overlay may be used for ads or push info any thing other when a movie is playing 
           			
           */
-          $scope.myvideodescdefault = {
+          return {
               'fjLoop': 'true',
               'fjAppId': '354687435468dfg73fd4g6f8d7h3fdg1he9t65',
               'playlist': [{
@@ -148,12 +84,59 @@
                   'src': 'videos/mercedes.mp4'
               }]
           };
+      })
+      .controller('demoUICtrl', ['$scope', 'Data', function($scope, Data) {
+          $scope.StartPlaying = false;
+          $scope.Playlist = {};
+          $scope.Playlist.fjLoop = Data.fjLoop;
+          $scope.Playlist.fjAppId = Data.fjAppId;
+          $scope.Playlist.playlist = [];
+          $scope.Playlist.playlist = Data.playlist;
 
-          $scope.myvideodesc = $scope.myvideodescdefault;
-          $scope.fjLoop = $scope.myvideodescdefault.fjLoop;
-          $scope.fjAppId = $scope.myvideodescdefault.fjAppId;
-          $scope.items = $scope.myvideodescdefault.playlist;
-          $scope.myvideodesc = $scope.myvideodescdefault;
+          $scope.getLength = function(arr) {
+              if (arr == undefined)
+                  return 0;
+              else if (arr.length == undefined)
+                  return 0;
+              else
+                  return arr.length
+          };
+          $scope.getNumber = function(num) {
+              return new Array(num);
+          };
+          $scope.onReset = function() {
+              console.log("resetting playlist !!");
+              $scope.Playlist.fjLoop = Data.fjLoop;
+              $scope.Playlist.fjAppId = Data.fjAppId;
+              $scope.Playlist.playlist = Data.playlist;
+          };
+          $scope.PlayMe = function() {
+              console.log("going to play !!");
+              console.warn($scope.Playlist);
+              $scope.StartPlaying = true;
+          };
+          $scope.removeItem = function(item) {
+              console.log("remove item  !!", item);
+              var index = $scope.Playlist.playlist.indexOf(item)
+              $scope.Playlist.playlist.splice(index, 1);
+          };
+          $scope.removeSubs = function(item, sub) {
+              console.log("remove subs  !!", sub);
+              var ix = item.substitles.indexOf(sub)
+              item.substitles.splice(ix, 1);
+          };
+          $scope.removeOvers = function(item, over) {
+              console.log("remove over  !!", over);
+              var ix = item.overlays.indexOf(over)
+              item.overlays.splice(ix, 1);
+          };
+          $scope.isItemanAds = function(item) {
+              if (item.class === 'ads')
+                  return true;
+              else
+                  return false;
+          };
+
 
           /* New Item staff */
           $scope.newItem = {};
@@ -184,7 +167,7 @@
               $scope.newOver = {};
           };
           $scope.AddItem = function() {
-              $scope.items.push($scope.newItem);
+              $scope.Playlist.playlist.push($scope.newItem);
               console.log("add new item  !!");
               $scope.newItem = {};
               $scope.newsub = {};

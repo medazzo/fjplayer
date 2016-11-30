@@ -11,8 +11,13 @@
     <script type="text/javascript" src="./fjdemo.js"></script>
 </head>
 
-<body ng-app="demodir" ng-controller="demoUICtrl" class="container">
-    <div class=" bootstrap ">
+<body ng-app="demodir" ng-controller="demoUICtrl">
+
+    <div class="animate-hide" ng-show="StartPlaying">
+        <fj-playerjs fjplayerdesc="{{Playlist}} " fjstartplaying="{{StartPlaying}}"></fj-playerjs>
+    </div>
+
+    <div class="container bootstrap animate-hide" ng-hide="StartPlaying">
         <div class="row">
 
             <h1>Playlist </h1>
@@ -34,7 +39,7 @@
                             <div class="col-sm-3">
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" ng-model="fjLoop" 
+                                        <input class="form-check-input" type="checkbox" ng-model="Playlist.fjLoop" 
                                         ng-true-value="'true'" ng-false-value="'false'" > 
                                     </label>
                                 </div>
@@ -44,10 +49,10 @@
                         <div class="form-group row">
                             <label class="col-xs-4 col-form-label">fjAppID</label>
                             <div class="col-xs-8">
-                                <input class="form-control" type="text" ng-model="fjAppId">
+                                <input class="form-control" type="text" ng-model="Playlist.fjAppId">
                             </div>
                         </div>
-                        <div ng-repeat=" item in items ">
+                        <div ng-repeat=" item in Playlist.playlist ">
                             <div class="col-xs-1">
                                 <button class=" btn header-btn " ng-click="removeItem(item)">
                                     <i class="fa fa-minus"></i>  </button>

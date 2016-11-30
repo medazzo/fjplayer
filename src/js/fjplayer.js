@@ -699,14 +699,22 @@ directive('fjPlayerjs', function() {
     return {
         restrict: 'E',
         scope: {
-            fjplayerdesc: '@'
+            fjplayerdesc: '@',
+            fjstartplaying: '@'
         },
         templateUrl: '/dist/fjplayer-tmpl.html',
         controller: 'fjplayerCtrl',
         link: function(scope, iElement, iAttrs) {
-            scope.prepareUI();
-            scope.checkPlaylistAndStart(iAttrs.fjplayerdesc, 0);
-            console.debug("Starting !!!");
+            scope.$watch('fjstartplaying', function(newValue) {
+                if (newValue == 'true') {
+                    scope.prepareUI();
+                    scope.checkPlaylistAndStart(iAttrs.fjplayerdesc, 0);
+                    console.debug("Start playing !!!");
+                } else {
+                    console.debug("Schoud we Stop playing ?!", newValue);
+                    console.log(iAttrs.fjstartplaying);
+                }
+            });
         }
     }
 });
