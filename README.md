@@ -59,6 +59,7 @@ The class ads , is referring to advertissment.
 On this class, fjplayer will hide the controls ans shown a transparent banner up on which the countdown timer before the ads ends.
 
 In addition to the items declared above, ads  also contains :
+
 | ads extra  field    | mandatory |     value              |  Description     |
 |-------------------|-----------|-----------------------|---------------|
 | FJAdsLinkUrl         |  YES         |  url string    |  url to forward to when the user click on the playing ads  |
@@ -71,6 +72,7 @@ The class vod , is referring to video on demand streaming.
 On this class, the fjplayer will play classic video mp4 or a dash streaming .
 
 In addition to the items declared above, ads  also contains :
+
 | vod extra  field    | mandatory |     value              |  Description     |
 |-------------------|-----------|-----------------------|---------------|
 | FJThumbs             |  NO         |  url string    |   url to file containing tooltip thumbnail images for video associated with WebVTT  : to generate this file you can visit  [github video scripts](https://github.com/vlanard/videoscripts) |
@@ -83,6 +85,7 @@ In addition to the items declared above, ads  also contains :
 The class live , is referring to a live stream.
 
 In addition to the items declared above, ads  also contains :
+
 | live extra  field    | mandatory |     value              |  Description     |
 |-------------------|-----------|-----------------------|---------------|
 | FJThumbs             |  NO         |  url string    |   url to file containing tooltip thumbnail images for video associated with WebVTT  : to generate this file you can visit  [github video scripts](https://github.com/vlanard/videoscripts) |
@@ -94,6 +97,7 @@ In addition to the items declared above, ads  also contains :
 The object  subtitle , must be inserted on array **FJSubtitles** under item on playlist.
 It permit to add a webvtt subtitles other that existing in mpd (in case of dash ) .
 it  contains : 
+
 | subtitle   field    | mandatory |     value              |  Description     |
 |-------------------|-----------|-----------------------|---------------|
 | FJSubLabel         |  YES         | non empty string        | string label of subtitles to be shown on control |
@@ -107,6 +111,7 @@ When user lick on an overlay a new opened will be opened with the  url **FJOverU
 Ii will be showing at **FJOverShowAt** and for a duration of **FJOverDuration** .
 If **FJOverShowAt** or **FJOverShowAt**+**FJOverDuration** is bigger than the item movie duration, then the overlays will not be schown at all . 
 it  contains : 
+
 | subtitle   field    | mandatory |     value              |  Description     |
 |-------------------|-----------|-----------------------|---------------|
 | FJOverData         |  YES         | non empty string        | html data that will be putted on div overlay |
@@ -120,6 +125,7 @@ The object drm   , is referring to Digital right managment and it's contains dat
 This object is managed onlywhen **FJType** is *dash* . 
 It must be in **FJDrm** field
 it  contains : 
+
 | drm   field                    | mandatory |     value                              |  Description     |
 |-------------------------------|-----------|---------------------------------------|---------------|
 | FJDrmScheme                    |  YES         | 'fjserver','ClearKey' or 'Widevine'     | drm Scheme to use  |
@@ -189,7 +195,7 @@ playlist:
                 'FJSubSrc':'vtt/sintel-en.vtt'
             },
             {
-                'FJSubLabel':'EspaÃ±ol',
+                'FJSubLabel':'Español',
                 'FJSubLang':'es' ,
                 'FJSubSrc':'vtt/sintel-es.vtt'
             },
