@@ -112,7 +112,7 @@ Ii will be showing at **FJOverShowAt** and for a duration of **FJOverDuration** 
 If **FJOverShowAt** or **FJOverShowAt**+**FJOverDuration** is bigger than the item movie duration, then the overlays will not be schown at all . 
 it  contains : 
 
-| subtitle   field    | mandatory |     value              |  Description     |
+| overlay   field    | mandatory |     value              |  Description     |
 |-------------------|-----------|-----------------------|---------------|
 | FJOverData         |  YES         | non empty string        | html data that will be putted on div overlay |
 | FJOverUrl         |  YES         | non empty url string    | url to open in new window to when the user click on overlay |
@@ -128,7 +128,7 @@ it  contains :
 
 | drm   field                    | mandatory |     value                              |  Description     |
 |-------------------------------|-----------|---------------------------------------|---------------|
-| FJDrmScheme                    |  YES         | 'fjserver','ClearKey' or 'Widevine'     | drm Scheme to use  |
+| FJDrmScheme                    |  YES         | 'forja','playReady,'clearKey' or 'widevine'     | drm Scheme to use  |
 | FJLicenceServer                |  YES         | non empty url string                    | url of the Licensing server |
 | FJHeadersOnLicenseRequest     |  NO         | object contains headers and value     | headers and value to be add to request when asking for license |
 | FJHeadersOnSegmentsRequest     |  NO         | object contains headers and value     | headers and value to be add to request when asking for segment |

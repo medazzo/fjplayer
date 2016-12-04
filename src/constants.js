@@ -18,7 +18,7 @@ export const FJCONFIG_SUBTITLES = 'FJSubtitles';
 export const FJCONFIG_OVERLAYS = 'FJOverlays';
 export const FJCONFIG_DRM = 'FJDrm';
 export const FJCONFIG_SUB_LABEL = 'FJSubLabel';
-export const FJCONFIG_SUBT_SRC = 'FJSubSrc';
+export const FJCONFIG_SUB_SRC = 'FJSubSrc';
 export const FJCONFIG_SUB_LANG = 'FJSubLang';
 export const FJCONFIG_OVER_DATA = 'FJOverData';
 export const FJCONFIG_OVER_URL = 'FJOverUrl';
@@ -41,3 +41,14 @@ export const FJCONFIG_CLASSES = [FJCONFIG_CLASS_ADS, FJCONFIG_CLASS_LIVE, FJCONF
 export const FJCONFIG_TYPE_MP4 = 'video/mp4';
 export const FJCONFIG_TYPE_DASH = 'dash';
 export const FJCONFIG_TYPES = [FJCONFIG_TYPE_MP4, FJCONFIG_TYPE_DASH];
+
+export const FJCONFIG_DRM_SCHEME_FORJA = 'forja';
+export const FJCONFIG_DRM_SCHEME_CLEARKEY = 'clearKey';
+export const FJCONFIG_DRM_SCHEME_WIDEVINE = 'widevine';
+export const FJCONFIG_DRM_SCHEME_PLAYREADY = 'playReady';
+export const FJCONFIG_DRM_SCHEMES = [
+    FJCONFIG_DRM_SCHEME_FORJA,
+    FJCONFIG_DRM_SCHEME_CLEARKEY,
+    FJCONFIG_DRM_SCHEME_WIDEVINE,
+    FJCONFIG_DRM_SCHEME_PLAYREADY
+];

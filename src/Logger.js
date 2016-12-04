@@ -3,13 +3,14 @@
  * @description The Configuration is the primary module used to set configuration and .
  */
 
-function Logger() {
+function Logger(moduleName) {
 
     let instance,
         userServer,
         serverLogger,
         method,
         request,
+        modName = '[' + moduleName + ']',
         useConsole;
 
     function setup(debug) {
@@ -30,6 +31,7 @@ function Logger() {
         var args;
         var params;
         args = Array.prototype.slice.call(arguments);
+        args.splice(0, 0, modName);
         if (useConsole) {
             console.error.apply(console, args);
         }
@@ -37,7 +39,7 @@ function Logger() {
             for (i = 0; i < arguments.length; i++) {
                 msg = msg + arguments[i];
             }
-            params = 'msg= ERROR: ' + encodeURIComponent(msg);
+            params = 'msg=' + modName + ' ERROR: ' + encodeURIComponent(msg);
             request.open(method, serverLogger);
             request.send(params);
         }
@@ -49,6 +51,7 @@ function Logger() {
         var args;
         var params;
         args = Array.prototype.slice.call(arguments);
+        args.splice(0, 0, modName);
         if (useConsole) {
             console.warn.apply(console, args);
         }
@@ -56,7 +59,7 @@ function Logger() {
             for (i = 0; i < arguments.length; i++) {
                 msg = msg + arguments[i];
             }
-            params = 'msg= WARN: ' + encodeURIComponent(msg);
+            params = 'msg=' + modName + ' WARN: ' + encodeURIComponent(msg);
             request.open(method, serverLogger);
             request.send(params);
         }
@@ -68,6 +71,7 @@ function Logger() {
         var args;
         var params;
         args = Array.prototype.slice.call(arguments);
+        args.splice(0, 0, modName);
         if (useConsole) {
             console.log.apply(console, args);
         }
@@ -75,7 +79,7 @@ function Logger() {
             for (i = 0; i < arguments.length; i++) {
                 msg = msg + arguments[i];
             }
-            params = 'msg= LOG: ' + encodeURIComponent(msg);
+            params = 'msg=' + modName + ' LOG: ' + encodeURIComponent(msg);
             request.open(method, serverLogger);
             request.send(params);
         }

@@ -18,7 +18,7 @@ function Configuration() {
     function setup() {
         playlist = [];
         appid = '';
-        logger = new Logger();
+        logger = new Logger('Configuration');
         screenMode = false;
         autoStart = false;
         loop = false;
@@ -27,44 +27,133 @@ function Configuration() {
 
     function checkPlaylist() {
         var item = {};
-        var i = 0;
+        var subItem = {};
+        var drm = {};
+        var i, j, list;
         if (playlist === undefined) {
             return false;
         }
         if (playlist.length <= 0) {
             return false;
         }
-        logger.warn('Cheking playlist ...', playlist);
         logger.log(' playlist count ', playlist.length);
         for (i = 0; i < playlist.length; i++) {
             item = playlist[i];
             // check item
-            console.info(' playlist class of item  ', i, item[Const.FJCONFIG_CLASS]);
+            logger.log(' playlist class of item  ', i, 'is', item[Const.FJCONFIG_CLASS]);
             if (Const.FJCONFIG_CLASSES.indexOf(item[Const.FJCONFIG_CLASS]) === -1) {
                 logger.error('BAD class Value ! ');
                 return false;
             }
-            console.info(' playlist type of item  ', i, item[Const.FJCONFIG_TYPE]);
+            logger.log(' playlist type of item  ', i, 'is', item[Const.FJCONFIG_TYPE]);
             if (Const.FJCONFIG_TYPES.indexOf(item[Const.FJCONFIG_TYPE]) === -1) {
                 logger.error('BAD type Value ! ');
                 return false;
             }
-            console.info(' playlist title of item  ', i, item[Const.FJCONFIG_TITLE]);
+            logger.log(' playlist title of item  ', i, 'is', item[Const.FJCONFIG_TITLE]);
             if (!item[Const.FJCONFIG_TITLE]) {
                 logger.error('BAD title Value ! ');
                 return false;
             }
-            console.info(' playlist src of item  ', i, item[Const.FJCONFIG_SRC]);
+            logger.log(' playlist src of item  ', i, 'is', item[Const.FJCONFIG_SRC]);
             if (!item[Const.FJCONFIG_SRC]) {
                 logger.error('BAD src Value ! ');
                 return false;
             }
-            logger.log(' playlist poster of item  ', i, item[Const.FJCONFIG_POSTER]);
-            logger.log(' playlist thumbs of item  ', i, item[Const.FJCONFIG_THUMBS]);
+            logger.log(' playlist poster of item  ', i, 'is', item[Const.FJCONFIG_POSTER]);
+            logger.log(' playlist thumbs of item  ', i, 'is', item[Const.FJCONFIG_THUMBS]);
+
+            // check drm
+            drm = playlist[Const.FJCONFIG_DRM];
+            if (drm !== undefined) {
+                if (Const.FJCONFIG_DRM_SCHEMES.indexOf(drm[Const.FJCONFIG_DRM_SCHEME]) === -1) {
+                    logger.error('BAD DRM Scheme Value ! ', drm[Const.FJCONFIG_DRM_SCHEME]);
+                    return false;
+                }
+                if (drm[Const.FJCONFIG_DRM_LICENSE_SERVER]) {
+                    logger.log(' playlist Server License of item  ', i, 'is', drm[Const.FJCONFIG_DRM_LICENSE_SERVER]);
+                } else {
+                    logger.error('Empty Server License for  DRM Scheme  ! ');
+                    return false;
+                }
+                logger.log(' playlist Drm Herders on Request License  of item  ',
+                    i, drm[Const.FJCONFIG_DRM_HEADER_LICENSE_REQUEST]);
+                logger.log(' playlist Drm Herders on Request Segments  of item  ',
+                    i, drm[Const.FJCONFIG_DRM_HEADER_SEGMENTS_REQUEST]);
+            }
+            // check subtitles
+            list = item[Const.FJCONFIG_SUBTITLES];
+            if ((list !== undefined) && (list.length > 0)) {
+                for (j = 0; j < list.length; j++) {
+                    subItem = list[j];
+                    if (subItem[Const.FJCONFIG_SUB_LABEL]) {
+                        logger.log(' playlist Subtitle label ', j, ' of item  ', i, 'is', subItem[Const.FJCONFIG_SUB_LABEL]);
+                    } else {
+                        logger.error('Empty Subtitle label ', j, ' of item ! ', i);
+                        return false;
+                    }
+                    if (subItem[Const.FJCONFIG_SUB_LANG]) {
+                        logger.log(' playlist Subtitle lang ', j, ' of item  ', i, 'is', subItem[Const.FJCONFIG_SUB_LANG]);
+                    } else {
+                        logger.error('Empty Subtitle lang ', j, ' of item ! ', i);
+                        return false;
+                    }
+                    if (subItem[Const.FJCONFIG_SUB_SRC]) {
+                        logger.log(' playlist Subtitle src ', j, ' of item  ', i, 'is', subItem[Const.FJCONFIG_SUB_SRC]);
+                    } else {
+                        logger.error('Empty Subtitle src ', j, ' of item ! ', i);
+                        return false;
+                    }
+                }
+            }
+
+            // check overlays
+            list = item[Const.FJCONFIG_OVERLAYS];
+            if ((list !== undefined) && (list.length > 0)) {
+                for (j = 0; j < list.length; j++) {
+                    subItem = list[j];
+                    if (subItem[Const.FJCONFIG_OVER_DATA]) {
+                        logger.log(' playlist Overlay data ', j, ' of item  ', i, 'is', subItem[Const.FJCONFIG_OVER_DATA]);
+                    } else {
+                        logger.error('Empty Overlay data', j, ' of item ! ', i);
+                        return false;
+                    }
+                    if (subItem[Const.FJCONFIG_OVER_URL]) {
+                        logger.log(' playlist Overlay url ', j, ' of item  ', i, 'is', subItem[Const.FJCONFIG_OVER_URL]);
+                    } else {
+                        logger.error('Empty Overlay url', j, ' of item ! ', i);
+                        return false;
+                    }
+                    if (subItem[Const.FJCONFIG_OVER_DURATION]) {
+                        if ((subItem[Const.FJCONFIG_OVER_DURATION] ===
+                                parseInt(subItem[Const.FJCONFIG_OVER_DURATION], 10))) {
+                            logger.log(' playlist Overlay duration ', j, ' of item  ', i, 'is',
+                                subItem[Const.FJCONFIG_OVER_DURATION]);
+                        } else {
+                            logger.error('Empty Overlay duration ', j, ' of item ! ', i, 'is not integer !');
+                            return false;
+                        }
+                    } else {
+                        logger.error('Empty Overlay duration ', j, ' of item ! ', i);
+                        return false;
+                    }
+                    if (subItem[Const.FJCONFIG_OVER_SHOW_AT]) {
+                        if ((subItem[Const.FJCONFIG_OVER_SHOW_AT] ===
+                                parseInt(subItem[Const.FJCONFIG_OVER_SHOW_AT], 10))) {
+                            logger.log(' playlist Overlay show at ', j, ' of item  ', i, 'is',
+                                subItem[Const.FJCONFIG_OVER_SHOW_AT]);
+                        } else {
+                            logger.error('Empty Overlay show at ', j, ' of item ! ', i, 'is not integer !');
+                            return false;
+                        }
+                    } else {
+                        logger.error('Empty Overlay show at ', j, ' of item ! ', i);
+                        return false;
+                    }
+                }
+            }
         }
-        // check subtitles
-        // check overlays
-        // check drm
+        logger.log('playlist cofiguration is ok ');
         return true;
     }
 
