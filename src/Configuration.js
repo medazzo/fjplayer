@@ -12,6 +12,7 @@ function Configuration() {
         screenMode,
         autoStart,
         loop,
+        validConf,
         logger,
         backLink;
 
@@ -23,6 +24,7 @@ function Configuration() {
         autoStart = false;
         loop = false;
         backLink = false;
+        validConf = false;
     }
 
     function checkPlaylist() {
@@ -162,6 +164,11 @@ function Configuration() {
         return true;
     }
 
+    function checkAppId(appid) {
+        // todo
+        return true;
+    }
+
     function initialize(fjplaylist, fjappid, fjscreenMode, fjbackLink, fjloop, fjautoStart) {
         if (fjautoStart === true || fjautoStart === false) {
             autoStart = fjautoStart;
@@ -180,13 +187,40 @@ function Configuration() {
         }
         playlist = fjplaylist;
         screenMode = fjscreenMode;
+        if (fjappid) {
+            logger.log(' Forja App Id is ', fjappid);
+            if (checkAppId(fjappid)) {
+                logger.log(' Forja App Id  ', fjappid, ' checked .');
+            } else {
+                logger.error('Forja App Id is not Acceptable ! ');
+                return false;
+            }
+        } else {
+            logger.error('Forja App Id is empty ! ');
+            return false;
+        }
         appid = fjappid;
-        return checkPlaylist();
+        validConf = checkPlaylist();
+        return validConf;
+    }
+
+    function isValid() {
+        return validConf;
     }
 
     function toString() {
         return 'loop:' + loop + ', autostart:' + autoStart +
             ', appid:' + appid + ', screenMode:' + screenMode + ', backLink:' + backLink;
+    }
+
+    function getItemConfAt(index) {
+        var item = null;
+        if (index < playlist.length) {
+            item = playlist[index];
+        } else {
+            logger.error(' bad index to ask for ', index);
+        }
+        return item;
     }
 
     function getItemsNbr() {
@@ -196,6 +230,8 @@ function Configuration() {
     instance = {
         initialize: initialize,
         toString: toString,
+        isValid: isValid,
+        getItemConfAt: getItemConfAt,
         getItemsNbr: getItemsNbr
     };
 

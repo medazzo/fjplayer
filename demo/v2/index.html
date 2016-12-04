@@ -66,15 +66,18 @@
 
             }]
         }];
-        console.info('VERSION', fjplayer.Version);
-        var conf = fjplayer.Configuration();
-        var done = conf.initialize(playlist, true, false, 'appid', 'screenMode', false);
-        console.info(' Conf Initilized', done);
-        var player = fjplayer.Player();
-        done = player.initialize(conf, "player-wrapper")
-        console.info(' Player Initilized', done);
-        done = player.play(0);
-        console.info(' Player playing', done);
+
+        window.onload = function() {
+            console.info('VERSION', fjplayer.Version);
+            var conf = fjplayer.Configuration();
+            var done = conf.initialize(playlist, true, false, 'appid', 'screenMode', false);
+            console.info(' Conf Initilized', done);
+            var player = fjplayer.Player();
+            done = player.initialize(conf, "player-wrapper")
+            console.info(' Player Initilized', done);
+            done = player.playAt(0);
+            console.info(' Player playing', done);
+        }
     </script>
 </head>
 
