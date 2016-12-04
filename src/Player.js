@@ -2,10 +2,10 @@ import * as Const from './constants';
 import Logger from './Logger';
 
 /**
- * @module Configuration
- * @description The Configuration is the primary module used to set configuration and .
+ * @module Player
+ * @description The Player is the player module used to play items.
  */
-function Configuration() {
+function Player() {
     let instance,
         playlist,
         appid,
@@ -203,6 +203,5 @@ function Configuration() {
 
     return instance;
 };
-// let configuration = Configuration();
 
-export default Configuration;
+export default Player;

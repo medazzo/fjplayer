@@ -2,6 +2,7 @@
  * The entry point for the library FJplayer.JS
  */
 import Configuration from './Configuration';
+import Player from './Player';
 import { getVersionString } from './Version';
 
 // Shove both of these into the global scope
@@ -14,6 +15,7 @@ if (!fjplayer) {
 }
 
 fjplayer.Configuration = Configuration;
+fjplayer.Player = Player;
 fjplayer.Version = getVersionString();
 
 export default fjplayer;
