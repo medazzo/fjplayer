@@ -195,7 +195,7 @@ playlist:
                 'FJSubSrc':'vtt/sintel-en.vtt'
             },
             {
-                'FJSubLabel':'Español',
+                'FJSubLabel':'Espaï¿½ol',
                 'FJSubLang':'es' ,
                 'FJSubSrc':'vtt/sintel-es.vtt'
             },

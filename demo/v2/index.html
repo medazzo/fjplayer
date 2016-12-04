@@ -1,0 +1,85 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <title>fjplayer demo</title>
+    <script type="text/javascript" src="../../lib/Fjplayer.js"></script>
+    <script type="text/javascript">
+        var playlist = [{
+            'FJClass': 'ads',
+            'FJType': 'video/mp4',
+            'FJTitle': 'Fric Fric Ads ',
+            'FJPoster': '',
+            'FJSrc': 'videos/Fric_Fric.mp4'
+        }, {
+
+            'FJClass': 'vod',
+            'FJType': 'video/mp4',
+            'FJTitle': 'sentinel Movie mp4 ',
+            'FJPoster': '',
+            'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
+            'FJThumbs': 'vtt/thumbs.vtt',
+            'FJSubstitles': [{
+                'FJSubLabel': 'English',
+                'FJSubLang': 'en',
+                'FJSubSrc': 'vtt/sintel-en.vtt'
+            }],
+            'FJOverlays': [{
+                'FJOverData': '<div style="cursor:pointer;"> <img src="img/2000px-Smiley.svg.png" alt="Smiley face" width="100" height="20"> Your ADS is Here; clikc to go to google !</div> ',
+                'FJOverShowAt': 15,
+                'FJOverDuration': 5,
+                'FJOverUrl': 'http://www.google.com'
+            }]
+        }, {
+            'FJClass': 'live',
+            'FJTitle': 'Sentinel Dash with multi subs natives, added vtt and thumbs',
+            'FJType': 'dash',
+            'FJPoster': '',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd',
+            'FJThumbs': 'vtt/thumbs.vtt',
+            'FJDrm': {
+                'FJDrmScheme': 'clearkey',
+                'FJLicenceServer': '.....',
+                'FJHeadersOnLicenseRequest': {
+                    'sdfsgsgs': "sfsdf"
+                },
+                'FJHeadersOnSegmentsRequest': {}
+            },
+            'FJSubstitles': [{
+                'FJSubLabel': 'English',
+                'FJSubLang': 'en',
+                'FJSubSrc': 'vtt/sintel-en.vtt'
+            }, {
+                'FJSubLabel': 'Espagnol',
+                'FJSubLang': 'es',
+                'FJSubSrc': 'vtt/sintel-es.vtt'
+            }, {
+                'FJSubLabel': 'Deutsch',
+                'FJSubLang': 'de',
+                'FJSubSrc': 'vtt/sintel-de.vtt'
+            }],
+            'FJOverlays': [{
+                'FJOverData': '<div  style="cursor:pointer;"> <img src="img/2000px-Smiley.svg.png" alt="Smiley face" width="20" height="30"> Your ADS is Here; clikc to go to google !</div> ',
+                'FJOverShowAt': 5,
+                'FJOverDuration': 5,
+                'FJOverUrl': 'http://www.google.com'
+
+            }]
+        }];
+
+        var conf = fjplayer.Configuration();
+        var done = conf.initialize(playlist, true, false, 'appid', 'screenMode', false);
+        console.info('++++++++++++++', done);
+        console.warn('++++++++++++++', conf.toString());
+        console.info('++++++++++++++', fjplayer.Version);
+    </script>
+</head>
+
+<div id="player-wrapper">
+</div>
+
+<body>
+
+</body>
+
+</html>
