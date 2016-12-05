@@ -77,7 +77,6 @@ function Menu(menuObj, videoElement, menuTracksArray, settingBtnObj) {
         setAudio: setAudio
     };
 
-
     return instance;
 };
 

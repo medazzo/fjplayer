@@ -1,5 +1,7 @@
  import * as Const from './constants';
  import Logger from './Logger';
+ import Menu from './Menu';
+ import Video from './Video';
 
  /**
   * @module Player
@@ -13,10 +15,13 @@
          conf,
          divElement,
          videoElement,
+         video,
+         menu,
          itemPlaying,
          started;
 
      function setup() {
+         video = null
          conf = null;
          videoElement = null;
          divElement = null;
@@ -25,6 +30,7 @@
          divid = '';
          itemPlaying = 0;
          logger = new Logger('Player');
+         menu = new Menu('menuObj', 'videoElement', 'menuTracksArray', 'settingBtnOb');
          itemPlaying = 0;
      }
 
@@ -33,6 +39,9 @@
          divElement.innerHTML = Const.FJPLAYER_HTML_INNER;
          // creating video
          videoElement = document.createElement('video');
+         video = new Video();
+         video.initialize(conf, videoElement);
+         menu.setSubs(0);
          return true;
      }
 
