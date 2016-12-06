@@ -65,6 +65,13 @@ function Configuration() {
             logger.log(' playlist poster of item  ', i, 'is', item[Const.FJCONFIG_POSTER]);
             logger.log(' playlist thumbs of item  ', i, 'is', item[Const.FJCONFIG_THUMBS]);
 
+            // check ads
+            if (item[Const.FJCONFIG_CLASS] === Const.FJCONFIG_CLASS_ADS) {
+                if (item[Const.FJCONFIG_ADS_LINK_URL] === null || item[Const.FJCONFIG_ADS_LINK_URL] === undefined) {
+                    logger.error('Ads: BAD  or missing link url Value ! ');
+                    return false;
+                }
+            }
             // check drm
             drm = playlist[Const.FJCONFIG_DRM];
             if (drm !== undefined) {

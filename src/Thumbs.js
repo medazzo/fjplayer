@@ -21,7 +21,7 @@ function Thumbs(vidElement, thumbsTrachindex, thumbImg, thumbDiv, progressBar) {
      * Event on mouse
      * * */
     function goRenderThumbs($event) {
-        var rect, p, c, i, url, xywh;
+        var rect, p, c, i, xywh;
         // first we convert from mouse to time position ..
         rect = b.getBoundingClientRect();
         p = ($event.pageX - rect.left) * (videoElement.duration / (rect.right - rect.left));
@@ -47,7 +47,7 @@ function Thumbs(vidElement, thumbsTrachindex, thumbImg, thumbDiv, progressBar) {
         }
 
         // ..next we unravel the JPG url and fragment query..
-        url = c[i].text.split('#')[0];
+        // url = c[i].text.split('#')[0];
         xywh = c[i].text.substr(c[i].text.indexOf('=') + 1).split(',');
 
         // ..and last we style the thumbnail overlay
@@ -57,11 +57,9 @@ function Thumbs(vidElement, thumbsTrachindex, thumbImg, thumbDiv, progressBar) {
         t.style.height = xywh[3] + 'px';
 
         td.style.left = $event.pageX - xywh[2] / 2 + 'px';
-        td.style.top = rect.top - (xywh[3] * 1.5) + 'px'
+        td.style.top = rect.top - (xywh[3] * 1.5) + 'px';
         td.style.width = xywh[2] + 'px';
     }
-
-
 
     instance = {
 

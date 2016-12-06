@@ -6,7 +6,7 @@ import Logger from './Logger';
  */
 function Volume(volumebar, videoElement) {
     let instance,
-        vb = volumebar,
+        volBar = volumebar,
         volumePercentage = 0,
         video = videoElement,
         showingVolumeBar = true,
@@ -14,19 +14,19 @@ function Volume(volumebar, videoElement) {
         VolLevelUp = true,
         VolLevelDown = true,
         VolLevelOff = true,
-        logger = new Logger('Menu');
+        logger = new Logger('Volume');
 
     function goShowProgressBar() {
         logger.log(' Hallo Volume !');
-        /* $timeout(function() {
+        setTimeout(function() {
             if (usingVolumeBar === false) {
                 showingVolumeBar = false;
             }
-        }, 1000);*/
+        }, 1000);
     }
 
     function goShowVolumeBar() {
-        vb.style.display = 'block';
+        volBar.style.display = 'block';
         showingVolumeBar = true;
     }
 
@@ -40,11 +40,26 @@ function Volume(volumebar, videoElement) {
         volumePercentage = 100;
     }
 
+    function getVolumeUp() {
+        return VolLevelUp;
+    }
+
+    function getVolumeDown() {
+        return VolLevelDown;
+    }
+
+    function getVolumeOff() {
+        return VolLevelOff;
+    }
+
+    function isVolumeBarshown() {
+        return showingVolumeBar;
+    }
 
     function setVolume(newVolumePercentage) {
         video.volume = (newVolumePercentage / 100);
         volumePercentage = newVolumePercentage;
-        if (newVolumePercentage == 0) {
+        if (newVolumePercentage === 0) {
             VolLevelUp = false;
             VolLevelDown = false;
             VolLevelOff = true;
@@ -68,12 +83,11 @@ function Volume(volumebar, videoElement) {
     }
 
     function setVolumeProgressLevel($event) {
-        // need ti get object now when it shown        
-        var rect = vb.getBoundingClientRect();
+        // need ti get object now when it shown
+        var rect = volBar.getBoundingClientRect();
         var vp = (($event.pageX - rect.left) / rect.width) * 100;
         setVolume(vp);
     }
-
 
     instance = {
         goShowProgressBar: goShowProgressBar,
@@ -81,9 +95,13 @@ function Volume(volumebar, videoElement) {
         goUseVolumeBar: goUseVolumeBar,
         goHideVolumeBar: goHideVolumeBar,
         goMuteVolume: goMuteVolume,
-        setVolumeProgressLevel: setVolumeProgressLevel
+        getVolumeUp: getVolumeUp,
+        getVolumeDown: getVolumeDown,
+        getVolumeOff: getVolumeOff,
+        isVolumeBarshown: isVolumeBarshown,
+        setVolumeProgressLevel: setVolumeProgressLevel,
+        setVolume: setVolume
     };
-
 
     return instance;
 };

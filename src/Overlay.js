@@ -1,92 +1,150 @@
-/**
- * @module Overlay
- * @description The Overlay is the primary Overlay used to set Overlays .
- */
-function Overlay(_data, _showAt, _showDuration, _url) {
-    let instance,
-        adData = _data,
-        showAt = _showAt,
-        showDuration = _showDuration,
-        url = _url,
-        started = false,
-        finished = false,
-        refreshId = null,
-        handler = null,
-        txtduration;
+ import Logger from './Logger';
+ /**
+  * @module Overlay
+  * @description The Overlay is the primary Overlay used to set Overlays :
+  *     it manage overlay for information ads on media or ovelay on ads video.
+  */
+ function Overlay(_vidElement, _divElemnt, _data, _showAt, _showDuration, _url) {
+     let instance,
+         videoDivElement = _vidElement,
+         divElemnt = _divElemnt,
+         adData = _data,
+         showAt = _showAt,
+         overDuration = _showDuration,
+         url = _url,
+         startTimer,
+         endTimer,
+         countDownTimer,
+         isItAds = false,
+         started = false,
+         finished = false,
+         blocked = false,
+         shownduration = _showDuration,
+         logger = new Logger('Overlay');
 
-    function onTmUpdate(e) {
-        /*   $apply(function() {
-               if ((!started) && (video.currentTime > showAt) && (video.currentTime < (showAt + 1))) {
-                   started = true;
-                   if (showDuration == -1) // correct duration
-                       showDuration = Math.trunc(video.duration);
-                   StartAds();
-                   // hide ads after timeout
-                   refreshId = $interval(upInfo, 1000);
-                   logger.info('>> refreshId', refreshId);
-                   return;
-               }
-           });*/
-    }
+     function Escape() {
+         // todo notify the video player to go to next video
+         logger.error(' must escape the ads ');
+     }
 
-    function trigger() {
-        isAdsDataHidden = true;
-        isAdsInfoHidden = true;
-        txtduration = $filter('duration')(showDuration);
-        handler = onTmUpdate.bind(video);
-        video.addEventListener('timeupdate', handler, false);
-    }
+     function countDownAds() {
+         if (shownduration > 0) {
+             shownduration--;
+             divElemnt.innerHTML = 'you ads will end in ' + shownduration + ' sec';
+             countDownTimer = setTimeout(countDownAds, 1000);
+         } else {
+             divElemnt.innerHTML = 'you ads is done, click to Escape';
+             divElemnt.onclick = function() { Escape(); };
+             finished = true;
+         }
 
-    function upInfo() {
-        if (showDuration > 0) {
-            AdsInfo = $sce.trustAsHtml('your ads will end in ' + txtduration + ' sec');
-            showDuration--;
-            txtduration = $filter('duration')(showDuration);
-        } else {
-            logger.info('Ending @@@ ', showDuration);
-            isAdsDataHidden = true;
-            isAdsInfoHidden = true;
-            finished = true;
-            logger.info(' Finishing Overlay >> refreshId', refreshId);
-            //finish  
-            $interval.cancel(refreshId);
-            video.removeEventListener('timeupdate', handler, false);
-        }
-    }
+     }
 
-    function StartAds() {
-        var secTimeout = showDuration * 1000;
-        txtduration = $filter('duration')(showDuration);
-        AdsInfo = $sce.trustAsHtml('you ads will end in ' + txtduration + ' sec');
-        // show ads
-        if (adData != null) {
-            logger.info('Data re not null ! ');
-            isAdsDataHidden = false;
-            AdsData = $sce.trustAsHtml(adData);
-        }
-        if (animate == true) {
-            logger.info('Animation is  Activated ! ');
-            isAdsInfoHidden = false;
-        }
-        logger.info('you ads will end in ' + txtduration + ' sec', isAdsInfoHidden, '<<>>', isAdsInfoHidden);
-    }
+     function StopOverlay() {
+         // hide the div
+         // hide the overlay , empty the div
+         divElemnt.style.visibility = 'hidden';
+         while (divElemnt.hasChildNodes()) {
+             divElemnt.removeChild(divElemnt.firstChild);
+         }
+         divElemnt.innerHTML = '';
+         finished = true;
+     }
 
+     function StartOverlay() {
+         started = true;
+         endTimer = setTimeout(StopOverlay, overDuration * 1000);
+         // show the div
+         divElemnt.style.visibility = 'visible';
+         logger.log('you overlay  just and will end in ' + overDuration + ' sec');
+     }
 
-    function setup() {
-        logger.info('fjOverlays : overlay triggred to start @ ', showAt, ' for ', txtduration, 'sec ');
-        trigger();
-    }
+     function clicked() {
+         window.open(url, '_blank');
+     }
 
-    function initialize() {}
+     function Launch() {
+         if (!blocked) {
+             logger.log('you overlay ADS and will end in ' + overDuration + ' sec');
+             videoDivElement.onclick = function() { clicked(); };
+             videoDivElement.style.cursor = 'pointer';
+             divElemnt.style.cursor = 'pointer';
+             if (isItAds) {
+                 divElemnt.style.visibility = 'visible';
+                 started = true;
+                 countDownTimer = setTimeout(countDownAds, 1000);
+             } else {
+                 startTimer = setTimeout(StartOverlay, showAt * 1000);
+             }
+         } else {
+             logger.error(' Blocked overlay !');
+         }
+     }
 
-    instance = {
-        StartAds: StartAds,
-        upInfo: upInfo
-    };
+     function Cancel() {
+         if (!blocked) {
+             logger.log('fjOverlays : Cancel overlay was to be triggred to start @ ',
+                 showAt, ' for ', overDuration, 'sec ');
+             // stop timers
+             if (isItAds) {
+                 clearTimeout(countDownTimer);
+             } else {
+                 clearTimeout(startTimer);
+                 clearTimeout(endTimer);
+             }
+             // hide the overlay , empty the div
+             divElemnt.style.visibility = 'hidden';
+             while (divElemnt.hasChildNodes()) {
+                 divElemnt.removeChild(divElemnt.firstChild);
+             }
+             divElemnt.innerHTML = '';
+         }
+     }
 
-    setup();
+     function setup() {
+         logger.log('fjOverlays : overlay will triggred to start @ ', showAt, ' for ',
+             overDuration, 'sec , ang go for ', url);
+         if (divElemnt === null || divElemnt === undefined) {
+             logger.error('invalid div used for overlay ! will be blocked');
+             blocked = true;
+         } else {
+             // set div info
+             if (adData != null) {
+                 divElemnt.innerHTML = adData;
+                 isItAds = false;
+             } else {
+                 isItAds = true;
+                 divElemnt.innerHTML = 'you ads will end in ' + shownduration + ' sec';
+             }
+             if (url.substring(0, 7) !== 'http://' && url.substring(0, 8) !== 'https://') {
+                 url = 'http://' + url;
+             }
+             divElemnt.style.visibility = 'hidden';
+         }
+     }
 
-    return instance;
-};
+     function isStarted() {
+         return started;
+     }
 
-export default Overlay;
+     function isFinished() {
+         return finished;
+     }
+
+     function isBlocked() {
+         return blocked;
+     }
+     instance = {
+         Launch: Launch,
+         Cancel: Cancel,
+         isFinished: isFinished,
+         isStarted: isStarted,
+         isBlocked: isBlocked
+     };
+
+     setup();
+
+     return instance;
+ };
+
+ export default Overlay;

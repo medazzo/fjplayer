@@ -1,6 +1,8 @@
- import * as Const from './constants';
+ /* import * as Const from './constants'; */
  import Logger from './Logger';
- import Menu from './Menu';
+ /* import Menu from './Menu';
+ import Thumbs from './Thumbs';
+ import Volume from './Volume'; */
  import Video from './Video';
 
  /**
@@ -13,41 +15,52 @@
          initialized,
          divid,
          conf,
-         divElement,
-         videoElement,
+         mainDivElement,
+         videoDivElement,
+         overlaysDivElement,
          video,
-         menu,
+         /* menu,
+          thumbMgr,
+         VolumeMgr,*/
          itemPlaying,
          started;
 
      function setup() {
-         video = null
+         video = null;
          conf = null;
-         videoElement = null;
-         divElement = null;
+         videoDivElement = null;
+         mainDivElement = null;
          started = false;
          initialized = false;
          divid = '';
          itemPlaying = 0;
+         overlaysDivElement = null;
          logger = new Logger('Player');
-         menu = new Menu('menuObj', 'videoElement', 'menuTracksArray', 'settingBtnOb');
+         /* menu = new Menu('menuObj', 'videoElement', 'menuTracksArray', 'settingBtnOb');
+         thumbMgr = new Thumbs('tiObj', 'tdObj', 'pbObj');
+         VolumeMgr = new Volume(); */
          itemPlaying = 0;
      }
 
      function prepareUI() {
          logger.log(' Preparing UI ..');
-         divElement.innerHTML = Const.FJPLAYER_HTML_INNER;
+         // change inner html accroding to small cinema or big player
+         // divElement.innerHTML = Const.FJPLAYER_HTML_INNER;
          // creating video
-         videoElement = document.createElement('video');
+         videoDivElement = document.createElement('video');
+         mainDivElement.appendChild(videoDivElement);
+         // overlay
+         overlaysDivElement = document.createElement('div');
+         mainDivElement.appendChild(overlaysDivElement);
+         // VolumeMgr.setVolume(videoElement.volume * 100);
          video = new Video();
-         video.initialize(conf, videoElement);
-         menu.setSubs(0);
+         // menu.setSubs(0);
          return true;
      }
 
      function initialize(fjconf, fjdivid) {
-         divElement = document.getElementById(fjdivid);
-         if (divElement === null) {
+         mainDivElement = document.getElementById(fjdivid);
+         if (mainDivElement === null) {
              logger.error('BAD div ID Element ! ', fjdivid);
              return false;
          }
@@ -64,11 +77,14 @@
      }
 
      function toString() {
-         return 'divid:' + divid + ', itemPlaying:' + itemPlaying + ', divElement:' + divElement +
+         return 'divid:' + divid + ', itemPlaying:' + itemPlaying + ', divElement:' + mainDivElement +
              ', initialized:' + initialized + ', started:' + started + ', conf:' + conf.toString();
      }
 
      function playAt(itemnbr) {
+         video.initialize(conf.getItemConfAt(itemnbr), videoDivElement);
+         video.setTracks(overlaysDivElement);
+         video.View();
          return true;
      }
 

@@ -53,4 +53,4 @@ export const FJCONFIG_DRM_SCHEMES = [
     FJCONFIG_DRM_SCHEME_PLAYREADY
 ];
 
-export const FJPLAYER_HTML_INNER = '	<video width="320" height="240" controls> </video>';
+export const FJPLAYER_HTML_INNER = '	<video width="320" height="240" > </video>';
