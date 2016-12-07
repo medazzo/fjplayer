@@ -13,6 +13,7 @@
          logger,
          mediaConf,
          vidElement,
+         videoGoNextCbx,
          tracksArray,
          overlaysArray,
          indexThumbsTrack,
@@ -36,13 +37,15 @@
          isContainsLangs = false;
          isContainsThumbs = false;
          overlaysDivElement = null;
+         videoGoNextCbx = null;
          overlaysArray = [];
          tracksArray = { 'subs': [], 'audio': [] };
          logger = new Logger('Video');
      }
 
-     function initialize(fjmediaConf, videoElement) {
+     function initialize(fjmediaConf, videoElement, vidGoNextCbx) {
          var source;
+         videoGoNextCbx = vidGoNextCbx;
          mediaConf = fjmediaConf;
          vidElement = videoElement;
          logger.log('Initiliazing for  ', mediaConf);
@@ -92,7 +95,7 @@
          if (mediaConf[Const.FJCONFIG_CLASS] === Const.FJCONFIG_CLASS_ADS) {
              isVideoisAds = true;
              logger.log('setTracks : Setting overlays  class > ADS >');
-             overlaysArray[0] = new Overlay(vidElement, overlaysDivElement, null, 0,
+             overlaysArray[0] = new Overlay(vidElement, overlaysDivElement, videoGoNextCbx, null, 0,
                  mediaConf[Const.FJCONFIG_ADS_ESCAPE_AT], mediaConf[Const.FJCONFIG_ADS_LINK_URL]);
          } else {
              isVideoisAds = false;
@@ -101,7 +104,7 @@
                  logger.log('setTracks : Setting overlays  class > Movie ', overs.length);
                  for (i = 0; i < overs.length; i++) {
                      item = overs[i];
-                     overlaysArray[i] = new Overlay(vidElement, overlaysDivElement,
+                     overlaysArray[i] = new Overlay(vidElement, overlaysDivElement, videoGoNextCbx,
                          item[Const.FJCONFIG_OVER_DATA],
                          item[Const.FJCONFIG_OVER_SHOW_AT],
                          item[Const.FJCONFIG_OVER_DURATION],

@@ -72,7 +72,7 @@
         window.onload = function() {
             console.info('VERSION', fjplayer.Version);
             var conf = fjplayer.Configuration();
-            var done = conf.initialize(playlist, true, false, 'appid', 'screenMode', false);
+            var done = conf.initialize(playlist, 'appid', 'maximal', false, true, false);
             console.info(' Conf Initilized', done);
             var player = fjplayer.Player();
             done = player.initialize(conf, "player-wrapper")

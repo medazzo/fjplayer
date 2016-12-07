@@ -1,6 +1,89 @@
-.element {
-    background-color: blue;
-    color: white;
+.mainVideosmall {
+    background-color: black;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+    overflow: hidden;
+    margin: -8px;
+}
+
+.mainVideoCinema {
+    background-color: black;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    overflow: hidden;
+    margin: -8px;
+}
+
+.mainVideoBig {
+    background: black;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    margin: -8px;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    /*dim the background*/
+}
+
+
+/* ---------------------- ADS style ------------------- */
+
+.adInfoBlockold {
+    position: absolute;
+    color: #f1c40f;
+    font-weight: bold;
+    top: 11px;
+    text-align: center;
+    font-size: 15px;
+    background: rgba(42, 42, 42, 0.75);
+    box-shadow: 3px 2px 2px #888888;
+    width: 100%;
+    z-index: 2147483647;
+}
+
+.adInfoBlock {
+    margin-right: 10%;
+    margin-left: 10%;
+    position: absolute;
+    color: #ffffff;
+    text-align: center;
+    background: rgba(75, 75, 75, 0.7);
+    width: 80%;
+    border: 1px solid;
+    border-color: #ffffff;
+    border-radius: 1px;
+    z-index: 2147483647
+}
+
+.adDataBlock {
+    position: absolute;
+    border: 1px;
+    top: 100px;
+    left: 100px;
+    color: #FFF;
+    text-align: center;
     font-size: 20px;
-    padding: 20px;
+    background: rgba(42, 42, 42, 0.75);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: 640px;
+    padding: 50px 0;
+    z-index: 2147483647;
+}
+
+.ad-hiding-transition {
+    -webkit-transition: opacity 0.4s ease-in-out;
+    -moz-transition: opacity 0.4s ease-in-out;
+    -ms-transition: opacity 0.4s ease-in-out;
+    -o-transition: opacity 0.4s ease-in-out;
+    transition: opacity 0.4s ease-in-out;
 }

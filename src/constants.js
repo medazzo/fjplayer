@@ -5,7 +5,6 @@ export const FJCONFIG_LOOP = 'FJLoop';
 export const FJCONFIG_START_PLAYING = 'FJStartplaying';
 export const FJCONFIG_ENABLE_BACK_LINK = 'FJEnableFullScreenBackLink';
 export const FJCONFIG_APP_ID = 'FJAppId';
-export const FJCONFIG_STARTING_MODE = 'FJStartingMode';
 export const FJCONFIG_CLASS = 'FJClass';
 export const FJCONFIG_TYPE = 'FJType';
 export const FJCONFIG_TITLE = 'FJTitle';
@@ -38,6 +37,14 @@ export const FJCONFIG_CLASS_VOD = 'vod';
 export const FJCONFIG_CLASS_LIVE = 'live';
 export const FJCONFIG_CLASSES = [FJCONFIG_CLASS_ADS, FJCONFIG_CLASS_LIVE, FJCONFIG_CLASS_VOD];
 
+export const FJCONFIG_SCREEN_MODE_MINIMAL = 'minimal';
+export const FJCONFIG_SCREEN_MODE_CINEMA = 'cinema';
+export const FJCONFIG_SCREEN_MODE_MAXIMAL = 'maximal';
+export const FJCONFIG_SCREEN_MODES = [FJCONFIG_SCREEN_MODE_MINIMAL,
+    FJCONFIG_SCREEN_MODE_CINEMA,
+    FJCONFIG_SCREEN_MODE_MAXIMAL
+];
+
 export const FJCONFIG_TYPE_MP4 = 'video/mp4';
 export const FJCONFIG_TYPE_DASH = 'dash';
 export const FJCONFIG_TYPES = [FJCONFIG_TYPE_MP4, FJCONFIG_TYPE_DASH];
@@ -52,5 +59,3 @@ export const FJCONFIG_DRM_SCHEMES = [
     FJCONFIG_DRM_SCHEME_WIDEVINE,
     FJCONFIG_DRM_SCHEME_PLAYREADY
 ];
-
-export const FJPLAYER_HTML_INNER = '	<video width="320" height="240" > </video>';

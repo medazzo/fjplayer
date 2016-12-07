@@ -194,6 +194,12 @@ function Configuration() {
         }
         playlist = fjplaylist;
         screenMode = fjscreenMode;
+
+        if (Const.FJCONFIG_SCREEN_MODES.indexOf(screenMode) === -1) {
+            logger.error('BAD SCREEN MODE Value ! ', screenMode);
+            return false;
+        }
+
         if (fjappid) {
             logger.log(' Forja App Id is ', fjappid);
             if (checkAppId(fjappid)) {
@@ -234,12 +240,17 @@ function Configuration() {
         return playlist.length;
     }
 
+    function getPlayerScreenMode() {
+        return screenMode;
+    }
+
     instance = {
         initialize: initialize,
         toString: toString,
         isValid: isValid,
         getItemConfAt: getItemConfAt,
-        getItemsNbr: getItemsNbr
+        getItemsNbr: getItemsNbr,
+        getPlayerScreenMode: getPlayerScreenMode
     };
 
     setup();
