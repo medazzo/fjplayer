@@ -3,13 +3,21 @@ var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 var path = require('path');
 var env = require('yargs').argv.mode;
 
+
 var libraryName = 'Fjplayer';
 
 var plugins = [],
     outputFile;
 
+// for ejs
 plugins.push(new webpack.ProvidePlugin({
     _: 'underscore'
+}));
+// for jquery
+plugins.push(new webpack.ProvidePlugin({
+    jQuery: 'jquery',
+    $: 'jquery',
+    jquery: 'jquery'
 }));
 
 if (env === 'build') {
@@ -30,36 +38,15 @@ var config = {
         umdNamedDefine: true
     },
     module: {
-        loaders: [{
-                test: /(\.jsx|\.js)$/,
-                loader: 'babel',
-                exclude: /(node_modules|bower_components)/
-            },
-            {
-                test: /(\.jsx|\.js)$/,
-                loader: "eslint-loader",
-                exclude: /node_modules/
-            },
-            {
-                test: /\.css$/,
-                loader: "style!css?sourceMap",
-                exclude: /node_modules/
-            }, {
-                test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "url?limit=10000&mimetype=application/font-woff"
-            }, {
-                test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "url?limit=10000&mimetype=application/font-woff"
-            }, {
-                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "url?limit=10000&mimetype=application/octet-stream"
-            }, {
-                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "file"
-            }, {
-                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "url?limit=10000&mimetype=image/svg+xml"
-            }
+        loaders: [
+            { test: /(\.jsx|\.js)$/, loader: 'babel', exclude: /(node_modules|bower_components)/ },
+            { test: /(\.jsx|\.js)$/, loader: "eslint-loader", exclude: /node_modules/ },
+            { test: /\.css$/, loader: "style!css?sourceMap" },
+            { test: /bootstrap\/js\//, loader: 'imports?jQuery=jquery' },
+            { test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
+            { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
+            { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
+            { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' }
         ]
     },
     resolve: {

@@ -6,6 +6,7 @@
   import Volume from './Volume'; */
   import Video from './Video';
   require('./app.css');
+  require('bootstrap-webpack');
 
   /**
    * @module Player
@@ -53,7 +54,6 @@
           // creating video
           videoDivElement = document.createElement('video');
           // generate html from ejs
-          logger.error('template >>> ', ejsContent({ 'title': 'halllllllllllllllllo' }));
           mainDivElement.innerHTML = ejsContent(data);
 
           /* mainDivElement.className += ' fjplayerdiv mainfjplayerdiv';
