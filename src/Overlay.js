@@ -34,10 +34,10 @@
      function countDownAds() {
          if (shownduration > 0) {
              shownduration--;
-             divElemnt.innerHTML = 'your ads will end in ' + shownduration + ' sec';
+             divElemnt.innerHTML = '<p class=\'poverlaytitle\'>your ads will end in ' + shownduration + ' sec </p>';
              countDownTimer = setTimeout(countDownAds, 1000);
          } else {
-             divElemnt.innerHTML = 'you ads is done, click to Escape';
+             divElemnt.innerHTML = '<p class=\'poverlaytitle\'>you ads is done, click to Escape</p>';
              divElemnt.onclick = function() { Escape(); };
              finished = true;
          }
@@ -117,12 +117,12 @@
              // set div info
              if (adData != null) {
                  divElemnt.innerHTML = adData;
-                 divElemnt.className += ' adDataBlock';
+                 divElemnt.className += ' divoverlaytitle';
                  isItAds = false;
              } else {
                  isItAds = true;
                  divElemnt.innerHTML = 'you ads will end in ' + shownduration + ' sec';
-                 divElemnt.className += ' adInfoBlock';
+                 divElemnt.className += ' divoverlaytitle';
              }
              if (url.substring(0, 7) !== 'http://' && url.substring(0, 8) !== 'https://') {
                  url = 'http://' + url;

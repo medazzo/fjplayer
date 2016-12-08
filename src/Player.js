@@ -1,5 +1,6 @@
-  import * as Const from './constants';
+  // import * as Const from './constants';
   import Logger from './Logger';
+  var ejsContent = require('ejs!./fjplayer-tmpl.ejs');
   /* import Menu from './Menu';
   import Thumbs from './Thumbs';
   import Volume from './Volume'; */
@@ -20,6 +21,7 @@
           videoDivElement,
           overlaysDivElement,
           video,
+          // divcontrols,
           /* menu,
            thumbMgr,
           VolumeMgr,*/
@@ -29,6 +31,7 @@
       function setup() {
           video = null;
           conf = null;
+          // divcontrols = null;
           videoDivElement = null;
           mainDivElement = null;
           started = false;
@@ -44,20 +47,37 @@
       }
 
       function prepareUI() {
+
+          var data = { 'title': 'halllllllllllllllllo' };
           logger.log(' Preparing UI ..');
           // creating video
           videoDivElement = document.createElement('video');
+          // generate html from ejs
+          logger.error('template >>> ', ejsContent({ 'title': 'halllllllllllllllllo' }));
+          mainDivElement.innerHTML = ejsContent(data);
+
+          /* mainDivElement.className += ' fjplayerdiv mainfjplayerdiv';
           mainDivElement.appendChild(videoDivElement);
           if (conf.getPlayerScreenMode() === Const.FJCONFIG_SCREEN_MODE_MINIMAL) {
-              videoDivElement.className += ' mainVideoSmall';
+              videoDivElement.className += ' videofjplayer';
           } else if (conf.getPlayerScreenMode() === Const.FJCONFIG_SCREEN_MODE_CINEMA) {
-              videoDivElement.className += ' mainVideoCinema';
+              videoDivElement.className += ' videofjplayer';
           } else {
-              videoDivElement.className += ' mainVideoBig';
+              videoDivElement.className += ' videofjplayer';
           }
           // overlay
           overlaysDivElement = document.createElement('div');
           mainDivElement.appendChild(overlaysDivElement);
+          // controls
+          divcontrols = document.createElement('div');
+          divcontrols.className = 'controlsfjplayerdiv';
+          img = document.createElement('img');
+          img.className = 'imgfullScreenbtn';
+          control = document.createElement('div');
+          control.className = 'controlfjplayerdiv';
+          control.appendChild(img);
+          divcontrols.appendChild(control);
+          mainDivElement.appendChild(divcontrols); */
           // VolumeMgr.setVolume(videoElement.volume * 100);
           video = new Video();
           // menu.setSubs(0);
@@ -76,7 +96,6 @@
               logger.log(' no next to play , so we loop again ');
               // todo
           }
-
       }
 
       function initialize(fjconf, fjdivid) {
@@ -110,7 +129,7 @@
               video.View();
               itemPlaying = itemnbr;
           } else {
-              logger.error(' item nubmerasked to play do not exist ', itemnbr)
+              logger.error(' item nubmerasked to play do not exist ', itemnbr);
               ok = false;
           }
           return ok;

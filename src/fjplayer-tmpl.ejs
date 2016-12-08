@@ -1,0 +1,101 @@
+<div class="fjplayerWrapper">
+<h1><%= title %></h1>
+    <div class="fjplayer" onmouseover="fjMouseMgr(event)">
+        <div class="fjloading">
+            <div class="loading-info"></div>
+        </div>
+        <video class="fjVidMain" onclick="goPlay()" ondblclick="goFullScreen()">
+		</video>
+        <div class="fjMainControlPanel">
+            <div class=" fjcontrols-panel-controls">
+                <div class="fjprogressbar" onclick="goSeek(event)" onmouseleave="goHideThumbs()" onmousemove="goRenderThumbs(event)" onmouseover="goShowThumbs()">
+                    <div class="fjprogressbar-current"></div>
+                    <div class="fjprogressbar-bufferring"></div>
+                </div>
+            </div>
+            <div class=" fjcontrols-panel-controls">
+                <div class="fjvprogressbar" onmouseleave="goHideVolumeBar()" onmouseover="goUseVolumeBar()" onmousemove="setVolumeProgressLevel(event)">
+                    <div class="fjvprogressbar-current" onmouseover="goShowVolumeBar()"></div>
+                </div>
+            </div>
+            <hr>
+            <div class="fjcontrols-panel-controls">
+                <div class="fjcontrols-control">
+                    <i class="glyphicon glyphicon-fast-backward btn-lg" onclick="goPrevPlaylist()"></i>
+                </div>
+
+                <div class="fjcontrols-control">
+                    <i class="glyphicon  btn-lg glyphicon-pause" ng-click="goPause()"></i>
+                    <i class="glyphicon  btn-lg glyphicon-play" ng-click="goPlay()"></i>
+                </div>
+
+                <div class="fjcontrols-control">
+                    <i class="glyphicon glyphicon-fast-forward btn-lg" ng-click="goNextPlaylist()"></i>
+                </div>
+
+                <div class="fjcontrols-control fjcontrols-control-text">
+                    <span>    movieTitle  </span>
+                </div>
+
+                <div class="fjcontrols-control fjcontrols-control-right">
+                    <i class="glyphicon btn-lg glyphicon-resize-full" onclick="goFullScreen()"></i>
+                    <i class="glyphicon btn-lg glyphicon-resize-small" onclick="goSmallScreen()"></i>
+                </div>
+
+
+                <div class="fjcontrols-control fjcontrols-control-right">
+                    <i id="subsBtnId" class="glyphicon glyphicon-cog btn-lg" onclick="goSettingMenu()"></i>
+                </div>
+
+                <div class="fjcontrols-control fjcontrols-control-right" onmouseleave="goShowProgressBar()" onmouseover="goShowVolumeBar()" onclick="goMuteVolume()">
+                    <i class="glyphicon btn-lg glyphicon-volume-up"></i>
+                    <i class="glyphicon btn-lg glyphicon-volume-down"></i>
+                    <i class="glyphicon btn-lg glyphicon-volume-off"></i>
+                </div>
+
+                <div class="fjcontrols-control fjcontrols-control-right fjcontrols-control-text fjcontrols-control-text-small">
+                    <span id="ctime"> movieCTime</span>
+                    <span>/</span>
+                    <span id="ttime"> movieTTime</span>
+                </div>
+            </div>
+        </div>
+        <!-- setting menu -->
+        <div class="settingMenuDiv">
+            <div class="settingMenuSubMenuLeft">
+                sub :
+                <ul class="subtitles-menu">
+                    <li ng-repeat="sub in tracksArray.subs">
+                        <div onclick="setSubs(sub.index)"> {{sub.label}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="settingMenuSubMenuRight" id="settingMenulang" ng-show="isContainsLangs">
+                audio :
+                <ul class="subtitles-menu">
+                    <li>
+                        <div onclick="setAudio(0)" class="subtitles-menu-item-actif"> audio 0 </div>
+                    </li>
+                    <li>
+                        <div onclick="setAudio(1)" class="subtitles-menu-item"> audio 1 </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- thumbs -->
+        <div class="thumbsBlockDiv">
+            <span class="thumbsBlock"></span>
+            <span class="thumbsBlockTime">thumbTime </span>
+        </div>
+        <!-- BACK Btn -->
+        <div class="backButtonBlock" onclick="goBackHistory()">
+            <i class="glyphicon btn-lg glyphicon-arrow-left"></i>
+        </div>
+        <!-- ADS -->
+        <div id="ad_data" class="adDataBlock ad-hiding-transition">
+        </div>
+        <div id="ad_info" class="adInfoBlock" ng-hide="isAdsInfoHidden">
+        </div>
+    </div>
+</div>
