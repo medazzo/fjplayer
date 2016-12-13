@@ -1,6 +1,6 @@
-  // import * as Const from './constants';
+  import * as Const from './constants';
   import Logger from './Logger';
-  var ejsContent = require('ejs!./fjplayer-tmpl.ejs');
+  // var ejsContent = require('ejs!./fjplayer-tmpl.ejs');
   /* import Menu from './Menu';
   import Thumbs from './Thumbs';
   import Volume from './Volume'; */
@@ -22,9 +22,9 @@
           videoDivElement,
           overlaysDivElement,
           video,
-          // divcontrols,
+          divcontrols,
           /* menu,
-           thumbMgr,
+          thumbMgr,
           VolumeMgr,*/
           itemPlaying,
           started;
@@ -48,15 +48,15 @@
       }
 
       function prepareUI() {
-
-          var data = { 'title': 'halllllllllllllllllo' };
+          var img, control;
+          // var data = { 'title': 'halllllllllllllllllo' };
           logger.log(' Preparing UI ..');
           // creating video
           videoDivElement = document.createElement('video');
           // generate html from ejs
-          mainDivElement.innerHTML = ejsContent(data);
+          // mainDivElement.innerHTML = ejsContent(data);
 
-          /* mainDivElement.className += ' fjplayerdiv mainfjplayerdiv';
+          mainDivElement.className += ' fjplayerdiv mainfjplayerdiv';
           mainDivElement.appendChild(videoDivElement);
           if (conf.getPlayerScreenMode() === Const.FJCONFIG_SCREEN_MODE_MINIMAL) {
               videoDivElement.className += ' videofjplayer';
@@ -77,7 +77,7 @@
           control.className = 'controlfjplayerdiv';
           control.appendChild(img);
           divcontrols.appendChild(control);
-          mainDivElement.appendChild(divcontrols); */
+          mainDivElement.appendChild(divcontrols);
           // VolumeMgr.setVolume(videoElement.volume * 100);
           video = new Video();
           // menu.setSubs(0);
