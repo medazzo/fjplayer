@@ -5,6 +5,10 @@
     <link rel="stylesheet" type="text/css" href="SmallPlayer.css">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript">
+        function showVal(val) {
+            console.log(">>> bar value " + val);
+        }
+
         function goFullScreen() {
 
         }
@@ -14,10 +18,10 @@
             var btnplay = document.getElementById("playBtn");
             if (video.paused) {
                 video.play();
-                btnplay.class = " fa fa-pause  imgBtnPlayCmd ";
+                btnplay.class = " fa fa-pause   ";
             } else {
                 video.pause();
-                btnplay.class = "  fa fa-play  imgBtnPauseCmd ";
+                btnplay.class = "  fa fa-play   ";
             }
 
         }
@@ -42,76 +46,37 @@
 </head>
 
 <body>
-    <div id="hlsplayer" class="embed-responsive-item divofdivvideo">
-        <div class="divofvideo">
-            <video id="Video1" class="videoBalise" autoplay>
+    <div id="hlsplayer" class="fjPlayer">
+        <video id="Video1" class="divofVideo" autoplay>
                 <source src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4" type="video/mp4" />
             </video>
+        <div class="divTitle">
+            <p class="divTspanitle">Great homemade icecream </p>
+        </div>
+        <div class="divcontrolsProgress ">
+            <div class="divonecontrol divconeontrolLeft progressbar">
+                <input id="barp" type="range" vlaue="0" min="0" max="100" step="1" oninput="showVal(this.value)" onmouseover="showVal(this.value)" onchange="showVal(this.value)" />
+            </div>
         </div>
         <div class="divcontrols">
-            <div class="divonecontrol">
-                <div class="divbigPlayBtn control"><span title="Play" class=" fa fa-play bigPlayBtn " onclick="goPlay()"></span></div>
-            </div>
-            <div class="divonecontrol">
-                <div class="diverror">
-                    <div class="diverrorBackround control"></div>
-                    <div class="diverrorBackgroundError control">
-                        <div class="diverrorBackgroundMessage"><b>Loading error.<br>Please reload the page.</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="divonecontrol">
-                <span title="Pause" class=" control fa fa-pause divPauseControlImg"></span></div>
-            <div class="divonecontrol">
-                <div class="leveldiv_default" class="control" style="position: relative; visibility: hidden; z-index: 200;">250p</div>
-            </div>
-            <div class="divonecontrol">
-                <div class="leveldiv_default" class="control" style="position: relative; visibility: hidden; z-index: 200;">360p</div>
-            </div>
-            <div class="divonecontrol">
-                <div class="control" style="position: relative; background-color: rgba(0, 0, 0, 0.5); height: 28px; visibility: visible; width: 938px; top: -36px;"></div>
-            </div>
-            <div class="divonecontrol"><span title="Replay" class="fa fa-repeat divimgReplay"></span></div>
-            <div class="divonecontrol"><span title="Fullscreen" class="fa fa-arrows-alt divimgFullScreen"></span></div>
-            <div class="divonecontrol"><span title="volume-full" class="fa fa-volume-up  divimgVolumeFull"></span></div>
-            <div class="divonecontrol"><span title="volume mute" class="fa fa-volume-off divimgVolumeMute"></span></div>
-            <!-- progress bar & thumbs-->
-            <div class="divonecontrol">
-                <div class="progressbar">
-                    <input id="barp" type="range" min="0" max="10" step="1" oninput="showVal(this.value)" onmouseover="showVal(this.value)" onchange="showVal(this.value)" />
-                </div>
-            </div>
-            <!--Full Screen -->
-            <div class="divonecontrol">
-                <span class=" fa fa-expand expandPlayerSize" title="Double player size"></span>
-            </div>
-            <div class="divTitle">
-                <p class="divTspanitle">Great homemade icecream </p>
-            </div>
-            <div style="width: 100%; height: 1px; display: block;">
-                <div style="position: relative; visibility: hidden; width: 100%;">
-                    <div style="margin: auto; overflow: hidden; text-align: center;"></div>
-                </div>
-            </div>
-            <div style="width: 100%; height: 1px; display: block;">
-                <div style="position: relative; visibility: visible; font-size: 12px; top: -65px;"></div>
-            </div>
-            <!-- Volume bar-->
-            <div class="divonecontrol">
+            <div class="divonecontrol divconeontrolIcon divconeontrolLeft"><span id="playBtn " class=" fa fa-play  " title="Play " onclick="goPlay() "></span></div>
+            <div class="divonecontrol divconeontrolIcon divconeontrolLeft"><span title="volume-full" class="fa fa-volume-up  "></span></div>
+            <div class="divonecontrol divconeontrolVBar divconeontrolLeft">
                 <div class="volumebar">
-                    <input type='range' min="0" max="10" step="1" oninput="showVal(this.value)" onmouseover="showVal(this.value)" onchange="showVal(this.value)" />
+                    <input type="range" vlaue="0" min="0 " max="10 " step="1 " oninput="showVal(this.value) " onmouseover="showVal(this.value) " onchange="showVal(this.value) " />
                 </div>
             </div>
-            <!-- buttons -->
-            <div class="divonecontrol"><span id="playBtn" class=" fa fa-play  imgBtnPlayCmd" title="Play" onclick="goPlay()"></span></div>
-            <div class="divonecontrol"><span class=" fa fa-audio-description imgBtnSubsCmd" title="subtitles" onclick=""></span></div>
-            <!-- menu buttons -->
-            <div class="divonecontrol">
-                <div class="divsettingmenu">
-                    <span class=" fa fa-language " title="Video quality" onclick="goMenu()"></span>
-                </div>
+            <div class="divonecontrol divconeontrolLeft">
+                <div title="timer" class=" divonecontrol controlText">1:05:04 / 1:25:20</div>
             </div>
 
+
+
+
+            <div class="divonecontrol divconeontrolIcon divconeontrolRight"><span title="Fullscreen" class="fa fa-arrows-alt "></span></div>
+            <div class="divonecontrol divconeontrolIcon divconeontrolRight"><span class=" fa fa-expand " title="Double player size"></span></div>
+            <div class="divonecontrol divconeontrolIcon divconeontrolRight"><span class=" fa fa-audio-description  " title="subtitles " onclick=" "></span></div>
+            <div class="divonecontrol divconeontrolIcon divconeontrolRight"><span class=" fa fa-language " title="Video quality " onclick="goMenu() "></span></div>
         </div>
     </div>
 </body>

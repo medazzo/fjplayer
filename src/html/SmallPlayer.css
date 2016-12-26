@@ -1,29 +1,17 @@
-.divofdivvideo {
-    overflow: hidden;
+.fjPlayer {
+    background-color: rgb(0, 0, 0);
+    text-align: center;
+    position: relative;
+    border: thick dotted #600;
+    margin: 0px auto 0px auto;
+    text-align: center;
+    display: inline-block
 }
 
 .divofvideo {
-    width: 100%;
-    height: 100%;
-    background-color: rgb(0, 0, 0);
     position: relative;
-}
-
-.videoBalise {
-    width: 100%;
-    height: 100%;
-    background-color: rgb(0, 0, 0);
-    transform: scaleX(1);
-}
-
-.divposter {
-    width: 100%;
-    height: 100%;
-    background-color: rgb(0, 0, 0);
-    position: absolute;
-    text-align: center;
     top: 0px;
-    visibility: hidden;
+    left: 0px;
 }
 
 span.fa {
@@ -31,158 +19,86 @@ span.fa {
     color: rgb(255, 255, 2555);
 }
 
-.divposterimg {
-    height: 100%;
-    margin: auto;
-}
+
+/*______________________________ CONTROLS __________________________*/
 
 .divcontrols {
-    margin-left: 15%;
+    border: thick dotted #060;
+    margin: 0px auto 0px auto;
     width: 100%;
-    height: 1px;
-    display: block;
-    position: relative;
-    top: -1px;
+    height: 25px;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    visibility: visible;
+    bottom: 0px;
+    left: 0px;
 }
 
-.control {
-    position: relative;
+.divcontrolsProgress {
+    border: thick dotted #660;
+    margin: 0px auto 0px auto;
+    width: 100%;
+    height: 13px;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
     visibility: visible;
+    bottom: 25px;
+    left: 0px;
+}
+
+.divconeontrolLeft {
+    float: left;
+}
+
+.divconeontrolRight {
+    float: right;
+}
+
+.divconeontrolIcon {
+    width: 30px;
+}
+
+.divconeontrolVBar {
+    width: 60px;
 }
 
 .divonecontrol {
-    width: 1px;
-    height: 1px;
-    display: block;
+    cursor: pointer;
+    height: 25px;
+    padding-top: 4px;
+    padding-right: 1px;
 }
 
-.divbigPlayBtn {
-    position: relative;
-    visibility: visible;
-    width: 72px;
-    font-size: 5em;
-    height: 87px;
-    text-align: center;
-    left: 433px;
-    top: -286px;
-    opacity: 0.7;
+.divcontrols,
+.control,
+.divonecontrol {
+    display: inline-block;
+    vertical-align: top;
 }
 
-.bigPlayBtn {
-    width: 54px;
-    height: 54px;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 8px;
+
+/* this rule is for IE7 and below only 
+ put it in a Conditional comment without the !ie7 hack if you wish! */
+
+.divcontrols,
+.control,
+.divonecontrol {
+    display: inline !ie7;
+    margin: 0 2px !ie7;
 }
 
-.bigPlayBtnSpan {
-    margin-top: 4px;
-    font-weight: bolder;
-    color: rgb(255, 255, 255);
-    font-size: 14px;
-    text-shadow: 1px 1px 2px black, 0px 0px 0.5em black, 0px 0px 0.1em black;
-    visibility: hidden;
-}
-
-.divLogo {
-    position: relative;
-    visibility: hidden;
-}
-
-.diverror {
-    position: relative;
-    visibility: hidden;
-    top: -478px;
-    height: 476px;
-    width: 938px;
-}
-
-.diverrorBackround {
-    background: rgb(0, 0, 0) none repeat scroll 0% 0%;
-    opacity: 0.6;
-    width: 100%;
-    height: 100%;
-}
-
-.diverrorBackroundError {
-    width: 100%;
-    height: 1px;
-}
-
-.diverrorBackgroundMessage {
-    position: absolute;
-    top: 40px;
-    width: 100%;
-    text-align: center;
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-}
-
-.divPauseControlImg {
-    position: relative;
-    visibility: hidden;
-    width: 48px;
-    height: 48px;
-    opacity: 0.3;
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 12px;
-    left: 433px;
-    top: -285px;
-}
-
-.divimgReplay {
-    position: relative;
-    visibility: visible;
-    width: 18px;
-    height: 18px;
-    padding: 4px;
-}
-
-.divimgFullScreen {
-    position: relative;
-    visibility: visible;
-    width: 20px;
-    height: 20px;
-    padding: 4px;
-    left: 906px;
-    top: -38px;
-}
-
-.divimgVolumeFull {
-    position: relative;
-    visibility: visible;
-    width: 20px;
-    height: 20px;
-    padding: 4px;
-    left: 29.6px;
-    top: -38px;
-}
-
-.divimgVolumeMute {
-    position: relative;
-    visibility: hidden;
-    width: 20px;
-    height: 20px;
-    padding: 4px;
-    left: 29.6px;
-    top: -39px;
-}
-
-.expandPlayerSize {
-    position: relative;
-    visibility: visible;
-    width: 20px;
-    height: 20px;
-    padding: 4px;
-    left: 874px;
-    top: -44px;
+.controlText {
+    padding-top: 2px;
+    font-size: 0.75em;
+    color: rgb(255, 255, 2555);
+    white-space: nowrap;
 }
 
 .divTitle {
     width: 100%;
     height: 1px;
     display: block;
-    position: relative;
+    position: absolute;
 }
 
 .divTspanitle {
@@ -204,82 +120,20 @@ span.fa {
     padding: 5px;
 }
 
-.imgBtnPlayCmd {
-    position: relative;
-    visibility: visible;
-    width: 16px;
-    height: 16px;
-    padding: 4px;
-    left: 4px;
-    top: -46px;
-}
-
-.imgBtnPauseCmd {
-    position: relative;
-    visibility: hidden;
-    width: 16px;
-    height: 16px;
-    padding: 4px;
-    left: 4px;
-    top: -47px;
-}
-
-.imgBtnSubsCmd {
-    position: relative;
-    visibility: visible;
-    width: 19px;
-    height: 19px;
-    padding: 4px;
-    left: 843px;
-    top: -48px;
-}
-
-.divsettingmenu {
-    position: relative;
-    visibility: visible;
-    width: 21px;
-    height: 21px;
-    left: 818px;
-    top: -45px;
-}
-
-.settingmenuimg {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-}
-
-.parametermenu {
-    position: relative;
-    visibility: hidden;
-    z-index: 200;
-    top: -244px;
-    left: 779px;
-    width: 128px;
-    font-size: 12px
-}
-
 
 /*_________________________  Progress  ________________________*/
 
 .progressbar {
     position: relative;
     visibility: visible;
-    width: 938px;
-    height: 13px;
-    top: -52px;
+    width: 100%;
+    height: 3px;
+    float: left;
 }
 
 .volumebar {
-    position: relative;
-    visibility: visible;
-    width: 60px;
-    height: 19px;
-    padding: 4px;
-    left: 55px;
-    top: -42px;
+    width: 100%;
+    height: 25px;
 }
 
 
@@ -294,6 +148,7 @@ input[type=range] {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
+    vertical-align: top;
 }
 
 input[type=range]::-webkit-slider-runnable-track {
