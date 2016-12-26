@@ -38,14 +38,13 @@
 
         }
         /*____________________ VOLUME____________________________*/
-
     </script>
 </head>
 
-<body   >
+<body>
     <div id="hlsplayer" class="embed-responsive-item divofdivvideo">
         <div class="divofvideo">
-            <video id="Video1" class="videoBalise"  autoplay>
+            <video id="Video1" class="videoBalise" autoplay>
                 <source src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4" type="video/mp4" />
             </video>
         </div>
@@ -62,7 +61,7 @@
                 </div>
             </div>
             <div class="divonecontrol">
-              <span title="Pause" class=" control fa fa-pause divPauseControlImg"></span></div>
+                <span title="Pause" class=" control fa fa-pause divPauseControlImg"></span></div>
             <div class="divonecontrol">
                 <div class="leveldiv_default" class="control" style="position: relative; visibility: hidden; z-index: 200;">250p</div>
             </div>
@@ -78,9 +77,9 @@
             <div class="divonecontrol"><span title="volume mute" class="fa fa-volume-off divimgVolumeMute"></span></div>
             <!-- progress bar & thumbs-->
             <div class="divonecontrol">
-              <div class="progressbar">
-                <input  id='bar2' type='range' min="0" max="10" step="1"   oninput="showVal(this.value)" onmouseover="showVal(this.value)" onchange="showVal(this.value)"/>
-              </div>
+                <div class="progressbar">
+                    <input id="barp" type="range" min="0" max="10" step="1" oninput="showVal(this.value)" onmouseover="showVal(this.value)" onchange="showVal(this.value)" />
+                </div>
             </div>
             <!--Full Screen -->
             <div class="divonecontrol">
@@ -99,11 +98,10 @@
             </div>
             <!-- Volume bar-->
             <div class="divonecontrol">
-              <div class="volumebar">
-                <input   type='range' min="0" max="10" step="1"
-                 oninput="showVal(this.value)" onmouseover="showVal(this.value)" onchange="showVal(this.value)"/>
-             </div>
-          </div>
+                <div class="volumebar">
+                    <input type='range' min="0" max="10" step="1" oninput="showVal(this.value)" onmouseover="showVal(this.value)" onchange="showVal(this.value)" />
+                </div>
+            </div>
             <!-- buttons -->
             <div class="divonecontrol"><span id="playBtn" class=" fa fa-play  imgBtnPlayCmd" title="Play" onclick="goPlay()"></span></div>
             <div class="divonecontrol"><span class=" fa fa-audio-description imgBtnSubsCmd" title="subtitles" onclick=""></span></div>
