@@ -1,0 +1,369 @@
+.divofdivvideo {
+    overflow: hidden;
+}
+
+.divofvideo {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0);
+    position: relative;
+}
+
+.videoBalise {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0);
+    transform: scaleX(1);
+}
+
+.divposter {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0);
+    position: absolute;
+    text-align: center;
+    top: 0px;
+    visibility: hidden;
+}
+
+span.fa {
+    font-size: 1.2em;
+    color: rgb(255, 255, 2555);
+}
+
+.divposterimg {
+    height: 100%;
+    margin: auto;
+}
+
+.divcontrols {
+    margin-left: 15%;
+    width: 100%;
+    height: 1px;
+    display: block;
+    position: relative;
+    top: -1px;
+}
+
+.control {
+    position: relative;
+    visibility: visible;
+  }
+.divonecontrol {
+    width: 1px;
+    height: 1px;
+    display: block;
+}
+
+.divbigPlayBtn {
+    position: relative;
+    visibility: visible;
+    width: 72px;
+    font-size: 5em;
+    height: 87px;
+    text-align: center;
+    left: 433px;
+    top: -286px;
+    opacity: 0.7;
+}
+
+.bigPlayBtn {
+    width: 54px;
+    height: 54px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 8px;
+}
+
+.bigPlayBtnSpan {
+    margin-top: 4px;
+    font-weight: bolder;
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+    text-shadow: 1px 1px 2px black, 0px 0px 0.5em black, 0px 0px 0.1em black;
+    visibility: hidden;
+}
+
+.divLogo {
+    position: relative;
+    visibility: hidden;
+}
+
+.diverror {
+    position: relative;
+    visibility: hidden;
+    top: -478px;
+    height: 476px;
+    width: 938px;
+}
+
+.diverrorBackround {
+    background: rgb(0, 0, 0) none repeat scroll 0% 0%;
+    opacity: 0.6;
+    width: 100%;
+    height: 100%;
+}
+
+.diverrorBackroundError {
+    width: 100%;
+    height: 1px;
+}
+
+.diverrorBackgroundMessage {
+    position: absolute;
+    top: 40px;
+    width: 100%;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+}
+
+.divPauseControlImg {
+    position: relative;
+    visibility: hidden;
+    width: 48px;
+    height: 48px;
+    opacity: 0.3;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 12px;
+    left: 433px;
+    top: -285px;
+}
+
+.divimgReplay {
+    position: relative;
+    visibility: visible;
+    width: 18px;
+    height: 18px;
+    padding: 4px;
+}
+
+.divimgFullScreen {
+    position: relative;
+    visibility: visible;
+    width: 20px;
+    height: 20px;
+    padding: 4px;
+    left: 906px;
+    top: -38px;
+}
+
+.divimgVolumeFull {
+    position: relative;
+    visibility: visible;
+    width: 20px;
+    height: 20px;
+    padding: 4px;
+    left: 29.6px;
+    top: -38px;
+}
+
+.divimgVolumeMute {
+    position: relative;
+    visibility: hidden;
+    width: 20px;
+    height: 20px;
+    padding: 4px;
+    left: 29.6px;
+    top: -39px;
+}
+
+.expandPlayerSize {
+    position: relative;
+    visibility: visible;
+    width: 20px;
+    height: 20px;
+    padding: 4px;
+    left: 874px;
+    top: -44px;
+}
+
+.divTitle {
+    width: 100%;
+    height: 1px;
+    display: block;
+    position: relative;
+}
+
+.divTspanitle {
+    position: absolute;
+    visibility: visible;
+    width: auto;
+    height: 16px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: rgb(255, 255, 255);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 0px;
+    white-space: nowrap;
+    display: inline-block;
+    left: 28px;
+    top: -479px;
+    max-width: 766px;
+    font-size: 12px;
+    padding: 5px;
+}
+
+.imgBtnPlayCmd {
+    position: relative;
+    visibility: visible;
+    width: 16px;
+    height: 16px;
+    padding: 4px;
+    left: 4px;
+    top: -46px;
+}
+
+.imgBtnPauseCmd {
+    position: relative;
+    visibility: hidden;
+    width: 16px;
+    height: 16px;
+    padding: 4px;
+    left: 4px;
+    top: -47px;
+}
+
+.imgBtnSubsCmd {
+    position: relative;
+    visibility: visible;
+    width: 19px;
+    height: 19px;
+    padding: 4px;
+    left: 843px;
+    top: -48px;
+}
+
+.progressbar {
+    position: relative;
+    visibility: visible;
+    width: 938px;
+    height: 19px;
+    margin-left: -2px;
+    top: -50px;
+}
+.volumebar {
+    position: relative;
+    visibility: visible;
+    width: 60px;
+    height: 19px;
+    padding: 4px;
+    left: 55px;
+    top: -41px;
+}
+.divsettingmenu {
+    position: relative;
+    visibility: visible;
+    width: 21px;
+    height: 21px;
+    left: 818px;
+    top: -45px;
+}
+
+.settingmenuimg {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+}
+
+.parametermenu {
+    position: relative;
+    visibility: hidden;
+    z-index: 200;
+    top: -244px;
+    left: 779px;
+    width: 128px;
+    font-size: 12px
+}
+/*_________________________ VOLUME ________________________*/
+input[type=range] {
+    /*removes default webkit styles*/
+    -webkit-appearance: none;
+
+    /*fix for FF unable to apply focus style bug */
+    border: 1px solid white;
+
+    /*required for proper track sizing in FF*/
+    width: 100%;
+}
+input[type=range]::-webkit-slider-runnable-track {
+    width: 300px;
+    height: 3px;
+    background: #ddd;
+    border: none;
+    border-radius: 3px;
+}
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 13px;
+   width: 12px;
+   border-radius: 50px;
+   background: #ff0000;
+    margin-top: -4px;
+}
+input[type=range]:focus {
+    outline: none;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #ccc;
+      height: 3.5px;
+}
+
+input[type=range]::-moz-range-track {
+    width: 300px;
+    height: 5px;
+    background: #ddd;
+    border: none;
+    border-radius: 3px;
+}
+input[type=range]::-moz-range-thumb {
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: goldenrod;
+}
+
+/*hide the outline behind the border*/
+input[type=range]:-moz-focusring{
+    outline: 1px solid white;
+    outline-offset: -1px;
+}
+
+input[type=range]::-ms-track {
+    width: 300px;
+    height: 5px;
+
+    /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+    background: transparent;
+
+    /*leave room for the larger thumb to overflow with a transparent border */
+    border-color: transparent;
+    border-width: 6px 0;
+
+    /*remove default tick marks*/
+    color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+    background: #ff0000;
+    border-radius: 10px;
+}
+input[type=range]::-ms-fill-upper {
+    background: #ddd;
+    border-radius: 10px;
+}
+input[type=range]::-ms-thumb {
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: goldenrod;
+}
+input[type=range]:focus::-ms-fill-lower {
+    background: #ff0000;
+}
+input[type=range]:focus::-ms-fill-upper {
+    background: #ccc;
+}
