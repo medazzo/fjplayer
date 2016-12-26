@@ -5,6 +5,12 @@
     <link rel="stylesheet" type="text/css" href="SmallPlayer.css">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript">
+        var widthV = 0;
+        var heightV = 0;
+        var expanded = false;
+        var fullScreen = false;
+        var video;
+
         function showVal(val) {
             console.log(">>> bar value " + val);
         }
@@ -13,25 +19,63 @@
 
         }
 
-        function goPlay() {
-            var video = document.getElementById("Video1");
-            var btnplay = document.getElementById("playBtn");
-            if (video.paused) {
-                video.play();
-                btnplay.class = " fa fa-pause   ";
-            } else {
-                video.pause();
-                btnplay.class = "  fa fa-play   ";
+        function initUI() {
+            console.log(">>>> LOADED !!!");
+            video = document.getElementById("Video1");
+            widthV = video.videoWidth;
+            heightV = video.videoHeight;
+            var elem = document.getElementById("playBtn");
+            if (!video.paused) {
+                elem.innerHTML = "<span class=\"fa fa-pause\" title=\"pause\" onclick=\"goPlay(this) \">";
+                console.log("pausing ");
             }
-
         }
 
-        function goPause() {
-
+        function goPlay(elem) {
+            if (video.paused) {
+                video.play();
+                elem.className = "fa fa-pause";
+                elem.title = "pause";
+                console.log("playing ");
+            } else {
+                video.pause();
+                elem.className = "fa fa-play";
+                elem.title = "play   ";
+                console.log("pausing ");
+            }
         }
 
         function goBiggerScreen() {
+            console.log(" videoHeight  ", video.videoHeight);
+            console.log(" videoWidth  ", video.videoWidth);
 
+            var widthF = window.innerWidth - 15;
+            console.log("expanding : ", widthV, "<==>", widthF);
+            if (expanded) {
+                video.width = widthV;
+                //video.height = heightV;
+                expanded = false;
+            } else {
+                video.width = widthF;
+                //
+                expanded = true;
+            }
+        }
+
+        function goFullScreen() {
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+                fullScreen = true;
+            } else if (video.mozRequestFullScreen) {
+                video.mozRequestFullScreen();
+                fullScreen = true;
+            } else if (video.webkitRequestFullscreen) {
+                video.webkitRequestFullscreen();
+                fullScreen = true;
+            } else {
+                fullScreen = false;
+            }
+            console.log("Full Screen ", fullScreen);
         }
 
         function Volume() {
@@ -45,13 +89,13 @@
     </script>
 </head>
 
-<body>
+<body onload="initUI()">
     <div id="hlsplayer" class="fjPlayer">
         <video id="Video1" class="divofVideo" autoplay>
                 <source src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4" type="video/mp4" />
             </video>
         <div class="divTitle">
-            <p class="divTspanitle">Great homemade icecream </p>
+            <p class="divonecontrol divTspanitle divconeontrolLeft">Great homemade icecream </p>
         </div>
         <div class="divcontrolsProgress ">
             <div class=" divconeontrolLeft progressbar">
@@ -59,7 +103,9 @@
             </div>
         </div>
         <div class="divcontrols">
-            <div class="divonecontrol divconeontrolIcon divconeontrolLeft"><span id="playBtn " class=" fa fa-play  " title="Play " onclick="goPlay() "></span></div>
+            <div class="divonecontrol divconeontrolIcon divconeontrolLeft">
+                <div id="playBtn"><span class=" fa fa-play  " title="Play " onclick="goPlay(this) "></span></div>
+            </div>
             <div class="divonecontrol divconeontrolIcon divconeontrolLeft"><span title="volume-full" class="fa fa-volume-up  "></span></div>
             <div class="divonecontrol divconeontrolVBar divconeontrolLeft">
                 <div class="volumebar">
@@ -67,14 +113,13 @@
                 </div>
             </div>
             <div class="divonecontrol divconeontrolLeft">
-                <div title="timer" class=" divonecontrol controlText">1:05:04 / 1:25:20</div>
+                <div title="timer" class=" divonecontrol controlText">1:05:04</div>
+                <div title="timer" class=" divonecontrol controlText">/</div>
+                <div title="timer" class=" divonecontrol controlText">2:25:20</div>
             </div>
 
-
-
-
-            <div class="divonecontrol divconeontrolIcon divconeontrolRight"><span title="Fullscreen" class="fa fa-arrows-alt "></span></div>
-            <div class="divonecontrol divconeontrolIcon divconeontrolRight"><span class=" fa fa-expand " title="Double player size"></span></div>
+            <div class="divonecontrol divconeontrolIcon divconeontrolRight"><span title="Fullscreen" class="fa fa-arrows-alt " onclick="goFullScreen()"></span></div>
+            <div class="divonecontrol divconeontrolIcon divconeontrolRight"><span class=" fa fa-expand " title="Double player size" onclick="goBiggerScreen()"></span></div>
             <div class="divonecontrol divconeontrolIcon divconeontrolRight"><span class=" fa fa-audio-description  " title="subtitles " onclick=" "></span></div>
             <div class="divonecontrol divconeontrolIcon divconeontrolRight"><span class=" fa fa-language " title="Video quality " onclick="goMenu() "></span></div>
         </div>

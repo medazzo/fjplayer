@@ -3,7 +3,6 @@
     text-align: center;
     position: relative;
     margin: 0px auto 0px auto;
-    text-align: center;
     display: inline-block
 }
 
@@ -66,6 +65,7 @@ span.fa {
     padding-right: 1px;
 }
 
+.divTitle,
 .divcontrols,
 .control,
 .divonecontrol {
@@ -99,7 +99,7 @@ span.fa {
 }
 
 .divTspanitle {
-    position: absolute;
+    position: relative;
     visibility: visible;
     width: auto;
     height: 16px;
@@ -110,8 +110,7 @@ span.fa {
     margin: 0px;
     white-space: nowrap;
     display: inline-block;
-    left: 28px;
-    top: -479px;
+    left: 5px;
     max-width: 766px;
     font-size: 12px;
     padding: 5px;
@@ -241,4 +240,27 @@ input[type=range]:focus::-ms-fill-lower {
 
 input[type=range]:focus::-ms-fill-upper {
     background: #ccc;
+}
+
+
+/*_________________________________________ VIDEO ___________________________*/
+
+::-webkit-media-controls {
+    display: none !important;
+}
+
+video::-webkit-media-controls {
+    display: none !important;
+}
+
+video::-webkit-media-controls-enclosure {
+    display: none !important;
+}
+
+.custom-video-controls {
+    z-index: 2147483647;
+}
+
+.divcontrols {
+    z-index: 2147483647;
 }
