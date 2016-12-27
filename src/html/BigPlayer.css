@@ -18,6 +18,25 @@ span.fa {
 }
 
 
+/* ---------------------- Thumbs style --------------------- */
+
+.thumbsBlockDiv {
+    position: absolute;
+    display: table;
+    visibility: hidden;
+    background: rgba(20, 20, 20, 1);
+    border-radius: 2px;
+    z-index: 2147483647;
+}
+
+.thumbsBlock {
+    display: table-cell;
+    border-radius: 2px;
+    vertical-align: top;
+    display: inline-block;
+}
+
+
 /*______________________________ CONTROLS __________________________*/
 
 .divcontrols {

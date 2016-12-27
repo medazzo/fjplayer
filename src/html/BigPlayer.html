@@ -11,29 +11,30 @@
     <div class="fjPlayer">
         <video id="Video0" class="divofVideo" autoplay>
                 <source src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4" type="video/mp4" />
+                <track src="./thumbs.vtt" kind="metadata" />
             </video>
         <div class="divTitle">
             <p class="divonecontrol divTspanitle divconeontrolLeft">Great homemade icecream </p>
         </div>
         <div class="fjcontrols-panel">
             <div class="fjcontrols-panel-controls">
-                <div class=" hprogressbar">
-                    <input id="bprogress0" type="range" vlaue="0" min="0" max="100" step="1" onclick="seek(0 , this.value)" onmouseover="showPic(0 , this.value)" />
+                <div class="hprogressbar">
+                    <input id="bprogress0" type="range" vlaue="0" min="0" max="1000" step="1" onclick="seek(0 , this.value)" onmouseleave="goHideThumbs(0)" onmousemove="goRenderThumbs(0 , this.value)" onmouseover="goShowThumbs(0)" />
                 </div>
             </div>
 
             <div id="playBtn0" class="fjcontrols-control divconeontrolIcon divconeontrolLeft">
-                <span class=" fa fa-play" title="Play" onclick="goPlay(0)"></span>
+                <span class="fa fa-play" title="Play" onclick="goPlay(0)"></span>
             </div>
             <div id="volume0" onclick="GoMute(0)" class="fjcontrols-control divconeontrolIcon divconeontrolLeft">
                 <span title="volume-full" class="fa fa-volume-up"></span></div>
             <div class="fjcontrols-control">
-                <div class=" volumebar">
+                <div class="volumebar">
                     <input id="bvolume0" type="range" value="100" min="0" max="100" step="1" onclick="ChangeVolume(0 , this.value)" />
                 </div>
             </div>
             <div class="fjcontrols-control">
-                <div id="timer0" class=" fjcontrols-control fjcontrols-control-text">
+                <div id="timer0" class="fjcontrols-control fjcontrols-control-text">
                     <span>1:05:04</span>
                     <span>/</span>
                     <span>2:25:20</span>
@@ -44,14 +45,17 @@
                 <span title="Fullscreen" class="fa fa-arrows-alt" onclick="goFullScreen(0)"></span>
             </div>
             <div class="fjcontrols-control divconeontrolIcon fjcontrols-control-right">
-                <span class=" fa fa-expand" title="Double player size" onclick="goBiggerScreen(0)"></span>
+                <span class="fa fa-expand" title="Double player size" onclick="goBiggerScreen(0)"></span>
             </div>
             <div class="fjcontrols-control divconeontrolIcon fjcontrols-control-right">
-                <span class=" fa fa-audio-description" title="subtitles" onclick="goMenuSubs(0)"></span>
+                <span class="fa fa-audio-description" title="subtitles" onclick="goMenuSubs(0)"></span>
             </div>
             <div class="fjcontrols-control divconeontrolIcon fjcontrols-control-right">
-                <span class=" fa fa-language" title="Video quality" onclick="goMenuLang(0)"></span>
+                <span class="fa fa-language" title="Video quality" onclick="goMenuLang(0)"></span>
             </div>
+        </div>
+        <div class="thumbsBlockDiv" id="thumbDiv0">
+            <span class="thumbsBlock" id="thumbImgBlockO"></span>
         </div>
     </div>
 
@@ -62,18 +66,19 @@
     <div class="fjPlayer">
         <video id="Video1" class="divofVideo" autoplay>
                 <source src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4" type="video/mp4" />
+                <track src="./thumbs.vtt" kind="metadata" />
             </video>
         <div class="divTitle">
             <p class="divonecontrol divTspanitle divconeontrolLeft">Great homemade icecream </p>
         </div>
         <div class="divcontrolsProgress">
-            <div class=" divconeontrolLeft progressbar">
-                <input id="bprogress1" type="range" min="0" max="100" step="1" onclick="seek(1 , this.value)" onmouseover="showPic(1 , this.value)" />
+            <div class="divconeontrolLeft progressbar">
+                <input id="bprogress1" type="range" min="0" max="1000" step="1" onclick="seek(1 , this.value)" onmouseleave="goHideThumbs(1)" onmousemove="goRenderThumbs(1 , this.value)" onmouseover="goShowThumbs(1)" />
             </div>
         </div>
         <div class="divcontrols">
             <div id="playBtn1" class="divonecontrol divconeontrolIcon divconeontrolLeft">
-                <span class=" fa fa-play" title="Play" onclick="goPlay(1)"></span>
+                <span class="fa fa-play" title="Play" onclick="goPlay(1)"></span>
             </div>
             <div id="volume1" onclick="GoMute(1)" class="fjcontrols-control divconeontrolIcon divconeontrolLeft">
                 <span title="volume-full" class="fa fa-volume-up"></span>
@@ -84,7 +89,7 @@
                 </div>
             </div>
             <div class="divonecontrol divconeontrolLeft">
-                <div id="timer1" class=" divonecontrol controlText">
+                <div id="timer1" class="divonecontrol controlText">
                     <span>1:05:04</span>
                     <span>/</span>
                     <span>2:25:20</span>
@@ -94,13 +99,16 @@
                 <span title="Fullscreen" class="fa fa-arrows-alt" onclick="goFullScreen(1)"></span>
             </div>
             <div class="divonecontrol divconeontrolIcon divconeontrolRight">
-                <span class=" fa fa-expand" title="Double player size" onclick="goBiggerScreen(1)"></span>
+                <span class="fa fa-expand" title="Double player size" onclick="goBiggerScreen(1)"></span>
             </div>
             <div class="divonecontrol divconeontrolIcon divconeontrolRight">
-                <span class=" fa fa-audio-description" title="subtitles" onclick="goMenuSubs(1)"></span>
+                <span class="fa fa-audio-description" title="subtitles" onclick="goMenuSubs(1)"></span>
             </div>
             <div class="divonecontrol divconeontrolIcon divconeontrolRight">
-                <span class=" fa fa-language" title="Video quality" onclick="goMenuLang(1)"></span></div>
+                <span class="fa fa-language" title="Video quality" onclick="goMenuLang(1)"></span></div>
+        </div>
+        <div class="thumbsBlockDiv" id="thumbDiv1">
+            <span class="thumbsBlock" id="thumbImgBlock1"></span>
         </div>
     </div>
 </body>
