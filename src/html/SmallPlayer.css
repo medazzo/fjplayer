@@ -245,6 +245,10 @@ input[type=range]:focus::-ms-fill-upper {
 
 /*_________________________________________ VIDEO ___________________________*/
 
+video::-webkit-media-controls-panel {
+    display: none !important;
+}
+
 ::-webkit-media-controls {
     display: none !important;
 }

@@ -4,93 +4,11 @@
     <title>Hallo tester </title>
     <link rel="stylesheet" type="text/css" href="SmallPlayer.css">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script type="text/javascript">
-        var widthV = 0;
-        var heightV = 0;
-        var expanded = false;
-        var fullScreen = false;
-        var video;
-
-        function showVal(val) {
-            console.log(">>> bar value " + val);
-        }
-
-        function goFullScreen() {
-
-        }
-
-        function initUI() {
-            console.log(">>>> LOADED !!!");
-            video = document.getElementById("Video1");
-            widthV = video.videoWidth;
-            heightV = video.videoHeight;
-            var elem = document.getElementById("playBtn");
-            if (!video.paused) {
-                elem.innerHTML = "<span class=\"fa fa-pause\" title=\"pause\" onclick=\"goPlay(this) \">";
-                console.log("pausing ");
-            }
-        }
-
-        function goPlay(elem) {
-            if (video.paused) {
-                video.play();
-                elem.className = "fa fa-pause";
-                elem.title = "pause";
-                console.log("playing ");
-            } else {
-                video.pause();
-                elem.className = "fa fa-play";
-                elem.title = "play   ";
-                console.log("pausing ");
-            }
-        }
-
-        function goBiggerScreen() {
-            console.log(" videoHeight  ", video.videoHeight);
-            console.log(" videoWidth  ", video.videoWidth);
-
-            var widthF = window.innerWidth - 15;
-            console.log("expanding : ", widthV, "<==>", widthF);
-            if (expanded) {
-                video.width = widthV;
-                //video.height = heightV;
-                expanded = false;
-            } else {
-                video.width = widthF;
-                //
-                expanded = true;
-            }
-        }
-
-        function goFullScreen() {
-            if (video.requestFullscreen) {
-                video.requestFullscreen();
-                fullScreen = true;
-            } else if (video.mozRequestFullScreen) {
-                video.mozRequestFullScreen();
-                fullScreen = true;
-            } else if (video.webkitRequestFullscreen) {
-                video.webkitRequestFullscreen();
-                fullScreen = true;
-            } else {
-                fullScreen = false;
-            }
-            console.log("Full Screen ", fullScreen);
-        }
-
-        function Volume() {
-
-        }
-
-        function Progress() {
-
-        }
-        /*____________________ VOLUME____________________________*/
-    </script>
+    <script type="text/javascript" src="commands.js"></script>
 </head>
 
 <body onload="initUI()">
-    <div id="hlsplayer" class="fjPlayer">
+    <div id="player" class="fjPlayer">
         <video id="Video1" class="divofVideo" autoplay>
                 <source src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4" type="video/mp4" />
             </video>
