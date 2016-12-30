@@ -41,6 +41,9 @@ var config = {
         loaders: [
             { test: /(\.jsx|\.js)$/, loader: 'babel', exclude: /(node_modules|bower_components)/ },
             { test: /(\.jsx|\.js)$/, loader: "eslint-loader", exclude: /node_modules/ },
+            { test: /\.scss$/, loaders: ['style', 'css', 'less'] },
+            { test: /\.png$/, loader: "file-loader?name=img/[name].png" },
+            /* images disponible dans le bundle à l'url /img/[nom-image].png */
             { test: /\.css$/, loader: "style!css?sourceMap" },
             { test: /bootstrap\/js\//, loader: 'imports?jQuery=jquery' },
             { test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },

@@ -4,11 +4,11 @@ var videos = new Array(10);
 var playBtns = new Array(10);
 var volBtns = new Array(10);
 var widthV = new Array(10);
-var savVolume = new Array(10);
+
 var barVolume = new Array(10);
 var barProgress = new Array(10);
 var durations = new Array(10);
-var muted = new Array(10);
+var fjPlayer = new Array(10);
 var expanded = new Array(10);
 var fullScreen = new Array(10);
 var indexThumbsTrack = new Array(10);
@@ -16,8 +16,8 @@ var tdObj = new Array(10);
 var tiObj = new Array(10);
 var refreshed;
 var maxUsedVid = 0;
-
-function timerChecks(index) {
+var fullScreenEnabled = false ;
+function timerChecks() {
     for (var index = 0; index < maxUsedVid; index++) {
         var p = Math.round(videos[index].duration / 1000);
         var c = Math.round(videos[index].currentTime / p);
@@ -28,48 +28,69 @@ function timerChecks(index) {
 
 function initUI(max) {
     maxUsedVid = max;
+    // Check if the browser supports the Fullscreen API
+    fullScreenEnabled = !!(document.fullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled || document.webkitSupportsFullscreen || document.webkitFullscreenEnabled || document.createElement('video').webkitRequestFullScreen);
+
     for (var index = 0; index < maxUsedVid; index++) {
         expanded[index] = false;
-        muted[index] = false;
+
         fullScreen[index] = false;
-        savVolume[index] = 100;
+
         videos[index] = document.getElementById('Video' + index);
-        console.log('>>>> Ping @ ', index);
         playBtns[index] = document.getElementById('playBtn' + index);
-        console.log('>>>> Ping @ ', index);
         volBtns[index] = document.getElementById('volume' + index);
-        console.log('>>>> Ping @ ', index);
         barVolume[index] = document.getElementById('bvolume' + index);
-        console.log('>>>> Ping @ ', index);
         barProgress[index] = document.getElementById('bprogress' + index);
-        console.log('>>>> Ping @ ', index);
         durations[index] = document.getElementById('timer' + index);
-        console.log('>>>> Ping @ ', index);
         tdObj[index] = document.getElementById('thumbDiv' + index);
-        console.log('>>>> Ping @ ', index);
         tiObj[index] = document.getElementById('thumbImgBlock' + index);
-        console.log('>>>> Ping @ ', index);
-        barVolume[index].value = savVolume[index];
+        fjPlayer[index] = document.getElementById('fjPlayer' + index);
         barProgress[index].value = 0;
         if (!videos[index].paused) {
             playBtns[index].innerHTML = '<span class=\"fa fa-pause\" title=\"pause\" onclick=\"goPlay(' + index + ')\">';
             console.log('pausing ');
         }
         widthV[index] = videos[index].videoWidth;
+        /* add thumbs */
+        var track = document.createElement('track');
+        track.src = 'thumbs.vtt';
+        track.kind = 'metadata';
+        videos[index].appendChild(track);
+        /* */
         for (var i = 0; i < videos[index].textTracks.length; i++) {
             if (videos[index].textTracks[i].kind === 'metadata') {
                 indexThumbsTrack[index] = i;
-                console.log('metadata @ ', i);
+                //console.log('metadata @ ', i, ' >>> ', videos[index].textTracks[i]);
             }
         }
-        console.log('>>>> LOADED @ ', index);
+        console.log('[FullScreen:',fullScreenEnabled,']>>>> LOADED @ ', index);
     }
+
+
 
     refreshed = setInterval(function() {
         timerChecks();
     }, 1000);
 }
 
+function drawBefore(index){
+    var v =barProgress[index].value;
+    barProgress[index].style.background = "-moz-linear-gradient(left,  #ed1e24 0%, #ed1e24 "+ v +"%, #191919 "+ v +"%, #191919 100%)";
+    barProgress[index].style.background = "-webkit-gradient(linear, left top, right top, color-stop(0%,#ed1e24), color-stop("+ v +"%,#ed1e24), color-stop("+ v +"%,#191919), color-stop(100%,#191919))";
+    barProgress[index].style.background = "-webkit-linear-gradient(left,  #ed1e24 0%,#ed1e24 "+ v +"%,#191919 "+ v +"%,#191919 100%)";
+    barProgress[index].style.background = "-o-linear-gradient(left,  #ed1e24 0%,#ed1e24 "+ v +"%,#191919 "+ v +"%,#191919 100%)";
+    barProgress[index].style.background = "-ms-linear-gradient(left,  #ed1e24 0%,#ed1e24 "+ v +"%,#191919 "+ v +"%,#191919 100%)";
+    barProgress[index].style.background = "linear-gradient(to right,  #ed1e24 0%,#ed1e24 "+ v
+}
+// Set the video container's fullscreen state
+var setFullscreenData = function(state) {
+  videoContainer.setAttribute('data-fullscreen', !!state);
+}
+
+// Checks if the document is currently in fullscreen mode
+var isFullScreen = function() {
+  return !!(document.fullScreen || document.webkitIsFullScreen || document.mozFullScreen || document.msFullscreenElement || document.fullscreenElement);
+}
 
 function goPlay(index) {
     console.log('goPlay ', index);
@@ -99,13 +120,17 @@ function goBiggerScreen(index) {
 }
 
 function goFullScreen(index) {
+
     if (!fullScreen[index]) {
         if (videos[index].requestFullscreen) {
-            videos[index].requestFullscreen();
+            fjPlayer[index].requestFullscreen();
+            //videos[index].requestFullscreen();
         } else if (videos[index].mozRequestFullScreen) {
-            videos[index].mozRequestFullScreen();
+            fjPlayer[index].mozRequestFullScreen();
+            // videos[index].mozRequestFullScreen();
         } else if (videos[index].webkitRequestFullscreen) {
-            videos[index].webkitRequestFullscreen();
+            fjPlayer[index].webkitRequestFullscreen();
+            //videos[index].webkitRequestFullscreen();
         }
         fullScreen[index] = true;
     } else {
@@ -126,27 +151,21 @@ function ChangeVolume(index, val) {
     console.log(" Volume of index ", index, " is : ", val);
     if (val > 50) {
         volBtns[index].innerHTML = '<span title=\"volume-full\" class=\"fa fa-volume-up\"></span>';
-    } else if (val > 5) {
+    } else if (val > 0) {
         volBtns[index].innerHTML = '<span title=\"volume-down\" class=\"fa fa-volume-down\"></span>';
     } else {
         volBtns[index].innerHTML = '<span title=\"volume-mute\" class=\"fa fa-volume-off\"></span>';
     }
-    if (val === 0)
-        muted[index] = true;
     videos[index].volume = val / 100;
 }
 
 function GoMute(index) {
-    console.log("Current Volume ", savVolume[index]);
-    if (muted[index] === false) {
-        savVolume[index] = (videos[index].volume * 100);
-        muted[index] = true;
+    if (videos[index].muted === false) {
+        videos[index].muted = true;
         ChangeVolume(index, 0);
-        barVolume[index].value = 0;
     } else {
-        muted[index] = false;
-        ChangeVolume(index, savVolume[index]);
-        barVolume[index].value = savVolume[index];
+        videos[index].muted = false;
+        ChangeVolume(index, (videos[index].volume * 100));
     }
 }
 
@@ -158,7 +177,7 @@ function seek(index, val) {
         if (!videos[index].paused) {
             videos[index].pause();
         }
-        //change current time 
+        //change current time
         videos[index].currentTime = p;
         //play
         videos[index].play();
@@ -168,7 +187,7 @@ function seek(index, val) {
 }
 
 function duration(secDuration) {
-    var sec_num = parseInt(secDuration, 10); // don't forget the second param  
+    var sec_num = parseInt(secDuration, 10); // don't forget the second param
     var hours = Math.floor(sec_num / 3600);
     var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
     var seconds = sec_num - (hours * 3600) - (minutes * 60);
@@ -204,8 +223,9 @@ function goRenderThumbs(index, event) {
     var thumbTime = p;
     // ..then we find the matching cue..
     var c = videos[index].textTracks[indexThumbsTrack[index]].cues;
-    if (c == null) { //track eleme,t is not supprted : Firefox 
+    if (c == null) { //track eleme,t is not supprted : Firefox
         console.error(" cues is null @ ", indexThumbsTrack[index], " not supported , Firefox ?");
+        console.error(" Cues are null @", index, " >> :", videos[index]);
         return;
     }
 

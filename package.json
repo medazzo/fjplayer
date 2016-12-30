@@ -37,7 +37,7 @@
         "ejs-html-loader": "^2.0.2",
         "ejs-loader": "^0.3.0",
         "less-loader": "^2.2.3",
-        "less": "^1.7.5",
+        "less": "^2.3.1",
         "ejs": "^2.5.5",
         "url-loader": "^0.5.5",
         "imports-loader": "^0.6.3",

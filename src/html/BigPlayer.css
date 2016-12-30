@@ -93,7 +93,7 @@ span.fa {
 }
 
 
-/* this rule is for IE7 and below only 
+/* this rule is for IE7 and below only
  put it in a Conditional comment without the !ie7 hack if you wish! */
 
 .divcontrols,
@@ -271,13 +271,11 @@ input[type=range]:focus::-ms-fill-upper {
 .fjcontrols-panel-controls {
     width: 100%;
     position: relative;
-    cursor: pointer;
 }
 
 .fjcontrols-control {
     color: #8F9B9E;
-    position: relative;
-    cursor: pointer;
+    position: relative;    
     float: left;
     height: 100%;
     border-right: 1px solid #2A2A2A;
@@ -302,6 +300,10 @@ input[type=range]:focus::-ms-fill-upper {
 .fjcontrols-control-text-small {
     font-size: 1em;
     line-height: 2;
+}
+
+.clickable{
+  cursor: pointer;
 }
 
 .hprogressbar>div {

@@ -1,0 +1,103 @@
+<script type="text/javascript" src="/jwplayer-7-6-1/jwplayer.js"></script>
+<script>
+    jwplayer.key = "ec8nSdyzAiIn7QyOMwg2hoh7stiY9fJ7iA+aJGJc0uA=";
+</script>
+<div class="playercontainer">
+    <div id="playercontainer" style='float: right;'>
+        &nbsp;
+    </div>
+</div>
+
+<div style="display: none;">
+    <input id='vid' type='text' value='http://wpc.be1e.edgecastcdn.net/03BE1E/news/2016/12/28/alalam_636185420211241442_25f_4x3.mp4.m3u8' />
+    <input id='mobilevideopath' type='text' value='http://wpc.be1e.edgecastcdn.net/03BE1E/news/2016/12/28/alalam_636185420211241442_25f_4x3.mp4.m3u8' />
+    <input id='jwplayerposter' type='text' value='http://i.alalam.ir/news/Image/855x495/2016/12/28/alalam_636185419800550377_25f_4x3.jpg' />
+    <input id='newslink' type='text' value='http://www.alalam.ir/news/1903714' />
+    <input id='videdownloadlink' type='text' value='http://wpc.be1e.edgecastcdn.net/00BE1E/news/2016/12/28/alalam_636185420211241442_25f_4x3.mp4' />
+    <a href='http://wpc.be1e.edgecastcdn.net/00BE1E/news/2016/12/28/alalam_636185420211241442_25f_4x3.mp4' download='1.mp4' style='display:none;' id='vdownlink' rel='nowfollow'></a>
+    <input id='vidmp4' type='text' value='http://wpc.be1e.edgecastcdn.net/03BE1E/news/2016/12/28/alalam_636185420211241442_25f_4x3.mp4.m3u8' />
+    <a href='http://wpc.be1e.edgecastcdn.net/00BE1E/news/2016/12/28/alalam_636185420211241442_25f_4x3.mp4' class='download'></a>
+    <label id='m3u8path_cdn'>http://wpc.be1e.edgecastcdn.net/03BE1E/news/2016/12/28/alalam_636185420211241442_25f_4x3.mp4.m3u8</label>
+    <label id='downloadpath_cdn'>http://wpc.be1e.edgecastcdn.net/00BE1E/news/2016/12/28/alalam_636185420211241442_25f_4x3.mp4</label>
+    <label id='videoposter_cdn'>http://i.alalam.ir/news/Image/855x495/2016/12/28/alalam_636185419800550377_25f_4x3.jpg</label>
+</div>
+
+<script>
+    var livelink = null;
+    var posterlink = null;
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        livelink = $('#mobilevideopath').val();
+    } else {
+        livelink = $('#videdownloadlink').val();
+    }
+
+    jwplayer("playercontainer").setup({
+
+    file: livelink,
+    displaytitle: true,
+    primary: "html5",
+    displaydescription: true,
+    stretching: "uniform",
+    abouttext: "قناة العالم الاخبارية",
+    aboutlink: "http://www.alalam.ir",
+    image: $('#jwplayerposter').val(),
+
+    width: "100%",
+    height: "100%",
+
+    ga: {},
+    aspectratio: "16:9",
+    //hlshtml: true,
+    //type: "hls",
+    sharing: {
+        code: encodeURI("<iframe src='" + $('#newslink').val() + "' />"),
+        link: $('#newslink').val(),
+        "sites": ["facebook", "twitter", "email", "reddit", "googleplus", "linkedin"],
+        heading: "اشترك"
+    }
+    });
+    //window.location.href = livelink;
+    function playTrailer(video, thumb) {
+
+        jwplayer().load([{
+            file: video,
+            image: thumb
+        }]);
+        jwplayer().play();
+
+    }
+
+    jwplayer().addButton(
+
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAASCAYAAABb0P4QAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCRDc2NUM3RDFEMEMxMUUyQjU2QUFCQUEyM0JGREJGRCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpCRDc2NUM3RTFEMEMxMUUyQjU2QUFCQUEyM0JGREJGRCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkJENzY1QzdCMUQwQzExRTJCNTZBQUJBQTIzQkZEQkZEIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkJENzY1QzdDMUQwQzExRTJCNTZBQUJBQTIzQkZEQkZEIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+czMQdgAAAPdJREFUeNpi+P//PwMOzATEh/9jgp149DAwMeAGjFCMTRwnwGcgLnmKDGSgpoF/yfEyCxqfDYiTgZgZiP8BsTAWPSJAnATEXFBL5wLxL7gslpidiBSj/7DE8l8kdhtUD9wMbFHPAsQ9/wmDFmzJBld64gHi83gM24juMkIGgrAaEN/AYtg1IFbGpQ+fgSBsDMT3kAy7DcR6+PQQMhCEHZEMtCeknhFsKmGQD0oQQDyJYKoHGigEpGOBWAoq9g9NDcig31A2K5aEDcvzoLS4CeTM0v/UA8dBWY+PgXqAC5T1ZgLxdyAWQvIiOQUGKKh2ExspRAOAAAMARqI5WRk9ASEAAAAASUVORK5CYII%3D",
+
+        "تنزيل الفيديو",
+
+        function(e) {
+
+            $('body').append('<a id="export-image-container" download="export.mp4">');
+            $('#export-image-container').attr('href', $('#vdownlink').attr('href'));
+            $('#export-image-container')[0].click();
+            $('#export-image-container').remove();
+            $('.screenShotTempCanvas').remove();
+        },
+
+        "download"
+    );
+
+    var errotjWFlash = 0;
+    jwplayer().on('setupError', function(event) {
+
+
+        $('.playercontainer').addClass("notsupport");
+        $('.playercontainer').html("<a href='" + $('#videdownloadlink').val() + "'><div class='VideoIconTools-ico' style='opacity: 1;'></div><img class='img-responsive full-img col-lg-12 col-md-12 col-sm-12 col-xs-12 zerro-lr-padding entire-zerro-lr-margin' src='" + $("#videoposter_cdn").text() + "' /></a>");
+        ga('send', 'event', 'JW Player News Detail setup Error', 'Errors', event.message);
+        ga('send', 'event', 'JW Player News Detail setup Error Solved', 'Errors', 'JW Player setup Error Solved by Changing to link - error: ' + event.message);
+    });
+    jwplayer().on('error', function(event) {
+        ga('send', 'event', 'JW Player News Detail common Error', 'Errors', event.message);
+        $('.playercontainer').addClass("notsupport");
+        $('.playercontainer').html("<a href='" + $('#videdownloadlink').val() + "'><div class='VideoIconTools-ico' style='opacity: 1;'></div><img class='img-responsive full-img col-lg-12 col-md-12 col-sm-12 col-xs-12 zerro-lr-padding entire-zerro-lr-margin' src='" + $("#videoposter_cdn").text() + "' /></a>");
+        ga('send', 'event', 'JW Player News Detail common Error Solved', 'Errors', 'JW Player common Error Solved by Changing to link - error: ' + event.message);
+    });
+</script>
