@@ -309,15 +309,6 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 figure {
-	/*max-width:1024px;
-	max-width:64rem;
-	width:100%;
-	height:auto;
-  margin-top: 5px;
-  margin-left: 0;
-  margin-right: 0;
-  margin-bottom: 0;
-*/
   max-width:1024px;
   max-width:64rem;
   width:100%;
