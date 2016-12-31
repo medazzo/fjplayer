@@ -2,22 +2,30 @@
     'use strict';
 
     // global namespace
-    var fjplayer = function(videoContainerId , usedSkin, fullScreenOnStart){
+    var fjplayer = function(videoContainerId , usedSkin, expandScreen){
       var timestamp = new Date().getUTCMilliseconds();
       var id = new Date().valueOf()+'_'+ Math.random();
       // Check if the browser supports the Fullscreen API
       this.fullScreenEnabled = !!(document.fullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled || document.webkitSupportsFullscreen || document.webkitFullscreenEnabled || document.createElement('video').webkitRequestFullScreen);
+      this.expandScreen = expandScreen ;
       this.timeout = null;
+      this.productionMode = false ;
+      if ( this.productionMode )
+        this.HideControlsTimeout = 4000;
+      else
+        this.HideControlsTimeout = 10000;
+
       this.isHidden = false ;
       this.isStarted = false ;
       this.src = null ;
       this.poster = null ;
       this.title = null ;
-      this.fullScreenOnStart = fullScreenOnStart ;
+      this.fullScreenOnStart = false ;
       this.supportsVideo = !!document.createElement('video').canPlayType;
       this.uidone = false ;
       this.videoContainerId = videoContainerId ;
       this.playerUsedSkin = usedSkin;
+      this.BigPlayBtnId = 'bp'+id;;
       this.videoInfoId  = 'vi'+id;
       this.videoFigureId  = 'vf'+id;
       this.videoId  = 'vo'+id;
@@ -41,23 +49,21 @@
           //set Style to container
           this.videoContainer = document.getElementById(this.videoContainerId);
           this.videoContainer.className = ' fjPlayer '+this.playerUsedSkin ;
-          this.videoContainer.innerHTML=
-            '<figure id=\"'+this.videoFigureId+'\" data-fullscreen=\"false\">'+
+          var inHtml =
+            '<figure id=\"'+this.videoFigureId+'\" data-fullscreen=\"'+this.fullScreenOnStart+'\">'+
             '<video id=\"'+this.videoId+'\" class=\"divofVideo\"    >' +
               '</video>'+
           '<div class=\"divInfo\" id=\"'+this.videoInfoId+'\">'+
-              '<p class=\"divonecontrol divTspanitle divconeontrolLeft fa fa-arrow-left\"> </p>'+
-              '<p class=\"divonecontrol divTspanitle divconeontrolLeft \"> </p>'+
-              '<p class=\"divonecontrol divTspanitle divconeontrolLeft\">'+this.title+' </p>'+
-              '<p class=\"divonecontrol divTspanitle divconeontrolRight fa fa-share-alt \"> </p>'+
-              '<p class=\"divonecontrol divTspanitle divconeontrolRight \"> </p>'+
-              '<p class=\"divonecontrol divTspanitle divconeontrolRight fa-download \"> </p>'+
+              '<span class=\" clickable divTspanitle divconeontrolLeft fa fa-arrow-left\"> </span>'+
+              '<p class=\" divTspanitleSeparator divconeontrolLeft \"> </p>'+
+              '<p class=\" clickable divTspanitle divconeontrolLeft\">'+this.title+' </p>'+
+              '<span class=\" clickable divTspanitle divconeontrolRight fa fa-share-alt \"> </span>'+
+              '<p class=\" divTspanitleSeparator divconeontrolRight \"> </p>'+
+              '<span class=\" clickable divTspanitle divconeontrolRight  fa  fa-download \"> </span>'+
           '</div>'+
-/*
-          '<div class=\"divBigPlayBtn\" id=\"'+this.videoInfoId+'\">'+
-              '<p class=\"divonecontrol divTspanitle divconeontrolLeft fa fa-3x fa-play \"> </p>'+
+          '<div class=\"divBigPlayBtn\" id=\"'+this.BigPlayBtnId+'\">'+
+              '<span class=\" clickable divTspanitle  divconeontrolLeft fa fa-3x fa-play \"> </span>'+
           '</div>'+
-*/
           '<div class=\"fjcontrols-panel\" id=\"'+this.videoControlsId+'\">'+
               '<div class=\"fjcontrols-panel-controls\">'+
                   '<div class=\"hprogressbar\" id=\"'+this.progressDivId +'\">'+
@@ -82,11 +88,14 @@
               '</div>'+
               '<div class=\"fjcontrols-control divconeontrolIcon fjcontrols-control-right clickable\">'+
                   '<span  id=\"'+this.fullScreenBtnId+'\"  title=\"Fullscreen\" class=\"fa fa-arrows-alt\" ></span>'+
-              '</div>'+
-              '<div class=\"fjcontrols-control divconeontrolIcon fjcontrols-control-right clickable\">'+
-                  '<span id=\"'+this.expandBtnId+'\"  class=\"fa fa-expand\" title=\"Double player size\" ></span>'+
-              '</div>'+
-              '<div class=\"fjcontrols-control divconeontrolIcon fjcontrols-control-right clickable\">'+
+              '</div>';
+              //check to add the exapnd button
+              if ( this.expandScreen === true )
+                  inHtml += '<div class=\"fjcontrols-control divconeontrolIcon fjcontrols-control-right clickable\">'+
+                      '<span id=\"'+this.expandBtnId+'\"  class=\"fa fa-expand\" title=\"Double player size\" ></span>'+
+                  '</div>';
+
+              inHtml += '<div class=\"fjcontrols-control divconeontrolIcon fjcontrols-control-right clickable\">'+
                   '<span id=\"'+this.subtitlesBtnId+'\"  class=\"fa fa-audio-description\" title=\"subtitles\" ></span>'+
               '</div>'+
               '<div class=\"fjcontrols-control divconeontrolIcon fjcontrols-control-right clickable\">'+
@@ -97,8 +106,9 @@
               '<span class=\"thumbsBlock\" id=\"'+this.thumbsImgId+'\" ></span>'+
           '</div>'+
           '</figure>' ;
-        console.log( ' UI is created !! ',this.videoContainer);
-        this.uidone = false ;
+          this.videoContainer.innerHTML = inHtml ;
+        //console.log( ' UI is created !! ',this.videoContainer);
+        this.uidone = true ;
     }
     //
     fjplayer.prototype.InitPlayer = function(self){
@@ -113,7 +123,6 @@
       self.volumeBar.value = 100 ;
       //
       self.timer.innerHTML = ' <span>' + self.duration(self.video.currentTime) + '</span><span>/</span><span>' + self.duration(self.video.duration) + '</span>';
-      console.log(' Progress bar initilized !',self.video.duration ,self.progressBar.max);
     }
     // on volume bar click
     fjplayer.prototype.OnvbClick = function(e,self) {
@@ -134,10 +143,10 @@
         if(  !this.isStarted )
           this.isStarted = true ;
         if (self.video.paused || self.video.ended) {
-            self.playpauseBtn.className = "fa fa-2x fa-pause";
+            self.playpauseBtn.className = "fa  fa-pause";
             self.video.play();
         } else {
-            self.playpauseBtn.className = "fa fa-2x fa-play";
+            self.playpauseBtn.className = "fa  fa-play";
             self.video.pause();
         }
         console.log("clicking pause/play !");
@@ -153,9 +162,9 @@
             else if (document.webkitCancelFullScreen) document.webkitCancelFullScreen();
             else if (document.msExitFullscreen) document.msExitFullscreen();
             self.setFullscreenData(false);
-            self.fullScreenBtn.className = "fa fa-2x fa-arrows-alt";
+            self.fullScreenBtn.className = "fa fa-arrows-alt";
         } else {
-            self.fullScreenBtn.className = "fa fa-2x fa-compress";
+            self.fullScreenBtn.className = "fa  fa-compress";
             // ...otherwise enter fullscreen mode
             // (Note: can be called on document, but here the specific element is used as it will also ensure that the element's children, e.g. the custom controls, go fullscreen also)
             if (self.videoFigure.requestFullscreen) this.videoFigure.requestFullscreen();
@@ -269,7 +278,7 @@
               //document.querySelector("#editor").style.background = "#fff";
               self.isHidden = true;
           }
-      }, 3000);
+      }, this.HideControlsTimeout);
       if (self.isHidden) {
           //document.querySelector("body").style.cursor = "auto";
           //document.querySelector("#editor").style.background = "#000";
@@ -285,33 +294,9 @@
         if (this.supportsVideo) {
           if (!this.uidone )
             this.setUi();
+
           // Obtain handles to main elements
           this.video = document.getElementById(this.videoId);
-          this.videoFigure = document.getElementById(this.videoFigureId);
-          if ( this.fullScreenOnStart === 'true')
-            this.videoFigure.setAttribute('data-fullscreen', 'true');
-          // Set Video
-          if( (poster != undefined) && (poster != null) ){
-            this.video.setAttribute('poster', poster);
-            this.poster = poster ;
-          }
-
-          if(this.src != null || this.src != undefined){
-            /* add thumbs */
-            var source = document.createElement('source');
-            this.video.setAttribute('src', this.src);
-            this.video.setAttribute('type', 'video/mp4');
-            this.video.appendChild(source);
-          }
-
-          this.videoControls = document.getElementById(this.videoControlsId);
-          // Hide the default controls
-          this.video.controls = false;
-
-          // Display the user defined video controls
-          this.videoControls.style.display = 'block';
-
-          // Obtain handles to buttons and other elements
           this.playpauseBtn = document.getElementById(this.playpauseBtnId);
           this.muteBtn = document.getElementById(this.muteBtnId);
           this.volumeBar = document.getElementById(this.volumeBarId);
@@ -320,6 +305,48 @@
           this.fullScreenBtn = document.getElementById(this.fullScreenBtnId);
           this.timer = document.getElementById(this.timerId);
           this.videoInfo = document.getElementById(this.videoInfoId);
+          this.videoFigure = document.getElementById(this.videoFigureId);
+          this.BigPlayBtn = document.getElementById(this.BigPlayBtnId) ;
+
+          // Set Video
+          if( (poster != undefined) && (poster != null) ){
+            this.video.setAttribute('poster', poster);
+            this.poster = poster ;
+          }
+          if(this.src != null || this.src != undefined){
+            /* add thumbs */
+            var source = document.createElement('source');
+            this.video.setAttribute('src', this.src);
+            this.video.setAttribute('type', 'video/mp4');
+            this.video.appendChild(source);
+          }
+          this.videoControls = document.getElementById(this.videoControlsId);
+          self.videoControls.style.display = 'none';
+          // Hide the default controls
+          this.video.controls = false;
+          // Display the user defined video controls
+          //this.videoControls.style.display = 'block';
+
+          if ( this.fullScreenOnStart === 'true')
+            this.videoFigure.setAttribute('data-fullscreen', 'true');
+
+          //Big play btn
+          this.BigPlayBtn.addEventListener('click', function(e) {
+            self.BigPlayBtn.style.display = 'none';
+            self.videoControls.style.display = 'block';
+            self.onplaypauseClick(self);
+          });
+
+          // Contextuel menu
+          if ( this.productionMode )
+          {
+            this.videoFigure.addEventListener('contextmenu', function(ev) {
+                ev.preventDefault();
+                alert('success!');
+                return false;
+            }, false);
+          }
+
           // If the browser doesn't support the Fulscreen API then hide the fullscreen button
           if (!this.fullScreenEnabled) {
               this.progressBar.style.display = 'none';
@@ -331,23 +358,23 @@
           });
           // Wait for the video's meta data to be loaded, then set the progress bar's max value to the duration of the video
           this.video.addEventListener('loadedmetadata',function(e) {
-              self.InitPlayer(self)
+              self.InitPlayer(self);
           });
           // Add events for all buttons
           this.playpauseBtn.addEventListener('click', function(e) {
-              self.onplaypauseClick(self)
+              self.onplaypauseClick(self);
           });
           // add event for mute
           this.muteBtn.addEventListener('click', function(e) {
-              self.onmuteClick(self)
+              self.onmuteClick(self);
           });
           //add event for fullscreen
           this.fullScreenBtn.addEventListener('click',function(e) {
-              self.handleFullscreen(self)
+              self.handleFullscreen(self);
           });
           // As the video is playing, update the progress bar
           this.video.addEventListener('timeupdate', function(e) {
-              self.onvideoTimeupdate(self)
+              self.onvideoTimeupdate(self);
           });
           // React to the user clicking within the progress bar
           this.progressBar.addEventListener('click', function(e) {
@@ -381,7 +408,7 @@
 
     //Set current
 
-    var player  = new fjplayer('playercontainer' , 'skin-default' ,false);
-    player.Setup('https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4' , ' title of movie' ,  null);
+    var player  = new fjplayer('playercontainer' , 'skin-default' , false);
+    player.Setup('https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4' , ' title of movie' ,  './poster.jpg');
 
 })();
