@@ -126,6 +126,7 @@
     fjplayer.prototype.InitPlayer = function(self) {
         var i = 0;
         var track = null;
+        var track2 = null;
         // progress bar
         self.progressBar.max = Math.round(self.video.duration);
         self.progressBar.min = 0;
@@ -136,18 +137,16 @@
         self.volumeBar.step = 1;
         self.volumeBar.max = 100;
         self.volumeBar.value = 100;
-        // timer        
+        // timer
         self.timer.innerHTML = ' <span>' + self.duration(self.video.currentTime) +
             '</span><span>/</span><span>' + self.duration(self.video.duration) + '</span>';
+        // thumbs
         if (self.vttThumbs != null || self.vttThumbs !== undefined) {
             /* add thumbs */
             track = document.createElement('track');
             track.kind = 'metadata';
             track.src = self.vttThumbs;
-            console.log(' Appending source to video', track);
-            track.addEventListener('load', function() {
-                this.mode = 'showing';
-            });
+            console.log(' Appending source thumbs to video', track);
 
             self.video.appendChild(track);
 
@@ -161,11 +160,25 @@
                 self.showThumbs(self);
             });
         }
+        /* subs tracks
+        track2 = document.createElement('track');
+        track2.kind = "captions";
+        track2.label = "English";
+        track2.srclang = "en";
+        // track2.src = "./files/sintel-en.vtt";
+        console.log(' Appending source to video', track2);
+        track2.addEventListener('load', function(self) {
+            this.mode = 'showing';
+            // self.video.textTracks[0].mode = 'showing'; // thanks Firefox
+            console.log(' Showing track !');
+        });
+        self.video.appendChild(track2);*/
         // video tracks
         for (i = 0; i < self.video.textTracks.length; i++) {
             if (self.video.textTracks[i].kind === 'metadata') {
                 self.thumbsTrackIndex = i;
-                console.log('metadata @ ', i, ' >>> ', self.video.textTracks[i]);
+                self.video.textTracks[i].mode = 'hidden'; // thanks Firefox
+                console.log('metadata @ ', i, '/', self.video.textTracks.length, ' >>> ', self.video.textTracks[i]);
             }
         }
     };
@@ -324,14 +337,23 @@
      *  hide or show panel controls
      */
     fjplayer.prototype.HideControlsCursor = function(self, hideit) {
-        if (self.isStarted && hideit) {
+        if (self.isStarted) {
+            if (hideit) {
+                self.videoControls.style.display = 'none';
+                self.videoInfo.style.display = 'none';
+                document.body.style.cursor = 'none';
+                self.isHidden = true;
+            } else {
+                self.videoControls.style.display = 'block';
+                self.videoInfo.style.display = 'block';
+                document.body.style.cursor = 'auto';
+                self.isHidden = false;
+            }
+        } else {
             self.videoControls.style.display = 'none';
             self.videoInfo.style.display = 'none';
             document.body.style.cursor = 'none';
-        } else {
-            self.videoControls.style.display = 'block';
-            self.videoInfo.style.display = 'block';
-            document.body.style.cursor = 'auto';
+            self.isHidden = true;
         }
     };
 
@@ -345,16 +367,10 @@
         self.timeout = setTimeout(function() {
             if (!self.isHidden) {
                 self.HideControlsCursor(self, true);
-                // document.querySelector("body").style.cursor = "none";
-                // document.querySelector("#editor").style.background = "#fff";
-                self.isHidden = true;
             }
         }, this.HideControlsTimeout);
         if (self.isHidden) {
-            // document.querySelector("body").style.cursor = "auto";
-            // document.querySelector("#editor").style.background = "#000";
             self.HideControlsCursor(self, false);
-            self.isHidden = false;
         }
     };
 
@@ -369,7 +385,7 @@
 
     fjplayer.prototype.renderThumbs = function(event, self) {
         // first we convert from mouse to time position ..
-        var c, i, xywh;
+        var c, i, url, xywh;
         var rect = self.progressBar.getBoundingClientRect();
         var p = (event.pageX - rect.left) * (self.video.duration / (rect.right - rect.left));
         if ((p > (self.video.duration + 2)) || (p < 0)) {
@@ -395,7 +411,9 @@
         xywh = c[i].text.substr(c[i].text.indexOf('=') + 1).split(',');
 
         // ..and last we style the thumbnail overlay
-        self.tumbsImg.style.backgroundImage = 'url(' + c[i].text.split('#')[0] + ')';
+        url = 'url(' + c[i].text.split('#')[0] + ')';
+        console.log(' fetching thum from ', url);
+        self.tumbsImg.style.backgroundImage = url;
         self.tumbsImg.style.backgroundPosition = '-' + xywh[0] + 'px -' + xywh[1] + 'px';
         self.tumbsImg.style.width = xywh[2] + 'px';
         self.tumbsImg.style.height = xywh[3] + 'px';
@@ -410,7 +428,6 @@
     fjplayer.prototype.Setup = function(file, title, poster, vttThumbs) {
         var self = this;
         var source = null;
-        var track = null;
         this.src = file;
         this.title = title;
         this.vttThumbs = vttThumbs;
@@ -537,6 +554,6 @@
     /* _______________________________________________ MAIN _______________________________________________ */
     /* **************************************************************************************************** */
     var player = new fjplayer('playercontainer', 'skin-default', false);
-    player.Setup('https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4', ' title of movie', './poster.jpg', './thumbs.vtt');
+    player.Setup('https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4', ' title of movie', './files/poster.jpg', './thumbs.vtt');
 
 })();
