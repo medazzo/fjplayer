@@ -4,7 +4,7 @@
     /**
      * Constructor of the player : will prepare ids
      */
-    var fjplayer = function(videoContainerId, usedSkin, expandScreen) {
+    var fjplayer = function(videoContainerId, usedSkin, expandScreen, vwidth, vheight) {
         var timestamp = new Date().getUTCMilliseconds();
         var id = new Date().valueOf() + '_' + Math.random();
         // Check if the browser supports the Fullscreen API
@@ -12,6 +12,8 @@
             document.msFullscreenEnabled || document.webkitSupportsFullscreen || document.webkitFullscreenEnabled ||
             document.createElement('video').webkitRequestFullScreen);
         this.expandScreen = expandScreen;
+        this.containsLang = false;
+        this.containsSubs = false;
         this.timeout = null;
         this.productionMode = false;
         if (this.productionMode) {
@@ -21,6 +23,8 @@
         }
         self.thumbsTrackIndex = -1;
         this.isHidden = false;
+        this.vheight = vheight;
+        this.vwidth = vwidth;
         this.isStarted = false;
         this.src = null;
         this.poster = null;
@@ -47,6 +51,10 @@
         this.languagesBtnId = 'lb' + id;
         this.thumbsDivId = 'td' + id;
         this.thumbsImgId = 'ti' + id;
+        this.expandDivId = 'ed' + id;
+        this.languagesDivId = 'ld' + id;
+        this.subtitlesDivId = 'sd' + id;
+
     };
 
     /**
@@ -58,7 +66,14 @@
         }
         var inHtml =
             '<figure id=\"' + this.videoFigureId + '\" data-fullscreen=\"' + this.fullScreenOnStart + '\">' +
-            '<video id=\"' + this.videoId + '\" class=\"divofVideo\"    >' +
+            '<video id=\"' + this.videoId + '\" class=\"divofVideo\" ';
+        if (this.vwidth != null) {
+            inHtml += 'width=\"' + this.vwidth + '\" ';
+        }
+        if (this.vwidth != null) {
+            inHtml += 'height=\"' + this.vheight + '\" ';
+        }
+        inHtml += '     >' +
             '</video>' +
             '<div class=\"divInfo\" id=\"' + this.videoInfoId + '\">' +
             '<span class=\" clickable divTspanitle divconeontrolLeft fa fa-arrow-left\"> </span>' +
@@ -95,18 +110,15 @@
             '</div>' +
             '<div class=\"fjcontrols-control divconeontrolIcon fjcontrols-control-right clickable\">' +
             '<span  id=\"' + this.fullScreenBtnId + '\"  title=\"Fullscreen\" class=\"fa fa-arrows-alt\" ></span>' +
-            '</div>';
-        // check to add the exapnd button
-        if (this.expandScreen === true) {
-            inHtml += '<div class=\"fjcontrols-control divconeontrolIcon fjcontrols-control-right clickable\">' +
-                '<span id=\"' + this.expandBtnId + '\"  class=\"fa fa-expand\" title=\"Double player size\" ></span>' +
-                '</div>';
-        }
-        inHtml += '<div class=\"fjcontrols-control divconeontrolIcon fjcontrols-control-right clickable\">' +
+            '</div>' +
+            '<div id=\"' + this.expandDivId + '\" class=\"fjcontrols-control divconeontrolIcon fjcontrols-control-right clickable\">' +
+            '<span id=\"' + this.expandBtnId + '\"  class=\"fa fa-expand\" title=\"Double player size\" ></span>' +
+            '</div>' +
+            '<div id=\"' + this.subtitlesDivId + '\"  class=\"fjcontrols-control divconeontrolIcon fjcontrols-control-right clickable\">' +
             '<span id=\"' + this.subtitlesBtnId + '\"  class=\"fa fa-audio-description\" title=\"subtitles\" ></span>' +
             '</div>' +
-            '<div class=\"fjcontrols-control divconeontrolIcon fjcontrols-control-right clickable\">' +
-            '<span id=\"' + this.languagesBtnId + '\"  class=\"fa fa-language\" title=\"Video quality\" ></span>' +
+            '<div id=\"' + this.languagesDivId + '\"  class=\"fjcontrols-control divconeontrolIcon fjcontrols-control-right clickable\">' +
+            '<span id=\"' + this.languagesBtnId + '\"  class=\"fa fa-language\" title=\"audios\" ></span>' +
             '</div>' +
             '</div>' +
             '<div class=\"thumbsBlockDiv\" id=\"' + this.thumbsDivId + '\" >' +
@@ -179,7 +191,24 @@
                 self.thumbsTrackIndex = i;
                 self.video.textTracks[i].mode = 'hidden'; // thanks Firefox
                 console.log('metadata @ ', i, '/', self.video.textTracks.length, ' >>> ', self.video.textTracks[i]);
+            } else if ((self.video.textTracks[i].kind === 'captions') || (self.video.textTracks[i].kind === 'subtitles')) {
+                self.containsSubs = true;
+                console.log('find  soustitres  @ ', i, '/', self.video.textTracks.length, ' >>> ', self.video.textTracks[i]);
             }
+        }
+        if (self.video.audioTracks) {
+            console.debug(' setTracks : Setting audioTracks  ', self.video.audioTracks.length);
+            for (i = 0; i < self.video.audioTracks.length; i++) {
+                self.containsLang = true;
+            }
+        }
+
+        // set expand
+        if (!this.containsSubs) {
+            this.subtitlesDiv.style.display = 'none';
+        }
+        if (!this.containsLang) {
+            this.languagesDiv.style.display = 'none';
         }
     };
 
@@ -412,7 +441,7 @@
 
         // ..and last we style the thumbnail overlay
         url = 'url(' + c[i].text.split('#')[0] + ')';
-        console.log(' fetching thum from ', url);
+        // console.log(' fetching thum from ', url);
         self.tumbsImg.style.backgroundImage = url;
         self.tumbsImg.style.backgroundPosition = '-' + xywh[0] + 'px -' + xywh[1] + 'px';
         self.tumbsImg.style.width = xywh[2] + 'px';
@@ -449,6 +478,15 @@
             this.BigPlayBtn = document.getElementById(this.BigPlayBtnId);
             this.thumbsDiv = document.getElementById(this.thumbsDivId);
             this.tumbsImg = document.getElementById(this.thumbsImgId);
+
+            this.languagesDiv = document.getElementById(this.languagesDivId);
+            this.subtitlesDiv = document.getElementById(this.subtitlesDivId);
+            this.expandDiv = document.getElementById(this.expandDivId);
+
+            // set expand
+            if (!this.expandScreen) {
+                this.expandDiv.style.display = 'none';
+            }
 
             // Set Video
             if ((poster !== undefined) && (poster != null)) {
@@ -553,7 +591,7 @@
     /* **************************************************************************************************** */
     /* _______________________________________________ MAIN _______________________________________________ */
     /* **************************************************************************************************** */
-    var player = new fjplayer('playercontainer', 'skin-default', false);
+    var player = new fjplayer('playercontainer', 'skin-default', false, '720', '576');
     player.Setup('https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4', ' title of movie', './files/poster.jpg', './thumbs.vtt');
 
 })();

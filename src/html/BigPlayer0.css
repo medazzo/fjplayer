@@ -1,13 +1,14 @@
-
-html,body {
-	margin:0;
-	padding:0;
-	width:100%;
-	height:100%;
-}
+html,
 body {
-	color:#333;
-	font-family:"Lucida Grande","Lucida Sans Unicode","DejaVu Sans",Lucida,Arial,Helvetica,sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    color: #333;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", "DejaVu Sans", Lucida, Arial, Helvetica, sans-serif;
 }
 
 .fjPlayer {
@@ -38,6 +39,7 @@ span.fa-3x {
     font-size: 4em;
     color: rgb(255, 255, 2555);
 }
+
 
 /* ---------------------- Thumbs style --------------------- */
 
@@ -155,6 +157,7 @@ span.fa-3x {
     position: absolute;
     left: 45%;
 }
+
 .divTspanitle {
     position: relative;
     visibility: visible;
@@ -171,10 +174,11 @@ span.fa-3x {
     /* Add this option to set circular motifs */
     /*border-radius:100px;*/
 }
-.divTspanitle:hover{
-  color:#ccc;
-  text-decoration:none;
-  background:#333;
+
+.divTspanitle:hover {
+    color: #ccc;
+    text-decoration: none;
+    background: #333;
 }
 
 .divTspanitleSeparator {
@@ -188,7 +192,6 @@ span.fa-3x {
     max-width: 766px;
     font-size: 12px;
     padding: 10px;
-
 }
 
 
@@ -309,17 +312,19 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 figure {
-  max-width:1024px;
-  max-width:64rem;
-  width:100%;
-  height:auto;
-  margin:0.25rem 0 0.25rem;
+    max-width: 1024px;
+    max-width: 64rem;
+    width: 100%;
+    height: auto;
+    margin: 0.25rem 0 0.25rem;
 }
 
-video {
+
+/*video {
 	width:100%;
 	height:auto;
-}
+}*/
+
 
 /*__________________________________________ FJCONTROL ____________________________*/
 
@@ -371,8 +376,8 @@ video {
     line-height: 2;
 }
 
-.clickable{
-  cursor: pointer;
+.clickable {
+    cursor: pointer;
 }
 
 .hprogressbar {
@@ -440,31 +445,43 @@ video::-webkit-media-controls-enclosure {
 .divcontrols {
     z-index: 2147483647;
 }_*/
+
+
 /*_________________________________ FULL SCREEN __________________________*/
 
+
 /* fullscreen */
+
 html:-ms-fullscreen {
-	width:100%;
+    width: 100%;
 }
+
 :-webkit-full-screen {
-	background-color:transparent;
+    background-color: transparent;
 }
+
+
 /* hide controls on fullscreen with WebKit */
+
 figure[data-fullscreen=true] video::-webkit-media-controls {
-	display:none !important;
+    display: none !important;
 }
+
 figure[data-fullscreen=true] {
-	max-width:100%;
-	width:100%;
-	margin:0;
-	padding:0;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
+
 figure[data-fullscreen=true] video {
-	height:100%;
+    height: 100%;
 }
+
 figure[data-fullscreen=true] .fjcontrols-control {
-	width:5%;
+    width: 5%;
 }
+
 figure[data-fullscreen=true] span.fa {
     font-size: 2em;
     margin-bottom: 5px;
