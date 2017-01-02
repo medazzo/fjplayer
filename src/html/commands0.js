@@ -17,7 +17,7 @@
         this.expandScreen = expandScreen;
         this.containsSubs = false;
         this.timeout = null;
-        this.productionMode = true;
+        this.productionMode = false;
         if (this.productionMode) {
             this.HideControlsTimeout = 4000;
         } else {
@@ -36,6 +36,7 @@
         this.uidone = false;
         this.videoContainerId = videoContainerId;
         this.playerUsedSkin = usedSkin;
+        this.timerId = 'trd' + id;;
         this.BigPlayBtnId = 'bp' + id;;
         this.videoInfoId = 'vi' + id;
         this.videoFigureId = 'vf' + id;
@@ -55,9 +56,13 @@
         this.thumbsImgId = 'ti' + id;
         this.expandDivId = 'ed' + id;
         this.languagesDivId = 'ld' + id;
+
+        this.subsdMenuContainerDivId = 'smcd' + id;
         this.subtitlesDivId = 'sd' + id;
         this.subsMenuDivId = 'smmd' + id;
         this.subsMenuListId = 'smml' + id;
+
+        this.audMenuContainerDivId = 'amcd' + id;
         this.audMenuDivId = 'ammd' + id;
         this.audMenuListId = 'amml' + id;
         this.aboutMenuId = 'abm' + id;
@@ -130,8 +135,9 @@
             '<div class=\"thumbsBlockDiv\" id=\"' + this.thumbsDivId + '\" >' +
             '<span class=\"thumbsBlock\" id=\"' + this.thumbsImgId + '\" ></span>' +
             '</div>' +
-            '<div id=\"' + this.menuDivId + '\" ></div>' +
-            '<div id=\"' + this.aboutMenuId + '\" ><ul><li>voila </li><li>voili</li></ul></div>' +
+            '<div id=\"' + this.audMenuContainerDivId + '\" ></div>' +
+            '<div id=\"' + this.subsdMenuContainerDivId + '\" ></div>' +
+            '<div id=\"' + this.aboutMenuId + '\"  style=\"display:none;\"><ul><li>voila </li><li>voili</li></ul></div>' +
             '</div>' +
             '</figure>';
         this.videoContainer = document.getElementById(this.videoContainerId);
@@ -187,11 +193,29 @@
                 self.thumbsTrackIndex = i;
                 self.video.textTracks[i].mode = 'hidden'; // thanks Firefox
                 console.log('metadata @ ', i, '/', self.video.textTracks.length, ' >>> ', self.video.textTracks[i]);
-            } else if ((self.video.textTracks[i].kind === 'captions') || (self.video.textTracks[i].kind === 'subtitles')) {
+            } else if ((self.video.textTracks[i].kind === 'captions') ||
+                (self.video.textTracks[i].kind === 'subtitles')) {
                 self.containsSubs = true;
-                console.log('find  soustitres  @ ', i, '/', self.video.textTracks.length, ' >>> ', self.video.textTracks[i]);
+                console.log('find  soustitres  @ ', i, '/', self.video.textTracks.length,
+                    ' >>> ', self.video.textTracks[i]);
             }
         }
+        // subs track
+        if (self.subsJsObj) {
+            for (i = 0; i < self.subsJsObj.length; i++) {
+                /* add thumbs */
+                track = document.createElement('track');
+                track.kind = 'subtitles';
+                track.src = self.subsJsObj[i].src;
+                track.srclang = self.subsJsObj[i].srclang;
+                track.label = self.subsJsObj[i].label;
+                console.log(' Appending source thumbs to video', track);
+                self.video.appendChild(track);
+            }
+        }
+        // Init menus
+        self.SetSubsMenu(self);
+        self.SetAudioMenu(self);
     };
 
     /**
@@ -226,6 +250,21 @@
             self.video.pause();
         }
         console.log('clicking pause/play !');
+    };
+
+    /**
+     * Event CALLBACK ; called on menu Click
+     */
+    fjplayer.prototype.onshowHideMenu = function(menuContainer, ev) {
+        menuContainer.style.position = "absolute";
+        menuContainer.style.left = (ev.pageX - 20) + 'px';
+        menuContainer.style.top = (ev.pageY - 90) + 'px';
+        if (menuContainer.style.display === 'none') {
+            menuContainer.style.display = 'block';
+        } else {
+            menuContainer.style.display = 'none';
+        }
+        console.log(' Shwing or Hiding an menu ', menuContainer);
     };
 
     /**
@@ -433,9 +472,29 @@
         self.thumbsDiv.style.top = rect.top - (xywh[3] * 1.5) + 'px';
         self.thumbsDiv.style.width = xywh[2] + 'px';
     };
+    fjplayer.prototype.activateLang = function(self, index) {
+        var i = 0;
+        var item;
+        if (self.video.audioTracks) {
+            if (self.video.audioTracks[index].enabled) {
+                console.log(' clicked is already selected @ index ', index);
+                return;
+            }
 
+            for (i = 0; i < self.menuList.children.length; i++) {
+                item = self.menuList.children[i];
+                if (i === index) {
+                    self.video.audioTracks[i].enabled = true;
+                    item.className = 'subtitles-menu-item-actif';
+                } else {
+                    self.video.audioTracks[i].enabled = false;
+                    item.className = 'subtitles-menu-item';
+                }
 
-    fjplayer.prototype.activateAudio = function(self, index, itemList) {
+            }
+        }
+    };
+    fjplayer.prototype.activateAudio = function(self, index) {
         var i = 0;
         var item;
         if (self.video.audioTracks) {
@@ -457,84 +516,88 @@
             }
         }
     };
-    fjplayer.prototype.SetAudioMenu = function(DivContainerId) {
+    fjplayer.prototype.SetAudioMenu = function(self) {
         var menuList = null;
-        var container = document.getElementById(DivContainerId);
         var i = 0;
         var item = null;
+        var container = document.getElementById(self.audMenuContainerDivId);
         var id = new Date().valueOf() + '_' + Math.random();
-        if (this.video.audioTracks) {
-            if (this.video.audioTracks.length <= 1)
-                return;
+        container.style.display = 'none';
+        if ((!self.video.audioTracks) || (self.video.audioTracks.length <= 1)) {
+            //hide audio button 
+            var btn = document.getElementById(self.languagesDivId);
+            btn.style.display = 'none';
+            return;
         }
         container.className = 'settingMenuDiv';
-        container.innerHTML = '<div class=\"settingMenuSubMenuLeft\" >' +
-            '<div class=\"settingMenuDiv\" id=\"' + this.audMenuDivId + '\" >';
-        '<div class=\"settingMenuSubMenuLeft\" >' +
-        '<ul class=\"subtitles-menu\" id=\"' + this.audMenuListId + '\" >' +
+        container.innerHTML =
+            '<div class=\"settingMenuSubMenuLeft\" >' +
+            '<ul class=\"subtitles-menu\" id=\"' + self.audMenuListId + '\" >' +
             '</ul>	' +
             '</div>';
 
         // video array
-        menuList = document.getElementById(this.audMenuListId);
-        if (this.video.audioTracks) {
-            for (i = 0; i < this.video.audioTracks.length; i++) {
+        menuList = document.getElementById(self.audMenuListId);
+        if (self.video.audioTracks) {
+            for (i = 0; i < self.video.audioTracks.length; i++) {
                 item = document.createElement('li');
-                if (this.video.audioTracks[i].enabled) {
+                if (self.video.audioTracks[i].enabled) {
                     item.className = 'subtitles-menu-item-actif';
                 } else {
                     item.className = 'subtitles-menu-item';
                 }
-                item.innerHTML = this.video.audioTracks[i].language + '::' + this.video.audioTracks[i].label;
+                item.innerHTML = self.video.audioTracks[i].language + '::' + self.video.audioTracks[i].label;
                 menuList.appendChild(item);
                 item.addEventListener('click', function(self, i) {
-                    self.activateAudio(i);
+                    self.activateAudio(self, i);
                 });
             }
         }
+        console.log(' Audio Menu created !', self.video.audioTracks.length, '! ', menuList);
     };
 
-    fjplayer.prototype.SetSubsMenu = function(DivContainerId) {
+    fjplayer.prototype.SetSubsMenu = function(self) {
         var menuList = null;
-        var container = document.getElementById(DivContainerId);
         var i = 0;
         var item = null;
         var id = new Date().valueOf() + '_' + Math.random();
-        if (!this.containsSubs) {
-            return;
-        }
+        var container = document.getElementById(self.subsdMenuContainerDivId);
         container.className = 'settingMenuDiv';
-        container.innerHTML = '<div class=\"settingMenuSubMenuLeft\" >' +
-            '<div class=\"settingMenuDiv\" id=\"' + this.subsMenuDivId + '\" >';
-        '<div class=\"settingMenuSubMenuLeft\" >' +
-        '<ul class=\"subtitles-menu\" id=\"' + this.subsMenuListId + '\" >' +
+        container.innerHTML =
+            '<div class=\"settingMenuSubMenuLeft\" >' +
+            '<ul class=\"subtitles-menu\" id=\"' + self.subsMenuListId + '\" >' +
             '</ul>	' +
             '</div>';
 
         // video array
-        menuList = document.getElementById(this.subsMenuListId);
-        for (i = 0; i < this.video.textTracks.length; i++) {
-            item = document.createElement('li');
-            if (this.video.audioTracks[i].enabled) {
-                item.className = 'subtitles-menu-item-actif';
-            } else {
-                item.className = 'subtitles-menu-item';
+        menuList = document.getElementById(self.subsMenuListId);
+        for (i = 0; i < self.video.textTracks.length; i++) {
+            if ((self.video.textTracks[i].kind === 'captions') ||
+                (self.video.textTracks[i].kind === 'subtitles')) {
+                item = document.createElement('li');
+                if (self.video.textTracks[i].enabled) {
+                    item.className = 'subtitles-menu-item-actif';
+                } else {
+                    item.className = 'subtitles-menu-item';
+                }
+                item.innerHTML = self.video.textTracks[i].label;
+                menuList.appendChild(item);
+                item.addEventListener('click', function(self, i) {
+                    self.activateLang(self, i);
+                });
             }
-            item.innerHTML = this.video.audioTracks[i].language + '::' + this.video.audioTracks[i].label;
-            menuList.appendChild(item);
-            item.addEventListener('click', function(self, i) {
-                self.activateAudio(i);
-            });
         }
-
+        container.style.display = 'none';
+        console.log(' Subs Menu created !! ', menuList);
     };
 
     /**
      * setup the player
      */
-    fjplayer.prototype.Setup = function(file, title, poster, vttThumbs) {
+    fjplayer.prototype.Setup = function(file, title, poster, vttThumbs, subsJsObj) {
         var self = this;
         var source = null;
+        this.subsJsObj = subsJsObj;
         this.src = file;
         this.title = title;
         this.vttThumbs = vttThumbs;
@@ -545,6 +608,8 @@
             // Obtain handles to main elements
             this.video = document.getElementById(this.videoId);
             this.playpauseBtn = document.getElementById(this.playpauseBtnId);
+            this.subtitlesBtn = document.getElementById(this.subtitlesBtnId);
+            this.languagesBtn = document.getElementById(this.languagesBtnId);
             this.muteBtn = document.getElementById(this.muteBtnId);
             this.volumeBar = document.getElementById(this.volumeBarId);
             this.progressDiv = document.getElementById(this.progressDivId);
@@ -556,11 +621,9 @@
             this.BigPlayBtn = document.getElementById(this.BigPlayBtnId);
             this.thumbsDiv = document.getElementById(this.thumbsDivId);
             this.tumbsImg = document.getElementById(this.thumbsImgId);
-
-            this.languagesDiv = document.getElementById(this.languagesDivId);
-            this.subtitlesDiv = document.getElementById(this.subtitlesDivId);
             this.expandDiv = document.getElementById(this.expandDivId);
-
+            this.audMenuDiv = document.getElementById(this.audMenuContainerDivId);
+            this.subsMenuDiv = document.getElementById(this.subsdMenuContainerDivId);
             // set expand
             if (!this.expandScreen) {
                 this.expandDiv.style.display = 'none';
@@ -634,9 +697,18 @@
             this.video.addEventListener('loadedmetadata', function(e) {
                 self.InitPlayer(self);
             });
-            // Add events for all buttons
+            // Add events for play button
             this.playpauseBtn.addEventListener('click', function(e) {
                 self.onplaypauseClick(self);
+            });
+            // Add events for languages button
+
+            this.languagesBtn.addEventListener('click', function(ev) {
+                self.onshowHideMenu(self.audMenuDiv, ev);
+            });
+            // Add events for subtitles button
+            this.subtitlesBtn.addEventListener('click', function(ev) {
+                self.onshowHideMenu(self.subsMenuDiv, ev);
             });
             // add event for mute
             this.muteBtn.addEventListener('click', function(e) {
@@ -658,9 +730,6 @@
             this.video.addEventListener('mousemove', function(e) {
                 self.magicMouse(self);
             });
-
-            // create menu subs
-            this.menuAud = this.SetAudioMenu(this.menuDivId, this.video);
 
             // Only add the events if addEventListener is supported
             // (IE8 and less don't support it, but that will use Flash anyway)
@@ -686,6 +755,24 @@
     /* _______________________________________________ MAIN _______________________________________________ */
     /* **************************************************************************************************** */
     var player = new fjplayer('playercontainer', 'skin-default', false, '720', '576');
-    player.Setup('https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4', ' title of movie', './files/poster.jpg', './thumbs.vtt');
+    var subsJsObj = [{
+        'src': './files/sintel-de.vtt',
+        'srclang': 'de',
+        'label': 'deutch'
+    }, {
+        'src': './files/sintel-sintel-en.vtt',
+        'srclang': 'en',
+        'label': 'english'
+    }, {
+        'src': './files/sintel-sintel-es.vtt',
+        'srclang': 'es',
+        'label': 'espagnol'
+    }];
+    player.Setup('https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
+        ' title of movie',
+        './files/poster.jpg',
+        './thumbs.vtt',
+        subsJsObj
+    );
 
 })();
