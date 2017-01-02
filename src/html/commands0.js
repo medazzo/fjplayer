@@ -1,11 +1,14 @@
 (function() {
     'use strict';
+    /**
+     *  Fjplayer Namespace
+     */
+    var fjplayer = fjplayer || {};
 
     /**
      * Constructor of the player : will prepare ids
      */
-    var fjplayer = function(videoContainerId, usedSkin, expandScreen, vwidth, vheight) {
-        var timestamp = new Date().getUTCMilliseconds();
+    fjplayer = function(videoContainerId, usedSkin, expandScreen, vwidth, vheight) {
         var id = new Date().valueOf() + '_' + Math.random();
         // Check if the browser supports the Fullscreen API
         this.fullScreenEnabled = !!(document.fullscreenEnabled || document.mozFullScreenEnabled ||
@@ -54,7 +57,10 @@
         this.expandDivId = 'ed' + id;
         this.languagesDivId = 'ld' + id;
         this.subtitlesDivId = 'sd' + id;
-
+        this.subsMenuDivId = 'smmd' + id;
+        this.subsMenuListId = 'smml' + id;
+        this.audMenuDivId = 'ammd' + id;
+        this.audMenuListId = 'amml' + id;
     };
 
     /**
@@ -124,7 +130,15 @@
             '<div class=\"thumbsBlockDiv\" id=\"' + this.thumbsDivId + '\" >' +
             '<span class=\"thumbsBlock\" id=\"' + this.thumbsImgId + '\" ></span>' +
             '</div>' +
-            '</figure>';
+            '<div id=\"' + this.menuDivId + '\" >'
+            /* '<div class=\"settingMenuSubMenuLeft\" >' +
+            '<ul class=\"subtitles-menu\" id=\"' + this.menuListId + '\" >' +
+            '<li><div onclick=\"setSubs(this)\"  class=\"subtitles-menu-item-actif\"> voila </div></li>' +
+            '<li><div onclick=\"setSubs(this)\" class=\"subtitles-menu-item\" > voili </div></li>' +
+            '</ul>	' +
+            '</div>' +*/
+        '</div>' +
+        '</figure>';
         this.videoContainer = document.getElementById(this.videoContainerId);
         this.videoContainer.className = ' fjPlayer ' + this.playerUsedSkin;
         this.videoContainer.innerHTML = inHtml;
@@ -172,19 +186,6 @@
                 self.showThumbs(self);
             });
         }
-        /* subs tracks
-        track2 = document.createElement('track');
-        track2.kind = "captions";
-        track2.label = "English";
-        track2.srclang = "en";
-        // track2.src = "./files/sintel-en.vtt";
-        console.log(' Appending source to video', track2);
-        track2.addEventListener('load', function(self) {
-            this.mode = 'showing';
-            // self.video.textTracks[0].mode = 'showing'; // thanks Firefox
-            console.log(' Showing track !');
-        });
-        self.video.appendChild(track2);*/
         // video tracks
         for (i = 0; i < self.video.textTracks.length; i++) {
             if (self.video.textTracks[i].kind === 'metadata') {
@@ -201,14 +202,6 @@
             for (i = 0; i < self.video.audioTracks.length; i++) {
                 self.containsLang = true;
             }
-        }
-
-        // set expand
-        if (!this.containsSubs) {
-            this.subtitlesDiv.style.display = 'none';
-        }
-        if (!this.containsLang) {
-            this.languagesDiv.style.display = 'none';
         }
     };
 
@@ -451,6 +444,100 @@
         self.thumbsDiv.style.top = rect.top - (xywh[3] * 1.5) + 'px';
         self.thumbsDiv.style.width = xywh[2] + 'px';
     };
+
+
+    fjplayer.prototype.activateAudio = function(self, index, itemList) {
+        var i = 0;
+        var item;
+        if (self.video.audioTracks) {
+            if (self.video.audioTracks[index].enabled) {
+                console.log(" clicked is already selected @ index ", index);
+                return;
+            }
+
+            for (i = 0; i < self.menuList.children.length; i++) {
+                item = self.menuList.children[i];
+                if (i === index) {
+                    self.video.audioTracks[i].enabled = true;
+                    item.className = 'subtitles-menu-item-actif';
+                } else {
+                    self.video.audioTracks[i].enabled = false;
+                    item.className = 'subtitles-menu-item';
+                }
+
+            }
+        }
+    };
+    fjplayer.prototype.SetAudioMenu = function(DivContainerId) {
+        var menuList = null;
+        var container = document.getElementById(DivContainerId);
+        var i = 0;
+        var item = null;
+        var id = new Date().valueOf() + '_' + Math.random();
+        if (this.video.audioTracks.length <= 1)
+            return;
+        container.className = 'settingMenuDiv';
+        container.innerHTML = '<div class=\"settingMenuSubMenuLeft\" >' +
+            '<div class=\"settingMenuDiv\" id=\"' + this.audMenuDivId + '\" >';
+        '<div class=\"settingMenuSubMenuLeft\" >' +
+        '<ul class=\"subtitles-menu\" id=\"' + this.audMenuListId + '\" >' +
+            '</ul>	' +
+            '</div>';
+
+        // video array
+        menuList = document.getElementById(this.audMenuListId);
+        if (this.video.audioTracks) {
+            for (i = 0; i < this.video.audioTracks.length; i++) {
+                item = document.createElement('li');
+                if (this.video.audioTracks[i].enabled) {
+                    item.className = 'subtitles-menu-item-actif';
+                } else {
+                    item.className = 'subtitles-menu-item';
+                }
+                item.innerHTML = this.video.audioTracks[i].language + '::' + this.video.audioTracks[i].label;
+                menuList.appendChild(item);
+                item.addEventListener('click', function(self, i) {
+                    self.activateAudio(i);
+                });
+            }
+        }
+    };
+
+    fjplayer.prototype.SetSubsMenu = function(DivContainerId) {
+        var menuList = null;
+        var container = document.getElementById(DivContainerId);
+        var i = 0;
+        var item = null;
+        var id = new Date().valueOf() + '_' + Math.random();
+        if (!this.containsSubs) {
+            return;
+        }
+        container.className = 'settingMenuDiv';
+        container.innerHTML = '<div class=\"settingMenuSubMenuLeft\" >' +
+            '<div class=\"settingMenuDiv\" id=\"' + this.subsMenuDivId + '\" >';
+        '<div class=\"settingMenuSubMenuLeft\" >' +
+        '<ul class=\"subtitles-menu\" id=\"' + this.subsMenuListId + '\" >' +
+            '</ul>	' +
+            '</div>';
+
+        // video array
+        menuList = document.getElementById(this.subsMenuListId);
+        for (i = 0; i < this.video.audioTracks.length; i++) {
+            item = document.createElement('li');
+            if (this.video.audioTracks[i].enabled) {
+                item.className = 'subtitles-menu-item-actif';
+            } else {
+                item.className = 'subtitles-menu-item';
+            }
+            item.innerHTML = this.video.audioTracks[i].language + '::' + this.video.audioTracks[i].label;
+            menuList.appendChild(item);
+            item.addEventListener('click', function(self, i) {
+                self.activateAudio(i);
+            });
+        }
+
+    };
+
     /**
      * setup the player
      */
@@ -567,6 +654,8 @@
                 self.magicMouse(self);
             });
 
+            // create menu subs
+            this.menuAud = this.SetAudioMenu(this.menuDivId, this.video);
 
             // Only add the events if addEventListener is supported
             // (IE8 and less don't support it, but that will use Flash anyway)

@@ -27,17 +27,17 @@ body {
 
 span.fa {
     font-size: 1.2em;
-    color: rgb(255, 255, 2555);
+    color: rgb(255, 255, 255);
 }
 
 span.fa-2x {
     font-size: 2.5em;
-    color: rgb(255, 255, 2555);
+    color: rgb(255, 255, 255);
 }
 
 span.fa-3x {
     font-size: 4em;
-    color: rgb(255, 255, 2555);
+    color: rgb(255, 255, 255);
 }
 
 
@@ -47,7 +47,7 @@ span.fa-3x {
     position: absolute;
     display: table;
     visibility: hidden;
-    background: rgba(20, 20, 20, 1);
+    background-color: rgba(0, 0, 0, 0.5);
     border-radius: 2px;
     z-index: 2147483647;
 }
@@ -326,6 +326,56 @@ figure {
 }*/
 
 
+/* -------------------  CC SUBTITLES --------------------- */
+
+.subtitles-menu-item-actif {
+    cursor: pointer;
+    text-align: left;
+    border-radius: 2px;
+    opacity: 0.5;
+}
+
+.subtitles-menu-item {
+    cursor: pointer;
+    text-align: left;
+    border-radius: 2px;
+    opacity: 1;
+}
+
+
+/* ---------------------- Menu style --------------------- */
+
+.settingMenuDiv {
+    position: absolute;
+    color: rgb(255, 255, 255);
+    background: rgba(10, 10, 10, 0.8);
+    float: left;
+    font-size: 12px;
+    /* visibility: hidden;*/
+    padding: 5px;
+    border-radius: 5px;
+    z-index: 2147483647;
+}
+
+ul {
+    padding: 2px;
+    margin: 2px;
+}
+
+ul li {
+    padding-left: 5px;
+}
+
+.settingMenuSubMenuRight {
+    float: left;
+    color: #8F9B9E;
+    width: 100%;
+    border-left: 1px solid #2A2A2A;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+
 /*__________________________________________ FJCONTROL ____________________________*/
 
 .fjcontrols-panel {
@@ -485,5 +535,5 @@ figure[data-fullscreen=true] .fjcontrols-control {
 figure[data-fullscreen=true] span.fa {
     font-size: 2em;
     margin-bottom: 5px;
-    color: rgb(255, 255, 2555);
+    color: rgb(255, 255, 255);
 }

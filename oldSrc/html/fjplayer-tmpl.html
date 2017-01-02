@@ -69,8 +69,7 @@
 		</div>
 		<!-- setting menu -->
 		<div   ng-show='isContainsSubs || isContainsLangs' class="settingMenuDiv" id="settingMenuDiv">
-			<div class="settingMenuSubMenuLeft"  id="settingMenuCC" ng-show='isContainsSubs'>
-				sub :
+			<div class="settingMenuSubMenuLeft"  id="settingMenuCC" ng-show='isContainsSubs'>				
 				<ul class="subtitles-menu" >
 					<li ng-repeat="sub in tracksArray.subs">
 						<div  ng-click='SettingMenuMgr.setSubs(sub.index)' 
