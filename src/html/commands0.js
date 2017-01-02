@@ -15,10 +15,9 @@
             document.msFullscreenEnabled || document.webkitSupportsFullscreen || document.webkitFullscreenEnabled ||
             document.createElement('video').webkitRequestFullScreen);
         this.expandScreen = expandScreen;
-        this.containsLang = false;
         this.containsSubs = false;
         this.timeout = null;
-        this.productionMode = false;
+        this.productionMode = true;
         if (this.productionMode) {
             this.HideControlsTimeout = 4000;
         } else {
@@ -61,6 +60,7 @@
         this.subsMenuListId = 'smml' + id;
         this.audMenuDivId = 'ammd' + id;
         this.audMenuListId = 'amml' + id;
+        this.aboutMenuId = 'abm' + id;
     };
 
     /**
@@ -130,15 +130,10 @@
             '<div class=\"thumbsBlockDiv\" id=\"' + this.thumbsDivId + '\" >' +
             '<span class=\"thumbsBlock\" id=\"' + this.thumbsImgId + '\" ></span>' +
             '</div>' +
-            '<div id=\"' + this.menuDivId + '\" >'
-            /* '<div class=\"settingMenuSubMenuLeft\" >' +
-            '<ul class=\"subtitles-menu\" id=\"' + this.menuListId + '\" >' +
-            '<li><div onclick=\"setSubs(this)\"  class=\"subtitles-menu-item-actif\"> voila </div></li>' +
-            '<li><div onclick=\"setSubs(this)\" class=\"subtitles-menu-item\" > voili </div></li>' +
-            '</ul>	' +
-            '</div>' +*/
-        '</div>' +
-        '</figure>';
+            '<div id=\"' + this.menuDivId + '\" ></div>' +
+            '<div id=\"' + this.aboutMenuId + '\" ><ul><li>voila </li><li>voili</li></ul></div>' +
+            '</div>' +
+            '</figure>';
         this.videoContainer = document.getElementById(this.videoContainerId);
         this.videoContainer.className = ' fjPlayer ' + this.playerUsedSkin;
         this.videoContainer.innerHTML = inHtml;
@@ -195,12 +190,6 @@
             } else if ((self.video.textTracks[i].kind === 'captions') || (self.video.textTracks[i].kind === 'subtitles')) {
                 self.containsSubs = true;
                 console.log('find  soustitres  @ ', i, '/', self.video.textTracks.length, ' >>> ', self.video.textTracks[i]);
-            }
-        }
-        if (self.video.audioTracks) {
-            console.debug(' setTracks : Setting audioTracks  ', self.video.audioTracks.length);
-            for (i = 0; i < self.video.audioTracks.length; i++) {
-                self.containsLang = true;
             }
         }
     };
@@ -474,8 +463,10 @@
         var i = 0;
         var item = null;
         var id = new Date().valueOf() + '_' + Math.random();
-        if (this.video.audioTracks.length <= 1)
-            return;
+        if (this.video.audioTracks) {
+            if (this.video.audioTracks.length <= 1)
+                return;
+        }
         container.className = 'settingMenuDiv';
         container.innerHTML = '<div class=\"settingMenuSubMenuLeft\" >' +
             '<div class=\"settingMenuDiv\" id=\"' + this.audMenuDivId + '\" >';
@@ -522,7 +513,7 @@
 
         // video array
         menuList = document.getElementById(this.subsMenuListId);
-        for (i = 0; i < this.video.audioTracks.length; i++) {
+        for (i = 0; i < this.video.textTracks.length; i++) {
             item = document.createElement('li');
             if (this.video.audioTracks[i].enabled) {
                 item.className = 'subtitles-menu-item-actif';
@@ -610,10 +601,24 @@
             if (this.productionMode) {
                 this.videoFigure.addEventListener('contextmenu', function(ev) {
                     ev.preventDefault();
-                    alert('success!');
+                    console.log('success >> ', ev.pageX, '>>', ev.pageY);
+                    var d = document.getElementById(self.aboutMenuId);
+                    d.style.position = "absolute";
+                    d.style.left = (ev.pageX - 20) + 'px';
+                    d.style.top = (ev.pageY - 90) + 'px';
                     return false;
                 }, false);
             }
+
+            // video click 
+            this.video.addEventListener('click', function(e) {
+                self.onplaypauseClick(self);
+            });
+
+            // video double click 
+            this.video.addEventListener('dblclick', function(e) {
+                self.handleFullscreen(self);
+            });
 
             // If the browser doesn't support the Fulscreen API then hide the fullscreen button
             if (!this.fullScreenEnabled) {
