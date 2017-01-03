@@ -21,7 +21,7 @@
         if (this.productionMode) {
             this.HideControlsTimeout = 4000;
         } else {
-            this.HideControlsTimeout = 10000;
+            this.HideControlsTimeout = 8000;
         }
         self.thumbsTrackIndex = -1;
         this.isHidden = false;
@@ -472,52 +472,67 @@
         self.thumbsDiv.style.top = rect.top - (xywh[3] * 1.5) + 'px';
         self.thumbsDiv.style.width = xywh[2] + 'px';
     };
-    fjplayer.prototype.activateLang = function(self, index) {
+    fjplayer.prototype.activateSubs = function(self, item) {
         var i = 0;
-        var item;
-        if (self.video.audioTracks) {
-            if (self.video.audioTracks[index].enabled) {
-                console.log(' clicked is already selected @ index ', index);
+        var k = 0;
+        var litem;
+        var index = Array.prototype.indexOf.call(self.menuListSubs.childNodes, item);
+        var tindex = item.getAttribute('index');
+        console.log('clicked is  selected @ index ', index, ' text index ', tindex);
+        if (self.video.textTracks) {
+            if (self.video.textTracks[tindex].mode === 'showing') {
+                console.log('AlREADY  selected @ index ', tindex);
                 return;
             }
 
-            for (i = 0; i < self.menuList.children.length; i++) {
-                item = self.menuList.children[i];
-                if (i === index) {
-                    self.video.audioTracks[i].enabled = true;
-                    item.className = 'subtitles-menu-item-actif';
+            for (i = 0; i < self.menuListSubs.children.length; i++) {
+                litem = self.menuListSubs.children[i];
+                k = litem.getAttribute('index');
+                console.log('cheking item @  ', i);
+                if (tindex === k) {
+                    self.video.textTracks[i].mode = 'showing';
+                    litem.className = 'subtitles-menu-item-actif';
+                    console.log('Setting item @  ', i);
                 } else {
-                    self.video.audioTracks[i].enabled = false;
-                    item.className = 'subtitles-menu-item';
+                    self.video.textTracks[i].mode = 'hidden';
+                    litem.className = 'subtitles-menu-item';
+                    console.log('Unsetting item @  ', i);
                 }
-
             }
         }
+        self.subsMenuDiv.style.display = 'none';
     };
-    fjplayer.prototype.activateAudio = function(self, index) {
+    fjplayer.prototype.activateAudio = function(self, item) {
         var i = 0;
-        var item;
+        var k = 0;
+        var litem;
+        var index = Array.prototype.indexOf.call(self.menuListAud.childNodes, item);
+        var tindex = item.getAttribute('index');
+        console.log('clicked is  selected @ index ', index, ' text index ', tindex);
         if (self.video.audioTracks) {
             if (self.video.audioTracks[index].enabled) {
-                console.log(" clicked is already selected @ index ", index);
+                console.log('AlREADY  selected @ index ', tindex);
                 return;
             }
 
-            for (i = 0; i < self.menuList.children.length; i++) {
-                item = self.menuList.children[i];
+            for (i = 0; i < self.menuListAud.children.length; i++) {
+                litem = self.menuListAud.children[i];
+                k = litem.getAttribute('index');
+                console.log('cheking item @  ', i);
                 if (i === index) {
                     self.video.audioTracks[i].enabled = true;
-                    item.className = 'subtitles-menu-item-actif';
+                    litem.className = 'subtitles-menu-item-actif';
+                    console.log('Setting item @  ', i);
                 } else {
                     self.video.audioTracks[i].enabled = false;
-                    item.className = 'subtitles-menu-item';
+                    litem.className = 'subtitles-menu-item';
+                    console.log('Unsetting item @  ', i);
                 }
-
             }
         }
+        self.audMenuDiv.style.display = 'none';
     };
     fjplayer.prototype.SetAudioMenu = function(self) {
-        var menuList = null;
         var i = 0;
         var item = null;
         var container = document.getElementById(self.audMenuContainerDivId);
@@ -537,7 +552,7 @@
             '</div>';
 
         // video array
-        menuList = document.getElementById(self.audMenuListId);
+        self.menuListAud = document.getElementById(self.audMenuListId);
         if (self.video.audioTracks) {
             for (i = 0; i < self.video.audioTracks.length; i++) {
                 item = document.createElement('li');
@@ -547,17 +562,16 @@
                     item.className = 'subtitles-menu-item';
                 }
                 item.innerHTML = self.video.audioTracks[i].language + '::' + self.video.audioTracks[i].label;
-                menuList.appendChild(item);
-                item.addEventListener('click', function(self, i) {
-                    self.activateAudio(self, i);
+                self.menuListAud.appendChild(item);
+                item.addEventListener('click', function(ev) {
+                    self.activateAudio(self, this);
                 });
             }
         }
-        console.log(' Audio Menu created !', self.video.audioTracks.length, '! ', menuList);
+        console.log(' Audio Menu created !', self.video.audioTracks.length, '! ', self.menuListAud);
     };
 
     fjplayer.prototype.SetSubsMenu = function(self) {
-        var menuList = null;
         var i = 0;
         var item = null;
         var id = new Date().valueOf() + '_' + Math.random();
@@ -570,25 +584,27 @@
             '</div>';
 
         // video array
-        menuList = document.getElementById(self.subsMenuListId);
+        self.menuListSubs = document.getElementById(self.subsMenuListId);
         for (i = 0; i < self.video.textTracks.length; i++) {
             if ((self.video.textTracks[i].kind === 'captions') ||
                 (self.video.textTracks[i].kind === 'subtitles')) {
                 item = document.createElement('li');
-                if (self.video.textTracks[i].enabled) {
+                if (self.video.textTracks[i].mode === 'showing') {
                     item.className = 'subtitles-menu-item-actif';
                 } else {
                     item.className = 'subtitles-menu-item';
                 }
+                item.setAttribute('index', i);
                 item.innerHTML = self.video.textTracks[i].label;
-                menuList.appendChild(item);
-                item.addEventListener('click', function(self, i) {
-                    self.activateLang(self, i);
+                self.menuListSubs.appendChild(item);
+                item.addEventListener('click', function(ev) {
+                    self.activateSubs(self, this);
                 });
+                console.log('Setting Subs List @ ', i, ' item is ', item);
             }
         }
         container.style.display = 'none';
-        console.log(' Subs Menu created !! ', menuList);
+        console.log(' Subs Menu created !! ', self.menuListSubs);
     };
 
     /**
@@ -760,11 +776,11 @@
         'srclang': 'de',
         'label': 'deutch'
     }, {
-        'src': './files/sintel-sintel-en.vtt',
+        'src': './files/sintel-en.vtt',
         'srclang': 'en',
         'label': 'english'
     }, {
-        'src': './files/sintel-sintel-es.vtt',
+        'src': './files/sintel-es.vtt',
         'srclang': 'es',
         'label': 'espagnol'
     }];

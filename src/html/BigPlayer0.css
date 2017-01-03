@@ -376,6 +376,18 @@ ul li {
 }
 
 
+/* CUES and subtitles */
+
+::cue {
+    color: #ccc;
+}
+
+::cue(v[voice='Test']) {
+    color: #fff;
+    background: #0095dd;
+}
+
+
 /*__________________________________________ FJCONTROL ____________________________*/
 
 .fjcontrols-panel {
