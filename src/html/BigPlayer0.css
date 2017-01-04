@@ -332,14 +332,37 @@ figure {
     cursor: pointer;
     text-align: left;
     border-radius: 2px;
-    opacity: 0.5;
+    opacity: 1;
 }
 
 .subtitles-menu-item {
     cursor: pointer;
     text-align: left;
     border-radius: 2px;
+    opacity: 0.5;
+}
+
+.fj-hide {
+    display: 'none';
+}
+
+.fj-show {
+    display: 'block';
+}
+
+
+/* animation */
+
+.m-fadeOut {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 500ms, opacity 500ms;
+}
+
+.m-fadeIn {
+    visibility: visible;
     opacity: 1;
+    transition: visibility 0s linear 0s, opacity 500ms;
 }
 
 
@@ -360,6 +383,7 @@ figure {
 ul {
     padding: 2px;
     margin: 2px;
+    list-style-type: none;
 }
 
 ul li {

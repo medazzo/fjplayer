@@ -259,12 +259,13 @@
         menuContainer.style.position = "absolute";
         menuContainer.style.left = (ev.pageX - 20) + 'px';
         menuContainer.style.top = (ev.pageY - 90) + 'px';
+
         if (menuContainer.style.display === 'none') {
             menuContainer.style.display = 'block';
         } else {
             menuContainer.style.display = 'none';
         }
-        console.log(' Shwing or Hiding an menu ', menuContainer);
+        console.log(' Showing or Hiding an menu ', menuContainer);
     };
 
     /**
@@ -389,20 +390,24 @@
     fjplayer.prototype.HideControlsCursor = function(self, hideit) {
         if (self.isStarted) {
             if (hideit) {
-                self.videoControls.style.display = 'none';
-                self.videoInfo.style.display = 'none';
+                self.videoControls.classList.toggle('m-fadeOut');
+                self.videoInfo.classList.toggle('m-fadeOut');
                 document.body.style.cursor = 'none';
+                self.audMenuDiv.style.display = 'none';
+                self.subsMenuDiv.style.display = 'none';
                 self.isHidden = true;
             } else {
-                self.videoControls.style.display = 'block';
-                self.videoInfo.style.display = 'block';
+                self.videoControls.classList.toggle('m-fadeIn');
+                self.videoInfo.classList.toggle('m-fadeIn');
                 document.body.style.cursor = 'auto';
                 self.isHidden = false;
             }
         } else {
-            self.videoControls.style.display = 'none';
-            self.videoInfo.style.display = 'none';
+            self.videoControls.classList.toggle('m-fadeOut');
+            self.videoInfo.classList.toggle('m-fadeOut');
             document.body.style.cursor = 'none';
+            self.audMenuDiv.style.display = 'none';
+            self.subsMenuDiv.style.display = 'none';
             self.isHidden = true;
         }
     };
