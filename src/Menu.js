@@ -4,77 +4,172 @@ import Logger from './Logger';
  * @module Menu
  * @description The Menu is the Menu module used to play Menu.
  */
-function Menu(menuObj, videoElement, menuTracksArray, settingBtnObj) {
+function Menu(subtitlesBtnElement, audiosBtnElement, videoElement, subtitlesMenuElement, audiosMenuElement) {
     let instance,
         video = videoElement,
-        tracksArray = menuTracksArray,
-        menudiv = menuObj,
-        menuBtn = settingBtnObj,
+        subtitlesBtn = subtitlesBtnElement,
+        audiosBtn = audiosBtnElement,
+        subtitlesMenu = subtitlesMenuElement,
+        audiosMenu = audiosMenuElement,
+        audInit = false,
+        subsInit = false,
         logger = new Logger('Menu');
 
-    function goSettingMenu() {
-        var rect;
-        logger.log(' Hallo menu');
-        // second call :to  hide
-        if (menudiv.style.visibility === 'visible') {
-            menudiv.style.visibility = 'hidden';
+    function initialize(doSubs, doAud) {
+        // Init menus
+        if (doSubs) {
+            self.SetSubsMenu(self);
+            audInit = true;
         }
-
-        rect = menuBtn.getBoundingClientRect();
-        menudiv.style.left = rect.left + 'px';
-        menudiv.style.top = rect.top - (rect.height * Math.max(tracksArray.subs.length,
-            tracksArray.audio.length)) + 'px';
-        menudiv.style.visibility = 'visible';
+        if (doAud) {
+            self.SetAudioMenu(self);
+            subsInit = true;
+        }
     }
 
-    function setSubs(index) {
-        // json array
-        var i;
-        for (i = 0; i < tracksArray.subs.length; i++) {
-            if (tracksArray.subs[i].index === index) {
-                tracksArray.subs[i].actif = true;
-            } else {
-                tracksArray.subs[i].actif = false;
-            }
+    function SetAudioMenu(self) {
+        var i = 0;
+        var item = null;
+        var container = document.getElementById(self.audMenuContainerDivId);
+        var id = new Date().valueOf() + '_' + Math.random();
+        container.style.display = 'none';
+        if ((!self.video.audioTracks) || (self.video.audioTracks.length <= 1)) {
+            //hide audio button 
+            var btn = document.getElementById(self.languagesDivId);
+            btn.style.display = 'none';
+            return;
         }
+        container.className = 'settingMenuDiv';
+        container.innerHTML =
+            '<div class=\"settingMenuSubMenuLeft\" >' +
+            '<ul class=\"subtitles-menu\" id=\"' + self.audMenuListId + '\" >' +
+            '</ul>	' +
+            '</div>';
+
         // video array
-        for (i = 0; i < video.textTracks.length; i++) {
-            if (i === index) {
-                video.textTracks[i].mode = 'showing';
-            } else {
-                video.textTracks[i].mode = 'hidden';
+        self.menuListAud = document.getElementById(self.audMenuListId);
+        if (self.video.audioTracks) {
+            for (i = 0; i < self.video.audioTracks.length; i++) {
+                item = document.createElement('li');
+                if (self.video.audioTracks[i].enabled) {
+                    item.className = 'subtitles-menu-item-actif';
+                } else {
+                    item.className = 'subtitles-menu-item';
+                }
+                item.innerHTML = self.video.audioTracks[i].language + '::' + self.video.audioTracks[i].label;
+                self.menuListAud.appendChild(item);
+                item.addEventListener('click', function(ev) {
+                    self.activateAudio(self, this);
+                });
             }
         }
-        // finish
-        menudiv.style.visibility = 'hidden';
+        console.log(' Audio Menu created !', self.video.audioTracks.length, '! ', self.menuListAud);
     }
 
-    function setAudio(index) {
-        // json array
-        var i;
-        for (i = 0; i < tracksArray.audio.length; i++) {
-            if (tracksArray.audio[i].index === index) {
-                tracksArray.audio[i].actif = true;
-            } else {
-                tracksArray.audio[i].actif = false;
-            }
-        }
+    function SetSubsMenu(self) {
+        var i = 0;
+        var item = null;
+        var id = new Date().valueOf() + '_' + Math.random();
+        var container = document.getElementById(self.subsdMenuContainerDivId);
+        container.className = 'settingMenuDiv';
+        container.innerHTML =
+            '<div class=\"settingMenuSubMenuLeft\" >' +
+            '<ul class=\"subtitles-menu\" id=\"' + self.subsMenuListId + '\" >' +
+            '</ul>	' +
+            '</div>';
+
         // video array
-        for (i = 0; i < video.videoTracks.length; i++) {
-            if (i === index) {
-                video.videoTracks[i].selected = true;
-            } else {
-                video.videoTracks[i].selected = false;
+        self.menuListSubs = document.getElementById(self.subsMenuListId);
+        for (i = 0; i < self.video.textTracks.length; i++) {
+            if ((self.video.textTracks[i].kind === 'captions') ||
+                (self.video.textTracks[i].kind === 'subtitles')) {
+                item = document.createElement('li');
+                if (self.video.textTracks[i].mode === 'showing') {
+                    item.className = 'subtitles-menu-item-actif';
+                } else {
+                    item.className = 'subtitles-menu-item';
+                }
+                item.setAttribute('index', i);
+                item.innerHTML = self.video.textTracks[i].label;
+                self.menuListSubs.appendChild(item);
+                item.addEventListener('click', function(ev) {
+                    self.activateSubs(self, this);
+                });
+                console.log('Setting Subs List @ ', i, ' item is ', item);
             }
         }
-        // finish
-        menudiv.style.visibility = 'hidden';
+        container.style.display = 'none';
+        console.log(' Subs Menu created !! ', self.menuListSubs);
+    }
+
+    function activateSubs(self, item) {
+        var i = 0;
+        var k = 0;
+        var litem;
+        var index = Array.prototype.indexOf.call(self.menuListSubs.childNodes, item);
+        var tindex = item.getAttribute('index');
+        console.log('clicked is  selected @ index ', index, ' text index ', tindex);
+        if (self.video.textTracks) {
+            if (self.video.textTracks[tindex].mode === 'showing') {
+                console.log('AlREADY  selected @ index ', tindex);
+                return;
+            }
+
+            for (i = 0; i < self.menuListSubs.children.length; i++) {
+                litem = self.menuListSubs.children[i];
+                k = litem.getAttribute('index');
+                console.log('cheking item @  ', i);
+                if (tindex === k) {
+                    self.video.textTracks[i].mode = 'showing';
+                    litem.className = 'subtitles-menu-item-actif';
+                    console.log('Setting item @  ', i);
+                } else {
+                    self.video.textTracks[i].mode = 'hidden';
+                    litem.className = 'subtitles-menu-item';
+                    console.log('Unsetting item @  ', i);
+                }
+            }
+        }
+        self.subsMenuDiv.style.display = 'none';
+    };
+
+    function activateAudio(self, item) {
+        var i = 0;
+        var k = 0;
+        var litem;
+        var index = Array.prototype.indexOf.call(self.menuListAud.childNodes, item);
+        var tindex = item.getAttribute('index');
+        console.log('clicked is  selected @ index ', index, ' text index ', tindex);
+        if (self.video.audioTracks) {
+            if (self.video.audioTracks[index].enabled) {
+                console.log('AlREADY  selected @ index ', tindex);
+                return;
+            }
+
+            for (i = 0; i < self.menuListAud.children.length; i++) {
+                litem = self.menuListAud.children[i];
+                k = litem.getAttribute('index');
+                console.log('cheking item @  ', i);
+                if (i === index) {
+                    self.video.audioTracks[i].enabled = true;
+                    litem.className = 'subtitles-menu-item-actif';
+                    console.log('Setting item @  ', i);
+                } else {
+                    self.video.audioTracks[i].enabled = false;
+                    litem.className = 'subtitles-menu-item';
+                    console.log('Unsetting item @  ', i);
+                }
+            }
+        }
+        self.audMenuDiv.style.display = 'none';
     }
 
     instance = {
-        goSettingMenu: goSettingMenu,
-        setSubs: setSubs,
-        setAudio: setAudio
+        initialize: initialize,
+        activateAudio: activateAudio,
+        activateSubs: activateSubs,
+        SetSubsMenu: SetSubsMenu,
+        SetAudioMenu: SetAudioMenu
     };
 
     return instance;

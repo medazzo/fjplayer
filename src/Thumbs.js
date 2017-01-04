@@ -1,42 +1,64 @@
 /**
  * @module Thumbs
- * @description The Thumbs is the primary Thumbs used to set Thumbs .
+ * @description The Thumbs module is responsible for rendering
+ *  showing and hiding vtt pictures based on mousing mouse on progress bar.
+ * @param vidElement the video element
+ * @param vttThumbsTrackIndex the index of Vtt thumbs track in textTracks list of video
+ * @param thumbImgElement the img element used for thumbs
+ * @param thumbImgElement the div element used for thumbs
+ * @param progressBarElement the progress element used for thumbs
  */
-function Thumbs(vidElement, thumbsTrachindex, thumbImg, thumbDiv, progressBar) {
+function Thumbs(vidElement, vttThumbsTrackIndex, thumbImgElement, thumbDivElement, progressBarElement) {
     let instance,
-        indexThumbsTrack = thumbsTrachindex,
-        videoElement = vidElement,
-        td = thumbDiv,
-        t = thumbImg,
-        b = progressBar;
+        thumbsTrackIndex = vttThumbsTrackIndex,
+        video = vidElement,
+        thumbsDiv = thumbDivElement,
+        tumbsImg = thumbImgElement,
+        progressBar = progressBarElement,
+        logger = new Logger('Thumbs');
 
-    function goShowThumbs() {
-        td.style.visibility = 'visible';
+    function initialize() {
+
+        progressBar.addEventListener('mousemove', function(e) {
+            instance.renderThumbs(e);
+        });
+        progressBar.addEventListener('mouseleave', function() {
+            instance.hideThumbs();
+        });
+        progressBar.addEventListener('mouseover', function() {
+            instance.showThumbs();
+        });
     }
 
-    function goHideThumbs() {
-        td.style.visibility = 'hidden';
+    function showThumbs() {
+        thumbsDiv.classList.remove('fj-hide');
+        thumbsDiv.classList.add('fj-show');
     }
+
+    function hideThumbs() {
+        thumbsDiv.classList.remove('fj-show');
+        thumbsDiv.classList.add('fj-hide');
+    }
+
     /**
      * Event on mouse
      * * */
-    function goRenderThumbs($event) {
-        var rect, p, c, i, xywh;
+    function renderThumbs(event) {
         // first we convert from mouse to time position ..
-        rect = b.getBoundingClientRect();
-        p = ($event.pageX - rect.left) * (videoElement.duration / (rect.right - rect.left));
-        if ((p > (videoElement.duration + 2)) || (p < 0)) {
+        var c, i, url, xywh;
+        var rect = instance.progressBar.getBoundingClientRect();
+        var p = (event.pageX - rect.left) * (instance.video.duration / (rect.right - rect.left));
+        if ((p > (instance.video.duration + 2)) || (p < 0)) {
             // some error ?
-            console.error(' Position is bigger than duration >>', p, videoElement.duration);
+            console.error(' Position is bigger than duration >>', p, instance.video.duration);
             return;
         }
-
-        // ..then we find the matching cue..
-        c = videoElement.textTracks[indexThumbsTrack].cues;
-
-        // track eleme,t is not supprted : Firefox
+        // update ui ..then we find the matching cue..
+        c = instance.video.textTracks[instance.thumbsTrackIndex].cues;
         if (c == null) {
-            console.error(' cues is null @ ', indexThumbsTrack, ' not supported , Firefox ?');
+            // track eleme,t is not supprted : Firefox
+            console.error(' cues is null @ ', instance.thumbsTrackIndex, ' not supported , Firefox ?');
+            console.error(' Cues are null @', instance.video);
             return;
         }
 
@@ -45,27 +67,27 @@ function Thumbs(vidElement, thumbsTrachindex, thumbImg, thumbDiv, progressBar) {
                 break;
             };
         }
-
         // ..next we unravel the JPG url and fragment query..
-        // url = c[i].text.split('#')[0];
         xywh = c[i].text.substr(c[i].text.indexOf('=') + 1).split(',');
 
         // ..and last we style the thumbnail overlay
-        t.style.backgroundImage = 'url(' + c[i].text.split('#')[0] + ')';
-        t.style.backgroundPosition = '-' + xywh[0] + 'px -' + xywh[1] + 'px';
-        t.style.width = xywh[2] + 'px';
-        t.style.height = xywh[3] + 'px';
+        url = 'url(' + c[i].text.split('#')[0] + ')';
+        // console.log(' fetching thum from ', url);
+        instance.tumbsImg.style.backgroundImage = url;
+        instance.tumbsImg.style.backgroundPosition = '-' + xywh[0] + 'px -' + xywh[1] + 'px';
+        instance.tumbsImg.style.width = xywh[2] + 'px';
+        instance.tumbsImg.style.height = xywh[3] + 'px';
 
-        td.style.left = $event.pageX - xywh[2] / 2 + 'px';
-        td.style.top = rect.top - (xywh[3] * 1.5) + 'px';
-        td.style.width = xywh[2] + 'px';
-    }
+        instance.thumbsDiv.style.left = event.pageX - xywh[2] / 2 + 'px';
+        instance.thumbsDiv.style.top = rect.top - (xywh[3] * 1.5) + 'px';
+        instance.thumbsDiv.style.width = xywh[2] + 'px';
+    };
 
     instance = {
-
-        goShowThumbs: goShowThumbs,
-        goHideThumbs: goHideThumbs,
-        goRenderThumbs: goRenderThumbs
+        initialize: initialize,
+        showThumbs: showThumbs,
+        hideThumbs: hideThumbs,
+        renderThumbs: renderThumbs
 
     };
 
