@@ -5,7 +5,7 @@
     <title>fjplayer demo</title>
     <script type="text/javascript" src="../../lib/Fjplayer.js"></script>
     <script type="text/javascript">
-        var playlist = [{
+  /*      var playlist = [{
             'FJClass': 'vod',
             'FJType': 'video/mp4',
             'FJTitle': 'sentinel Movie mp4 ',
@@ -59,22 +59,51 @@
 
             }]
         }];
+*/
+
+
 
         window.onload = function() {
             console.info('VERSION', fjplayer.Version);
-            var conf = fjplayer.Configuration();
+    /*        var conf = fjplayer.Configuration();
             var done = conf.initialize(playlist, 'appid', 'maximal', false, true, false);
             console.info(' Conf Initilized', done);
             var player = fjplayer.Player();
             done = player.initialize(conf, "player-wrapper")
             console.info(' Player Initilized', done);
             done = player.playAt(0);
-            console.info(' Player playing', done);
+            console.info(' Player playing', done);*/
+            /* **************************************************************************************************** */
+            /* _______________________________________________ MAIN _______________________________________________ */
+            /* **************************************************************************************************** */
+            var conf = fjplayer.Configuration();
+            var subsJsObj = [{
+                'src': './files/sintel-de.vtt',
+                'srclang': 'de',
+                'label': 'deutch'
+            }, {
+                'src': './files/sintel-en.vtt',
+                'srclang': 'en',
+                'label': 'english'
+            }, {
+                'src': './files/sintel-es.vtt',
+                'srclang': 'es',
+                'label': 'espagnol'
+            }];
+
+            var player = new fjplayer('playercontainer', 'skin-default', false, '720', '576');
+
+            player.Setup('https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
+                ' title of movie',
+                './files/poster.jpg',
+                './thumbs.vtt',
+                subsJsObj
+            );
         }
     </script>
 </head>
 
-<div id="player-wrapper">
+<div id="playercontainer">
 </div>
 
 <body>
