@@ -165,8 +165,6 @@ Player.prototype.setComponents = function() {
     // Obtain handles to main elements
     this.video = document.getElementById(this.videoId);
     this.playpauseBtn = document.getElementById(this.playpauseBtnId);
-    this.subtitlesBtn = document.getElementById(this.subtitlesBtnId);
-    this.languagesBtn = document.getElementById(this.languagesBtnId);
     this.muteBtn = document.getElementById(this.muteBtnId);
     this.volumeBar = document.getElementById(this.volumeBarId);
     this.progressDiv = document.getElementById(this.progressDivId);
@@ -455,24 +453,7 @@ Player.prototype.InitPlayer = function(self) {
             self.video.appendChild(track);
         }
     }
-    // Init menus
-    self.SetSubsMenu(self);
-    self.SetAudioMenu(self);
-};
-/**
- * Event CALLBACK ; called on menu Click
- */
-Player.prototype.onshowHideMenu = function(self, menuContainer, ev) {
-    menuContainer.style.position = 'absolute';
-    menuContainer.style.left = (ev.pageX - 20) + 'px';
-    menuContainer.style.top = (ev.pageY - 90) + 'px';
-
-    if (menuContainer.style.display === 'none') {
-        menuContainer.style.display = 'block';
-    } else {
-        menuContainer.style.display = 'none';
-    }
-    self.logger.log(' Showing or Hiding an menu ', menuContainer);
+    // Init menus for subs and audio .. TODO
 };
 /**
  * Manage click for mute button
@@ -611,166 +592,6 @@ Player.prototype.renderThumbs = function(event, self) {
     self.thumbsDiv.style.top = rect.top - (xywh[3] * 1.5) + 'px';
     self.thumbsDiv.style.width = xywh[2] + 'px';
 };
-/**
- * cbx Subs Mgt
- */
-Player.prototype.activateSubs = function(self, item) {
-    var i = 0;
-    var k = 0;
-    var litem;
-    var index = Array.prototype.indexOf.call(self.menuListSubs.childNodes, item);
-    var tindex = item.getAttribute('index');
-    self.logger.log('clicked is  selected @ index ', index, ' text index ', tindex);
-    if (self.video.textTracks) {
-        if (self.video.textTracks[tindex].mode === 'showing') {
-            self.logger.log('AlREADY  selected @ index ', tindex);
-            return;
-        }
-
-        for (i = 0; i < self.menuListSubs.children.length; i++) {
-            litem = self.menuListSubs.children[i];
-            k = litem.getAttribute('index');
-            self.logger.log('cheking item @  ', i);
-            if (tindex === k) {
-                self.video.textTracks[i].mode = 'showing';
-                litem.className = 'subtitles-menu-item-actif';
-                self.logger.log('Setting item @  ', i);
-            } else {
-                self.video.textTracks[i].mode = 'hidden';
-                litem.className = 'subtitles-menu-item';
-                self.logger.log('Unsetting item @  ', i);
-            }
-        }
-    }
-    self.subsMenuDiv.style.display = 'none';
-};
-/**
- * Aubs cbx Mgt
- */
-Player.prototype.activateAudio = function(self, item) {
-    var i = 0;
-    var litem;
-    var index = Array.prototype.indexOf.call(self.menuListAud.childNodes, item);
-    var tindex = item.getAttribute('index');
-    self.logger.log('clicked is  selected @ index ', index, ' text index ', tindex);
-    if (self.video.audioTracks) {
-        if (self.video.audioTracks[index].enabled) {
-            self.logger.log('AlREADY  selected @ index ', tindex);
-            return;
-        }
-
-        for (i = 0; i < self.menuListAud.children.length; i++) {
-            litem = self.menuListAud.children[i];
-            self.logger.log('cheking item @  ', i);
-            if (i === index) {
-                self.video.audioTracks[i].enabled = true;
-                litem.className = 'subtitles-menu-item-actif';
-                self.logger.log('Setting item @  ', i);
-            } else {
-                self.video.audioTracks[i].enabled = false;
-                litem.className = 'subtitles-menu-item';
-                self.logger.log('Unsetting item @  ', i);
-            }
-        }
-    }
-    self.audMenuDiv.style.display = 'none';
-};
-/**
- * Aubs cbx Mgt
- */
-Player.prototype.SetAudioMenu = function(self) {
-    var i = 0;
-    var item = null;
-    var btn = null;
-    var container = document.getElementById(self.audMenuContainerDivId);
-    container.style.display = 'none';
-    if ((!self.video.audioTracks) || (self.video.audioTracks.length <= 1)) {
-        // hide audio button
-        btn = document.getElementById(self.languagesDivId);
-        btn.style.display = 'none';
-        self.logger.log(' Audio Menu not created !');
-        return;
-    }
-    // Add events for languages button
-    self.languagesBtn.addEventListener('click', function(ev) {
-        self.onshowHideMenu(self, self.audMenuDiv, ev);
-    });
-
-    container.className = 'settingMenuDiv';
-    container.innerHTML =
-        '<div class=\"settingMenuSubMenuLeft\" >' +
-        '<ul class=\"subtitles-menu\" id=\"' + self.audMenuListId + '\" >' +
-        '</ul>	' +
-        '</div>';
-
-    // video array
-    self.menuListAud = document.getElementById(self.audMenuListId);
-    if (self.video.audioTracks) {
-        for (i = 0; i < self.video.audioTracks.length; i++) {
-            item = document.createElement('li');
-            if (self.video.audioTracks[i].enabled) {
-                item.className = 'subtitles-menu-item-actif';
-            } else {
-                item.className = 'subtitles-menu-item';
-            }
-            item.innerHTML = self.video.audioTracks[i].language + '::' + self.video.audioTracks[i].label;
-            self.menuListAud.appendChild(item);
-            item.addEventListener('click', function(ev) {
-                self.activateAudio(self, this);
-            });
-        }
-    }
-    self.logger.log(' Audio Menu created !', self.video.audioTracks.length, '! ', self.menuListAud);
-};
-/**
- * Subs cbx Mgt
- */
-Player.prototype.SetSubsMenu = function(self) {
-    var i = 0;
-    var item = null;
-    var foundsubs = false;
-    var container = document.getElementById(self.subsdMenuContainerDivId);
-
-    // video array
-    self.menuListSubs = document.getElementById(self.subsMenuListId);
-    for (i = 0; i < self.video.textTracks.length; i++) {
-        if ((self.video.textTracks[i].kind === 'captions') ||
-            (self.video.textTracks[i].kind === 'subtitles')) {
-            foundsubs = true;
-            item = document.createElement('li');
-            if (self.video.textTracks[i].mode === 'showing') {
-                item.className = 'subtitles-menu-item-actif';
-            } else {
-                item.className = 'subtitles-menu-item';
-            }
-            item.setAttribute('index', i);
-            item.innerHTML = self.video.textTracks[i].label;
-            self.menuListSubs.appendChild(item);
-            item.addEventListener('click', function(ev) {
-                self.activateSubs(self, this);
-            });
-            self.logger.log('Setting Subs List @ ', i, ' item is ', item);
-        }
-    }
-    if (foundsubs === true) {
-        // Add events for subtitles button
-        self.subtitlesBtn.addEventListener('click', function(ev) {
-            self.onshowHideMenu(self, self.subsMenuDiv, ev);
-        });
-
-        container.className = 'settingMenuDiv';
-        container.innerHTML =
-            '<div class=\"settingMenuSubMenuLeft\" >' +
-            '<ul class=\"subtitles-menu\" id=\"' + self.subsMenuListId + '\" >' +
-            '</ul>	' +
-            '</div>';
-        container.style.display = 'none';
-        self.logger.log(' Subs Menu  created !! ', self.menuListSubs);
-    } else {
-        self.logger.log(' Subs Menu Not created !! ');
-    }
-};
-
 /* ****************** P U B L I C S * * * * F U N C T I O N S ****************** */
 /**
  *
