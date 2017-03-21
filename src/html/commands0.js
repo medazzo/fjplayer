@@ -575,7 +575,6 @@
         }
         console.log(' Audio Menu created !', self.video.audioTracks.length, '! ', self.menuListAud);
     };
-
     fjplayer.prototype.SetSubsMenu = function(self) {
         var i = 0;
         var item = null;

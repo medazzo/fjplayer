@@ -13,7 +13,8 @@
         "live": "http-server -a localhost -p 8000 -c-1"
     },
     "dependencies": {
-        "dashjs": "2.3.0"
+        "dashjs": "2.3.0",
+        "font-awesome": "^4.3.0"
     },
     "devDependencies": {
         "concurrently": "^2.2.0",

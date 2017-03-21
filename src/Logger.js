@@ -2,98 +2,25 @@
  * @module Logger
  * @description The Configuration is the primary module used to set configuration and .
  */
+function Logger(klass) {
+    var m;
+    this.gState = true;
+    this.debug = {};
 
-function Logger(moduleName) {
-
-    let instance,
-        userServer,
-        serverLogger,
-        method,
-        request,
-        modName = '[' + moduleName + ']',
-        useConsole;
-
-    function setup(debug) {
-        useConsole = debug;
-        userServer = false;
-    }
-
-    function initialize(serverUrl, serverMethod) {
-        serverLogger = serverUrl;
-        method = serverMethod;
-        request = new XMLHttpRequest();
-        userServer = true;
-    }
-
-    function error() {
-        var msg;
-        var i;
-        var args;
-        var params;
-        args = Array.prototype.slice.call(arguments);
-        args.splice(0, 0, modName);
-        if (useConsole) {
-            console.error.apply(console, args);
-        }
-        if (userServer) {
-            for (i = 0; i < arguments.length; i++) {
-                msg = msg + arguments[i];
+    if (this.gState) {
+        for (m in console) {
+            if (typeof console[m] === 'function') {
+                this.debug[m] = console[m].bind(window.console, klass.constructor.name + ': ');
             }
-            params = 'msg=' + modName + ' ERROR: ' + encodeURIComponent(msg);
-            request.open(method, serverLogger);
-            request.send(params);
         }
-    }
-
-    function warn() {
-        var msg;
-        var i;
-        var args;
-        var params;
-        args = Array.prototype.slice.call(arguments);
-        args.splice(0, 0, modName);
-        if (useConsole) {
-            console.warn.apply(console, args);
-        }
-        if (userServer) {
-            for (i = 0; i < arguments.length; i++) {
-                msg = msg + arguments[i];
+    } else {
+        for (m in console) {
+            if (typeof console[m] === 'function') {
+                this.debug[m] = function() {};
             }
-            params = 'msg=' + modName + ' WARN: ' + encodeURIComponent(msg);
-            request.open(method, serverLogger);
-            request.send(params);
         }
     }
-
-    function log() {
-        var msg;
-        var i;
-        var args;
-        var params;
-        args = Array.prototype.slice.call(arguments);
-        args.splice(0, 0, modName);
-        if (useConsole) {
-            console.log.apply(console, args);
-        }
-        if (userServer) {
-            for (i = 0; i < arguments.length; i++) {
-                msg = msg + arguments[i];
-            }
-            params = 'msg=' + modName + ' LOG: ' + encodeURIComponent(msg);
-            request.open(method, serverLogger);
-            request.send(params);
-        }
-    }
-    instance = {
-        initialize: initialize,
-        error: error,
-        warn: warn,
-        log: log
-    };
-
-    setup(true);
-
-    return instance;
+    return this.debug;
 };
 
 export default Logger;

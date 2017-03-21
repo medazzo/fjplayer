@@ -1,8 +1,8 @@
 /**
  * The entry point for the library FJplayer.JS
  */
-import Configuration from './Configuration';
-import Player from './Player';
+import Playlist from './playlist';
+import Player from './player';
 import { getVersionString } from './Version';
 
 // Shove both of these into the global scope
@@ -14,9 +14,9 @@ if (!fjplayer) {
     fjplayer = context.fjplayer = {};
 }
 
-fjplayer.Configuration = Configuration;
+fjplayer.Playlist = Playlist;
 fjplayer.Player = Player;
 fjplayer.Version = getVersionString();
 
 export default fjplayer;
-export { Configuration };
+export { Playlist };

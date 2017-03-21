@@ -1,0 +1,575 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    color: #333;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", "DejaVu Sans", Lucida, Arial, Helvetica, sans-serif;
+}
+
+.fjPlayer {
+    background-color: rgb(0, 0, 0);
+    text-align: center;
+    position: relative;
+    margin: 0px auto 0px auto;
+    display: inline-block
+}
+
+.divofvideo {
+    position: relative;
+    top: 0px;
+    left: 0px;
+}
+
+span.fa {
+    font-size: 1.2em;
+    color: rgb(255, 255, 255);
+}
+
+span.fa-2x {
+    font-size: 2.5em;
+    color: rgb(255, 255, 255);
+}
+
+span.fa-3x {
+    font-size: 4em;
+    color: rgb(255, 255, 255);
+}
+
+
+/* ---------------------- Thumbs style --------------------- */
+
+.thumbsBlockDiv {
+    position: absolute;
+    display: table;
+    visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    z-index: 2147483647;
+}
+
+.thumbsBlock {
+    display: table-cell;
+    border-radius: 2px;
+    vertical-align: top;
+    display: inline-block;
+}
+
+
+/*______________________________ CONTROLS __________________________*/
+
+.divcontrols {
+    margin: 0px auto 0px auto;
+    width: 100%;
+    height: 25px;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    visibility: visible;
+    bottom: 0px;
+    left: 0px;
+}
+
+.divcontrolsProgress {
+    margin: 0px auto 0px auto;
+    width: 100%;
+    height: 8px;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    visibility: visible;
+    bottom: 25px;
+    left: 0px;
+}
+
+.divconeontrolLeft {
+    float: left;
+}
+
+.divconeontrolRight {
+    float: right;
+}
+
+.divconeontrolIcon {
+    width: 30px;
+}
+
+.divconeontrolVBar {
+    width: 60px;
+}
+
+.divonecontrol {
+    height: 25px;
+    padding-top: 2px;
+    padding-right: 1px;
+}
+
+.divTitle,
+.divcontrols,
+.control,
+.divonecontrol {
+    display: inline-block;
+    vertical-align: top;
+}
+
+
+/* this rule is for IE7 and below only
+ put it in a Conditional comment without the !ie7 hack if you wish! */
+
+.divcontrols,
+.control,
+.divonecontrol {
+    display: inline !ie7;
+    margin: 0 2px !ie7;
+}
+
+.controlText {
+    padding-top: 2px;
+    font-size: 0.75em;
+    color: rgb(255, 255, 255);
+    white-space: nowrap;
+}
+
+.divInfo {
+    z-index: 2147483647;
+    width: 100%;
+    position: absolute;
+    border-radius: 5px;
+    bottom: 85%;
+    height: 1px;
+    width: 80%;
+    display: block;
+    position: absolute;
+    left: 10%;
+}
+
+.divBigPlayBtn {
+    z-index: 2147483647;
+    width: 100%;
+    position: absolute;
+    border-radius: 5px;
+    bottom: 60%;
+    height: 1px;
+    width: 80%;
+    display: block;
+    position: absolute;
+    left: 45%;
+}
+
+.divTspanitle {
+    position: relative;
+    visibility: visible;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: rgb(255, 255, 255);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 0px;
+    white-space: nowrap;
+    display: inline-block;
+    max-width: 766px;
+    font-size: 12px;
+    padding: 10px;
+    /* Add this option to set circular motifs */
+    /*border-radius:100px;*/
+}
+
+.divTspanitle:hover {
+    color: #ccc;
+    text-decoration: none;
+    background: #333;
+}
+
+.divTspanitleSeparator {
+    position: relative;
+    visibility: visible;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 0px;
+    white-space: nowrap;
+    display: inline-block;
+    max-width: 766px;
+    font-size: 12px;
+    padding: 10px;
+}
+
+
+/*_________________________  Progress  ________________________*/
+
+.progressbar {
+    position: relative;
+    visibility: visible;
+    width: 100%;
+    display: inline-block;
+    cursor: pointer;
+    height: 10px;
+    padding-top: 2px;
+    padding-right: 1px;
+    bottom: 10px;
+}
+
+.volumebar {
+    width: 100%;
+    height: 25px;
+}
+
+
+/*_________________________ RANGE ________________________*/
+
+input[type=range] {
+    -webkit-appearance: none;
+    border: none;
+    display: inline-block;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    vertical-align: top;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 300px;
+    height: 4px;
+    background: #ddd;
+    border: none;
+    top: -5px;
+    border-radius: 3px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 13px;
+    width: 12px;
+    border-radius: 50px;
+    background: #ff0000;
+    margin-top: -4px;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #ccc;
+    height: 6px;
+}
+
+input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 3px;
+    background: #ddd;
+    border: none;
+    border-radius: 3px;
+}
+
+input[type=range]::-moz-range-thumb {
+    border: none;
+    height: 13px;
+    width: 12px;
+    border-radius: 50px;
+    background: #ff0000;
+}
+
+input[type=range]:-moz-focusring {
+    outline: 1px solid transparent;
+    outline-offset: -1px;
+}
+
+white input[type=range]::-ms-track {
+    width: 300px;
+    height: 5px;
+    background: transparent;
+    border-color: transparent;
+    border-width: 6px 0;
+    color: transparent;
+}
+
+input[type=range]::-ms-fill-lower {
+    background: #ff0000;
+    border-radius: 10px;
+}
+
+input[type=range]::-ms-fill-upper {
+    background: #ddd;
+    border-radius: 10px;
+}
+
+input[type=range]::-ms-thumb {
+    border: none;
+    height: 13px;
+    width: 12px;
+    border-radius: 50px;
+    background: #ff0000;
+}
+
+input[type=range]:focus::-ms-fill-lower {
+    background: #ff0000;
+}
+
+input[type=range]:focus::-ms-fill-upper {
+    background: #ccc;
+}
+
+figure {
+    max-width: 1024px;
+    max-width: 64rem;
+    width: 100%;
+    height: auto;
+    margin: 0.25rem 0 0.25rem;
+}
+
+
+/*video {
+	width:100%;
+	height:auto;
+}*/
+
+
+/* -------------------  CC SUBTITLES --------------------- */
+
+.subtitles-menu-item-actif {
+    cursor: pointer;
+    text-align: left;
+    border-radius: 2px;
+    opacity: 1;
+}
+
+.subtitles-menu-item {
+    cursor: pointer;
+    text-align: left;
+    border-radius: 2px;
+    opacity: 0.5;
+}
+
+.fj-hide {
+    display: 'none';
+}
+
+.fj-show {
+    display: 'block';
+}
+
+
+/* animation */
+
+.m-fadeOut {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 500ms, opacity 500ms;
+}
+
+.m-fadeIn {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s linear 0s, opacity 500ms;
+}
+
+
+/* ---------------------- Menu style --------------------- */
+
+.settingMenuDiv {
+    position: absolute;
+    color: rgb(255, 255, 255);
+    background: rgba(10, 10, 10, 0.8);
+    float: left;
+    font-size: 12px;
+    /* visibility: hidden;*/
+    padding: 5px;
+    border-radius: 5px;
+    z-index: 2147483647;
+}
+
+ul {
+    padding: 2px;
+    margin: 2px;
+    list-style-type: none;
+}
+
+ul li {
+    padding-left: 5px;
+}
+
+.settingMenuSubMenuRight {
+    float: left;
+    color: #8F9B9E;
+    width: 100%;
+    border-left: 1px solid #2A2A2A;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+
+/* CUES and subtitles */
+
+::cue {
+    color: #ccc;
+}
+
+::cue(v[voice='Test']) {
+    color: #fff;
+    background: #0095dd;
+}
+
+
+/*__________________________________________ FJCONTROL ____________________________*/
+
+.fjcontrols-panel {
+    z-index: 2147483647;
+    position: absolute;
+    border-radius: 5px;
+    bottom: 3%;
+    opacity: 1;
+    background: rgba(10, 10, 10, 0.8);
+    width: 90%;
+    margin-left: 5%;
+    display: relative;
+    float: left;
+}
+
+.fjcontrols-panel-controls {
+    width: 100%;
+    position: relative;
+    margin-bottom: 2px;
+}
+
+.fjcontrols-control {
+    color: #8F9B9E;
+    position: relative;
+    float: left;
+    height: 100%;
+    /*border-right: 1px solid #2A2A2A;*/
+}
+
+.fjcontrols-control-right {
+    float: right;
+    /*  border-left: 1px solid #2A2A2A; */
+    border-right: none;
+}
+
+.fjcontrols-control-text {
+    font-size: 0.9em;
+    cursor: auto;
+    margin-top: 1%;
+    padding-left: 1%;
+    padding-right: 1%;
+    border-left: none;
+    border-right: none;
+}
+
+.fjcontrols-control-text-small {
+    font-size: 1em;
+    line-height: 2;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.hprogressbar {
+    width: 99%;
+    left: 0.5%;
+    text-align: center;
+    display: inline-block;
+}
+
+.vprogressbar {
+    display: none;
+    width: 15%;
+    background-color: #8F9B9E;
+    border-radius: 5px;
+    /* (height of inner div) / 2 + padding */
+    padding: 1px;
+    margin-left: 80%;
+    margin-right: 5%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    cursor: auto;
+}
+
+.vprogressbar>div {
+    background-color: #FF1515;
+    width: 80%;
+    /* Adjust with JavaScript */
+    height: 10px;
+    border-radius: 5px;
+}
+
+hr {
+    margin-top: 5px;
+    margin-bottom: -1px;
+    border-right: 0px none;
+    border-width: 1px 0px 0px;
+    border-style: solid none none;
+    opacity: 0.75;
+    border-color: #2A2A2A -moz-use-text-color -moz-use-text-color;
+}
+
+
+/*_________________________________________ VIDEO __________________________
+
+video::-webkit-media-controls-panel {
+    display: none !important;
+}
+
+::-webkit-media-controls {
+    display: none !important;
+}
+
+video::-webkit-media-controls {
+    display: none !important;
+}
+
+video::-webkit-media-controls-enclosure {
+    display: none !important;
+}
+
+.custom-video-controls {
+    z-index: 2147483647;
+}
+
+.divcontrols {
+    z-index: 2147483647;
+}_*/
+
+
+/*_________________________________ FULL SCREEN __________________________*/
+
+
+/* fullscreen */
+
+html:-ms-fullscreen {
+    width: 100%;
+}
+
+:-webkit-full-screen {
+    background-color: transparent;
+}
+
+
+/* hide controls on fullscreen with WebKit */
+
+figure[data-fullscreen=true] video::-webkit-media-controls {
+    display: none !important;
+}
+
+figure[data-fullscreen=true] {
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+figure[data-fullscreen=true] video {
+    height: 100%;
+}
+
+figure[data-fullscreen=true] .fjcontrols-control {
+    width: 5%;
+}
+
+figure[data-fullscreen=true] span.fa {
+    font-size: 2em;
+    margin-bottom: 5px;
+    color: rgb(255, 255, 255);
+}
