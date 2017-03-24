@@ -153,25 +153,25 @@
   * used to check if an item of overlay is correct
   */
  Playlist.prototype.checkOverlay = function(subItem) {
-     if (subItem[Const.FJCONFIG_OVER_DATA]) {
-         this.logger.log(' playlist Overlay data ',
-             subItem[Const.FJCONFIG_OVER_DATA]);
+     var val = subItem;
+     val = subItem[Const.FJCONFIG_OVER_DATA];
+     if (val !== null && val !== '') {
+         this.logger.log(' playlist Overlay data ', val);
      } else {
          this.logger.error('Empty Overlay data');
          return false;
      }
-     if (subItem[Const.FJCONFIG_OVER_URL]) {
-         this.logger.log(' playlist Overlay url ',
-             subItem[Const.FJCONFIG_OVER_URL]);
+     val = subItem[Const.FJCONFIG_OVER_URL];
+     if (val !== null && val !== '') {
+         this.logger.log(' playlist Overlay url ', subItem[Const.FJCONFIG_OVER_URL]);
      } else {
          this.logger.error('Empty Overlay url');
          return false;
      }
-     if (subItem[Const.FJCONFIG_OVER_DURATION]) {
-         if ((subItem[Const.FJCONFIG_OVER_DURATION] ===
-                 parseInt(subItem[Const.FJCONFIG_OVER_DURATION], 10))) {
-             this.logger.log(' playlist Overlay duration ',
-                 subItem[Const.FJCONFIG_OVER_DURATION]);
+     val = subItem[Const.FJCONFIG_OVER_DURATION];
+     if (val !== null && val !== '') {
+         if ((val === parseInt(val, 10))) {
+             this.logger.log(' integer playlist Overlay duration ', val);
          } else {
              this.logger.error('Empty Overlay duration is not integer !');
              return false;
@@ -180,11 +180,10 @@
          this.logger.error('Empty Overlay duration ');
          return false;
      }
-     if (subItem[Const.FJCONFIG_OVER_SHOW_AT]) {
-         if ((subItem[Const.FJCONFIG_OVER_SHOW_AT] ===
-                 parseInt(subItem[Const.FJCONFIG_OVER_SHOW_AT], 10))) {
-             this.logger.log(' playlist Overlay show at ',
-                 subItem[Const.FJCONFIG_OVER_SHOW_AT]);
+     val = subItem[Const.FJCONFIG_OVER_SHOW_AT];
+     if (val !== null && val !== '') {
+         if ((val === parseInt(val, 10))) {
+             this.logger.log(' integer playlist Overlay show at ', val);
          } else {
              this.logger.error('Empty Overlay show at is not integer !');
              return false;

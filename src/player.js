@@ -1,5 +1,7 @@
 import Logger from './Logger';
 import Playlist from './playlist';
+import AudsMenu from './AudsMenu';
+import SubsMenu from './SubsMenu';
 import * as Const from './constants';
 require('./player.css');
 require('font-awesome/css/font-awesome.css');
@@ -28,18 +30,16 @@ function Player(fjID, videoContainerId, playerexpandScreen) {
     this.fullScreenBtnId = 'fs' + this.id;
     this.expandBtnId = 'eb' + this.id;
     this.subtitlesBtnId = 'sb' + this.id;
-    this.languagesBtnId = 'lb' + this.id;
     this.thumbsDivId = 'td' + this.id;
     this.thumbsImgId = 'ti' + this.id;
     this.expandDivId = 'ed' + this.id;
-    this.languagesDivId = 'ld' + this.id;
+
+    this.extraDiv1Id = 'exd1' + this.id;
+    this.extraDiv2Id = 'exd2' + this.id;
+
     this.subsdMenuContainerDivId = 'smcd' + this.id;
-    this.subtitlesDivId = 'sd' + this.id;
-    this.subsMenuDivId = 'smmd' + this.id;
-    this.subsMenuListId = 'smml' + this.id;
     this.audMenuContainerDivId = 'amcd' + this.id;
-    this.audMenuDivId = 'ammd' + this.id;
-    this.audMenuListId = 'amml' + this.id;
+
     // prepare player
     if (!this.uidone) {
         this.setUi();
@@ -48,6 +48,9 @@ function Player(fjID, videoContainerId, playerexpandScreen) {
         // set setCallbacks
         this.setCallbacks();
     }
+    // create hidden menus
+    this.AudiosMenu = new AudsMenu(this.video, this.id, this.audMenuContainerDivId);
+    this.SubsMenu = new SubsMenu(this.video, this.id, this.subsdMenuContainerDivId);
 };
 // constantes member of class
 Player.prototype.playlistLoaded = false;
@@ -134,14 +137,10 @@ Player.prototype.setUi = function() {
         'fjcontrols-control-right clickable\">' +
         '<span id=\"' + this.expandBtnId + '\"  class=\"fa fa-expand\" title=\"Double player size\" ></span>' +
         '</div>' +
-        '<div id=\"' + this.subtitlesDivId + '\"  class=\"fjcontrols-control divconeontrolIcon ' +
-        'fjcontrols-control-right clickable\">' +
-        '<span id=\"' + this.subtitlesBtnId + '\"  class=\"fa fa-audio-description\" title=\"subtitles\" ></span>' +
-        '</div>' +
-        '<div id=\"' + this.languagesDivId + '\"  class=\"fjcontrols-control divconeontrolIcon ' +
-        'fjcontrols-control-right clickable\">' +
-        '<span id=\"' + this.languagesBtnId + '\"  class=\"fa fa-language\" title=\"audios\" ></span>' +
-        '</div>' +
+        '<div id=\"' + this.extraDiv1Id + '\"  class=\"fjcontrols-control divconeontrolIcon ' +
+        'fjcontrols-control-right clickable\"></div>' +
+        '<div id=\"' + this.extraDiv2Id + '\"  class=\"fjcontrols-control divconeontrolIcon ' +
+        'fjcontrols-control-right clickable\"></div>' +
         '</div>' +
         '<div class=\"thumbsBlockDiv\" id=\"' + this.thumbsDivId + '\" >' +
         '<span class=\"thumbsBlock\" id=\"' + this.thumbsImgId + '\" ></span>' +
@@ -161,7 +160,7 @@ Player.prototype.setUi = function() {
  * Set component of player UI
  */
 Player.prototype.setComponents = function() {
-    var item = null;
+    // var item = null;
     // Obtain handles to main elements
     this.video = document.getElementById(this.videoId);
     this.playpauseBtn = document.getElementById(this.playpauseBtnId);
@@ -191,12 +190,6 @@ Player.prototype.setComponents = function() {
     this.videoControls.style.display = 'none';
     // Hide the default controls
     this.video.controls = false;
-    // hide subs  and aud btns
-    item = document.getElementById(this.subtitlesDivId);
-    item.style.visibility = 'hidden';
-    item = document.getElementById(this.languagesDivId);
-    item.style.visibility = 'hidden';
-
     // Display the user defined video controls
     // this.videoControls.style.display = 'block';
     if (this.fullScreenOnStart === 'true') {
@@ -394,6 +387,9 @@ Player.prototype.OnvbClick = function(e, self) {
 Player.prototype.InitPlayer = function(self) {
     var i = 0;
     var track = null;
+    var item = null;
+    self.logger.warn(' Starting to initlize player ');
+
     // progress bar
     self.progressBar.max = Math.round(self.video.duration);
     self.progressBar.min = 0;
@@ -414,7 +410,6 @@ Player.prototype.InitPlayer = function(self) {
         track.kind = 'metadata';
         track.src = self.vttThumbs;
         self.logger.log(' Appending source thumbs to video', track);
-
         self.video.appendChild(track);
 
         self.progressBar.addEventListener('mousemove', function(e) {
@@ -426,13 +421,14 @@ Player.prototype.InitPlayer = function(self) {
         self.progressBar.addEventListener('mouseover', function() {
             self.showThumbs(self);
         });
+    } else {
+        self.logger.warn(' Thumbs was not found .');
     }
     // video tracks
     for (i = 0; i < self.video.textTracks.length; i++) {
         if (self.video.textTracks[i].kind === 'metadata') {
             self.thumbsTrackIndex = i;
             self.video.textTracks[i].mode = 'hidden'; // thanks Firefox
-            self.logger.log('metadata @ ', i, '/', self.video.textTracks.length, ' >>> ', self.video.textTracks[i]);
         } else if ((self.video.textTracks[i].kind === 'captions') ||
             (self.video.textTracks[i].kind === 'subtitles')) {
             self.containsSubs = true;
@@ -443,17 +439,29 @@ Player.prototype.InitPlayer = function(self) {
     // subs track
     if (self.subsJsObj) {
         for (i = 0; i < self.subsJsObj.length; i++) {
-            /* add thumbs */
+            item = self.subsJsObj[i];
             track = document.createElement('track');
             track.kind = 'subtitles';
-            track.src = self.subsJsObj[i].src;
-            track.srclang = self.subsJsObj[i].srclang;
-            track.label = self.subsJsObj[i].label;
-            self.logger.log(' Appending source thumbs to video', track);
+            track.src = item[Const.FJCONFIG_SUB_SRC];
+            track.srclang = item[Const.FJCONFIG_SUB_LANG];
+            track.label = item[Const.FJCONFIG_SUB_LABEL];
             self.video.appendChild(track);
         }
     }
-    // Init menus for subs and audio .. TODO
+    // Init menus for subs and audio
+    if ((!self.video.audioTracks) || (self.video.audioTracks.length <= 1)) {
+        // set audio to be in extra DIV 1
+        self.AudiosMenu.Setup(self.extraDiv1Id);
+        if (self.subsJsObj.length > 0) {
+            // set audio to be in extra DIV 2
+            self.SubsMenu.Setup(self.extraDiv2Id);
+        }
+    } else {
+        if (self.subsJsObj.length > 0) {
+            // set audio to be in extra DIV 1
+            self.SubsMenu.Setup(self.extraDiv1Id);
+        }
+    }
 };
 /**
  * Manage click for mute button
@@ -636,21 +644,27 @@ Player.prototype.playAt = function(index) {
     }
     /* Set UI */
     this.title.innerHTML = item[Const.FJCONFIG_TITLE];
-    /* Set Video */
+    // set poster
     if ((item[Const.FJCONFIG_POSTER] !== undefined) && (item[Const.FJCONFIG_POSTER] != null)) {
         this.video.setAttribute('poster', item[Const.FJCONFIG_POSTER]);
         this.poster = item[Const.FJCONFIG_POSTER];
+    }
+    // set thumbs
+    if ((item[Const.FJCONFIG_THUMBS] !== undefined) && (item[Const.FJCONFIG_THUMBS] != null)) {
+        this.vttThumbs = item[Const.FJCONFIG_THUMBS];
+    }
+    // Set sub, ads and overlays ..
+    if ((item[Const.FJCONFIG_SUBTITLES] !== undefined) && (item[Const.FJCONFIG_SUBTITLES] != null)) {
+        this.subsJsObj = item[Const.FJCONFIG_SUBTITLES];
     }
     if (item[Const.FJCONFIG_SRC] != null || item[Const.FJCONFIG_SRC] !== undefined) {
         source = document.createElement('source');
         source.src = item[Const.FJCONFIG_SRC];
         if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
-            // TODO
+            // TODO DASH
         }
         source.type = item[Const.FJCONFIG_TYPE]; // 'video/mp4';
-        this.logger.log(' Appending source to video', source);
         this.video.appendChild(source);
-
         // play
         this.BigPlayBtn.style.display = 'none';
         this.videoControls.style.display = 'block';

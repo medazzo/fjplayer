@@ -3,15 +3,14 @@ require('./player.css');
 /**
  *  Class player in whinch the player is implemented
  */
-function SubsMenu(video, SubsbuttonID, subsdMenuContainerDivId, subsMenuListId) {
+function SubsMenu(video, playerId, subsdMenuContainerDivId) {
     this.logger = new Logger(this);
     this.video = video;
-    this.SubsbuttonID = SubsbuttonID;
+    this.id = playerId;
+    this.subtitlesBtnId = 'sb' + this.id;;
+    this.subsMenuListId = 'smml' + this.id;
     this.subsdMenuContainerDivId = subsdMenuContainerDivId;
-    this.subsMenuListId = subsMenuListId;
     this.SubsExist = false;
-    this.subtitlesBtn = document.getElementById(this.SubsbuttonID);
-    this.Setup();
 };
 /**
  * cbx Subs Mgt
@@ -44,7 +43,7 @@ SubsMenu.prototype.activateSubs = function(self, item) {
             }
         }
     }
-    self.subsMenuDiv.style.display = 'none';
+    self.SubsbuttonDiv.style.display = 'none';
 };
 /**
  * Event CALLBACK ; called on menu Click
@@ -64,17 +63,60 @@ SubsMenu.prototype.onshowHideMenu = function(self, menuContainer, ev) {
 /**
  * Setting Subs menu and cbx
  */
-SubsMenu.prototype.Setup = function() {
+SubsMenu.prototype.Setup = function(SubsbuttonDivID) {
     var i = 0;
     var item = null;
-    var container = document.getElementById(this.subsdMenuContainerDivId);
     var self = this;
+    this.SubsExist = false;
+    this.subsMenuDiv = document.getElementById(this.subsdMenuContainerDivId);
+    // check if exist
+    for (i = 0; i < this.video.textTracks.length; i++) {
+        this.logger.info(' @ text track number  ', i, ' and it type is ',
+            this.video.textTracks[i].kind);
+        if ((this.video.textTracks[i].kind === 'captions') ||
+            (this.video.textTracks[i].kind === 'subtitles')) {
+            this.SubsExist = true;
+            break;
+        }
+    }
+    if (this.SubsExist === false) {
+        this.logger.log(' Subs Menu Not created !! ');
+        return;
+    }
+    // Setting inner of btn div
+    this.SubsbuttonDivID = SubsbuttonDivID;
+    this.SubsbuttonDiv = document.getElementById(this.SubsbuttonDivID);
+    this.SubsbuttonDiv.innerHTML = '<span id=\"' + this.subtitlesBtnId + '\"  ' +
+        'class=\"fa fa-audio-description\" title=\"subtitles\" ></span>';
+
+    this.subtitlesBtn = document.getElementById(this.subtitlesBtnId);
+    // video array
+    this.menuListSubs = document.getElementById(this.subsMenuListId);
+    // clear old
+    if (self.menuListSubs !== null) {
+        while (self.menuListSubs.firstChild) {
+            self.menuListSubs.removeChild(self.menuListSubs.firstChild);
+        }
+    }
+
+    // Add events for subtitles button
+    this.subtitlesBtn.addEventListener('click', function(ev) {
+        self.onshowHideMenu(self, self.subsMenuDiv, ev);
+    });
+
+    this.subsMenuDiv.className = 'settingMenuDiv';
+    this.subsMenuDiv.innerHTML =
+        '<div class=\"settingMenuSubMenuLeft\" >' +
+        '<ul class=\"subtitles-menu\" id=\"' + this.subsMenuListId + '\" >' +
+        '</ul>	' +
+        '</div>';
+    this.subsMenuDiv.style.display = 'none';
+    // this.subtitlesBtn.style.display = 'block';
     // video array
     this.menuListSubs = document.getElementById(this.subsMenuListId);
     for (i = 0; i < this.video.textTracks.length; i++) {
         if ((this.video.textTracks[i].kind === 'captions') ||
             (this.video.textTracks[i].kind === 'subtitles')) {
-            this.SubsExist = true;
             item = document.createElement('li');
             if (this.video.textTracks[i].mode === 'showing') {
                 item.className = 'subtitles-menu-item-actif';
@@ -90,21 +132,8 @@ SubsMenu.prototype.Setup = function() {
             this.logger.log('Setting Subs List @ ', i, ' item is ', item);
         }
     }
-    if (this.SubsExist === true) {
-        // Add events for subtitles button
-        this.subtitlesBtn.addEventListener('click', function(ev) {
-            self.onshowHideMenu(self, self.subsMenuDiv, ev);
-        });
+    this.logger.log(' Subs Menu  created !! ', this.menuListSubs);
 
-        container.className = 'settingMenuDiv';
-        container.innerHTML =
-            '<div class=\"settingMenuSubMenuLeft\" >' +
-            '<ul class=\"subtitles-menu\" id=\"' + this.subsMenuListId + '\" >' +
-            '</ul>	' +
-            '</div>';
-        container.style.display = 'none';
-        this.logger.log(' Subs Menu  created !! ', this.menuListSubs);
-    } else {
-        this.logger.log(' Subs Menu Not created !! ');
-    }
 };
+
+export default SubsMenu;
