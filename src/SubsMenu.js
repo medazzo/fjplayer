@@ -3,12 +3,11 @@ require('./player.css');
 /**
  *  Class player in whinch the player is implemented
  */
-function SubsMenu(video, playerId, subsdMenuContainerDivId) {
+function SubsMenu(video, subtitlesBtnId, subsdMenuContainerDivId) {
     this.logger = new Logger(this);
     this.video = video;
-    this.id = playerId;
-    this.subtitlesBtnId = 'sb' + this.id;;
-    this.subsMenuListId = 'smml' + this.id;
+    this.subtitlesBtnId = subtitlesBtnId;
+    this.subsMenuListId = 'smml' + subtitlesBtnId;
     this.subsdMenuContainerDivId = subsdMenuContainerDivId;
     this.SubsExist = false;
 };
@@ -43,7 +42,7 @@ SubsMenu.prototype.activateSubs = function(self, item) {
             }
         }
     }
-    self.SubsbuttonDiv.style.display = 'none';
+    // self.SubsbuttonDiv.style.display = 'none';
 };
 /**
  * Event CALLBACK ; called on menu Click
@@ -63,12 +62,13 @@ SubsMenu.prototype.onshowHideMenu = function(self, menuContainer, ev) {
 /**
  * Setting Subs menu and cbx
  */
-SubsMenu.prototype.Setup = function(SubsbuttonDivID) {
+SubsMenu.prototype.Setup = function() {
     var i = 0;
     var item = null;
     var self = this;
     this.SubsExist = false;
     this.subsMenuDiv = document.getElementById(this.subsdMenuContainerDivId);
+    this.subsMenuDiv.style.display = 'none';
     // check if exist
     for (i = 0; i < this.video.textTracks.length; i++) {
         this.logger.info(' @ text track number  ', i, ' and it type is ',
@@ -83,13 +83,9 @@ SubsMenu.prototype.Setup = function(SubsbuttonDivID) {
         this.logger.log(' Subs Menu Not created !! ');
         return;
     }
-    // Setting inner of btn div
-    this.SubsbuttonDivID = SubsbuttonDivID;
-    this.SubsbuttonDiv = document.getElementById(this.SubsbuttonDivID);
-    this.SubsbuttonDiv.innerHTML = '<span id=\"' + this.subtitlesBtnId + '\"  ' +
-        'class=\"fa fa-audio-description\" title=\"subtitles\" ></span>';
-
+    // Setting btn
     this.subtitlesBtn = document.getElementById(this.subtitlesBtnId);
+    this.logger.log(' etting the btn ', this.subtitlesBtn, ' from id ', this.subtitlesBtnId);
     // video array
     this.menuListSubs = document.getElementById(this.subsMenuListId);
     // clear old
@@ -110,7 +106,7 @@ SubsMenu.prototype.Setup = function(SubsbuttonDivID) {
         '<ul class=\"subtitles-menu\" id=\"' + this.subsMenuListId + '\" >' +
         '</ul>	' +
         '</div>';
-    this.subsMenuDiv.style.display = 'none';
+    // this.subsMenuDiv.style.display = 'none';
     // this.subtitlesBtn.style.display = 'block';
     // video array
     this.menuListSubs = document.getElementById(this.subsMenuListId);

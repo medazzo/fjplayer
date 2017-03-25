@@ -1,6 +1,6 @@
 import Logger from './Logger';
 import Playlist from './playlist';
-import AudsMenu from './AudsMenu';
+// import AudsMenu from './AudsMenu';
 import SubsMenu from './SubsMenu';
 import * as Const from './constants';
 require('./player.css');
@@ -28,14 +28,15 @@ function Player(fjID, videoContainerId, playerexpandScreen) {
     this.progressDivId = 'pd' + this.id;
     this.progressBarId = 'pb' + this.id;
     this.fullScreenBtnId = 'fs' + this.id;
-    this.expandBtnId = 'eb' + this.id;
+
+    this.subtitlesDivId = 'sd' + this.id;
     this.subtitlesBtnId = 'sb' + this.id;
+
     this.thumbsDivId = 'td' + this.id;
     this.thumbsImgId = 'ti' + this.id;
-    this.expandDivId = 'ed' + this.id;
 
-    this.extraDiv1Id = 'exd1' + this.id;
-    this.extraDiv2Id = 'exd2' + this.id;
+    this.expandDivId = 'ed' + this.id;
+    this.expandBtnId = 'eb' + this.id;
 
     this.subsdMenuContainerDivId = 'smcd' + this.id;
     this.audMenuContainerDivId = 'amcd' + this.id;
@@ -49,8 +50,8 @@ function Player(fjID, videoContainerId, playerexpandScreen) {
         this.setCallbacks();
     }
     // create hidden menus
-    this.AudiosMenu = new AudsMenu(this.video, this.id, this.audMenuContainerDivId);
-    this.SubsMenu = new SubsMenu(this.video, this.id, this.subsdMenuContainerDivId);
+    // this.AudiosMenu = new AudsMenu(this.video, this.id, this.audMenuContainerDivId);
+    this.SubsMenu = new SubsMenu(this.video, this.subtitlesBtnId, this.subsdMenuContainerDivId);
 };
 // constantes member of class
 Player.prototype.playlistLoaded = false;
@@ -137,10 +138,10 @@ Player.prototype.setUi = function() {
         'fjcontrols-control-right clickable\">' +
         '<span id=\"' + this.expandBtnId + '\"  class=\"fa fa-expand\" title=\"Double player size\" ></span>' +
         '</div>' +
-        '<div id=\"' + this.extraDiv1Id + '\"  class=\"fjcontrols-control divconeontrolIcon ' +
-        'fjcontrols-control-right clickable\"></div>' +
-        '<div id=\"' + this.extraDiv2Id + '\"  class=\"fjcontrols-control divconeontrolIcon ' +
-        'fjcontrols-control-right clickable\"></div>' +
+        '<div id=\"' + this.subtitlesDivId + '\"  class=\"fjcontrols-control divconeontrolIcon ' +
+        'fjcontrols-control-right clickable\">' +
+        '<span id=\"' + this.subtitlesBtnId + '\" class=\"fa fa-cc\"  title=\"subtitles\" ></span>' +
+        '</div>' +
         '</div>' +
         '<div class=\"thumbsBlockDiv\" id=\"' + this.thumbsDivId + '\" >' +
         '<span class=\"thumbsBlock\" id=\"' + this.thumbsImgId + '\" ></span>' +
@@ -177,21 +178,14 @@ Player.prototype.setComponents = function() {
     this.BigPlayBtn = document.getElementById(this.BigPlayBtnId);
 
     this.thumbsDiv = document.getElementById(this.thumbsDivId);
-    this.thumbsDiv.style.visibility = 'hidden';
     this.tumbsImg = document.getElementById(this.thumbsImgId);
     this.expandDiv = document.getElementById(this.expandDivId);
-    this.expandDiv.style.visibility = 'hidden';
-    this.audMenuDiv = document.getElementById(this.audMenuContainerDivId);
-    this.audMenuDiv.style.visibility = 'hidden';
-    this.subsMenuDiv = document.getElementById(this.subsdMenuContainerDivId);
-    this.subsMenuDiv.style.visibility = 'hidden';
 
     this.videoControls = document.getElementById(this.videoControlsId);
-    this.videoControls.style.display = 'none';
     // Hide the default controls
     this.video.controls = false;
     // Display the user defined video controls
-    // this.videoControls.style.display = 'block';
+    this.videoControls.style.display = 'block';
     if (this.fullScreenOnStart === 'true') {
         this.videoFigure.setAttribute('data-fullscreen', 'true');
     }
@@ -210,7 +204,9 @@ Player.prototype.setComponents = function() {
 Player.prototype.setCallbacks = function() {
     var self = this;
     // Big play btn
-    this.BigPlayBtn.addEventListener('click', Player.prototype.BigPlayBtnCbx);
+    this.BigPlayBtn.addEventListener('click', function(e) {
+        self.BigPlayBtnCbx(self);
+    });
 
     // video click
     this.video.addEventListener('click', function(e) {
@@ -231,6 +227,10 @@ Player.prototype.setCallbacks = function() {
     this.video.addEventListener('loadedmetadata', function(e) {
         self.InitPlayer(self);
     });
+    // event to catch start playing on video
+    this.video.addEventListener('playing', function(e) {
+        // todo self.StartPlayer(self);
+    });
     // Add events for play button
     this.playpauseBtn.addEventListener('click', function(e) {
         self.onplaypauseClick(self);
@@ -250,10 +250,6 @@ Player.prototype.setCallbacks = function() {
     // React to the user clicking within the progress bar
     this.progressBar.addEventListener('click', function(e) {
         self.onprogressClick(e, self);
-    });
-    // listen to mouse moving to hide or show panel
-    this.video.addEventListener('mousemove', function(e) {
-        self.magicMouse(self);
     });
 
     // Only add the events if addEventListener is supported
@@ -298,7 +294,7 @@ Player.prototype.duration = function(secDuration) {
     return (hours + ':' + minutes + ':' + seconds);
 };
 /* ****************** C A L L B A C K S * * * * F U N C T I O N S ****************** */
-Player.prototype.BigPlayBtnCbx = function(event) {
+Player.prototype.BigPlayBtnCbx = function(self, event) {
     self.BigPlayBtn.style.display = 'none';
     self.videoControls.style.display = 'block';
     self.onplaypauseClick(self);
@@ -449,19 +445,13 @@ Player.prototype.InitPlayer = function(self) {
         }
     }
     // Init menus for subs and audio
-    if ((!self.video.audioTracks) || (self.video.audioTracks.length <= 1)) {
-        // set audio to be in extra DIV 1
-        self.AudiosMenu.Setup(self.extraDiv1Id);
-        if (self.subsJsObj.length > 0) {
-            // set audio to be in extra DIV 2
-            self.SubsMenu.Setup(self.extraDiv2Id);
-        }
-    } else {
-        if (self.subsJsObj.length > 0) {
-            // set audio to be in extra DIV 1
-            self.SubsMenu.Setup(self.extraDiv1Id);
-        }
-    }
+    // self.AudiosMenu.Setup(self.extraDiv1Id);
+    self.SubsMenu.Setup();
+
+    // listen to mouse moving to hide or show panel
+    // this.video.addEventListener('mousemove', function(e) {
+    //     self.magicMouse(self);
+    // });
 };
 /**
  * Manage click for mute button
@@ -665,10 +655,7 @@ Player.prototype.playAt = function(index) {
         }
         source.type = item[Const.FJCONFIG_TYPE]; // 'video/mp4';
         this.video.appendChild(source);
-        // play
-        this.BigPlayBtn.style.display = 'none';
-        this.videoControls.style.display = 'block';
-        this.onplaypauseClick(this);
+        // done
         return true;
     }
     this.logger.error('src of item is not valid , at index ', index);
