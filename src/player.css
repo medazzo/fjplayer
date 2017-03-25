@@ -356,13 +356,12 @@ figure {
 .m-fadeOut {
     visibility: hidden;
     opacity: 0;
-    transition: visibility 0s linear 500ms, opacity 500ms;
+    transition: visibility 500ms, opacity 500ms;
 }
 
 .m-fadeIn {
     visibility: visible;
     opacity: 1;
-    transition: visibility 0s linear 0s, opacity 500ms;
 }
 
 

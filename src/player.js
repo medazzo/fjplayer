@@ -60,12 +60,7 @@ Player.prototype.fullScreenEnabled = !!(document.fullscreenEnabled || document.m
     document.createElement('video').webkitRequestFullScreen);
 Player.prototype.containsSubs = false;
 Player.prototype.timeout = null;
-Player.prototype.productionMode = false;
-if (Player.prototype.productionMode) {
-    Player.prototype.HideControlsTimeout = 4000;
-} else {
-    Player.prototype.HideControlsTimeout = 8000;
-}
+Player.prototype.HideControlsTimeout = 4000;
 Player.prototype.thumbsTrackIndex = -1;
 Player.prototype.isHidden = false;
 Player.prototype.Playerheight = 0;
@@ -91,6 +86,8 @@ Player.prototype.setUi = function() {
         '<video id=\"' + this.videoId + '\" class=\"divofVideo\" ';
     if (this.vwidth != null) {
         inHtml += 'width=\"' + this.vwidth + '\" ';
+    } else {
+        inHtml += 'width=\"100%\" ';
     }
     if (this.vwidth != null) {
         inHtml += 'height=\"' + this.vheight + '\" ';
@@ -173,7 +170,7 @@ Player.prototype.setComponents = function() {
     this.timer = document.getElementById(this.timerId);
     this.title = document.getElementById(this.titleId);
     this.logger.info(' here is the title ', this.title);
-    this.videoInfo = document.getElementById(this.videoInfoId);
+
     this.videoFigure = document.getElementById(this.videoFigureId);
     this.BigPlayBtn = document.getElementById(this.BigPlayBtnId);
 
@@ -182,10 +179,13 @@ Player.prototype.setComponents = function() {
     this.expandDiv = document.getElementById(this.expandDivId);
 
     this.videoControls = document.getElementById(this.videoControlsId);
+    this.videoInfo = document.getElementById(this.videoInfoId);
     // Hide the default controls
     this.video.controls = false;
     // Display the user defined video controls
-    this.videoControls.style.display = 'block';
+    this.videoControls.style.display = 'none';
+    this.videoInfo.style.display = 'block';
+
     if (this.fullScreenOnStart === 'true') {
         this.videoFigure.setAttribute('data-fullscreen', 'true');
     }
@@ -205,7 +205,7 @@ Player.prototype.setCallbacks = function() {
     var self = this;
     // Big play btn
     this.BigPlayBtn.addEventListener('click', function(e) {
-        self.BigPlayBtnCbx(self);
+        self.onplaypauseClick(self);
     });
 
     // video click
@@ -294,11 +294,6 @@ Player.prototype.duration = function(secDuration) {
     return (hours + ':' + minutes + ':' + seconds);
 };
 /* ****************** C A L L B A C K S * * * * F U N C T I O N S ****************** */
-Player.prototype.BigPlayBtnCbx = function(self, event) {
-    self.BigPlayBtn.style.display = 'none';
-    self.videoControls.style.display = 'block';
-    self.onplaypauseClick(self);
-};
 /**
  * Event CALLBACK ; called on play pause button Click
  */
@@ -308,10 +303,18 @@ Player.prototype.onplaypauseClick = function(self) {
     }
     if (self.video.paused || self.video.ended) {
         self.playpauseBtn.className = 'fa  fa-pause';
+        // hide big play button
+        self.BigPlayBtn.style.display = 'none';
+        // show video controls
+        self.videoControls.style.display = 'block';
         self.video.play();
     } else {
         self.playpauseBtn.className = 'fa  fa-play';
         self.video.pause();
+        // show big play button
+        self.BigPlayBtn.style.display = 'block';
+        // hide video controls
+        self.videoControls.style.display = 'none';
     }
     self.logger.log('clicking pause/play !');
 };
@@ -446,12 +449,14 @@ Player.prototype.InitPlayer = function(self) {
     }
     // Init menus for subs and audio
     // self.AudiosMenu.Setup(self.extraDiv1Id);
-    self.SubsMenu.Setup();
+    if (self.SubsMenu.Setup() !== true) {
+        document.getElementById(self.subtitlesBtnId).style.display = 'none';
+    }
 
     // listen to mouse moving to hide or show panel
-    // this.video.addEventListener('mousemove', function(e) {
-    //     self.magicMouse(self);
-    // });
+    this.video.addEventListener('mousemove', function(e) {
+        self.magicMouse(self);
+    });
 };
 /**
  * Manage click for mute button
@@ -497,27 +502,26 @@ Player.prototype.onprogressClick = function(e, self) {
  *  hide or show panel controls
  */
 Player.prototype.HideControlsCursor = function(self, hideit) {
+    self.logger.warn(' Check for Hide , is started ?', self.isStarted, ' HideIt ?', hideit);
     if (self.isStarted) {
         if (hideit) {
-            self.videoControls.classList.toggle('m-fadeOut');
-            self.videoInfo.classList.toggle('m-fadeOut');
-            document.body.style.cursor = 'none';
-            self.audMenuDiv.style.display = 'none';
-            self.subsMenuDiv.style.display = 'none';
+            self.videoControls.classList.remove('m-fadeIn');
+            self.videoInfo.classList.remove('m-fadeIn');
+            self.videoControls.classList.add('m-fadeOut');
+            self.videoInfo.classList.add('m-fadeOut');
+            self.video.style.cursor = 'none';
+            this.SubsMenu.HideMenu();
             self.isHidden = true;
         } else {
-            self.videoControls.classList.toggle('m-fadeIn');
-            self.videoInfo.classList.toggle('m-fadeIn');
-            document.body.style.cursor = 'auto';
+            // delete fadeOut
+            self.videoControls.classList.remove('m-fadeOut');
+            self.videoInfo.classList.remove('m-fadeOut');
+            // add fadein
+            self.videoControls.classList.add('m-fadeIn');
+            self.videoInfo.classList.add('m-fadeIn');
+            self.video.style.cursor = 'auto';
             self.isHidden = false;
         }
-    } else {
-        self.videoControls.classList.toggle('m-fadeOut');
-        self.videoInfo.classList.toggle('m-fadeOut');
-        document.body.style.cursor = 'none';
-        self.audMenuDiv.style.display = 'none';
-        self.subsMenuDiv.style.display = 'none';
-        self.isHidden = true;
     }
 };
 /**
@@ -531,7 +535,7 @@ Player.prototype.magicMouse = function(self) {
         if (!self.isHidden) {
             self.HideControlsCursor(self, true);
         }
-    }, this.HideControlsTimeout);
+    }, self.HideControlsTimeout);
     if (self.isHidden) {
         self.HideControlsCursor(self, false);
     }

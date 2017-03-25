@@ -42,7 +42,7 @@ SubsMenu.prototype.activateSubs = function(self, item) {
             }
         }
     }
-    // self.SubsbuttonDiv.style.display = 'none';
+    self.subsMenuDiv.style.display = 'none';
 };
 /**
  * Event CALLBACK ; called on menu Click
@@ -58,6 +58,14 @@ SubsMenu.prototype.onshowHideMenu = function(self, menuContainer, ev) {
         menuContainer.style.display = 'none';
     }
     self.logger.log(' Showing or Hiding an menu ', menuContainer);
+};
+/**
+ * Used to Hide menu
+ */
+SubsMenu.prototype.HideMenu = function() {
+    if (this.SubsExist === true) {
+        this.subsMenuDiv.style.display = 'none';
+    }
 };
 /**
  * Setting Subs menu and cbx
@@ -81,7 +89,7 @@ SubsMenu.prototype.Setup = function() {
     }
     if (this.SubsExist === false) {
         this.logger.log(' Subs Menu Not created !! ');
-        return;
+        return this.SubsExist;
     }
     // Setting btn
     this.subtitlesBtn = document.getElementById(this.subtitlesBtnId);
@@ -129,7 +137,7 @@ SubsMenu.prototype.Setup = function() {
         }
     }
     this.logger.log(' Subs Menu  created !! ', this.menuListSubs);
-
+    return this.SubsExist;
 };
 
 export default SubsMenu;
