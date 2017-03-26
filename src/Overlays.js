@@ -1,68 +1,70 @@
 import Logger from './Logger';
 require('./player.css');
+import * as Const from './constants';
 /**
- *  Class player in whinch the player is implemented
+ * @module Overlay
+ * @description The Overlays is that manage overlays of a video :
+ *     it manage overlays for information ads , media or ovelay on ads video.
  */
-function Overlays(video, overlayasList, OverlayDivId) {
+function Overlays(video, OverlayDiv) {
     this.logger = new Logger(this);
     this.video = video;
-    this.overlayasList = overlayasList;
-    this.OverlayDivId = OverlayDivId;
-    this.OverlayDiv = document.getElementById(this.OverlayDivId);
+    this.overlays = null;
+    this.settled = false;
+    this.OverlayDiv = OverlayDiv;
 };
 /**
- *
+ * Function to be called from event 'timeupdate' from video
+ * called to check if overlays has to Start
  */
-Overlays.prototype.Checks = function() {
-
-};
-
-/**
- * Setting Subs menu and cbx
- */
-Overlays.prototype.Start = function() {
+Overlays.prototype.CheckOverlays = function(self, secondes) {
     var i = 0;
     var item = null;
-    var btn = null;
-    var self = this;
-    var container = document.getElementById(self.audMenuContainerDivId);
-    container.style.display = 'none';
-    if ((!self.video.audioTracks) || (self.video.audioTracks.length <= 1)) {
-        // hide audio button
-        btn = document.getElementById(self.languagesDivId);
-        btn.style.display = 'none';
-        self.logger.log(' Audio Menu not created !');
+    self.logger.info(secondes, 'is settled ', self.settled, ' cheking overlays .. ', self.overlaysObjs);
+    if (self.settled !== true) {
         return;
     }
-    // Add events for languages button
-    self.Audsbutton.addEventListener('click', function(ev) {
-        self.onshowHideMenu(self, self.audMenuDiv, ev);
-    });
-
-    container.className = 'settingMenuDiv';
-    container.innerHTML =
-        '<div class=\"settingMenuSubMenuLeft\" >' +
-        '<ul class=\"subtitles-menu\" id=\"' + self.audMenuListId + '\" >' +
-        '</ul>	' +
-        '</div>';
-
-    // video array
-    self.menuListAud = document.getElementById(self.audMenuListId);
-    if (self.video.audioTracks) {
-        for (i = 0; i < self.video.audioTracks.length; i++) {
-            item = document.createElement('li');
-            if (self.video.audioTracks[i].enabled) {
-                item.className = 'subtitles-menu-item-actif';
-            } else {
-                item.className = 'subtitles-menu-item';
+    for (; i < self.overlaysObjs.length; i++) {
+        item = self.overlaysObjs[i];
+        self.logger.info(' cheking overlay of url ', item[Const.FJCONFIG_OVER_URL]);
+        if (Math.round(secondes) === item[Const.FJCONFIG_OVER_SHOW_AT]) {
+            if (self.overlays[i].started === false) {
+                self.StartOverlay(i);
             }
-            item.innerHTML = self.video.audioTracks[i].language + '::' + self.video.audioTracks[i].label;
-            self.menuListAud.appendChild(item);
-            item.addEventListener('click', function(ev) {
-                self.activateAudio(self, this);
-            });
         }
     }
-    self.logger.log(' Audio Menu created !', self.video.audioTracks.length, '! ', self.menuListAud);
 };
+Overlays.prototype.Setup = function(overlays) {
+    this.overlays = overlays;
+    this.settled = true;
+    this.logger.info('Setup is settled ', self.settled, ' cheking overlays .. ', self.overlaysObjs);
+};
+Overlays.prototype.clicked = function() {
+    window.open(this.overlay[Const.FJCONFIG_OVER_URL], '_blank');
+};
+
+Overlays.prototype.StopOverlay = function() {
+    // hide the div
+    // hide the overlay , empty the div
+    this.divElemnt.style.visibility = 'hidden';
+    while (this.divElemnt.hasChildNodes()) {
+        this.divElemnt.removeChild(this.divElemnt.firstChild);
+    }
+    this.divElemnt.innerHTML = '';
+    this.finished = true;
+};
+
+/**
+ * Used to show an Overlay
+ */
+Overlays.prototype.StartOverlay = function(index) {
+    self.overlays[index].started = true;
+    this.endTimer = setTimeout(this.StopOverlay, this.overlay[Const.FJCONFIG_OVER_DURATION] * 1000);
+    // show the div
+    this.divElemnt.style.cursor = 'pointer';
+    this.divElemnt.onclick = function() { this.clicked(); };
+    this.divElemnt.style.visibility = 'visible';
+    this.logger.log('you overlay  just and will end in ' + this.overlay[Const.FJCONFIG_OVER_DURATION] + ' sec');
+};
+
 export default Overlays;
