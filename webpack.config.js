@@ -4,7 +4,7 @@ var path = require('path');
 var env = require('yargs').argv.mode;
 
 
-var libraryName = 'Fjplayer';
+var libraryName = 'fjplayer';
 
 var plugins = [],
     outputFile;

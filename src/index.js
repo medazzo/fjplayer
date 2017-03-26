@@ -20,3 +20,4 @@ fjplayer.Version = getVersionString();
 
 export default fjplayer;
 export { Playlist };
+export { Player };
