@@ -1,5 +1,6 @@
 import Logger from './Logger';
 import Playlist from './playlist';
+import Thumbs from './Thumbs';
 // import AudsMenu from './AudsMenu';
 import SubsMenu from './SubsMenu';
 import * as Const from './constants';
@@ -60,7 +61,7 @@ Player.prototype.fullScreenEnabled = !!(document.fullscreenEnabled || document.m
     document.createElement('video').webkitRequestFullScreen);
 Player.prototype.containsSubs = false;
 Player.prototype.timeout = null;
-Player.prototype.HideControlsTimeout = 4000;
+Player.prototype.HideControlsTimeout = 3000;
 Player.prototype.thumbsTrackIndex = -1;
 Player.prototype.isHidden = false;
 Player.prototype.Playerheight = 0;
@@ -175,7 +176,7 @@ Player.prototype.setComponents = function() {
     this.BigPlayBtn = document.getElementById(this.BigPlayBtnId);
 
     this.thumbsDiv = document.getElementById(this.thumbsDivId);
-    this.tumbsImg = document.getElementById(this.thumbsImgId);
+    this.thumbsImg = document.getElementById(this.thumbsImgId);
     this.expandDiv = document.getElementById(this.expandDivId);
 
     this.videoControls = document.getElementById(this.videoControlsId);
@@ -185,6 +186,8 @@ Player.prototype.setComponents = function() {
     // Display the user defined video controls
     this.videoControls.style.display = 'none';
     this.videoInfo.style.display = 'block';
+    // Create Thumbs Object
+    this.ThumbsMgr = new Thumbs(this.video, this.thumbsImg, this.thumbsDiv, this.progressBar);
 
     if (this.fullScreenOnStart === 'true') {
         this.videoFigure.setAttribute('data-fullscreen', 'true');
@@ -410,20 +413,11 @@ Player.prototype.InitPlayer = function(self) {
         track.src = self.vttThumbs;
         self.logger.log(' Appending source thumbs to video', track);
         self.video.appendChild(track);
-
-        self.progressBar.addEventListener('mousemove', function(e) {
-            self.renderThumbs(e, self);
-        });
-        self.progressBar.addEventListener('mouseleave', function() {
-            self.hideThumbs(self);
-        });
-        self.progressBar.addEventListener('mouseover', function() {
-            self.showThumbs(self);
-        });
     } else {
         self.logger.warn(' Thumbs was not found .');
     }
     // video tracks
+    self.thumbsTrackIndex = -1;
     for (i = 0; i < self.video.textTracks.length; i++) {
         if (self.video.textTracks[i].kind === 'metadata') {
             self.thumbsTrackIndex = i;
@@ -446,6 +440,10 @@ Player.prototype.InitPlayer = function(self) {
             track.label = item[Const.FJCONFIG_SUB_LABEL];
             self.video.appendChild(track);
         }
+    }
+    // Init Thumbs
+    if (this.ThumbsMgr.Setup(self.thumbsTrackIndex) !== true) {
+        this.logger.info('No thumbs will be displayed !');
     }
     // Init menus for subs and audio
     // self.AudiosMenu.Setup(self.extraDiv1Id);
@@ -539,60 +537,6 @@ Player.prototype.magicMouse = function(self) {
     if (self.isHidden) {
         self.HideControlsCursor(self, false);
     }
-};
-/**
- * Thumbs event Mgt
- */
-Player.prototype.showThumbs = function(self) {
-    self.thumbsDiv.style.visibility = 'visible';
-};
-/**
- * Thumbs event Mgt
- */
-Player.prototype.hideThumbs = function(self) {
-    self.thumbsDiv.style.visibility = 'hidden';
-};
-/**
- * Thumbs event Mgt
- */
-Player.prototype.renderThumbs = function(event, self) {
-    // first we convert from mouse to time position ..
-    var c, i, url, xywh;
-    var rect = self.progressBar.getBoundingClientRect();
-    var p = (event.pageX - rect.left) * (self.video.duration / (rect.right - rect.left));
-    if ((p > (self.video.duration + 2)) || (p < 0)) {
-        // some error ?
-        self.logger.error(' Position is bigger than duration >>', p, self.video.duration);
-        return;
-    }
-    // update ui ..then we find the matching cue..
-    c = self.video.textTracks[self.thumbsTrackIndex].cues;
-    if (c == null) {
-        // track eleme,t is not supprted : Firefox
-        self.logger.error(' cues is null @ ', self.thumbsTrackIndex, ' not supported , Firefox ?');
-        self.logger.error(' Cues are null @', self.video);
-        return;
-    }
-
-    for (i = 0; i < c.length; i++) {
-        if (c[i].startTime <= p && c[i].endTime > p) {
-            break;
-        };
-    }
-    // ..next we unravel the JPG url and fragment query..
-    xywh = c[i].text.substr(c[i].text.indexOf('=') + 1).split(',');
-
-    // ..and last we style the thumbnail overlay
-    url = 'url(' + c[i].text.split('#')[0] + ')';
-    // self.logger.log(' fetching thum from ', url);
-    self.tumbsImg.style.backgroundImage = url;
-    self.tumbsImg.style.backgroundPosition = '-' + xywh[0] + 'px -' + xywh[1] + 'px';
-    self.tumbsImg.style.width = xywh[2] + 'px';
-    self.tumbsImg.style.height = xywh[3] + 'px';
-
-    self.thumbsDiv.style.left = event.pageX - xywh[2] / 2 + 'px';
-    self.thumbsDiv.style.top = rect.top - (xywh[3] * 1.5) + 'px';
-    self.thumbsDiv.style.width = xywh[2] + 'px';
 };
 /* ****************** P U B L I C S * * * * F U N C T I O N S ****************** */
 /**
