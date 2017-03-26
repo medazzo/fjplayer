@@ -54,7 +54,7 @@ function Player(fjID, videoContainerId, playerexpandScreen) {
     // create hidden menus
     // this.AudiosMenu = new AudsMenu(this.video, this.id, this.audMenuContainerDivId);
     this.SubsMenu = new SubsMenu(this.video, this.subtitlesBtnId, this.subsdMenuContainerDivId);
-    this.OverlaysMgr = new Overlays(self.video, document.getElementById(self.overlayContainerDivId));
+    this.OverlaysMgr = new Overlays(this.video, document.getElementById(this.overlayContainerDivId));
 };
 // constantes member of class
 Player.prototype.playlistLoaded = false;
@@ -157,7 +157,7 @@ Player.prototype.setUi = function() {
         '</div>' +
         '<div id=\"' + this.audMenuContainerDivId + '\" ></div>' +
         '<div id=\"' + this.subsdMenuContainerDivId + '\" ></div>' +
-        '<div id=\"' + this.overlayContainerDivId + '\" ></div>' +
+        '<div id=\"' + this.overlayContainerDivId + '\" class=\"settingMenuSubMenuLeft\" ></div>' +
         '</div>' +
         '</figure>';
     this.logger.info(' container if of the player ', this.videoContainerId);

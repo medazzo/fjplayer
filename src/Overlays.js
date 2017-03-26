@@ -20,51 +20,65 @@ function Overlays(video, OverlayDiv) {
 Overlays.prototype.CheckOverlays = function(self, secondes) {
     var i = 0;
     var item = null;
-    self.logger.info(secondes, 'is settled ', self.settled, ' cheking overlays .. ', self.overlaysObjs);
+    var show = 0;
     if (self.settled !== true) {
         return;
     }
-    for (; i < self.overlaysObjs.length; i++) {
-        item = self.overlaysObjs[i];
-        self.logger.info(' cheking overlay of url ', item[Const.FJCONFIG_OVER_URL]);
-        if (Math.round(secondes) === item[Const.FJCONFIG_OVER_SHOW_AT]) {
+    for (i = 0; i < self.overlays.length; i++) {
+        item = self.overlays[i];
+        show = parseInt(item[Const.FJCONFIG_OVER_SHOW_AT], 10);
+        if (secondes === show) {
+            self.logger.info(i, ' starting overlay .. ');
             if (self.overlays[i].started === false) {
+                self.logger.info(i, ' starting a new  overlay .. ');
                 self.StartOverlay(i);
+            } else {
+                self.logger.info(i, ' already started ', item[Const.FJCONFIG_OVER_URL],
+                    ' @@ ', item[Const.FJCONFIG_OVER_SHOW_AT]);
             }
         }
     }
 };
 Overlays.prototype.Setup = function(overlays) {
+    var i = 0;
     this.overlays = overlays;
     this.settled = true;
-    this.logger.info('Setup is settled ', self.settled, ' cheking overlays .. ', self.overlaysObjs);
+    for (i = 0; i < this.overlays.length; i++) {
+        this.overlays[i].started = false;
+    }
+    this.logger.info('Setup is settled ', this.settled, ' cheking overlays .. ', this.overlays);
 };
-Overlays.prototype.clicked = function() {
-    window.open(this.overlay[Const.FJCONFIG_OVER_URL], '_blank');
+Overlays.prototype.clicked = function(self, index) {
+    var item = self.overlays[index];
+    window.open(item[Const.FJCONFIG_OVER_URL], '_blank');
 };
 
-Overlays.prototype.StopOverlay = function() {
+Overlays.prototype.StopOverlay = function(self) {
     // hide the div
+    this.logger.log('you overlay  is now stopped ');
     // hide the overlay , empty the div
-    this.divElemnt.style.visibility = 'hidden';
-    while (this.divElemnt.hasChildNodes()) {
-        this.divElemnt.removeChild(this.divElemnt.firstChild);
+    while (self.OverlayDiv.hasChildNodes()) {
+        self.OverlayDiv.removeChild(self.OverlayDiv.firstChild);
     }
-    this.divElemnt.innerHTML = '';
-    this.finished = true;
+    self.OverlayDiv.innerHTML = '';
+    self.OverlayDiv.style.display = 'none';
 };
 
 /**
  * Used to show an Overlay
  */
 Overlays.prototype.StartOverlay = function(index) {
-    self.overlays[index].started = true;
-    this.endTimer = setTimeout(this.StopOverlay, this.overlay[Const.FJCONFIG_OVER_DURATION] * 1000);
+    var self = this;
+    var item = self.overlays[index];
+    this.overlays[index].started = true;
+    this.overlays[index].endTimer =
+        setTimeout(function() { self.StopOverlay(self); }, item[Const.FJCONFIG_OVER_DURATION] * 1000);
     // show the div
-    this.divElemnt.style.cursor = 'pointer';
-    this.divElemnt.onclick = function() { this.clicked(); };
-    this.divElemnt.style.visibility = 'visible';
-    this.logger.log('you overlay  just and will end in ' + this.overlay[Const.FJCONFIG_OVER_DURATION] + ' sec');
+    this.OverlayDiv.innerHTML = '<p>' + item[Const.FJCONFIG_OVER_DATA] + '</p>';
+    this.OverlayDiv.style.cursor = 'pointer';
+    this.OverlayDiv.addEventListener('click', function() { self.clicked(self, index); });
+    this.OverlayDiv.style.display = 'block';
+    this.logger.log('you overlay  just and will end in ' + item[Const.FJCONFIG_OVER_DURATION] + ' sec');
 };
 
 export default Overlays;
