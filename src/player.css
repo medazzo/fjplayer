@@ -413,6 +413,77 @@ ul li {
 }
 
 
+/* OVERLAYS */
+
+.fjOvcontainer {
+    width: 100%;
+    /*can be in percentage also.*/
+    height: auto;
+    margin: 0 auto;
+    padding: 0px;
+    position: relative;
+}
+
+.over-HL {
+    position: relative;
+    width: 70%;
+    height: auto;
+    background: #f2f2f2;
+    position: fixed;
+    margin: 10px;
+    height: 70px;
+    margin-left: 50%;
+    border: 0px solid #d6d6d6;
+    border-radius: 5px;
+    z-index: 2147483647;
+}
+
+.over-HC {
+    background: #f2f2f2;
+    position: fixed;
+    margin: 10px;
+    height: 70px;
+    margin-left: 50%;
+    border: 0px solid #d6d6d6;
+}
+
+.over-HR {
+    background: #f2f2f2;
+    position: fixed;
+    margin: 10px;
+    height: 70px;
+    margin-left: 50%;
+    border: 0px solid #d6d6d6;
+}
+
+.over-LR {
+    background: #f2f2f2;
+    position: fixed;
+    margin: 10px;
+    height: 70px;
+    margin-left: 50%;
+    border: 0px solid #d6d6d6;
+}
+
+.over-LC {
+    background: #f2f2f2;
+    position: fixed;
+    margin: 10px;
+    height: 70px;
+    margin-left: 50%;
+    border: 0px solid #d6d6d6;
+}
+
+.over-LL {
+    background: #f2f2f2;
+    position: fixed;
+    margin: 10px;
+    height: 70px;
+    margin-left: 50%;
+    border: 0px solid #d6d6d6;
+}
+
+
 /*__________________________________________ FJCONTROL ____________________________*/
 
 .fjcontrols-panel {

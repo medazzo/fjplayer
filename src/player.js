@@ -39,7 +39,7 @@ function Player(fjID, videoContainerId, playerexpandScreen) {
     this.expandDivId = 'ed' + this.id;
     this.expandBtnId = 'eb' + this.id;
 
-    this.overlayContainerDivId = 'ovcd' + this.id;
+    this.overlaysContainerDivId = 'ovscd' + this.id;
     this.subsdMenuContainerDivId = 'smcd' + this.id;
     this.audMenuContainerDivId = 'amcd' + this.id;
 
@@ -54,7 +54,7 @@ function Player(fjID, videoContainerId, playerexpandScreen) {
     // create hidden menus
     // this.AudiosMenu = new AudsMenu(this.video, this.id, this.audMenuContainerDivId);
     this.SubsMenu = new SubsMenu(this.video, this.subtitlesBtnId, this.subsdMenuContainerDivId);
-    this.OverlaysMgr = new Overlays(this.video, document.getElementById(this.overlayContainerDivId));
+    this.OverlaysMgr = new Overlays(this.video, document.getElementById(this.overlaysContainerDivId));
 };
 // constantes member of class
 Player.prototype.playlistLoaded = false;
@@ -94,7 +94,7 @@ Player.prototype.setUi = function() {
         return;
     }
     inHtml =
-        '<figure id=\"' + this.videoFigureId + '\" data-fullscreen=\"' + this.fullScreenOnStart + '\">' +
+        '<figure id=\"' + this.videoFigureId + '\" class=\"fjOvcontainer\" data-fullscreen=\"' + this.fullScreenOnStart + '\">' +
         '<video id=\"' + this.videoId + '\" class=\"divofVideo\" ';
     if (this.vwidth != null) {
         inHtml += 'width=\"' + this.vwidth + '\" ';
@@ -157,7 +157,7 @@ Player.prototype.setUi = function() {
         '</div>' +
         '<div id=\"' + this.audMenuContainerDivId + '\" ></div>' +
         '<div id=\"' + this.subsdMenuContainerDivId + '\" ></div>' +
-        '<div id=\"' + this.overlayContainerDivId + '\" class=\"settingMenuSubMenuLeft\" ></div>' +
+        '<div id=\"' + this.overlaysContainerDivId + '\"  ></div>' +
         '</div>' +
         '</figure>';
     this.logger.info(' container if of the player ', this.videoContainerId);

@@ -31,7 +31,8 @@ Overlays.prototype.CheckOverlays = function(self, secondes) {
             self.logger.info(i, ' starting overlay .. ');
             if (self.overlays[i].started === false) {
                 self.logger.info(i, ' starting a new  overlay .. ');
-                self.StartOverlay(i);
+                self.overlays[i].started = true;
+                self.StartOverlay(self, i);
             } else {
                 self.logger.info(i, ' already started ', item[Const.FJCONFIG_OVER_URL],
                     ' @@ ', item[Const.FJCONFIG_OVER_SHOW_AT]);
@@ -53,9 +54,16 @@ Overlays.prototype.clicked = function(self, index) {
     window.open(item[Const.FJCONFIG_OVER_URL], '_blank');
 };
 
-Overlays.prototype.StopOverlay = function(self) {
+Overlays.prototype.StopOverlay = function(self, index) {
+    var el = self.OverlayDiv;
+    var elClone = null;
     // hide the div
-    this.logger.log('you overlay  is now stopped ');
+    this.logger.warn(index, 'you overlay  is now stopped ', self.overlays[index].handler);
+    // remove the click event
+    el = self.OverlayDiv;
+    elClone = el.cloneNode(true);
+    el.parentNode.replaceChild(elClone, el);
+    self.OverlayDiv = elClone;
     // hide the overlay , empty the div
     while (self.OverlayDiv.hasChildNodes()) {
         self.OverlayDiv.removeChild(self.OverlayDiv.firstChild);
@@ -67,18 +75,27 @@ Overlays.prototype.StopOverlay = function(self) {
 /**
  * Used to show an Overlay
  */
-Overlays.prototype.StartOverlay = function(index) {
-    var self = this;
+Overlays.prototype.StartOverlay = function(self, index) {
+    var url = null;
     var item = self.overlays[index];
-    this.overlays[index].started = true;
-    this.overlays[index].endTimer =
-        setTimeout(function() { self.StopOverlay(self); }, item[Const.FJCONFIG_OVER_DURATION] * 1000);
-    // show the div
-    this.OverlayDiv.innerHTML = '<p>' + item[Const.FJCONFIG_OVER_DATA] + '</p>';
-    this.OverlayDiv.style.cursor = 'pointer';
+    self.overlays[index].started = true;
+    self.overlays[index].endTimer =
+        setTimeout(function() { self.StopOverlay(self, index); }, item[Const.FJCONFIG_OVER_DURATION] * 1000);
+    // empty the div && show the div
+    while (self.OverlayDiv.hasChildNodes()) {
+        self.OverlayDiv.removeChild(self.OverlayDiv.firstChild);
+    }
+    self.OverlayDiv.classList.add('.settingMenuDiv');
+    // over-HL');
+    self.OverlayDiv.innerHTML = '<p>' + item[Const.FJCONFIG_OVER_DATA] + '</p>';
+    self.OverlayDiv.style.cursor = 'pointer';
+    self.OverlayDiv.style.display = 'block';
+    // add click
+    url = item[Const.FJCONFIG_OVER_URL];
+    self.logger.info('Setting click on overlay going to  ', url);
     this.OverlayDiv.addEventListener('click', function() { self.clicked(self, index); });
-    this.OverlayDiv.style.display = 'block';
-    this.logger.log('you overlay  just and will end in ' + item[Const.FJCONFIG_OVER_DURATION] + ' sec');
+    self.logger.log(index, 'you overlay just started and will end in ' +
+        item[Const.FJCONFIG_OVER_DURATION] + ' sec', self.overlays[index].handler);
 };
 
 export default Overlays;

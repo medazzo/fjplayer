@@ -21,6 +21,11 @@ export const FJCONFIG_DRM = 'FJDrm';
 export const FJCONFIG_SUB_LABEL = 'FJSubLabel';
 export const FJCONFIG_SUB_SRC = 'FJSubSrc';
 export const FJCONFIG_SUB_LANG = 'FJSubLang';
+export const FJCONFIG_OVER_POS = 'FJOverPos';
+/* could be :
+ HR: Hight Right , HC: hight Center, HL: Hight Left or
+ LR: Low Right , LC: Low Center, LL: Low Left
+*/
 export const FJCONFIG_OVER_DATA = 'FJOverData';
 export const FJCONFIG_OVER_URL = 'FJOverUrl';
 export const FJCONFIG_OVER_DURATION = 'FJOverDuration';
