@@ -63,7 +63,7 @@ Player.prototype.fullScreenEnabled = !!(document.fullscreenEnabled || document.m
     document.createElement('video').webkitRequestFullScreen);
 Player.prototype.containsSubs = false;
 Player.prototype.timeout = null;
-Player.prototype.HideControlsTimeout = 3000;
+Player.prototype.HideControlsTimeout = 10000;
 Player.prototype.thumbsTrackIndex = -1;
 Player.prototype.isHidden = false;
 Player.prototype.Playerheight = 0;
@@ -131,12 +131,12 @@ Player.prototype.setUi = function() {
         '<div  class=\"fjcontrols-control divconeontrolIcon divconeontrolLeft clickable\">' +
         '<span id=\"' + this.muteBtnId + '\" title=\"volume-full\" class=\"fa fa-volume-up\"></span>' +
         '</div>' +
-        '<div class=\"fjcontrols-control\">' +
+        '<div class=\"fjcontrols-control fjcontrols-control-left\">' +
         '<div class=\"volumebar\" id=\"' + this.volumeDivId + '\">' +
         '<input  class=\"clickable\"  id=\"' + this.volumeBarId + '\" type=\"range\" />' +
         '</div>' +
         '</div>' +
-        '<div class=\"fjcontrols-control\">' +
+        '<div class=\"fjcontrols-control  fjcontrols-control-left \">' +
         '<div id=\"' + this.timerId + '\" class=\"fjcontrols-control fjcontrols-control-text\">' +
         '<span>0:00:00</span><span>/</span><span>0:00:00</span>' +
         '</div>' +
@@ -384,6 +384,7 @@ Player.prototype.handleFullscreen = function(self) {
  * Event CALLBACK ; called on volume Bar Click
  */
 Player.prototype.OnvbClick = function(e, self) {
+    var val = 0;
     var pos = self.volumeBar.value / 100;
     self.logger.log(' volume from ', self.video.volume, ' to ', pos);
     if (pos > 0.6) {
@@ -394,6 +395,11 @@ Player.prototype.OnvbClick = function(e, self) {
         self.muteBtn.className = 'fa fa-volume-off';
     }
     self.video.volume = pos;
+    val = (self.volumeBar.value - self.volumeBar.min) / (self.volumeBar.max - self.volumeBar.min);
+    self.volumeBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
+        'color-stop(' + val + ', #FF0000), ' +
+        'color-stop(' + val + ', #8F9B9E)' +
+        ')';
     self.logger.log(' new volume is ', pos);
 };
 /**
@@ -415,6 +421,10 @@ Player.prototype.InitPlayer = function(self) {
     self.volumeBar.step = 1;
     self.volumeBar.max = 100;
     self.volumeBar.value = 100;
+    self.volumeBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
+        'color-stop(1, #FF0000), ' +
+        'color-stop(1, #8F9B9E)' +
+        ')';
     // timer
     self.timer.innerHTML = ' <span>' + self.duration(self.video.currentTime) +
         '</span><span>/</span><span>' + self.duration(self.video.duration) + '</span>';
@@ -473,6 +483,7 @@ Player.prototype.InitPlayer = function(self) {
  * Manage click for mute button
  */
 Player.prototype.onmuteClick = function(self) {
+    var val = 0;
     self.video.muted = !self.video.muted;
     if (self.video.muted) {
         self.muteBtn.className = 'fa fa-volume-off';
@@ -484,16 +495,30 @@ Player.prototype.onmuteClick = function(self) {
         self.volumeBar.value = self.video.volume * 100;
         self.muteBtn.className = 'fa fa-volume-down';
     }
+
+    val = (self.volumeBar.value - self.volumeBar.min) / (self.volumeBar.max - self.volumeBar.min);
+    self.volumeBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
+        'color-stop(' + val + ', #FF0000), ' +
+        'color-stop(' + val + ', #8F9B9E)' +
+        ')';
 };
 /**
  *  As the video is playing, update the progress bar
  */
 Player.prototype.onvideoTimeupdate = function(self) {
+    var val = 0.0;
     // For mobile browsers, ensure that the progress element's max attribute is set
     if (self.progressBar.max !== self.video.duration) {
         self.progressBar.max = self.video.duration;
     }
+    // set progress
     self.progressBar.value = self.video.currentTime;
+    val = (self.progressBar.value - self.progressBar.min) / (self.progressBar.max - self.progressBar.min);
+    self.progressBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
+        'color-stop(' + val + ', #FF0000), ' +
+        'color-stop(' + val + ', #8F9B9E)' +
+        ')';
+    // set timer
     self.timer.innerHTML = ' <span>' + self.duration(self.video.currentTime) +
         '</span><span>/</span><span>' + self.duration(self.video.duration) + '</span>';
 };
@@ -501,6 +526,7 @@ Player.prototype.onvideoTimeupdate = function(self) {
  *  React to the user clicking within the progress bar
  */
 Player.prototype.onprogressClick = function(e, self) {
+    var val = 0;
     var p = Math.round(self.progressBar.value);
     if (self.progressBar.max !== self.video.duration) {
         self.progressBar.max = self.video.duration;
@@ -508,6 +534,11 @@ Player.prototype.onprogressClick = function(e, self) {
     self.logger.log(' Seeking from ', self.video.currentTime, ':: ', self.video.duration, 'to ', p, ' sec');
     // change current time
     self.video.currentTime = p;
+    val = (self.progressBar.value - self.progressBar.min) / (self.progressBar.max - self.progressBar.min);
+    self.progressBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
+        'color-stop(' + val + ', #FF0000), ' +
+        'color-stop(' + val + ', #8F9B9E)' +
+        ')';
 };
 /**
  *  hide or show panel controls
