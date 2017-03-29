@@ -85,8 +85,7 @@ Overlays.prototype.StartOverlay = function(self, index) {
     while (self.OverlayDiv.hasChildNodes()) {
         self.OverlayDiv.removeChild(self.OverlayDiv.firstChild);
     }
-    self.OverlayDiv.classList.add('.settingMenuDiv');
-    // over-HL');
+    self.OverlayDiv.classList.add('over-HL');
     self.OverlayDiv.innerHTML = '<p>' + item[Const.FJCONFIG_OVER_DATA] + '</p>';
     self.OverlayDiv.style.cursor = 'pointer';
     self.OverlayDiv.style.display = 'block';

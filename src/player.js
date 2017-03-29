@@ -94,7 +94,8 @@ Player.prototype.setUi = function() {
         return;
     }
     inHtml =
-        '<figure id=\"' + this.videoFigureId + '\" class=\"fjOvcontainer\" data-fullscreen=\"' + this.fullScreenOnStart + '\">' +
+        '<figure id=\"' + this.videoFigureId + '\" class=\"\" ' +
+        'data-fullscreen=\"' + this.fullScreenOnStart + '\">' +
         '<video id=\"' + this.videoId + '\" class=\"divofVideo\" ';
     if (this.vwidth != null) {
         inHtml += 'width=\"' + this.vwidth + '\" ';
@@ -158,7 +159,6 @@ Player.prototype.setUi = function() {
         '<div id=\"' + this.audMenuContainerDivId + '\" ></div>' +
         '<div id=\"' + this.subsdMenuContainerDivId + '\" ></div>' +
         '<div id=\"' + this.overlaysContainerDivId + '\"  ></div>' +
-        '</div>' +
         '</figure>';
     this.logger.info(' container if of the player ', this.videoContainerId);
     this.videoContainer = document.getElementById(this.videoContainerId);

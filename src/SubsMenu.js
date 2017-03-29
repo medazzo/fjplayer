@@ -114,8 +114,6 @@ SubsMenu.prototype.Setup = function() {
         '<ul class=\"subtitles-menu\" id=\"' + this.subsMenuListId + '\" >' +
         '</ul>	' +
         '</div>';
-    // this.subsMenuDiv.style.display = 'none';
-    // this.subtitlesBtn.style.display = 'block';
     // video array
     this.menuListSubs = document.getElementById(this.subsMenuListId);
     for (i = 0; i < this.video.textTracks.length; i++) {
