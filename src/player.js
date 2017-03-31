@@ -108,27 +108,27 @@ Player.prototype.setUi = function() {
     inHtml += '     >' +
         '</video>' +
         '<div class=\"divInfo\" id=\"' + this.videoInfoId + '\">' +
-        '<span class=\" clickable divTspanitle divconeontrolLeft fa fa-arrow-left\"> </span>' +
+        '<span class=\" divIconBtn divconeontrolLeft fa fa-arrow-left\"> </span>' +
         '<p class=\" divTspanitleSeparator divconeontrolLeft \"> </p>' +
-        '<div id=\"' + this.titleId + '\" class=\"fjcontrols-control-text clickable ' +
-        'divTspanitle divconeontrolLeft\"> </div>' +
-        '<span class=\" clickable divTspanitle divconeontrolRight fa fa-share-alt \"> </span>' +
+        '<div id=\"' + this.titleId + '\" class=\"fjcontrols-control-text  ' +
+        ' divconeontrolLeft\"> </div>' +
+        '<span class=\" divIconBtn divconeontrolRight fa fa-share-alt \"> </span>' +
         '<p class=\" divTspanitleSeparator divconeontrolRight \"> </p>' +
-        '<span class=\" clickable divTspanitle divconeontrolRight  fa  fa-download \"> </span>' +
+        '<span class=\" divIconBtn divconeontrolRight  fa  fa-download \"> </span>' +
         '</div>' +
         '<div class=\"divBigPlayBtn\" id=\"' + this.BigPlayBtnId + '\">' +
-        '<span class=\" clickable divTspanitle  divconeontrolLeft fa fa-3x fa-play \"> </span>' +
+        '<span class=\" divIconBtn  divconeontrolLeft fa fa-3x fa-play \"> </span>' +
         '</div>' +
         '<div class=\"fjcontrols-panel\" id=\"' + this.videoControlsId + '\">' +
         '<div class=\"fjcontrols-panel-controls\">' +
         '<div class=\"hprogressbar\" id=\"' + this.progressDivId + '\">' +
-        '<input class=\"clickable\" id=\"' + this.progressBarId + '\" type=\"range\"  />' +
+        '<input id=\"' + this.progressBarId + '\" type=\"range\"  />' +
         '</div>' +
         '</div>' +
-        '<div class=\"fjcontrols-control divconeontrolIcon divconeontrolLeft clickable \">' +
+        '<div class=\"fjcontrols-control divIconBtn divconeontrolIcon divconeontrolLeft clickable \">' +
         '<span id=\"' + this.playpauseBtnId + '\"  class=\"fa fa-play\" title=\"Play\" ></span>' +
         '</div>' +
-        '<div  class=\"fjcontrols-control divconeontrolIcon divconeontrolLeft clickable\">' +
+        '<div  class=\"fjcontrols-control divconeontrolIcon divIconBtn divconeontrolLeft clickable\">' +
         '<span id=\"' + this.muteBtnId + '\" title=\"volume-full\" class=\"fa fa-volume-up\"></span>' +
         '</div>' +
         '<div class=\"fjcontrols-control fjcontrols-control-left\">' +
@@ -141,14 +141,14 @@ Player.prototype.setUi = function() {
         '<span>0:00:00</span><span>/</span><span>0:00:00</span>' +
         '</div>' +
         '</div>' +
-        '<div class=\"fjcontrols-control divconeontrolIcon fjcontrols-control-right clickable\">' +
+        '<div class=\"fjcontrols-control divIconBtn divconeontrolIcon fjcontrols-control-right clickable\">' +
         '<span  id=\"' + this.fullScreenBtnId + '\"  title=\"Fullscreen\" class=\"fa fa-arrows-alt\" ></span>' +
         '</div>' +
-        '<div id=\"' + this.expandDivId + '\" class=\"fjcontrols-control divconeontrolIcon ' +
+        '<div id=\"' + this.expandDivId + '\" class=\"fjcontrols-control divIconBtn divconeontrolIcon ' +
         'fjcontrols-control-right clickable\">' +
         '<span id=\"' + this.expandBtnId + '\"  class=\"fa fa-expand\" title=\"Double player size\" ></span>' +
         '</div>' +
-        '<div id=\"' + this.subtitlesDivId + '\"  class=\"fjcontrols-control divconeontrolIcon ' +
+        '<div id=\"' + this.subtitlesDivId + '\"  class=\"fjcontrols-control divIconBtn divconeontrolIcon ' +
         'fjcontrols-control-right clickable\">' +
         '<span id=\"' + this.subtitlesBtnId + '\" class=\"fa fa-cc\"  title=\"subtitles\" ></span>' +
         '</div>' +
