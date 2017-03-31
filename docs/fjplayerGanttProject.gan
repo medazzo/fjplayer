@@ -35,9 +35,23 @@
             <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
         </taskproperties>
         <task id="0" name="overlays" color="#999999" meeting="false" start="2017-04-01" duration="4" complete="0" expand="true">
+            <notes><![CDATA[make the  overlays independansts , every one is in a new div that can be positionned on : 
+----------------------
+| HL | HC | HR |
+----------------------
+| LL  | LC | LR  |
+----------------------
+
+when finished th overlays div will be removed .
+
+
+ * add exit btn to overlay , and user option  to exit or not on  finish Time
+ * add skip btn to overlay , this btn is enabled on ads video only to permiet user to skyp the ads; it's not a user options [may be considered to be interval to ads object ]..]]></notes>
             <depend id="1" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="1" name="ads" color="#ff3333" meeting="false" start="2017-04-08" duration="5" complete="0" expand="true">
+            <notes><![CDATA[to implemt class ads , that is a part of item struct,
+will be played in regard to option preroll, midroll  and seconde position? with skip overlay or not ]]></notes>
             <depend id="4" type="2" difference="0" hardness="Strong"/>
             <depend id="26" type="2" difference="0" hardness="Strong"/>
         </task>
