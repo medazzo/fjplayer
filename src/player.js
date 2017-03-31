@@ -331,6 +331,7 @@ Player.prototype.onplaypauseClick = function(self) {
         self.BigPlayBtn.style.display = 'block';
         // hide video controls
         self.videoControls.style.display = 'none';
+        self.SubsMenu.HideMenu();
     }
     self.logger.log('clicking pause/play !');
 };
