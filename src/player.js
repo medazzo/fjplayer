@@ -93,31 +93,33 @@ Player.prototype.setUi = function() {
     if (this.uidone) {
         return;
     }
+
+    if (this.vwidth === null) {
+        this.vwidth = '640px';
+    }
+    if (this.vheight === null) {
+        this.vheight = '480px';
+    }
+
     inHtml =
-        '<figure id=\"' + this.videoFigureId + '\" class=\"\" ' +
+        '<figure id=\"' + this.videoFigureId + '\" class=\"fjfigure\" ' +
         'data-fullscreen=\"' + this.fullScreenOnStart + '\">' +
         '<video id=\"' + this.videoId + '\" class=\"divofVideo\" ';
-    if (this.vwidth != null) {
-        inHtml += 'width=\"' + this.vwidth + '\" ';
-    } else {
-        inHtml += 'width=\"100%\" ';
-    }
-    if (this.vwidth != null) {
-        inHtml += 'height=\"' + this.vheight + '\" ';
-    }
+    inHtml += 'width=\"' + this.vwidth + '\" ';
+    inHtml += 'height=\"' + this.vheight + '\" ';
     inHtml += '     >' +
         '</video>' +
         '<div class=\"divInfo\" id=\"' + this.videoInfoId + '\">' +
-        '<span class=\" divIconBtn divconeontrolLeft fa fa-arrow-left\"> </span>' +
+        '<span class=\" divIconBtn divconeontrolLeft fa  fa-arrow-left\"> </span>' +
         '<p class=\" divTspanitleSeparator divconeontrolLeft \"> </p>' +
-        '<div id=\"' + this.titleId + '\" class=\"fjcontrols-control-text  ' +
+        '<div id=\"' + this.titleId + '\" class=\"fjcontrols-control-text divIconBtn ' +
         ' divconeontrolLeft\"> </div>' +
-        '<span class=\" divIconBtn divconeontrolRight fa fa-share-alt \"> </span>' +
+        '<span class=\" divIconBtn divconeontrolRight fa  fa-share-alt \"> </span>' +
         '<p class=\" divTspanitleSeparator divconeontrolRight \"> </p>' +
-        '<span class=\" divIconBtn divconeontrolRight  fa  fa-download \"> </span>' +
+        '<span class=\" divIconBtn divconeontrolRight  fa fa-download \"> </span>' +
         '</div>' +
         '<div class=\"divBigPlayBtn\" id=\"' + this.BigPlayBtnId + '\">' +
-        '<span class=\" divIconBtn  divconeontrolLeft fa fa-3x fa-play \"> </span>' +
+        '<span class=\" divIconBtn  divconeontrolLeft fa  fa-play \"> </span>' +
         '</div>' +
         '<div class=\"fjcontrols-panel\" id=\"' + this.videoControlsId + '\">' +
         '<div class=\"fjcontrols-panel-controls\">' +
@@ -162,7 +164,7 @@ Player.prototype.setUi = function() {
         '</figure>';
     this.logger.info(' container if of the player ', this.videoContainerId);
     this.videoContainer = document.getElementById(this.videoContainerId);
-    this.videoContainer.className = ' fjPlayer ';
+    this.videoContainer.classList.add('fjPlayer');
     this.videoContainer.innerHTML = inHtml;
     this.logger.log(' UI is created !! ', this.videoContainer);
     this.uidone = true;
@@ -180,6 +182,7 @@ Player.prototype.setComponents = function() {
     this.progressDiv = document.getElementById(this.progressDivId);
     this.progressBar = document.getElementById(this.progressBarId);
     this.fullScreenBtn = document.getElementById(this.fullScreenBtnId);
+    this.expandBtn = document.getElementById(this.expandBtnId);
     this.timer = document.getElementById(this.timerId);
     this.title = document.getElementById(this.titleId);
     this.logger.info(' here is the title ', this.title);
@@ -207,10 +210,6 @@ Player.prototype.setComponents = function() {
     // If the browser doesn't support the Fulscreen API then hide the fullscreen button
     if (!this.fullScreenEnabled) {
         this.fullScreenBtn.style.display = 'none';
-    }
-    // set expand
-    if (!this.expandScreen) {
-        this.expandDiv.style.display = 'none';
     }
 };
 /**
@@ -257,6 +256,10 @@ Player.prototype.setCallbacks = function() {
     // add event for fullscreen
     this.fullScreenBtn.addEventListener('click', function(e) {
         self.handleFullscreen(self);
+    });
+    // add event for expand
+    this.expandBtn.addEventListener('click', function(e) {
+        self.handleExpand(self);
     });
     // As the video is playing, update the progress bar
     this.video.addEventListener('timeupdate', function(e) {
@@ -347,6 +350,23 @@ Player.prototype.setFullscreenData = function(state) {
 Player.prototype.isFullScreen = function() {
     return !!(document.fullScreen || document.webkitIsFullScreen ||
         document.mozFullScreen || document.msFullscreenElement || document.fullscreenElement);
+};
+/**
+ * Fonction to expand btn
+ */
+Player.prototype.handleExpand = function(self) {
+    if (self.isFullScreen()) {
+        self.handleFullscreen(self);
+    }
+    if (self.expandScreen === true) {
+        self.videoContainer.classList.remove('fjPlayerExpand');
+        self.expandBtn.className = 'fa fa-expand';
+        self.expandScreen = false;
+    } else {
+        self.videoContainer.classList.add('fjPlayerExpand');
+        self.expandBtn.className = 'fa fa-compress';
+        self.expandScreen = true;
+    }
 };
 /**
  * Fonction Called to handle Fullscreen click on button

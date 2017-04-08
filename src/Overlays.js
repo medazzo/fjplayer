@@ -12,6 +12,8 @@ function Overlays(video, OverlayDiv) {
     this.overlays = null;
     this.settled = false;
     this.OverlayDiv = OverlayDiv;
+    this.OverlayInnerDiv = null;
+    this.OverlayClosingDiv = null;
 };
 /**
  * Function to be called from event 'timeupdate' from video
@@ -85,14 +87,32 @@ Overlays.prototype.StartOverlay = function(self, index) {
     while (self.OverlayDiv.hasChildNodes()) {
         self.OverlayDiv.removeChild(self.OverlayDiv.firstChild);
     }
-    self.OverlayDiv.classList.add('over-HL');
-    self.OverlayDiv.innerHTML = '<p>' + item[Const.FJCONFIG_OVER_DATA] + '</p>';
-    self.OverlayDiv.style.cursor = 'pointer';
+    self.OverlayInnerDiv = document.createElement('div');
+    self.OverlayClosingDiv = document.createElement('div');
+    self.OverlayInnerDiv.innerHTML = '<p>' + item[Const.FJCONFIG_OVER_DATA] + '</p>';
+    self.OverlayInnerDiv.style.cursor = 'pointer';
+
+    self.OverlayClosingDiv.innerHTML = '<img ' +
+        'onmouseover=\"this.style.opacity = 1;\" onmouseout=\"this.style.opacity = 0.5\"' +
+        'style=\"cursor: pointer; opacity: 0.5; float: right; margin: -5px -10px 10px 10px;\"' +
+        'src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAAGXRFWHRTb2Z0' +
+        'd2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAARpJREFUeNqslD+qhDAQxscQrDyBxatELN4RLCyFbcSzeC67RUsLCw+w' +
+        'hYXVFiIiHsBC335igtkX9x87EJL5ZuZHTDIay7IQLM/z39v0Q6/bNQzDCxYGIDvA+Q3ISYCMLMs+ASggvgd4nvdydV3XtNWdm' +
+        'C6haZp1PNOEcR2gLEvpO46j1Q4hjDHq+176KOy6TtkB4q7rKhDlczjnFMexkrQHQEcceYeQaZpoHMc10bZtJRE+dMSRdwgRoKqqq' +
+        'G1bRYcP/R6ghWD7RVFI37IsuYauu6F/EBykMLybJEmU97OPH16x7/vypqIoomEY1jlNU5rnWcYfQgTINE15iBhBEGjPQ0CuWw+ct6f8du+w' +
+        'rZ0FiD7q4m/8T/4EGAD07J0fnXOouAAAAABJRU5ErkJggg==\">' +
+        '</img>' +
+        '<div style=\"color: rgb(119, 255, 119); font-size: 0.95em; float: ' +
+        'right; text-decoration: none;\">Annonce</div>';
+    this.OverlayClosingDiv.addEventListener('click', function() { self.StopOverlay(self, index); });
+    self.OverlayDiv.appendChild(self.OverlayClosingDiv);
+    self.OverlayDiv.appendChild(self.OverlayInnerDiv);
     self.OverlayDiv.style.display = 'block';
+    self.OverlayDiv.classList.add('over-HL');
     // add click
     url = item[Const.FJCONFIG_OVER_URL];
     self.logger.info('Setting click on overlay going to  ', url);
-    this.OverlayDiv.addEventListener('click', function() { self.clicked(self, index); });
+    this.OverlayInnerDiv.addEventListener('click', function() { self.clicked(self, index); });
     self.logger.log(index, 'you overlay just started and will end in ' +
         item[Const.FJCONFIG_OVER_DURATION] + ' sec', self.overlays[index].handler);
 };
