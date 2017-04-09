@@ -45,37 +45,52 @@
             'FJType': 'video/mp4',
             'FJPoster': 'img/poster.jpg',
             'FJThumbs': 'vtt/thumbs.vtt',
+            'FJAds': [{
+                'FJSrc': 'videos/ikea-twins.mp4',
+                'FJType': 'video/mp4',
+                'FJClass': 'preroll ',
+                'FjCanEscape': true
+            }, {
+                'FJType': 'video/mp4',
+                'FJSrc': 'videos/Best_Ad_2014.mp4',
+                'FJClass': 'midroll',
+                'FjCanEscape': false,
+                'FJOverShowAt': 150
+            }, {
+                'FJType': 'video/mp4',
+                'FJSrc': 'videos/berber_pub.mp4',
+                'FJClass': 'midroll ',
+                'FjCanEscape': true,
+                'FJShowAt': 520
+            }],
             'FJSubtitles': [{
-                'FJSubLabel': 'English',
-                'FJSubLang': 'en',
-                'FJSubSrc': 'vtt/sintel-en.vtt'
+                'FJLabel': 'English',
+                'FJLang': 'en',
+                'FJSrc': 'vtt/sintel-en.vtt'
             }, {
-                'FJSubLabel': 'Espagnol',
-                'FJSubLang': 'es',
-                'FJSubSrc': 'vtt/sintel-es.vtt'
+                'FJLabel': 'Espagnol',
+                'FJLang': 'es',
+                'FJSrc': 'vtt/sintel-es.vtt'
             }, {
-                'FJSubLabel': 'Deutsch',
-                'FJSubLang': 'de',
-                'FJSubSrc': 'vtt/sintel-de.vtt'
+                'FJLabel': 'Deutsch',
+                'FJLang': 'de',
+                'FJSrc': 'vtt/sintel-de.vtt'
             }],
             'FJOverlays': [{
-                'FJOverPos': 'HR',
-                'FJOverData': 'Hello there Overlay 1',
-                'FJOverUrl': 'http://www.facebook.com',
-                'FJOverDuration': 4,
-                'FJOverShowAt': 8
+                'FJData': 'Hello there Overlay 1',
+                'FJUrl': 'http://www.facebook.com',
+                'FJDuration': 4,
+                'FJShowAt': 8
             }, {
-                'FJOverPos': 'LC',
-                'FJOverData': 'Hello Overlay 2 ',
-                'FJOverUrl': 'http://www.yahoo.com',
-                'FJOverDuration': 11,
+                'FJData': 'Hello Overlay 2 ',
+                'FJUrl': 'http://www.yahoo.com',
+                'FJDuration': 11,
                 'FJOverShowAt': 30
             }, {
-                'FJOverPos': 'LL',
-                'FJOverData': '<div  style="cursor:pointer;"> <img src="img/2000px-Smiley.svg.png" alt="Smiley face" width="20" height="30"> Your ADS is Here; clikc to go to google !</div> ',
-                'FJOverShowAt': 15,
-                'FJOverDuration': 10,
-                'FJOverUrl': 'http://www.google.com'
+                'FJData': '<div  style="cursor:pointer;"> <img src="img/2000px-Smiley.svg.png" alt="Smiley face" width="20" height="30"> Your ADS is Here; clikc to go to google !</div> ',
+                'FJShowAt': 15,
+                'FJDuration': 10,
+                'FJUrl': 'http://www.google.com'
             }]
         };
         window.onload = function() {
