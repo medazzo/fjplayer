@@ -28,7 +28,7 @@ Overlays.prototype.CheckOverlays = function(self, secondes) {
     }
     for (i = 0; i < self.overlays.length; i++) {
         item = self.overlays[i];
-        show = parseInt(item[Const.FJCONFIG_OVER_SHOW_AT], 10);
+        show = parseInt(item[Const.FJCONFIG_SHOW_AT], 10);
         if (secondes === show) {
             self.logger.info(i, ' starting overlay .. ');
             if (self.overlays[i].started === false) {
@@ -36,8 +36,8 @@ Overlays.prototype.CheckOverlays = function(self, secondes) {
                 self.overlays[i].started = true;
                 self.StartOverlay(self, i);
             } else {
-                self.logger.info(i, ' already started ', item[Const.FJCONFIG_OVER_URL],
-                    ' @@ ', item[Const.FJCONFIG_OVER_SHOW_AT]);
+                self.logger.info(i, ' already started ', item[Const.FJCONFIG_URL],
+                    ' @@ ', item[Const.FJCONFIG_SHOW_AT]);
             }
         }
     }
@@ -53,7 +53,7 @@ Overlays.prototype.Setup = function(overlays) {
 };
 Overlays.prototype.clicked = function(self, index) {
     var item = self.overlays[index];
-    window.open(item[Const.FJCONFIG_OVER_URL], '_blank');
+    window.open(item[Const.FJCONFIG_URL], '_blank');
 };
 
 Overlays.prototype.StopOverlay = function(self, index) {
@@ -82,14 +82,14 @@ Overlays.prototype.StartOverlay = function(self, index) {
     var item = self.overlays[index];
     self.overlays[index].started = true;
     self.overlays[index].endTimer =
-        setTimeout(function() { self.StopOverlay(self, index); }, item[Const.FJCONFIG_OVER_DURATION] * 1000);
+        setTimeout(function() { self.StopOverlay(self, index); }, item[Const.FJCONFIG_DURATION] * 1000);
     // empty the div && show the div
     while (self.OverlayDiv.hasChildNodes()) {
         self.OverlayDiv.removeChild(self.OverlayDiv.firstChild);
     }
     self.OverlayInnerDiv = document.createElement('div');
     self.OverlayClosingDiv = document.createElement('div');
-    self.OverlayInnerDiv.innerHTML = '<p>' + item[Const.FJCONFIG_OVER_DATA] + '</p>';
+    self.OverlayInnerDiv.innerHTML = '<p>' + item[Const.FJCONFIG_DATA] + '</p>';
     self.OverlayInnerDiv.style.cursor = 'pointer';
 
     self.OverlayClosingDiv.innerHTML = '<img ' +
@@ -110,11 +110,11 @@ Overlays.prototype.StartOverlay = function(self, index) {
     self.OverlayDiv.style.display = 'block';
     self.OverlayDiv.classList.add('over-HL');
     // add click
-    url = item[Const.FJCONFIG_OVER_URL];
+    url = item[Const.FJCONFIG_URL];
     self.logger.info('Setting click on overlay going to  ', url);
     this.OverlayInnerDiv.addEventListener('click', function() { self.clicked(self, index); });
     self.logger.log(index, 'you overlay just started and will end in ' +
-        item[Const.FJCONFIG_OVER_DURATION] + ' sec', self.overlays[index].handler);
+        item[Const.FJCONFIG_DURATION] + ' sec', self.overlays[index].handler);
 };
 
 export default Overlays;

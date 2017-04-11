@@ -126,23 +126,23 @@
   * used to check if an item of subtitle is correct
   */
  Playlist.prototype.checkSubtitle = function(subItem) {
-     if (subItem[Const.FJCONFIG_SUB_LABEL]) {
+     if (subItem[Const.FJCONFIG_LABEL]) {
          this.logger.log(' playlist Subtitle label is',
-             subItem[Const.FJCONFIG_SUB_LABEL]);
+             subItem[Const.FJCONFIG_LABEL]);
      } else {
          this.logger.error('Empty Subtitle label ');
          return false;
      }
-     if (subItem[Const.FJCONFIG_SUB_LANG]) {
+     if (subItem[Const.FJCONFIG_LANG]) {
          this.logger.log(' playlist Subtitle lang is',
-             subItem[Const.FJCONFIG_SUB_LANG]);
+             subItem[Const.FJCONFIG_LANG]);
      } else {
          this.logger.error('Empty Subtitle lang  ');
          return false;
      }
-     if (subItem[Const.FJCONFIG_SUB_SRC]) {
+     if (subItem[Const.FJCONFIG_SRC]) {
          this.logger.log(' playlist Subtitle src is',
-             subItem[Const.FJCONFIG_SUB_SRC]);
+             subItem[Const.FJCONFIG_SRC]);
      } else {
          this.logger.error('Empty Subtitle src ');
          return false;
@@ -154,38 +154,38 @@
   */
  Playlist.prototype.checkOverlay = function(subItem) {
      var val = subItem;
-     val = subItem[Const.FJCONFIG_OVER_DATA];
+     val = subItem[Const.FJCONFIG_DATA];
      if (val !== null && val !== '') {
          this.logger.log(' playlist Overlay data ', val);
      } else {
          this.logger.error('Empty Overlay data');
          return false;
      }
-     val = subItem[Const.FJCONFIG_OVER_URL];
+     val = subItem[Const.FJCONFIG_URL];
      if (val !== null && val !== '') {
-         this.logger.log(' playlist Overlay url ', subItem[Const.FJCONFIG_OVER_URL]);
+         this.logger.log(' playlist Overlay url ', subItem[Const.FJCONFIG_URL]);
      } else {
          this.logger.error('Empty Overlay url');
          return false;
      }
-     val = subItem[Const.FJCONFIG_OVER_DURATION];
+     val = subItem[Const.FJCONFIG_DURATION];
      if (val !== null && val !== '') {
          if ((val === parseInt(val, 10))) {
              this.logger.log(' integer playlist Overlay duration ', val);
          } else {
-             this.logger.error('Empty Overlay duration is not integer !');
+             this.logger.error(val, ':Empty Overlay duration is not integer !');
              return false;
          }
      } else {
          this.logger.error('Empty Overlay duration ');
          return false;
      }
-     val = subItem[Const.FJCONFIG_OVER_SHOW_AT];
+     val = subItem[Const.FJCONFIG_SHOW_AT];
      if (val !== null && val !== '') {
          if ((val === parseInt(val, 10))) {
              this.logger.log(' integer playlist Overlay show at ', val);
          } else {
-             this.logger.error('Empty Overlay show at is not integer !');
+             this.logger.error(val, ':Empty Overlay show at is not integer !');
              return false;
          }
      } else {
@@ -222,17 +222,27 @@
          this.logger.error('BAD type Value ! ');
          return false;
      }
-     if (!item[Const.FJCONFIG_TITLE]) {
-         this.logger.error('BAD title Value ! ');
-         return false;
-     }
      if (!item[Const.FJCONFIG_SRC]) {
          this.logger.error('BAD src Value ! ');
          return false;
      }
-     if (item[Const.FJCONFIG_ADS_LINK_URL] === null || item[Const.FJCONFIG_ADS_LINK_URL] === undefined) {
-         this.logger.error('Ads: BAD  or missing link url Value ! ');
+     if (Const.FJCONFIG_ADS_CLASSES.indexOf(item[Const.FJCONFIG_CLASS]) === -1) {
+         this.logger.error(item[Const.FJCONFIG_CLASS], ':BAD class Value ! ');
          return false;
+     }
+     if ((item[Const.FJCONFIG_SRC] === Const.FJCONFIG_ADS_CLASS_MID_ROLL) &&
+         (item[Const.FJCONFIG_SHOW_AT] === null || item[Const.FJCONFIG_SHOW_AT] === undefined)) {
+         this.logger.error('Missing Show At for mid Roll Class ! ');
+         return false;
+     }
+     if (item[Const.FJCONFIG_URL] !== null && item[Const.FJCONFIG_URL] !== '') {
+         this.logger.log(' playlist Overlay url ', item[Const.FJCONFIG_URL]);
+     } else {
+         this.logger.error('Empty Overlay url');
+         return false;
+     }
+     if (!item[Const.FJCONFIG_CAN_ESCAPE]) {
+         this.logger.warn('can Escape is missing , will be set to true !');
      }
      return true;
  };

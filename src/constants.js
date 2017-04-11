@@ -11,25 +11,23 @@ export const FJCONFIG_TITLE = 'FJTitle';
 export const FJCONFIG_SRC = 'FJSrc';
 export const FJCONFIG_POSTER = 'FJPoster';
 export const FJCONFIG_ADS_LINK_URL = 'FJAdsLinkUrl';
-export const FJCONFIG_ADS_ESCAPE_AT = 'FJAdsEscapeAt';
+export const FJCONFIG_CAN_ESCAPE = 'FJCanEscape';
 export const FJCONFIG_THUMBS = 'FJThumbs';
 export const FJCONFIG_SUBTITLES = 'FJSubtitles';
-export const FJCONFIG_ADS = 'FJads';
+export const FJCONFIG_ADS = 'FJAds';
 export const FJCONFIG_AUDIOS = 'FJAudios';
 export const FJCONFIG_OVERLAYS = 'FJOverlays';
 export const FJCONFIG_DRM = 'FJDrm';
-export const FJCONFIG_SUB_LABEL = 'FJSubLabel';
-export const FJCONFIG_SUB_SRC = 'FJSubSrc';
-export const FJCONFIG_SUB_LANG = 'FJSubLang';
-export const FJCONFIG_OVER_POS = 'FJOverPos';
+export const FJCONFIG_LABEL = 'FJLabel';
+export const FJCONFIG_LANG = 'FJLang';
 /* could be :
  HR: Hight Right , HC: hight Center, HL: Hight Left or
  LR: Low Right , LC: Low Center, LL: Low Left
 */
-export const FJCONFIG_OVER_DATA = 'FJOverData';
-export const FJCONFIG_OVER_URL = 'FJOverUrl';
-export const FJCONFIG_OVER_DURATION = 'FJOverDuration';
-export const FJCONFIG_OVER_SHOW_AT = 'FJOverShowAt';
+export const FJCONFIG_DATA = 'FJData';
+export const FJCONFIG_URL = 'FJUrl';
+export const FJCONFIG_DURATION = 'FJDuration';
+export const FJCONFIG_SHOW_AT = 'FJShowAt';
 export const FJCONFIG_DRM_SCHEME = 'FJDrmScheme';
 export const FJCONFIG_DRM_LICENSE_SERVER = 'FJLicenceServer';
 export const FJCONFIG_DRM_HEADER_LICENSE_REQUEST = 'FJHeadersOnLicenseRequest';
@@ -39,10 +37,9 @@ export const FJCONFIG_TRUE = 'true';
 export const FJCONFIG_FALSE = 'false';
 export const FJCONFIG_BOOLEAN = { FJCONFIG_TRUE, FJCONFIG_FALSE };
 
-export const FJCONFIG_CLASS_ADS = 'ads';
 export const FJCONFIG_CLASS_VOD = 'vod';
 export const FJCONFIG_CLASS_LIVE = 'live';
-export const FJCONFIG_CLASSES = [FJCONFIG_CLASS_ADS, FJCONFIG_CLASS_LIVE, FJCONFIG_CLASS_VOD];
+export const FJCONFIG_CLASSES = [FJCONFIG_CLASS_LIVE, FJCONFIG_CLASS_VOD];
 
 export const FJCONFIG_SCREEN_MODE_MINIMAL = 'minimal';
 export const FJCONFIG_SCREEN_MODE_CINEMA = 'cinema';
@@ -55,6 +52,13 @@ export const FJCONFIG_SCREEN_MODES = [FJCONFIG_SCREEN_MODE_MINIMAL,
 export const FJCONFIG_TYPE_MP4 = 'video/mp4';
 export const FJCONFIG_TYPE_DASH = 'dash';
 export const FJCONFIG_TYPES = [FJCONFIG_TYPE_MP4, FJCONFIG_TYPE_DASH];
+
+export const FJCONFIG_ADS_CLASS_PRE_ROLL = 'pre-roll';
+export const FJCONFIG_ADS_CLASS_MID_ROLL = 'mid-roll';
+export const FJCONFIG_ADS_CLASS_POST_ROLL = 'post-roll';
+export const FJCONFIG_ADS_CLASSES = [FJCONFIG_ADS_CLASS_PRE_ROLL,
+    FJCONFIG_ADS_CLASS_MID_ROLL, FJCONFIG_ADS_CLASS_POST_ROLL
+];
 
 export const FJCONFIG_DRM_SCHEME_FORJA = 'forja';
 export const FJCONFIG_DRM_SCHEME_CLEARKEY = 'clearKey';

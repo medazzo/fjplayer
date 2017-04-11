@@ -479,9 +479,9 @@ Player.prototype.InitPlayer = function(self) {
             item = self.subsJsObj[i];
             track = document.createElement('track');
             track.kind = 'subtitles';
-            track.src = item[Const.FJCONFIG_SUB_SRC];
-            track.srclang = item[Const.FJCONFIG_SUB_LANG];
-            track.label = item[Const.FJCONFIG_SUB_LABEL];
+            track.src = item[Const.FJCONFIG_SRC];
+            track.srclang = item[Const.FJCONFIG_LANG];
+            track.label = item[Const.FJCONFIG_LABEL];
             self.video.appendChild(track);
         }
     }
