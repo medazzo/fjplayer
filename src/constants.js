@@ -20,14 +20,11 @@ export const FJCONFIG_OVERLAYS = 'FJOverlays';
 export const FJCONFIG_DRM = 'FJDrm';
 export const FJCONFIG_LABEL = 'FJLabel';
 export const FJCONFIG_LANG = 'FJLang';
-/* could be :
- HR: Hight Right , HC: hight Center, HL: Hight Left or
- LR: Low Right , LC: Low Center, LL: Low Left
-*/
 export const FJCONFIG_DATA = 'FJData';
 export const FJCONFIG_URL = 'FJUrl';
 export const FJCONFIG_DURATION = 'FJDuration';
 export const FJCONFIG_SHOW_AT = 'FJShowAt';
+
 export const FJCONFIG_DRM_SCHEME = 'FJDrmScheme';
 export const FJCONFIG_DRM_LICENSE_SERVER = 'FJLicenceServer';
 export const FJCONFIG_DRM_HEADER_LICENSE_REQUEST = 'FJHeadersOnLicenseRequest';
