@@ -152,6 +152,7 @@ Player.prototype.setUi = function() {
         '</div>' +
         '<div class=\"thumbsBlockDiv\" id=\"' + this.thumbsDivId + '\" >' +
         '<span class=\"thumbsBlock\" id=\"' + this.thumbsImgId + '\" ></span>' +
+        '<span class=\"fjcontrols-control-text\" id=\"' + this.thumbstimerId + '\"</span>' +
         '</div>' +
         '<div id=\"' + this.audMenuContainerDivId + '\" ></div>' +
         '<div id=\"' + this.subsdMenuContainerDivId + '\" ></div>' +
@@ -187,6 +188,7 @@ Player.prototype.setComponents = function() {
     this.BigPlayBtn = document.getElementById(this.BigPlayBtnId);
 
     this.thumbsDiv = document.getElementById(this.thumbsDivId);
+    this.thumbstimer = document.getElementById(this.thumbstimerId);
     this.thumbsImg = document.getElementById(this.thumbsImgId);
     this.expandDiv = document.getElementById(this.expandDivId);
 
@@ -198,7 +200,7 @@ Player.prototype.setComponents = function() {
     this.videoControls.style.display = 'none';
     this.videoInfo.style.display = 'block';
     // Create Thumbs Object
-    this.ThumbsMgr = new Thumbs(this.video, this.thumbsImg, this.thumbsDiv, this.progressBar);
+    this.ThumbsMgr = new Thumbs(this, this.thumbstimer, this.video, this.thumbsImg, this.thumbsDiv, this.progressBar);
 
     if (this.fullScreenOnStart === 'true') {
         this.videoFigure.setAttribute('data-fullscreen', 'true');
@@ -551,7 +553,7 @@ Player.prototype.onprogressClick = function(e, self) {
     }
     self.logger.log(' Seeking from ', self.video.currentTime, ':: ', self.video.duration, 'to ', p, ' sec');
     // change current time
-    self.video.currentTime = p;
+    self.video.currentTime = self.progressBar.value;
     val = (self.progressBar.value - self.progressBar.min) / (self.progressBar.max - self.progressBar.min);
     self.progressBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
         'color-stop(' + val + ', #FF0000), ' +

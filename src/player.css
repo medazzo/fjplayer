@@ -33,6 +33,10 @@
                 visibility: hidden;
                 border-radius: 2px;
                 z-index: 2147483647;
+                /*background: rgba(0, 0, 0, 0.5);*/
+                background: rgba(10, 10, 10, 0.8);
+                font-size: 12px;
+                border-radius: 5px;
             }
             
             .thumbsBlock {
@@ -315,33 +319,6 @@
                 top: 20%;
                 left: 20%;
                 height: auto;
-            }
-            
-            .over-HC {
-                background: #f2f2f2;
-                position: fixed;
-                margin: 10px;
-                height: 70px;
-                margin-left: 50%;
-                border: 0px solid #d6d6d6;
-            }
-            
-            .over-HR {
-                background: #f2f2f2;
-                position: fixed;
-                margin: 10px;
-                height: 70px;
-                margin-left: 50%;
-                border: 0px solid #d6d6d6;
-            }
-            
-            .over-LR {
-                background: #f2f2f2;
-                position: fixed;
-                margin: 10px;
-                height: 70px;
-                margin-left: 50%;
-                border: 0px solid #d6d6d6;
             }
             
             .over-LC {

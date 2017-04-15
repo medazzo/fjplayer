@@ -10,11 +10,13 @@ require('./player.css');
  * @param thumbImgElement the div element used for thumbs
  * @param progressBarElement the progress element used for thumbs
  */
-function Thumbs(vidElement, thumbImgElement, thumbDivElement, progressBarElement) {
+function Thumbs(player, thumbstimer, vidElement, thumbImgElement, thumbDivElement, progressBarElement) {
     var self = this;
     this.logger = new Logger(this);
+    this.player = player;
     this.thumbsTrackIndex = -1;
     this.video = vidElement;
+    this.thumbstimer = thumbstimer;
     this.thumbsDiv = thumbDivElement;
     this.thumbsImg = thumbImgElement;
     this.progressBar = progressBarElement;
@@ -74,6 +76,7 @@ Thumbs.prototype.renderThumbs = function(self, event) {
             break;
         };
     }
+    self.logger.log(' Render Thumbs  @ ', self.player.duration(Math.round(p)));
     // ..next we unravel the JPG url and fragment query..
     xywh = c[i].text.substr(c[i].text.indexOf('=') + 1).split(',');
 
@@ -84,9 +87,9 @@ Thumbs.prototype.renderThumbs = function(self, event) {
     self.thumbsImg.style.backgroundPosition = '-' + xywh[0] + 'px -' + xywh[1] + 'px';
     self.thumbsImg.style.width = xywh[2] + 'px';
     self.thumbsImg.style.height = xywh[3] + 'px';
-
-    self.thumbsDiv.style.left = event.pageX - xywh[2] / 2 + 'px';
-    self.thumbsDiv.style.top = rect.top - (xywh[3] * 1.5) + 'px';
+    self.thumbstimer.innerHTML = self.player.duration(Math.round(p));
+    self.thumbsDiv.style.left = (event.pageX - xywh[2] / 2) + 'px';
+    self.thumbsDiv.style.top = (rect.top - (xywh[3] * 1.5) + 5) + 'px';
     self.thumbsDiv.style.width = xywh[2] + 'px';
 };
 
