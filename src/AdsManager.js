@@ -140,7 +140,10 @@ AdsManager.prototype.StartMidAds = function(self, index) {
     self.AdsContainerdiv.style.cursor = 'pointer';
     self.logger.log(' Can escape this starting Ads ', item[Const.FJCONFIG_CAN_ESCAPE]);
     if (item[Const.FJCONFIG_CAN_ESCAPE] === 'true' || item[Const.FJCONFIG_CAN_ESCAPE] === true) {
-        infoDiv2.innerHTML = ', it can be escapped !';
+        infoDiv2.innerHTML = ', Can be escapped <i class="fa fa-step-forward" ></i>';
+        infoDiv2.addEventListener('click', function() {
+            self.StopMidAds(self, index);
+        });
     } else {
         infoDiv2.innerHTML = ', it cannot be escapped !';
     }
@@ -158,7 +161,7 @@ AdsManager.prototype.StartMidAds = function(self, index) {
     self.video.style.display = 'none';
     adsvideo.play();
     // event to catch ended playing on video
-    self.AdsContainerdiv.addEventListener('click', function() {
+    adsvideo.addEventListener('click', function() {
         self.midAds[index].clicked++;
         window.open(item[Const.FJCONFIG_URL], '_blank');
     });

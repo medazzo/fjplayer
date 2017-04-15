@@ -251,7 +251,7 @@
             .m-fadeOut {
                 visibility: hidden;
                 opacity: 0;
-                transition: visibility 500ms, opacity 500ms;
+                transition: visibility 200ms, opacity 200ms;
             }
             
             .m-fadeIn {

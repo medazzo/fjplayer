@@ -94,18 +94,11 @@ Overlays.prototype.StartOverlay = function(self, index) {
     self.OverlayInnerDiv.innerHTML = '<p>' + item[Const.FJCONFIG_DATA] + '</p>';
     self.OverlayInnerDiv.style.cursor = 'pointer';
 
-    self.OverlayClosingDiv.innerHTML = '<img ' +
-        'onmouseover=\"this.style.opacity = 1;\" onmouseout=\"this.style.opacity = 0.5\"' +
-        'style=\"cursor: pointer; opacity: 0.5; float: right; margin: -5px -10px 10px 10px;\"' +
-        'src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAAGXRFWHRTb2Z0' +
-        'd2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAARpJREFUeNqslD+qhDAQxscQrDyBxatELN4RLCyFbcSzeC67RUsLCw+w' +
-        'hYXVFiIiHsBC335igtkX9x87EJL5ZuZHTDIay7IQLM/z39v0Q6/bNQzDCxYGIDvA+Q3ISYCMLMs+ASggvgd4nvdydV3XtNWdm' +
-        'C6haZp1PNOEcR2gLEvpO46j1Q4hjDHq+176KOy6TtkB4q7rKhDlczjnFMexkrQHQEcceYeQaZpoHMc10bZtJRE+dMSRdwgRoKqqq' +
-        'G1bRYcP/R6ghWD7RVFI37IsuYauu6F/EBykMLybJEmU97OPH16x7/vypqIoomEY1jlNU5rnWcYfQgTINE15iBhBEGjPQ0CuWw+ct6f8du+w' +
-        'rZ0FiD7q4m/8T/4EGAD07J0fnXOouAAAAABJRU5ErkJggg==\">' +
-        '</img>' +
-        '<div style=\"color: rgb(119, 255, 119); font-size: 0.95em; float: ' +
-        'right; text-decoration: none;\">Annonce</div>';
+    self.OverlayClosingDiv.innerHTML = '<i onmouseover=\"this.style.opacity = 1;\" ' +
+        'onmouseout=\"this.style.opacity = 0.5\" style=\"padding-left: -5px;cursor: pointer; opacity: 0.5;' +
+        ' float: right; margin: -5px -10px 10px 10px;\" class="fa fa-2x fa-times" ' +
+        'aria-hidden="true"></i><div style=\"color: rgb(119, 255, 119); font-size: ' +
+        '0.95em; float: right; text-decoration: none;\">Annonce</div>';
     this.OverlayClosingDiv.addEventListener('click', function() { self.StopOverlay(self, index); });
     self.OverlayDiv.appendChild(self.OverlayClosingDiv);
     self.OverlayDiv.appendChild(self.OverlayInnerDiv);
