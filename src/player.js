@@ -3,6 +3,7 @@ import Playlist from './playlist';
 import Thumbs from './Thumbs';
 import Overlays from './Overlays';
 import SubsMenu from './SubsMenu';
+import AdsManager from './AdsManager';
 import * as Const from './constants';
 require('./player.css');
 require('font-awesome/css/font-awesome.css');
@@ -39,6 +40,7 @@ function Player(fjID, videoContainerId, playerexpandScreen) {
     this.expandDivId = 'ed' + this.id;
     this.expandBtnId = 'eb' + this.id;
 
+    this.adsContainerDivId = 'adscd' + this.id;
     this.overlaysContainerDivId = 'ovscd' + this.id;
     this.subsdMenuContainerDivId = 'smcd' + this.id;
     this.audMenuContainerDivId = 'amcd' + this.id;
@@ -55,6 +57,7 @@ function Player(fjID, videoContainerId, playerexpandScreen) {
     // this.AudiosMenu = new AudsMenu(this.video, this.id, this.audMenuContainerDivId);
     this.SubsMenu = new SubsMenu(this.video, this.subtitlesBtnId, this.subsdMenuContainerDivId);
     this.OverlaysMgr = new Overlays(this.video, document.getElementById(this.overlaysContainerDivId));
+    this.AdsMgr = new AdsManager(this.video, document.getElementById(this.adsContainerDivId));
 };
 // constantes member of class
 Player.prototype.playlistLoaded = false;
@@ -76,14 +79,6 @@ Player.prototype.fullScreenOnStart = false;
 Player.prototype.supportsVideo = !!document.createElement('video').canPlayType;
 Player.prototype.uidone = false;
 /* ****************** P R I V A T E * * * * F U N C T I O N S ****************** */
-
-/**
- * Function to be called from event 'timeupdate' from video
- * called to check if overlays has to Start
- */
-Player.prototype.CheckOverlays = function(self, secondes) {
-    self.OverlaysMgr.CheckOverlays(self.OverlaysMgr, Math.round(secondes));
-};
 
 /**
  * Fonction to prepare the UI and set Html content of player container
@@ -161,6 +156,7 @@ Player.prototype.setUi = function() {
         '<div id=\"' + this.audMenuContainerDivId + '\" ></div>' +
         '<div id=\"' + this.subsdMenuContainerDivId + '\" ></div>' +
         '<div id=\"' + this.overlaysContainerDivId + '\"  ></div>' +
+        '<div id=\"' + this.adsContainerDivId + '\"  ></div>' +
         '</figure>';
     this.logger.info(' container if of the player ', this.videoContainerId);
     this.videoContainer = document.getElementById(this.videoContainerId);
@@ -264,6 +260,7 @@ Player.prototype.setCallbacks = function() {
     // As the video is playing, update the progress bar
     this.video.addEventListener('timeupdate', function(e) {
         self.onvideoTimeupdate(self);
+        self.AdsMgr.CheckMidAds(self.AdsMgr, Math.round(self.video.currentTime));
         self.OverlaysMgr.CheckOverlays(self.OverlaysMgr, Math.round(self.video.currentTime));
     });
     // React to the user clicking within the progress bar
@@ -665,6 +662,13 @@ Player.prototype.playAt = function(index) {
         this.overlaysObjs = item[Const.FJCONFIG_OVERLAYS];
         this.OverlaysMgr.Setup(this.overlaysObjs);
     }
+    // Set ads
+    this.logger.warn('Setting overlays ', item[Const.FJCONFIG_OVERLAYS]);
+    if ((item[Const.FJCONFIG_ADS] !== undefined) && (item[Const.FJCONFIG_ADS] != null)) {
+        this.adsObjs = item[Const.FJCONFIG_ADS];
+        this.AdsMgr.Setup(this.adsObjs);
+    }
+
     if (item[Const.FJCONFIG_SRC] != null || item[Const.FJCONFIG_SRC] !== undefined) {
         source = document.createElement('source');
         source.src = item[Const.FJCONFIG_SRC];

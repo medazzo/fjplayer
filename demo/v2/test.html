@@ -5,39 +5,6 @@
     <title>fjplayer demo</title>
     <script type="text/javascript" src="../../lib/fjplayer.js"></script>
     <script type="text/javascript">
-        var playlist = [{
-            'FJClass': 'vod',
-            'FJType': 'video/mp4',
-            'FJTitle': 'sentinel Movie mp4 ',
-            'FJPoster': '',
-            'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
-            'FJThumbs': 'vtt/thumbs.vtt',
-            'FJSubstitles': [{
-                'FJSubLabel': 'English',
-                'FJSubLang': 'en',
-                'FJSubSrc': 'vtt/sintel-en.vtt'
-            }],
-            'FJOverlays': [{
-                'FJOverData': '<div style="cursor:pointer;"> <img src="img/2000px-Smiley.svg.png" alt="Smiley face" width="100" height="20"> Your ADS is Here; clikc to go to google !</div> ',
-                'FJOverShowAt': 15,
-                'FJOverDuration': 5,
-                'FJOverUrl': 'http://www.google.com'
-            }]
-        }, {
-            'FJClass': 'live',
-            'FJTitle': 'Sentinel Dash with multi subs natives, added vtt and thumbs',
-            'FJType': 'dash',
-            'FJPoster': '',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd',
-            'FJThumbs': 'vtt/thumbs.vtt',
-            'FJDrm': {
-                'FJDrmScheme': 'clearkey',
-                'FJLicenceServer': '.....',
-                'FJHeadersOnLicenseRequest': {
-                    'sdfsgsgs': "sfsdf"
-                },
-            }
-        }];
         var item = {
             'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
             'FJTitle': ' title of movie',
@@ -62,14 +29,14 @@
                 'FJClass': 'mid-roll',
                 'FjCanEscape': false,
                 'FJUrl': 'http://www.google.com',
-                'FJOverShowAt': 150
+                'FJShowAt': 50
             }, {
                 'FJType': 'video/mp4',
                 'FJSrc': 'videos/berber_pub.mp4',
                 'FJClass': 'mid-roll',
                 'FjCanEscape': true,
                 'FJUrl': 'http://www.google.com',
-                'FJShowAt': 520
+                'FJShowAt': 60
             }],
             'FJSubtitles': [{
                 'FJLabel': 'English',

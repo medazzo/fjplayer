@@ -4,16 +4,18 @@ import * as Const from './constants';
 /**
  * @module AdsManager
  * @description The AdsManager is the class whinch will manage Ads
- *  on a video
+ *  on a video.
+ *  Ads will be played on a another video html overlaying current video
  */
-function AdsManager(video, VideoDiv) {
+function AdsManager(video, AdsContainerdiv) {
     this.logger = new Logger(this);
     this.video = video;
-    this.midAds = null;
-    this.postAds = null;
-    this.preAds = null;
+    this.midAds = [];
+    this.postAds = [];
+    this.preAds = [];
+    this.ads = null;
     this.settled = false;
-    this.VideoDiv = VideoDiv;
+    this.AdsContainerdiv = AdsContainerdiv;
 };
 
 /**
@@ -49,6 +51,7 @@ AdsManager.prototype.Setup = function(ads) {
     var sz;
     var item;
     var clas;
+    this.ads = ads;
     for (i = 0; i < this.ads.length; i++) {
         item = ads[i];
         clas = item[Const.FJCONFIG_CLASS];
@@ -64,7 +67,10 @@ AdsManager.prototype.Setup = function(ads) {
         }
     }
     this.settled = true;
-    this.logger.info('Setup is settled ', this.settled, ' cheking Ads .. ', this.overlays);
+    this.logger.info('Ads Setup is settled ', this.settled);
+    this.logger.warn('Cheking PRE ROLL Ads .. ', this.preAds.length);
+    this.logger.warn('Cheking MID ROLL Ads .. ', this.midAds.length);
+    this.logger.warn('Cheking POST ROLL Ads .. ', this.postAds.length);
 };
 
 AdsManager.prototype.clicked = function(self, index) {
@@ -80,15 +86,56 @@ AdsManager.prototype.StartPreAds = function(self, index) {
     // todo
 };
 
-
 AdsManager.prototype.StopMidAds = function(self, index) {
-    // todo
+    var el = self.AdsContainerdiv;
+    var elClone = null;
+    var item = self.midAds[index];
+    self.logger.info(index, 'stopping MId Ads ', item[Const.FJCONFIG_URL],
+        ' @@ ', item[Const.FJCONFIG_SHOW_AT]);
+    // remove the click event
+    el = self.AdsContainerdiv;
+    elClone = el.cloneNode(true);
+    el.parentNode.replaceChild(elClone, el);
+    self.AdsContainerdiv = elClone;
+    // hide the overlay , empty the div
+    while (self.AdsContainerdiv.hasChildNodes()) {
+        self.AdsContainerdiv.removeChild(self.AdsContainerdiv.firstChild);
+    }
+    self.AdsContainerdiv.innerHTML = '';
+    self.AdsContainerdiv.style.display = 'none';
+    // resume current video
+    self.video.style.display = 'block';
+    self.video.play();
+
 };
 
 AdsManager.prototype.StartMidAds = function(self, index) {
-    // todo
+    var item = self.midAds[index];
+    var adsvideo = document.createElement('video');
+    var source = document.createElement('source');
+    self.logger.info(index, 'starting MId Ads ', item[Const.FJCONFIG_URL],
+        ' @@ ', item[Const.FJCONFIG_SHOW_AT]);
+    self.midAds[index].started = true;
+    // hide all div ads content
+    self.AdsContainerdiv.style.display = 'none';
+    // fill ads container
+    adsvideo.preload = true;
+    adsvideo.controls = false;
+    adsvideo.autoplay = false;
+    source.src = item[Const.FJCONFIG_SRC];
+    source.type = item[Const.FJCONFIG_TYPE];
+    adsvideo.appendChild(source);
+    self.AdsContainerdiv.appendChild(adsvideo);
+    // pause current video and play ads
+    self.video.pause();
+    self.AdsContainerdiv.style.display = 'block';
+    self.video.style.display = 'none';
+    adsvideo.play();
+    // event to catch ended playing on video
+    adsvideo.addEventListener('ended', function(e) {
+        self.StopMidAds(self, index);
+    });
 };
-
 
 AdsManager.prototype.StopPostAds = function(self, index) {
     // todo
