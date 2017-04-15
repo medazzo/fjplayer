@@ -48,11 +48,13 @@ Overlays.prototype.Setup = function(overlays) {
     this.settled = true;
     for (i = 0; i < this.overlays.length; i++) {
         this.overlays[i].started = false;
+        this.overlays[i].clicked = 0;
     }
     this.logger.info('Setup is settled ', this.settled, ' cheking overlays .. ', this.overlays);
 };
 Overlays.prototype.clicked = function(self, index) {
     var item = self.overlays[index];
+    self.overlays[index].clicked++;
     window.open(item[Const.FJCONFIG_URL], '_blank');
 };
 

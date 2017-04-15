@@ -321,22 +321,17 @@
                 height: auto;
             }
             
-            .over-LC {
-                background: #f2f2f2;
-                position: fixed;
-                margin: 10px;
-                height: 70px;
-                margin-left: 50%;
-                border: 0px solid #d6d6d6;
-            }
-            
-            .over-LL {
-                background: #f2f2f2;
-                position: fixed;
-                margin: 10px;
-                height: 70px;
-                margin-left: 50%;
-                border: 0px solid #d6d6d6;
+            .over-DL {
+                position: absolute;
+                background: rgba(0, 0, 0, 0.5);
+                float: left;
+                font-size: 12px;
+                padding: 3px;
+                border-radius: 5px;
+                z-index: 2147483647;
+                bottom: 5%;
+                left: 40%;
+                height: auto;
             }
             /*__________________________________________ FJCONTROL ____________________________*/
             

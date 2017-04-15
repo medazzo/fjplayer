@@ -7,8 +7,9 @@ import * as Const from './constants';
  *  on a video.
  *  Ads will be played on a another video html overlaying current video
  */
-function AdsManager(video, AdsContainerdiv) {
+function AdsManager(player, video, AdsContainerdiv) {
     this.logger = new Logger(this);
+    this.player = player;
     this.video = video;
     this.midAds = [];
     this.postAds = [];
@@ -58,12 +59,15 @@ AdsManager.prototype.Setup = function(ads) {
         if (clas === Const.FJCONFIG_ADS_CLASS_PRE_ROLL) {
             sz = this.preAds.push(item);
             this.preAds[sz - 1].started = false;
+            this.preAds[sz - 1].clicked = 0;
         } else if (clas === Const.FJCONFIG_ADS_CLASS_POST_ROLL) {
             sz = this.postAds.push(item);
             this.postAds[sz - 1].started = false;
+            this.postAds[sz - 1].clicked = 0;
         } else {
             sz = this.midAds.push(item);
             this.midAds[sz - 1].started = false;
+            this.midAds[sz - 1].clicked = 0;
         }
     }
     this.settled = true;
@@ -111,27 +115,53 @@ AdsManager.prototype.StopMidAds = function(self, index) {
 
 AdsManager.prototype.StartMidAds = function(self, index) {
     var item = self.midAds[index];
+    var infoDiv = document.createElement('div');
+    var infoDiv2 = document.createElement('span');
     var adsvideo = document.createElement('video');
     var source = document.createElement('source');
     self.logger.info(index, 'starting MId Ads ', item[Const.FJCONFIG_URL],
         ' @@ ', item[Const.FJCONFIG_SHOW_AT]);
     self.midAds[index].started = true;
+    // hide controls of current video
+    self.player.HideControlsCursor(self.player, true);
     // hide all div ads content
     self.AdsContainerdiv.style.display = 'none';
     // fill ads container
     adsvideo.preload = true;
     adsvideo.controls = false;
     adsvideo.autoplay = false;
+    // setting W/H !
+    adsvideo.setAttribute('width', self.video.videoWidth);
+    adsvideo.setAttribute('height', self.video.videoHeight);
+    //
+    infoDiv.innerHTML = '<span style=\"color: rgb(119, 255, 119); font-size: 0.95em;\">Annonce</span>' +
+        ' This an Ads for <span style=\"color: rgb(255, 255, 0)\">' +
+        item[Const.FJCONFIG_URL] + '</span>';
+    self.AdsContainerdiv.style.cursor = 'pointer';
+    self.logger.log(' Can escape this starting Ads ', item[Const.FJCONFIG_CAN_ESCAPE]);
+    if (item[Const.FJCONFIG_CAN_ESCAPE] === 'true' || item[Const.FJCONFIG_CAN_ESCAPE] === true) {
+        infoDiv2.innerHTML = ', it can be escapped !';
+    } else {
+        infoDiv2.innerHTML = ', it cannot be escapped !';
+    }
+    infoDiv.style.display = 'block';
+    infoDiv.classList.add('over-DL');
     source.src = item[Const.FJCONFIG_SRC];
     source.type = item[Const.FJCONFIG_TYPE];
     adsvideo.appendChild(source);
     self.AdsContainerdiv.appendChild(adsvideo);
+    infoDiv.appendChild(infoDiv2);
+    self.AdsContainerdiv.appendChild(infoDiv);
     // pause current video and play ads
     self.video.pause();
     self.AdsContainerdiv.style.display = 'block';
     self.video.style.display = 'none';
     adsvideo.play();
     // event to catch ended playing on video
+    self.AdsContainerdiv.addEventListener('click', function() {
+        self.midAds[index].clicked++;
+        window.open(item[Const.FJCONFIG_URL], '_blank');
+    });
     adsvideo.addEventListener('ended', function(e) {
         self.StopMidAds(self, index);
     });

@@ -57,7 +57,7 @@ function Player(fjID, videoContainerId, playerexpandScreen) {
     // this.AudiosMenu = new AudsMenu(this.video, this.id, this.audMenuContainerDivId);
     this.SubsMenu = new SubsMenu(this.video, this.subtitlesBtnId, this.subsdMenuContainerDivId);
     this.OverlaysMgr = new Overlays(this.video, document.getElementById(this.overlaysContainerDivId));
-    this.AdsMgr = new AdsManager(this.video, document.getElementById(this.adsContainerDivId));
+    this.AdsMgr = new AdsManager(this, this.video, document.getElementById(this.adsContainerDivId));
 };
 // constantes member of class
 Player.prototype.playlistLoaded = false;
@@ -571,7 +571,8 @@ Player.prototype.HideControlsCursor = function(self, hideit) {
             self.videoControls.classList.add('m-fadeOut');
             self.videoInfo.classList.add('m-fadeOut');
             self.video.style.cursor = 'none';
-            this.SubsMenu.HideMenu();
+            self.SubsMenu.HideMenu();
+            self.ThumbsMgr.hideThumbs(self.ThumbsMgr);
             self.isHidden = true;
         } else {
             // delete fadeOut

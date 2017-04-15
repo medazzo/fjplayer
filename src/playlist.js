@@ -241,8 +241,10 @@
          this.logger.error('Empty Overlay url');
          return false;
      }
-     if (!item[Const.FJCONFIG_CAN_ESCAPE]) {
-         this.logger.warn('can Escape is missing , will be set to true !');
+     if (item[Const.FJCONFIG_CAN_ESCAPE] !== 'true' && item[Const.FJCONFIG_CAN_ESCAPE] !== true &&
+         item[Const.FJCONFIG_CAN_ESCAPE] !== 'false' && item[Const.FJCONFIG_CAN_ESCAPE] !== false) {
+         this.logger.warn('can Escape is missing , will be set to true ! ');
+         item[Const.FJCONFIG_CAN_ESCAPE] = true;
      }
      return true;
  };
