@@ -240,8 +240,10 @@ Player.prototype.setCallbacks = function() {
         self.InitPlayer(self);
     });
     // event to catch start playing on video
-    this.video.addEventListener('playing', function(e) {
-        // todo self.StartPlayer(self);
+    this.video.addEventListener('ended', function(e) {
+        if (self.AdsMgr.CheckPostAds() === true) {
+            self.logger.info(' Found a post roll ads to play ..');
+        }
     });
     // Add events for play button
     this.playpauseBtn.addEventListener('click', function(e) {
@@ -262,7 +264,7 @@ Player.prototype.setCallbacks = function() {
     // As the video is playing, update the progress bar
     this.video.addEventListener('timeupdate', function(e) {
         self.onvideoTimeupdate(self);
-        self.AdsMgr.CheckMidAds(self.AdsMgr, Math.round(self.video.currentTime));
+        self.AdsMgr.CheckMidAds(Math.round(self.video.currentTime));
         self.OverlaysMgr.CheckOverlays(self.OverlaysMgr, Math.round(self.video.currentTime));
     });
     // React to the user clicking within the progress bar
@@ -311,6 +313,39 @@ Player.prototype.duration = function(secDuration) {
     }
     return (hours + ':' + minutes + ':' + seconds);
 };
+/**
+ * Function Called from AdsManager to
+ *  freeze and hide player to show ads
+ */
+Player.prototype.freezePlayer = function(pauseIt, stillStarting, isEnding) {
+    if (pauseIt === true) {
+        // hide the player and pause it
+        this.video.pause();
+        this.video.style.display = 'none';
+        // hide controls of current video
+        this.HideControlsCursor(this, true);
+        this.SubsMenu.HideMenu();
+    } else {
+        if (isEnding === true) {
+            // still playing pre preroll ads
+            if (this.AdsMgr.CheckPostAds() === true) {
+                return;
+            }
+            this.video.style.display = 'block';
+            this.playpauseBtn.className = 'fa  fa-play';
+        } else {
+            if (stillStarting === true) {
+                // still playing pre preroll ads
+                if (this.AdsMgr.CheckPreAds() === true) {
+                    return;
+                }
+            }
+            // resume the play and show it
+            this.video.style.display = 'block';
+            this.onplaypauseClick(this);
+        }
+    }
+};
 /* ****************** C A L L B A C K S * * * * F U N C T I O N S ****************** */
 /**
  * Event CALLBACK ; called on play pause button Click
@@ -318,6 +353,11 @@ Player.prototype.duration = function(secDuration) {
 Player.prototype.onplaypauseClick = function(self) {
     if (!self.isStarted) {
         self.isStarted = true;
+        if (self.AdsMgr.CheckPreAds() === true) {
+            self.videoControls.style.display = 'block';
+            self.BigPlayBtn.style.display = 'none';
+            return;
+        }
     }
     if (self.video.paused || self.video.ended) {
         self.playpauseBtn.className = 'fa  fa-pause';
