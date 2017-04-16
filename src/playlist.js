@@ -245,6 +245,8 @@
          item[Const.FJCONFIG_CAN_ESCAPE] !== 'false' && item[Const.FJCONFIG_CAN_ESCAPE] !== false) {
          this.logger.warn('can Escape is missing , will be set to true ! ');
          item[Const.FJCONFIG_CAN_ESCAPE] = true;
+     } else {
+         this.logger.warn('can Escape is already there : ', item[Const.FJCONFIG_CAN_ESCAPE]);
      }
      return true;
  };

@@ -324,13 +324,13 @@
             .over-DL {
                 position: absolute;
                 background: rgba(0, 0, 0, 0.5);
-                float: left;
+                float: center;
                 font-size: 12px;
-                padding: 3px;
                 border-radius: 5px;
                 z-index: 2147483647;
-                bottom: 5%;
-                left: 40%;
+                bottom: 2%;
+                width: 96%;
+                left: 2%;
                 height: auto;
             }
             /*__________________________________________ FJCONTROL ____________________________*/

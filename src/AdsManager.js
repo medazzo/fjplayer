@@ -115,6 +115,7 @@ AdsManager.prototype.StopMidAds = function(self, index) {
 
 AdsManager.prototype.StartMidAds = function(self, index) {
     var item = self.midAds[index];
+    var done = false;
     var infoDiv = document.createElement('div');
     var infoDiv2 = document.createElement('span');
     var adsvideo = document.createElement('video');
@@ -139,14 +140,6 @@ AdsManager.prototype.StartMidAds = function(self, index) {
         item[Const.FJCONFIG_URL] + '</span>';
     self.AdsContainerdiv.style.cursor = 'pointer';
     self.logger.log(' Can escape this starting Ads ', item[Const.FJCONFIG_CAN_ESCAPE]);
-    if (item[Const.FJCONFIG_CAN_ESCAPE] === 'true' || item[Const.FJCONFIG_CAN_ESCAPE] === true) {
-        infoDiv2.innerHTML = ', Can be escapped <i class="fa fa-step-forward" ></i>';
-        infoDiv2.addEventListener('click', function() {
-            self.StopMidAds(self, index);
-        });
-    } else {
-        infoDiv2.innerHTML = ', it cannot be escapped !';
-    }
     infoDiv.style.display = 'block';
     infoDiv.classList.add('over-DL');
     source.src = item[Const.FJCONFIG_SRC];
@@ -160,7 +153,25 @@ AdsManager.prototype.StartMidAds = function(self, index) {
     self.AdsContainerdiv.style.display = 'block';
     self.video.style.display = 'none';
     adsvideo.play();
-    // event to catch ended playing on video
+    // events managing
+    adsvideo.addEventListener('timeupdate', function(e) {
+        if (item[Const.FJCONFIG_CAN_ESCAPE] === 'true' || item[Const.FJCONFIG_CAN_ESCAPE] === true) {
+            if (adsvideo.currentTime > 5) {
+                if (!done) {
+                    infoDiv2.innerHTML = ', Can be escapped <i class="fa fa-step-forward" ></i>';
+                    infoDiv2.addEventListener('click', function() {
+                        self.StopMidAds(self, index);
+                    });
+                    done = true;
+                }
+            } else {
+                infoDiv2.innerHTML = ', Can be escapped in ' + Math.round(5 - adsvideo.currentTime) + ' secondes .';
+            }
+        } else {
+            infoDiv2.innerHTML = ', it ends after ' +
+                self.player.duration(Math.round(adsvideo.duration - adsvideo.currentTime)) + ' .';
+        }
+    });
     adsvideo.addEventListener('click', function() {
         self.midAds[index].clicked++;
         window.open(item[Const.FJCONFIG_URL], '_blank');
