@@ -5,6 +5,14 @@
     <title>fjplayer demo</title>
     <script type="text/javascript" src="../../lib/fjplayer.js"></script>
     <script type="text/javascript">
+        var itemDash = {
+            'FJType': 'dash',
+            'FJPoster': 'img/sintel.jpg',
+            'FJTitle': ' title of movie',
+            'FJClass': 'vod',
+            'FJThumbs': 'vtt/thumbs.vtt',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        };
         var item = {
             'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
             'FJTitle': ' title of movie',
@@ -80,10 +88,12 @@
                 'FJUrl': 'http://www.google.com'
             }]
         };
+
         window.onload = function() {
             console.info('VERSION', fjplayer.Version);
             var playlist = new fjplayer.Playlist();
-            playlist.addItem(item);
+            // playlist.addItem(item);
+            playlist.addItem(itemDash);
             var player = new fjplayer.Player('fjserverID1', 'playercontainer', false);
             player.loadPlaylist(playlist);
             player.playAt(0);

@@ -5,6 +5,7 @@ import Overlays from './Overlays';
 import SubsMenu from './SubsMenu';
 import AdsManager from './AdsManager';
 import * as Const from './constants';
+import { MediaPlayer } from 'dashjs';
 require('./player.css');
 require('font-awesome/css/font-awesome.css');
 /**
@@ -163,7 +164,6 @@ Player.prototype.setUi = function() {
     this.videoContainer = document.getElementById(this.videoContainerId);
     this.videoContainer.classList.add('fjPlayer');
     this.videoContainer.innerHTML = inHtml;
-    this.logger.log(' UI is created !! ', this.videoContainer);
     this.uidone = true;
 };
 /**
@@ -182,11 +182,8 @@ Player.prototype.setComponents = function() {
     this.expandBtn = document.getElementById(this.expandBtnId);
     this.timer = document.getElementById(this.timerId);
     this.title = document.getElementById(this.titleId);
-    this.logger.info(' here is the title ', this.title);
-
     this.videoFigure = document.getElementById(this.videoFigureId);
     this.BigPlayBtn = document.getElementById(this.BigPlayBtnId);
-
     this.thumbsDiv = document.getElementById(this.thumbsDivId);
     this.thumbstimer = document.getElementById(this.thumbstimerId);
     this.thumbsImg = document.getElementById(this.thumbsImgId);
@@ -674,6 +671,7 @@ Player.prototype.loadPlaylist = function(playlist) {
 Player.prototype.playAt = function(index) {
     var item;
     var source;
+    var player;
     if (!this.playlistLoaded) {
         this.logger.error(' No playlist is loaded on player ');
         return false;
@@ -700,13 +698,11 @@ Player.prototype.playAt = function(index) {
         this.subsJsObj = item[Const.FJCONFIG_SUBTITLES];
     }
     // Set overlays
-    this.logger.warn('Setting overlays ', item[Const.FJCONFIG_OVERLAYS]);
     if ((item[Const.FJCONFIG_OVERLAYS] !== undefined) && (item[Const.FJCONFIG_OVERLAYS] != null)) {
         this.overlaysObjs = item[Const.FJCONFIG_OVERLAYS];
         this.OverlaysMgr.Setup(this.overlaysObjs);
     }
     // Set ads
-    this.logger.warn('Setting overlays ', item[Const.FJCONFIG_OVERLAYS]);
     if ((item[Const.FJCONFIG_ADS] !== undefined) && (item[Const.FJCONFIG_ADS] != null)) {
         this.adsObjs = item[Const.FJCONFIG_ADS];
         this.AdsMgr.Setup(this.adsObjs);
@@ -717,10 +713,14 @@ Player.prototype.playAt = function(index) {
         source.src = item[Const.FJCONFIG_SRC];
         if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
             // TODO DASH
+            player = MediaPlayer().create();
+            player.initialize(this.video,
+                item[Const.FJCONFIG_SRC], true);
+        } else {
+            source.type = item[Const.FJCONFIG_TYPE]; // 'video/mp4';
+            this.video.appendChild(source);
+            // done
         }
-        source.type = item[Const.FJCONFIG_TYPE]; // 'video/mp4';
-        this.video.appendChild(source);
-        // done
         return true;
     }
     this.logger.error('src of item is not valid , at index ', index);
