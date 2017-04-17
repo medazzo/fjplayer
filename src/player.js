@@ -711,6 +711,9 @@ Player.prototype.playAt = function(index) {
     if (item[Const.FJCONFIG_SRC] != null || item[Const.FJCONFIG_SRC] !== undefined) {
         source = document.createElement('source');
         source.src = item[Const.FJCONFIG_SRC];
+        this.video.preload = true;
+        this.video.controls = false;
+        this.video.autoplay = false;
         if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
             // TODO DASH
             player = MediaPlayer().create();

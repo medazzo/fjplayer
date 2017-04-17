@@ -90,7 +90,9 @@
         };
 
         window.onload = function() {
-            console.info('VERSION', fjplayer.Version);
+            var ver = new fjplayer.Version();
+            console.info('VERSION', ver.getVersion());
+            console.info('Hash HEAD', ver.getShortHash());
             var playlist = new fjplayer.Playlist();
             // playlist.addItem(item);
             playlist.addItem(itemDash);

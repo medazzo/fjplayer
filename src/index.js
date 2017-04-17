@@ -3,7 +3,7 @@
  */
 import Playlist from './playlist';
 import Player from './player';
-import { getVersionString } from './Version';
+import Version from './Version';
 
 // Shove both of these into the global scope
 var context = (typeof window !== 'undefined' && window) || global;
@@ -16,8 +16,9 @@ if (!fjplayer) {
 
 fjplayer.Playlist = Playlist;
 fjplayer.Player = Player;
-fjplayer.Version = getVersionString();
+fjplayer.Version = Version;
 
 export default fjplayer;
 export { Playlist };
 export { Player };
+export { Version };
