@@ -90,10 +90,10 @@ Player.prototype.setUi = function() {
         return;
     }
 
-    if (this.vwidth === null) {
+    if ((this.vwidth === undefined) || (this.vwidth === null)) {
         this.vwidth = '640px';
     }
-    if (this.vheight === null) {
+    if ((this.vheight === undefined) || (this.vheight === null)) {
         this.vheight = '480px';
     }
 
@@ -466,8 +466,6 @@ Player.prototype.InitPlayer = function(self) {
     var i = 0;
     var track = null;
     var item = null;
-    self.logger.warn(' Starting to initlize player ');
-
     // progress bar
     self.progressBar.max = Math.round(self.video.duration);
     self.progressBar.min = 0;
@@ -717,8 +715,12 @@ Player.prototype.playAt = function(index) {
         if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
             // TODO DASH
             player = MediaPlayer().create();
+            // player.setAutoPlay(false);
             player.initialize(this.video,
-                item[Const.FJCONFIG_SRC], true);
+                item[Const.FJCONFIG_SRC], false);
+            // player.setAutoPlay(false);
+            this.logger.warn(' Mediaplayer autoplay is ', player.getAutoPlay());
+
         } else {
             source.type = item[Const.FJCONFIG_TYPE]; // 'video/mp4';
             this.video.appendChild(source);
