@@ -69,6 +69,85 @@ PlayerMedia.prototype.play = function() {
 /**
  *
  */
+PlayerMedia.prototype.time = function() {
+    if (this.types === PlayerMedia.MP4_CLEAR) {
+        return this.video.currentTime;
+    } else if ((this.types === PlayerMedia.DASH_CLEAR) || (this.types === PlayerMedia.DASH_ENCRYPTED)) {
+        return this.DashPlayer.time();
+    }
+    this.logger.warn(' No Media Loaded ! ');
+};
+/**
+ *
+ */
+PlayerMedia.prototype.isPaused = function() {
+    if (this.types === PlayerMedia.MP4_CLEAR) {
+        return (self.video.paused);
+    } else if ((this.types === PlayerMedia.DASH_CLEAR) || (this.types === PlayerMedia.DASH_ENCRYPTED)) {
+        return this.DashPlayer.isPaused();
+    }
+    this.logger.warn(' No Media Loaded ! ');
+};
+/**
+ *
+ */
+PlayerMedia.prototype.isMuted = function() {
+    if (this.types === PlayerMedia.MP4_CLEAR) {
+        return (self.video.muted);
+    } else if ((this.types === PlayerMedia.DASH_CLEAR) || (this.types === PlayerMedia.DASH_ENCRYPTED)) {
+        return this.DashPlayer.isMuted();
+    }
+    this.logger.warn(' No Media Loaded ! ');
+};
+/**
+ *
+ */
+PlayerMedia.prototype.setVolume = function(volume) {
+    if (this.types === PlayerMedia.MP4_CLEAR) {
+        self.video.volume = volume;
+    } else if ((this.types === PlayerMedia.DASH_CLEAR) || (this.types === PlayerMedia.DASH_ENCRYPTED)) {
+        this.DashPlayer.setVolume(volume);
+    } else {
+        this.logger.warn(' No Media Loaded ! ');
+    }
+};
+/**
+ *
+ */
+PlayerMedia.prototype.getDuration = function() {
+    if (this.types === PlayerMedia.MP4_CLEAR) {
+        return self.video.duration;
+    } else if ((this.types === PlayerMedia.DASH_CLEAR) || (this.types === PlayerMedia.DASH_ENCRYPTED)) {
+        return this.DashPlayer.duration();
+    }
+    this.logger.warn(' No Media Loaded ! ');
+};
+/**
+ *
+ */
+PlayerMedia.prototype.getVolume = function() {
+    if (this.types === PlayerMedia.MP4_CLEAR) {
+        return self.video.volume;
+    } else if ((this.types === PlayerMedia.DASH_CLEAR) || (this.types === PlayerMedia.DASH_ENCRYPTED)) {
+        return this.DashPlayer.getVolume();
+    }
+    this.logger.warn(' No Media Loaded ! ');
+};
+/**
+ *
+ */
+PlayerMedia.prototype.setMute = function(mute) {
+    if (this.types === PlayerMedia.MP4_CLEAR) {
+        self.video.muted = mute;
+    } else if ((this.types === PlayerMedia.DASH_CLEAR) || (this.types === PlayerMedia.DASH_ENCRYPTED)) {
+        this.DashPlayer.setMute(mute);
+    } else {
+        this.logger.warn(' No Media Loaded ! ');
+    }
+};
+/**
+ *
+ */
 PlayerMedia.prototype.pause = function() {
     if (this.types === PlayerMedia.MP4_CLEAR) {
         this.video.pause();
