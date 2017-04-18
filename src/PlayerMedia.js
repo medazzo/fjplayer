@@ -35,12 +35,11 @@ PlayerMedia.prototype.events = {
     STREAM_STARTED: 1,
     PLAYBACK_PAUSED: 2,
     PLAYBACK_SEEKED: 3,
-    DASH_ENCRYPTED: 3,
     properties: {
-        0: { name: 'UNKNOWN', value: 0, code: 'U' },
-        1: { name: 'MP4_CLEAR', value: 1, code: 'M' },
-        2: { name: 'DASH_CLEAR', value: 2, code: 'D' },
-        3: { name: 'DASH_ENCRYPTED', value: 3, code: 'E' }
+        0: { name: 'STREAM_LOADED', value: 0, code: 'L' },
+        1: { name: 'STREAM_STARTED', value: 1, code: 'S' },
+        2: { name: 'PLAYBACK_PAUSED', value: 2, code: 'P' },
+        3: { name: 'PLAYBACK_SEEKED', value: 3, code: 'S' }
     }
 };
 /**
@@ -208,14 +207,30 @@ PlayerMedia.prototype.Unload = function() {
     while (this.video.hasChildNodes()) {
         this.video.removeChild(this.video.firstChild);
     }
+    if (this.types === PlayerMedia.MP4_CLEAR) {
+        this.video.offloadedmetadata(this.onStreamInitialized);
+        this.video.offplay(this.onPlayStart);
+        this.video.offpause(this.onPlaybackPaused);
+        this.video.offended(this.onPlaybackEnded);
+        this.video.offtimeupdate(this.onPlayTimeUpdate);
+        this.video.offseeked(this.onSeeked);
+        this.video.offerror(this.onError);
+    } else if ((this.types === PlayerMedia.DASH_CLEAR) || (this.types === PlayerMedia.DASH_ENCRYPTED)) {} else {
+        this.DashPlayer.reset();
+        // Unsetting Callbacks
+        this.DashPlayer.off(MediaPlayer.events.STREAM_INITIALIZED, this.onStreamInitialized, this);
+        this.DashPlayer.off(MediaPlayer.events.PLAYBACK_STARTED, this.onPlayStart, this);
+        this.DashPlayer.off(MediaPlayer.events.PLAYBACK_PAUSED, this.onPlaybackPaused, this);
+        this.DashPlayer.off(MediaPlayer.events.QUALITY_CHANGE_REQUESTED, this.onQualityChangeRequested, this);
+        this.DashPlayer.off(MediaPlayer.events.QUALITY_CHANGE_RENDERED, this.onQualityChangeRendered, this);
+        this.DashPlayer.off(MediaPlayer.events.PERIOD_SWITCH_COMPLETED, this.onSwitchCompleted, this);
+        this.DashPlayer.off(MediaPlayer.events.PLAYBACK_ENDED, this.onPlaybackEnded, this);
+        this.DashPlayer.off(MediaPlayer.events.PLAYBACK_TIME_UPDATED, this.onPlayTimeUpdate, this);
+        this.DashPlayer.off(MediaPlayer.events.PLAYBACK_SEEKED, this.onSeeked, this);
+        this.DashPlayer.off(MediaPlayer.events.TEXT_TRACKS_ADDED, this.onTracksAdded, this);
+        this.DashPlayer.off(MediaPlayer.events.ERROR, this.onError, this);
+    }
     this.types = PlayerMedia.UNKNOWN;
-    this.DashPlayer.reset();
-    this.DashPlayer.off(MediaPlayer.events.PLAYBACK_STARTED, this.onPlayStart, this);
-    this.DashPlayer.off(MediaPlayer.events.PLAYBACK_PAUSED, this.onPlaybackPaused, this);
-    this.DashPlayer.off(MediaPlayer.events.PLAYBACK_TIME_UPDATED, this.onPlayTimeUpdate, this);
-    this.DashPlayer.off(MediaPlayer.events.PLAYBACK_SEEKED, this.onSeeked, this);
-    this.DashPlayer.off(MediaPlayer.events.TEXT_TRACKS_ADDED, this.onTracksAdded, this);
-    this.DashPlayer.off(MediaPlayer.events.STREAM_INITIALIZED, this.onStreamInitialized, this);
 };
 /**
  * Used for clear video/mp4
@@ -230,6 +245,14 @@ PlayerMedia.prototype.load = function(url, type, poster, autoplay) {
     this.video.appendChild(source);
     this.video.setAttribute('poster', poster);
     this.types = PlayerMedia.MP4_CLEAR;
+    // Setting Callbacks
+    this.video.onloadedmetadata(this.onStreamInitialized);
+    this.video.onplay(this.onPlayStart);
+    this.video.onpause(this.onPlaybackPaused);
+    this.video.onended(this.onPlaybackEnded);
+    this.video.ontimeupdate(this.onPlayTimeUpdate);
+    this.video.onseeked(this.onSeeked);
+    this.video.onerror(this.onError);
 };
 /**
  * Used for clear mpeg Dash
@@ -243,12 +266,18 @@ PlayerMedia.prototype.loadDash = function(url, poster, autoplay) {
     this.DashPlayer.initialize(this.video, url, autoplay);
     this.DashPlayer.attachVideoContainer(this.videoFigure);
     this.types = PlayerMedia.DASH_CLEAR;
+    // Setting Callbacks
+    this.DashPlayer.on(MediaPlayer.events.STREAM_INITIALIZED, this.onStreamInitialized, this);
     this.DashPlayer.on(MediaPlayer.events.PLAYBACK_STARTED, this.onPlayStart, this);
     this.DashPlayer.on(MediaPlayer.events.PLAYBACK_PAUSED, this.onPlaybackPaused, this);
+    this.DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_REQUESTED, this.onQualityChangeRequested, this);
+    this.DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_RENDERED, this.onQualityChangeRendered, this);
+    this.DashPlayer.on(MediaPlayer.events.PERIOD_SWITCH_COMPLETED, this.onSwitchCompleted, this);
+    this.DashPlayer.on(MediaPlayer.events.PLAYBACK_ENDED, this.onPlaybackEnded, this);
     this.DashPlayer.on(MediaPlayer.events.PLAYBACK_TIME_UPDATED, this.onPlayTimeUpdate, this);
     this.DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKED, this.onSeeked, this);
     this.DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, this.onTracksAdded, this);
-    this.DashPlayer.on(MediaPlayer.events.STREAM_INITIALIZED, this.onStreamInitialized, this);
+    this.DashPlayer.on(MediaPlayer.events.ERROR, this.onError, this);
 };
 /**
  * Used for Encrypted mpeg Dash
@@ -262,10 +291,16 @@ PlayerMedia.prototype.loadDashDrm = function(url, poster, autoplay, drm) {
     this.DashPlayer.attachVideoContainer(this.videoFigure);
     // TODO : set Drm
     this.types = PlayerMedia.DASH_ENCRYPTED;
+    // Setting Callbacks
+    this.DashPlayer.on(MediaPlayer.events.STREAM_INITIALIZED, this.onStreamInitialized, this);
     this.DashPlayer.on(MediaPlayer.events.PLAYBACK_STARTED, this.onPlayStart, this);
     this.DashPlayer.on(MediaPlayer.events.PLAYBACK_PAUSED, this.onPlaybackPaused, this);
+    this.DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_REQUESTED, this.onQualityChangeRequested, this);
+    this.DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_RENDERED, this.onQualityChangeRendered, this);
+    this.DashPlayer.on(MediaPlayer.events.PERIOD_SWITCH_COMPLETED, this.onSwitchCompleted, this);
+    this.DashPlayer.on(MediaPlayer.events.PLAYBACK_ENDED, this.onPlaybackEnded, this);
     this.DashPlayer.on(MediaPlayer.events.PLAYBACK_TIME_UPDATED, this.onPlayTimeUpdate, this);
     this.DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKED, this.onSeeked, this);
     this.DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, this.onTracksAdded, this);
-    this.DashPlayer.on(MediaPlayer.events.STREAM_INITIALIZED, this.onStreamInitialized, this);
+    this.DashPlayer.on(MediaPlayer.events.ERROR, this.onError, this);
 };
