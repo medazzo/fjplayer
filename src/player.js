@@ -5,6 +5,7 @@ import Overlays from './Overlays';
 import SubsMenu from './SubsMenu';
 import AdsManager from './AdsManager';
 import * as Const from './constants';
+import PlayerMedia from './PlayerMedia';
 import { MediaPlayer } from 'dashjs';
 require('./player.css');
 require('font-awesome/css/font-awesome.css');
@@ -59,6 +60,7 @@ function Player(fjID, videoContainerId, playerexpandScreen) {
     this.SubsMenu = new SubsMenu(this.video, this.subtitlesBtnId, this.subsdMenuContainerDivId);
     this.OverlaysMgr = new Overlays(this.video, document.getElementById(this.overlaysContainerDivId));
     this.AdsMgr = new AdsManager(this, this.video, document.getElementById(this.adsContainerDivId));
+    this.PlayerMedia = new PlayerMedia(this, this.video, this.videoFigure);
 };
 // constantes member of class
 Player.prototype.playlistLoaded = false;
