@@ -669,3 +669,5 @@ PlayerUi.prototype = (function() {
         }
     };
 })();
+
+export default PlayerUi;

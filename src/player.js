@@ -6,8 +6,9 @@ import SubsMenu from './SubsMenu';
 import AdsManager from './AdsManager';
 import * as Const from './constants';
 import PlayerMedia from './PlayerMedia';
-import PlayerUi from './PlayerUi';
+// import PlayerUi from './PlayerUi';
 import { MediaPlayer } from 'dashjs';
+var ejsContent = require('ejs!./fjplayer-tmpl.ejs');
 require('./player.css');
 require('font-awesome/css/font-awesome.css');
 /**
@@ -18,7 +19,7 @@ function Player(fjID, videoContainerId, playerexpandScreen) {
     this.expandScreen = playerexpandScreen;
     this.FJid = fjID;
     this.videoContainerId = videoContainerId;
-    this.id = new Date().valueOf() + '_' + Math.random();
+    this.id = Date.now().toString().substr(6);
     this.timerId = 'trd' + this.id;
     this.titleId = 'tld' + this.id;
     this.BigPlayBtnId = 'bp' + this.id;
@@ -33,16 +34,13 @@ function Player(fjID, videoContainerId, playerexpandScreen) {
     this.progressDivId = 'pd' + this.id;
     this.progressBarId = 'pb' + this.id;
     this.fullScreenBtnId = 'fs' + this.id;
-
     this.subtitlesDivId = 'sd' + this.id;
     this.subtitlesBtnId = 'sb' + this.id;
-
     this.thumbsDivId = 'td' + this.id;
     this.thumbsImgId = 'ti' + this.id;
-
+    this.thumbstimerId = 'tt' + this.id;
     this.expandDivId = 'ed' + this.id;
     this.expandBtnId = 'eb' + this.id;
-
     this.adsContainerDivId = 'adscd' + this.id;
     this.overlaysContainerDivId = 'ovscd' + this.id;
     this.subsdMenuContainerDivId = 'smcd' + this.id;
@@ -62,7 +60,7 @@ function Player(fjID, videoContainerId, playerexpandScreen) {
     this.OverlaysMgr = new Overlays(this.video, document.getElementById(this.overlaysContainerDivId));
     this.AdsMgr = new AdsManager(this, this.video, document.getElementById(this.adsContainerDivId));
     this.PlayerMedia = new PlayerMedia(this, this.video, this.videoFigure);
-    this.PlayerUi = new PlayerUi();
+    // this.PlayerUi = new PlayerUi();
 };
 // constantes member of class
 Player.prototype.playlistLoaded = false;
@@ -89,85 +87,51 @@ Player.prototype.uidone = false;
  * Fonction to prepare the UI and set Html content of player container
  */
 Player.prototype.setUi = function() {
-    var inHtml = '';
+    var data = '';
     if (this.uidone) {
         return;
     }
-
     if ((this.vwidth === undefined) || (this.vwidth === null)) {
         this.vwidth = '640px';
     }
     if ((this.vheight === undefined) || (this.vheight === null)) {
         this.vheight = '480px';
     }
+    data = {
+        'videoFigureId': this.videoFigureId,
+        'fullScreenOnStart': this.fullScreenOnStart,
+        'videoId': this.videoId,
+        'vwidth': this.vwidth,
+        'vheight': this.vheight,
+        'videoInfoId': this.videoInfoId,
+        'titleId': this.titleId,
+        'BigPlayBtnId': this.BigPlayBtnId,
+        'videoControlsId': this.videoControlsId,
+        'progressDivId': this.progressDivId,
+        'progressBarId': this.progressBarId,
+        'playpauseBtnId': this.playpauseBtnId,
+        'muteBtnId': this.muteBtnId,
+        'volumeDivId': this.volumeDivId,
+        'volumeBarId': this.volumeBarId,
+        'timerId': this.timerId,
+        'fullScreenBtnId': this.fullScreenBtnId,
+        'expandDivId': this.expandDivId,
+        'expandBtnId': this.expandBtnId,
+        'subtitlesDivId': this.subtitlesDivId,
+        'subtitlesBtnId': this.subtitlesBtnId,
+        'thumbsDivId': this.thumbsDivId,
+        'thumbsImgId': this.thumbsImgId,
+        'thumbstimerId': this.thumbstimerId,
+        'audMenuContainerDivId': this.audMenuContainerDivId,
+        'subsdMenuContainerDivId': this.subsdMenuContainerDivId,
+        'overlaysContainerDivId': this.overlaysContainerDivId,
+        'adsContainerDivId': this.adsContainerDivId
+    };
 
-    inHtml =
-        '<figure id=\"' + this.videoFigureId + '\" class=\"fjfigure\" ' +
-        'data-fullscreen=\"' + this.fullScreenOnStart + '\">' +
-        '<video id=\"' + this.videoId + '\" class=\"divofVideo\" ';
-    inHtml += 'width=\"' + this.vwidth + '\" ';
-    inHtml += 'height=\"' + this.vheight + '\" ';
-    inHtml += '     >' +
-        '</video>' +
-        '<div class=\"divInfo\" id=\"' + this.videoInfoId + '\">' +
-        '<span class=\" divIconBtn divconeontrolLeft fa  fa-arrow-left\"> </span>' +
-        '<p class=\" divTspanitleSeparator divconeontrolLeft \"> </p>' +
-        '<div id=\"' + this.titleId + '\" class=\"fjcontrols-control-text divIconBtn ' +
-        ' divconeontrolLeft\"> </div>' +
-        '<span class=\" divIconBtn divconeontrolRight fa  fa-share-alt \"> </span>' +
-        '<p class=\" divTspanitleSeparator divconeontrolRight \"> </p>' +
-        '<span class=\" divIconBtn divconeontrolRight  fa fa-download \"> </span>' +
-        '</div>' +
-        '<div class=\"divBigPlayBtn\" id=\"' + this.BigPlayBtnId + '\">' +
-        '<span class=\" divIconBtn  divconeontrolLeft fa  fa-play \"> </span>' +
-        '</div>' +
-        '<div class=\"fjcontrols-panel\" id=\"' + this.videoControlsId + '\">' +
-        '<div class=\"fjcontrols-panel-controls\">' +
-        '<div class=\"hprogressbar\" id=\"' + this.progressDivId + '\">' +
-        '<input id=\"' + this.progressBarId + '\" type=\"range\"  />' +
-        '</div>' +
-        '</div>' +
-        '<div class=\"fjcontrols-control divIconBtn divconeontrolIcon divconeontrolLeft clickable \">' +
-        '<span id=\"' + this.playpauseBtnId + '\"  class=\"fa fa-play\" title=\"Play\" ></span>' +
-        '</div>' +
-        '<div  class=\"fjcontrols-control divconeontrolIcon divIconBtn divconeontrolLeft clickable\">' +
-        '<span id=\"' + this.muteBtnId + '\" title=\"volume-full\" class=\"fa fa-volume-up\"></span>' +
-        '</div>' +
-        '<div class=\"fjcontrols-control fjcontrols-control-left\">' +
-        '<div class=\"volumebar\" id=\"' + this.volumeDivId + '\">' +
-        '<input  class=\"clickable\"  id=\"' + this.volumeBarId + '\" type=\"range\" />' +
-        '</div>' +
-        '</div>' +
-        '<div class=\"fjcontrols-control  fjcontrols-control-left \">' +
-        '<div id=\"' + this.timerId + '\" class=\"fjcontrols-control fjcontrols-control-text\">' +
-        '<span>0:00:00</span><span>/</span><span>0:00:00</span>' +
-        '</div>' +
-        '</div>' +
-        '<div class=\"fjcontrols-control divIconBtn divconeontrolIcon fjcontrols-control-right clickable\">' +
-        '<span  id=\"' + this.fullScreenBtnId + '\"  title=\"Fullscreen\" class=\"fa fa-arrows-alt\" ></span>' +
-        '</div>' +
-        '<div id=\"' + this.expandDivId + '\" class=\"fjcontrols-control divIconBtn divconeontrolIcon ' +
-        'fjcontrols-control-right clickable\">' +
-        '<span id=\"' + this.expandBtnId + '\"  class=\"fa fa-expand\" title=\"Double player size\" ></span>' +
-        '</div>' +
-        '<div id=\"' + this.subtitlesDivId + '\"  class=\"fjcontrols-control divIconBtn divconeontrolIcon ' +
-        'fjcontrols-control-right clickable\">' +
-        '<span id=\"' + this.subtitlesBtnId + '\" class=\"fa fa-cc\"  title=\"subtitles\" ></span>' +
-        '</div>' +
-        '</div>' +
-        '<div class=\"thumbsBlockDiv\" id=\"' + this.thumbsDivId + '\" >' +
-        '<span class=\"thumbsBlock\" id=\"' + this.thumbsImgId + '\" ></span>' +
-        '<span class=\"fjcontrols-control-text\" id=\"' + this.thumbstimerId + '\"</span>' +
-        '</div>' +
-        '<div id=\"' + this.audMenuContainerDivId + '\" ></div>' +
-        '<div id=\"' + this.subsdMenuContainerDivId + '\" ></div>' +
-        '<div id=\"' + this.overlaysContainerDivId + '\"  ></div>' +
-        '<div id=\"' + this.adsContainerDivId + '\"  ></div>' +
-        '</figure>';
     this.logger.info(' container if of the player ', this.videoContainerId);
     this.videoContainer = document.getElementById(this.videoContainerId);
     this.videoContainer.classList.add('fjPlayer');
-    this.videoContainer.innerHTML = inHtml;
+    this.videoContainer.innerHTML = ejsContent(data);
     this.uidone = true;
 };
 /**

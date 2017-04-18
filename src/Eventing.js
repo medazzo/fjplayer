@@ -55,3 +55,5 @@ Eventing.prototype.fireEvent = function(name, args) {
         evs[i].apply(null, args);
     }
 };
+
+export default Eventing;

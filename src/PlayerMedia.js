@@ -383,3 +383,5 @@ PlayerMedia.prototype.loadDashDrm = function(url, poster, autoplay, drm) {
     this.DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, this.onTracksAdded, this);
     this.DashPlayer.on(MediaPlayer.events.ERROR, this.onError, this);
 };
+
+export default PlayerMedia;

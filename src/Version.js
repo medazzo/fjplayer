@@ -4,8 +4,8 @@ function Version() {
 };
 
 const GIT_VERSION = '0.2.2';
-const GIT_COMMIT_SINCE_TAG = '6';
-const GIT_HEAD_SHORT_HASH = 'ge3501ea';
+const GIT_COMMIT_SINCE_TAG = '7';
+const GIT_HEAD_SHORT_HASH = 'g27b2a78';
 
 Version.prototype.getVersion = function() {
     return GIT_VERSION;
