@@ -41,12 +41,10 @@ Thumbs.prototype.Setup = function(thumbsTrackIndex) {
 Thumbs.prototype.showThumbs = function(self) {
     self.thumbsDiv.classList.remove('fj-hide');
     self.thumbsDiv.classList.add('fj-show');
-    self.logger.log(' Showing Thumbs ');
 };
 Thumbs.prototype.hideThumbs = function(self) {
     self.thumbsDiv.classList.remove('fj-show');
     self.thumbsDiv.classList.add('fj-hide');
-    self.logger.log(' Hidding Thumbs ');
 };
 
 /**
@@ -57,6 +55,7 @@ Thumbs.prototype.renderThumbs = function(self, event) {
     var c, i, url, xywh;
     var rect = self.progressBar.getBoundingClientRect();
     var p = (event.pageX - rect.left) * (self.video.duration / (rect.right - rect.left));
+    var dur = self.player.duration(parseFloat(p));
     if ((p > (self.video.duration + 2)) || (p < 0)) {
         // some error ?
         self.logger.error(' Position is bigger than duration >>', p, self.video.duration);
@@ -76,7 +75,7 @@ Thumbs.prototype.renderThumbs = function(self, event) {
             break;
         };
     }
-    self.logger.log(' Render Thumbs  @ ', self.player.duration(Math.round(p)));
+    self.logger.log(' Render Thumbs  @ ', dur);
     // ..next we unravel the JPG url and fragment query..
     xywh = c[i].text.substr(c[i].text.indexOf('=') + 1).split(',');
 
@@ -87,7 +86,7 @@ Thumbs.prototype.renderThumbs = function(self, event) {
     self.thumbsImg.style.backgroundPosition = '-' + xywh[0] + 'px -' + xywh[1] + 'px';
     self.thumbsImg.style.width = xywh[2] + 'px';
     self.thumbsImg.style.height = xywh[3] + 'px';
-    self.thumbstimer.innerHTML = self.player.duration(Math.round(p));
+    self.thumbstimer.innerHTML = dur;
     self.thumbsDiv.style.left = (event.pageX - xywh[2] / 2) + 'px';
     self.thumbsDiv.style.top = (rect.top - (xywh[3] * 1.5) + 5) + 'px';
     self.thumbsDiv.style.width = xywh[2] + 'px';

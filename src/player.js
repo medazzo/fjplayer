@@ -467,9 +467,9 @@ Player.prototype.InitPlayer = function(self) {
     var track = null;
     var item = null;
     // progress bar
-    self.progressBar.max = Math.round(self.video.duration);
+    self.progressBar.max = self.video.duration;
     self.progressBar.min = 0;
-    self.progressBar.step = 1;
+    self.progressBar.step = 0.01;
     self.progressBar.value = 0;
     // volume bar
     self.volumeBar.min = 0;
@@ -574,26 +574,32 @@ Player.prototype.onvideoTimeupdate = function(self) {
         'color-stop(' + val + ', #8F9B9E)' +
         ')';
     // set timer
-    self.timer.innerHTML = ' <span>' + self.duration(self.video.currentTime) +
+    self.timer.innerHTML = ' <span>' + self.duration(self.progressBar.value) +
         '</span><span>/</span><span>' + self.duration(self.video.duration) + '</span>';
 };
 /**
  *  React to the user clicking within the progress bar
  */
-Player.prototype.onprogressClick = function(e, self) {
+Player.prototype.onprogressClick = function(event, self) {
     var val = 0;
-    var p = Math.round(self.progressBar.value);
+    // var p = self.progressBar.value;
+    var rect = self.progressBar.getBoundingClientRect();
+    var p = (event.pageX - rect.left) * (self.video.duration / (rect.right - rect.left));
     if (self.progressBar.max !== self.video.duration) {
         self.progressBar.max = self.video.duration;
     }
-    self.logger.log(' Seeking from ', self.video.currentTime, ':: ', self.video.duration, 'to ', p, ' sec');
+    self.logger.log(' Seeking from ', self.duration(self.video.currentTime), '/',
+        self.duration(self.video.duration), 'to', self.duration(p), ' sec');
     // change current time
-    self.video.currentTime = self.progressBar.value;
+    self.video.currentTime = parseFloat(p);
     val = (self.progressBar.value - self.progressBar.min) / (self.progressBar.max - self.progressBar.min);
     self.progressBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
         'color-stop(' + val + ', #FF0000), ' +
         'color-stop(' + val + ', #8F9B9E)' +
         ')';
+    // set timer
+    self.timer.innerHTML = ' <span>' + self.duration(p) +
+        '</span><span>/</span><span>' + self.duration(self.video.duration) + '</span>';
 };
 /**
  *  hide or show panel controls
@@ -718,8 +724,32 @@ Player.prototype.playAt = function(index) {
             // player.setAutoPlay(false);
             player.initialize(this.video,
                 item[Const.FJCONFIG_SRC], false);
-            // player.setAutoPlay(false);
-            this.logger.warn(' Mediaplayer autoplay is ', player.getAutoPlay());
+            player.attachVideoContainer(this.videoFigure);
+            player.on(MediaPlayer.events.ERROR, function(e) {
+                console.error(' [ERROR] ', e.error + ' : ' + e.event.message);
+            });
+
+            player.on(MediaPlayer.events.QUALITY_CHANGE_REQUESTED, function(e) {
+                console.error(' [EVENT] Quality change Request from Index', e.oldQuality,
+                    ' to new index ', e.newQuality, ' on Media Type ', e.mediaType);
+            });
+
+            player.on(MediaPlayer.events.QUALITY_CHANGE_RENDERED, function(e) {
+                console.error(' [EVENT] Quality change RENDERED from Index', e.oldQuality,
+                    ' to new index ', e.newQuality, ' on Media Type ', e.mediaType);
+            });
+
+            player.on(MediaPlayer.events.PERIOD_SWITCH_COMPLETED, function(e) {
+                console.error(' [EVENT] Period Switch COMPLETED : ', e.toStreamInfo);
+            });
+
+            player.on(MediaPlayer.events.STREAM_INITIALIZED, function(e) {
+                console.error(' [EVENT] STREAM INITILIZED : ', e);
+            });
+
+            player.on(MediaPlayer.events.PLAYBACK_ENDED, function(e) {
+                console.error(' [EVENT] PLAYBACK ENDED: ', e);
+            });
 
         } else {
             source.type = item[Const.FJCONFIG_TYPE]; // 'video/mp4';
