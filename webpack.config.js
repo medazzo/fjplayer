@@ -13,12 +13,6 @@ var plugins = [],
 plugins.push(new webpack.ProvidePlugin({
     _: 'underscore'
 }));
-// for jquery
-plugins.push(new webpack.ProvidePlugin({
-    jQuery: 'jquery',
-    $: 'jquery',
-    jquery: 'jquery'
-}));
 
 if (env === 'build') {
     plugins.push(new UglifyJsPlugin({ minimize: true }));
