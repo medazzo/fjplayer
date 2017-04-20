@@ -3,120 +3,138 @@ require('./player.css');
 /**
  *  Class player in whinch the player is implemented
  */
-function AudsMenu(video, playerId, audMenuContainerDivId) {
-    this.logger = new Logger(this);
-    this.video = video;
-    this.id = playerId;
-    this.audsBtnId = 'lb' + this.id;
-    this.audsMenuListId = 'amml' + this.id;
-    this.audMenuContainerDivId = audMenuContainerDivId;
-    this.AudsExist = false;
-};
-/**
- * Aubs cbx Mgt
- */
-AudsMenu.prototype.activateAudio = function(self, item) {
-    var i = 0;
-    var litem;
-    var index = Array.prototype.indexOf.call(self.menuListAud.childNodes, item);
-    var tindex = item.getAttribute('index');
-    self.logger.log('clicked is  selected @ index ', index, ' text index ', tindex);
-    if (self.video.audioTracks) {
-        if (self.video.audioTracks[index].enabled) {
-            self.logger.log('AlREADY  selected @ index ', tindex);
-            return;
-        }
+function AudsMenu(Playervideo, playerId, MenuContainerDivId) {
+    var logger = new Logger(this),
+        video = Playervideo,
+        audMenuDiv = null,
+        menuListAud = null,
+        id = playerId,
+        audsBtnId = 'lb' + id,
+        audsMenuListId = 'amml' + id,
+        audMenuListId = null,
+        audsbuttonDivID = null,
+        audsbuttonDiv = null,
+        audsBtn = null,
+        audMenuContainerDivId = MenuContainerDivId;
 
-        for (i = 0; i < self.menuListAud.children.length; i++) {
-            litem = self.menuListAud.children[i];
-            self.logger.log('cheking item @  ', i);
-            if (i === index) {
-                self.video.audioTracks[i].enabled = true;
-                litem.className = 'subtitles-menu-item-actif';
-                self.logger.log('Setting item @  ', i);
-            } else {
-                self.video.audioTracks[i].enabled = false;
-                litem.className = 'subtitles-menu-item';
-                self.logger.log('Unsetting item @  ', i);
+    /**
+     * Aubs cbx Mgt
+     */
+    function activateAudio(item) {
+        var i = 0;
+        var litem;
+        var index = Array.prototype.indexOf.call(menuListAud.childNodes, item);
+        var tindex = item.getAttribute('index');
+        logger.log('clicked is  selected @ index ', index, ' text index ', tindex);
+        if (video.audioTracks) {
+            if (video.audioTracks[index].enabled) {
+                logger.log('AlREADY  selected @ index ', tindex);
+                return;
+            }
+
+            for (i = 0; i < menuListAud.children.length; i++) {
+                litem = menuListAud.children[i];
+                logger.log('cheking item @  ', i);
+                if (i === index) {
+                    video.audioTracks[i].enabled = true;
+                    litem.className = 'subtitles-menu-item-actif';
+                    logger.log('Setting item @  ', i);
+                } else {
+                    video.audioTracks[i].enabled = false;
+                    litem.className = 'subtitles-menu-item';
+                    logger.log('Unsetting item @  ', i);
+                }
             }
         }
-    }
-    self.audMenuDiv.style.display = 'none';
-};
-/**
- * Event CALLBACK ; called on menu Click
- */
-AudsMenu.prototype.onshowHideMenu = function(self, menuContainer, ev) {
-    menuContainer.style.position = 'absolute';
-    menuContainer.style.left = (ev.pageX - 20) + 'px';
-    menuContainer.style.top = (ev.pageY - 90) + 'px';
+        audMenuDiv.style.display = 'none';
+    };
+    /**
+     * Event CALLBACK ; called on menu Click
+     */
+    function onshowHideMenu(menuContainer, ev) {
+        menuContainer.style.position = 'absolute';
+        menuContainer.style.left = (ev.pageX - 20) + 'px';
+        menuContainer.style.top = (ev.pageY - 90) + 'px';
 
-    if (menuContainer.style.display === 'none') {
-        menuContainer.style.display = 'block';
-    } else {
-        menuContainer.style.display = 'none';
-    }
-    self.logger.log(' Showing or Hiding an menu ', menuContainer);
-};
-/**
- * Setting Auds menu and cbx
- */
-AudsMenu.prototype.Setup = function(AudsbuttonDivID) {
-    var i = 0;
-    var item = null;
-    var self = this;
-    this.audMenuDiv = document.getElementById(self.audMenuContainerDivId);
-    this.AudsExist = false;
-    // check if exist
-    if ((!self.video.audioTracks) || (self.video.audioTracks.length <= 1)) {
-        // hide audio button
-        self.logger.log(' Audio Menu not created !');
-        return;
-    }
-    this.AudsExist = true;
-    // Setting inner of btn div
-    this.AudsbuttonDivID = AudsbuttonDivID;
-    this.AudsbuttonDiv = document.getElementById(this.AudsbuttonDivID);
-    this.SubsbuttonDiv.innerHTML = '<span id=\"' + this.audsBtnId + '\"  ' +
-        '  class=\"fa fa-language\" title=\"audios\" ></span>';
-
-    this.audsBtn = document.getElementById(this.audsBtnId);
-    // video array
-    self.menuListAud = document.getElementById(self.audsMenuListId);
-    // clear old
-    if (self.menuListAud !== null) {
-        while (self.menuListAud.firstChild) {
-            self.menuListAud.removeChild(self.menuListAud.firstChild);
-        }
-    }
-
-    // Add events for languages button
-    self.Audsbutton.addEventListener('click', function(ev) {
-        self.onshowHideMenu(self, self.audMenuDiv, ev);
-    });
-
-    this.audMenuDiv.className = 'settingMenuDiv';
-    this.audMenuDiv.innerHTML =
-        '<div class=\"settingMenuSubMenuLeft\" >' +
-        '<ul class=\"subtitles-menu\" id=\"' + self.audMenuListId + '\" >' +
-        '</ul>	' +
-        '</div>';
-
-    for (i = 0; i < self.video.audioTracks.length; i++) {
-        item = document.createElement('li');
-        if (self.video.audioTracks[i].enabled) {
-            item.className = 'subtitles-menu-item-actif';
+        if (menuContainer.style.display === 'none') {
+            menuContainer.style.display = 'block';
         } else {
-            item.className = 'subtitles-menu-item';
+            menuContainer.style.display = 'none';
         }
-        item.innerHTML = self.video.audioTracks[i].language + '::' + self.video.audioTracks[i].label;
-        self.menuListAud.appendChild(item);
-        item.addEventListener('click', function(ev) {
-            self.activateAudio(self, this);
+        logger.log(' Showing or Hiding an menu ', menuContainer);
+    };
+    /**
+     * Used to Hide menu
+     */
+    function HideMenu() {
+        if (audMenuDiv === true) {
+            audMenuDiv.style.display = 'none';
+        }
+    };
+    /**
+     * Setting Auds menu and cbx
+     */
+    function Setup(buttonDivID) {
+        var i = 0;
+        var item = null;
+        audMenuDiv = document.getElementById(audMenuContainerDivId);
+        // check if exist
+        if ((!video.audioTracks) || (video.audioTracks.length <= 1)) {
+            // hide audio button
+            logger.log(' Audio Menu not created !');
+            return;
+        }
+        // Setting inner of btn div
+        audsbuttonDivID = buttonDivID;
+        audsbuttonDiv = document.getElementById(audsbuttonDivID);
+        audsbuttonDiv.innerHTML = '<span id=\"' + audsBtnId + '\"  ' +
+            '  class=\"fa fa-language\" title=\"audios\" ></span>';
+
+        audsBtn = document.getElementById(audsBtnId);
+        // video array
+        menuListAud = document.getElementById(audsMenuListId);
+        // clear old
+        if (menuListAud !== null) {
+            while (menuListAud.firstChild) {
+                menuListAud.removeChild(menuListAud.firstChild);
+            }
+        }
+
+        // Add events for languages button
+        audsBtn.addEventListener('click', function(ev) {
+            onshowHideMenu(audMenuDiv, ev);
         });
-    }
 
-    self.logger.log(' Audio Menu created !', self.video.audioTracks.length, '! ', self.menuListAud);
+        audMenuDiv.className = 'settingMenuDiv';
+        audMenuDiv.innerHTML =
+            '<div class=\"settingMenuSubMenuLeft\" >' +
+            '<ul class=\"subtitles-menu\" id=\"' + audMenuListId + '\" >' +
+            '</ul>	' +
+            '</div>';
+
+        for (i = 0; i < video.audioTracks.length; i++) {
+            item = document.createElement('li');
+            if (video.audioTracks[i].enabled) {
+                item.className = 'subtitles-menu-item-actif';
+            } else {
+                item.className = 'subtitles-menu-item';
+            }
+            item.innerHTML = video.audioTracks[i].language + '::' + video.audioTracks[i].label;
+            menuListAud.appendChild(item);
+            item.addEventListener('click', function(ev) {
+                activateAudio(this);
+            });
+        }
+
+        logger.log(' Audio Menu created !', video.audioTracks.length, '! ', menuListAud);
+    };
+    // ************************************************************************************
+    // PUBLIC API
+    // ************************************************************************************
+    return {
+        Setup: Setup,
+        HideMenu: HideMenu,
+        constructor: AudsMenu
+    };
 };
-
 export default AudsMenu;

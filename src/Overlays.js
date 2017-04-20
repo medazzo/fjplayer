@@ -6,109 +6,123 @@ import * as Const from './constants';
  * @description The Overlays is that manage overlays of a video :
  *     it manage overlays for information ads , media or ovelay on ads video.
  */
-function Overlays(OverlayDiv) {
-    this.logger = new Logger(this);
-    this.overlays = null;
-    this.settled = false;
-    this.OverlayDiv = OverlayDiv;
-    this.OverlayInnerDiv = null;
-    this.OverlayClosingDiv = null;
-};
-/**
- * Function to be called from event 'timeupdate' from video
- * called to check if overlays has to Start
- */
-Overlays.prototype.CheckOverlays = function(self, secondes) {
-    var i = 0;
-    var item = null;
-    var show = 0;
-    if (self.settled !== true) {
-        return;
-    }
-    for (i = 0; i < self.overlays.length; i++) {
-        item = self.overlays[i];
-        show = parseInt(item[Const.FJCONFIG_SHOW_AT], 10);
-        if (secondes === show) {
-            self.logger.info(i, ' starting overlay .. ');
-            if (self.overlays[i].started === false) {
-                self.logger.info(i, ' starting a new  overlay .. ');
-                self.overlays[i].started = true;
-                self.StartOverlay(self, i);
-            } else {
-                self.logger.info(i, ' already started ', item[Const.FJCONFIG_URL],
-                    ' @@ ', item[Const.FJCONFIG_SHOW_AT]);
+function Overlays(OverDiv) {
+    var logger = new Logger(this),
+        overlays = null,
+        settled = false,
+        OverlayDiv = OverDiv,
+        OverlayInnerDiv = null,
+        OverlayClosingDiv = null;
+
+
+    function Setup(overlays) {
+        var i = 0;
+        overlays = overlays;
+        settled = true;
+        for (i = 0; i < overlays.length; i++) {
+            overlays[i].started = false;
+            overlays[i].clicked = 0;
+        }
+        logger.info('Setup is settled ', settled, ' cheking overlays .. ', overlays);
+    };
+
+    function clicked(index) {
+        var item = overlays[index];
+        overlays[index].clicked++;
+        window.open(item[Const.FJCONFIG_URL], '_blank');
+    };
+
+    function StopOverlay(index) {
+        var el = OverlayDiv;
+        var elClone = null;
+        // hide the div
+        logger.warn(index, 'you overlay  is now stopped ', overlays[index].handler);
+        // remove the click event
+        el = OverlayDiv;
+        elClone = el.cloneNode(true);
+        el.parentNode.replaceChild(elClone, el);
+        OverlayDiv = elClone;
+        // hide the overlay , empty the div
+        while (OverlayDiv.hasChildNodes()) {
+            OverlayDiv.removeChild(OverlayDiv.firstChild);
+        }
+        OverlayDiv.innerHTML = '';
+        OverlayDiv.style.display = 'none';
+    };
+
+    /**
+     * Used to show an Overlay
+     */
+    function StartOverlay(index) {
+        var url = null;
+        var item = overlays[index];
+        overlays[index].started = true;
+        overlays[index].endTimer =
+            setTimeout(function() { StopOverlay(index); }, item[Const.FJCONFIG_DURATION] * 1000);
+        // empty the div && show the div
+        while (OverlayDiv.hasChildNodes()) {
+            OverlayDiv.removeChild(OverlayDiv.firstChild);
+        }
+        OverlayInnerDiv = document.createElement('div');
+        OverlayClosingDiv = document.createElement('div');
+        OverlayInnerDiv.innerHTML = '<p>' + item[Const.FJCONFIG_DATA] + '</p>';
+        OverlayInnerDiv.style.cursor = 'pointer';
+
+        OverlayClosingDiv.innerHTML = '<i onmouseover=\"style.opacity = 1;\" ' +
+            'onmouseout=\"style.opacity = 0.5\" style=\"padding-left: -5px;cursor: pointer; opacity: 0.5;' +
+            ' float: right; margin: -5px -10px 10px 10px;\" class="fa fa-2x fa-times" ' +
+            'aria-hidden="true"></i><div style=\"color: rgb(119, 255, 119); font-size: ' +
+            '0.95em; float: right; text-decoration: none;\">Annonce</div>';
+        OverlayClosingDiv.addEventListener('click', function() { StopOverlay(index); });
+        OverlayDiv.appendChild(OverlayClosingDiv);
+        OverlayDiv.appendChild(OverlayInnerDiv);
+        OverlayDiv.style.display = 'block';
+        OverlayDiv.classList.add('over-HL');
+        // add click
+        url = item[Const.FJCONFIG_URL];
+        logger.info('Setting click on overlay going to  ', url);
+        OverlayInnerDiv.addEventListener('click', function() { clicked(index); });
+        logger.log(index, 'you overlay just started and will end in ' +
+            item[Const.FJCONFIG_DURATION] + ' sec', overlays[index].handler);
+    };
+
+    /**
+     * Function to be called from event 'timeupdate' from video
+     * called to check if overlays has to Start
+     */
+    function CheckOverlays(secondes) {
+        var i = 0;
+        var item = null;
+        var show = 0;
+        if (settled !== true) {
+            return;
+        }
+        for (i = 0; i < overlays.length; i++) {
+            item = overlays[i];
+            show = parseInt(item[Const.FJCONFIG_SHOW_AT], 10);
+            if (secondes === show) {
+                logger.info(i, ' starting overlay .. ');
+                if (overlays[i].started === false) {
+                    logger.info(i, ' starting a new  overlay .. ');
+                    overlays[i].started = true;
+                    StartOverlay(i);
+                } else {
+                    logger.info(i, ' already started ', item[Const.FJCONFIG_URL],
+                        ' @@ ', item[Const.FJCONFIG_SHOW_AT]);
+                }
             }
         }
-    }
+    };
+    // ************************************************************************************
+    // PUBLIC API
+    // ************************************************************************************
+    return {
+        StartOverlay: StartOverlay,
+        StopOverlay: StopOverlay,
+        clicked: clicked,
+        Setup: Setup,
+        CheckOverlays: CheckOverlays,
+        constructor: Overlays
+    };
 };
-Overlays.prototype.Setup = function(overlays) {
-    var i = 0;
-    this.overlays = overlays;
-    this.settled = true;
-    for (i = 0; i < this.overlays.length; i++) {
-        this.overlays[i].started = false;
-        this.overlays[i].clicked = 0;
-    }
-    this.logger.info('Setup is settled ', this.settled, ' cheking overlays .. ', this.overlays);
-};
-Overlays.prototype.clicked = function(self, index) {
-    var item = self.overlays[index];
-    self.overlays[index].clicked++;
-    window.open(item[Const.FJCONFIG_URL], '_blank');
-};
-
-Overlays.prototype.StopOverlay = function(self, index) {
-    var el = self.OverlayDiv;
-    var elClone = null;
-    // hide the div
-    this.logger.warn(index, 'you overlay  is now stopped ', self.overlays[index].handler);
-    // remove the click event
-    el = self.OverlayDiv;
-    elClone = el.cloneNode(true);
-    el.parentNode.replaceChild(elClone, el);
-    self.OverlayDiv = elClone;
-    // hide the overlay , empty the div
-    while (self.OverlayDiv.hasChildNodes()) {
-        self.OverlayDiv.removeChild(self.OverlayDiv.firstChild);
-    }
-    self.OverlayDiv.innerHTML = '';
-    self.OverlayDiv.style.display = 'none';
-};
-
-/**
- * Used to show an Overlay
- */
-Overlays.prototype.StartOverlay = function(self, index) {
-    var url = null;
-    var item = self.overlays[index];
-    self.overlays[index].started = true;
-    self.overlays[index].endTimer =
-        setTimeout(function() { self.StopOverlay(self, index); }, item[Const.FJCONFIG_DURATION] * 1000);
-    // empty the div && show the div
-    while (self.OverlayDiv.hasChildNodes()) {
-        self.OverlayDiv.removeChild(self.OverlayDiv.firstChild);
-    }
-    self.OverlayInnerDiv = document.createElement('div');
-    self.OverlayClosingDiv = document.createElement('div');
-    self.OverlayInnerDiv.innerHTML = '<p>' + item[Const.FJCONFIG_DATA] + '</p>';
-    self.OverlayInnerDiv.style.cursor = 'pointer';
-
-    self.OverlayClosingDiv.innerHTML = '<i onmouseover=\"this.style.opacity = 1;\" ' +
-        'onmouseout=\"this.style.opacity = 0.5\" style=\"padding-left: -5px;cursor: pointer; opacity: 0.5;' +
-        ' float: right; margin: -5px -10px 10px 10px;\" class="fa fa-2x fa-times" ' +
-        'aria-hidden="true"></i><div style=\"color: rgb(119, 255, 119); font-size: ' +
-        '0.95em; float: right; text-decoration: none;\">Annonce</div>';
-    this.OverlayClosingDiv.addEventListener('click', function() { self.StopOverlay(self, index); });
-    self.OverlayDiv.appendChild(self.OverlayClosingDiv);
-    self.OverlayDiv.appendChild(self.OverlayInnerDiv);
-    self.OverlayDiv.style.display = 'block';
-    self.OverlayDiv.classList.add('over-HL');
-    // add click
-    url = item[Const.FJCONFIG_URL];
-    self.logger.info('Setting click on overlay going to  ', url);
-    this.OverlayInnerDiv.addEventListener('click', function() { self.clicked(self, index); });
-    self.logger.log(index, 'you overlay just started and will end in ' +
-        item[Const.FJCONFIG_DURATION] + ' sec', self.overlays[index].handler);
-};
-
 export default Overlays;

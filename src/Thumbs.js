@@ -10,86 +10,96 @@ require('./player.css');
  * @param thumbImgElement the div element used for thumbs
  * @param progressBarElement the progress element used for thumbs
  */
-function Thumbs(player, thumbstimer, vidElement, thumbImgElement, thumbDivElement, progressBarElement) {
-    var self = this;
-    this.logger = new Logger(this);
-    this.player = player;
-    this.thumbsTrackIndex = -1;
-    this.video = vidElement;
-    this.thumbstimer = thumbstimer;
-    this.thumbsDiv = thumbDivElement;
-    this.thumbsImg = thumbImgElement;
-    this.progressBar = progressBarElement;
-    // initilize
-    this.progressBar.addEventListener('mousemove', function(event) {
-        self.renderThumbs(self, event);
-    });
-    this.progressBar.addEventListener('mouseleave', function(event) {
-        self.hideThumbs(self);
-    });
-    this.progressBar.addEventListener('mouseover', function(event) {
-        self.showThumbs(self);
-    });
-};
-Thumbs.prototype.Setup = function(thumbsTrackIndex) {
-    this.thumbsTrackIndex = thumbsTrackIndex;
-    if (this.thumbsTrackIndex !== -1) {
-        return true;
-    }
-    return false;
-};
-Thumbs.prototype.showThumbs = function(self) {
-    self.thumbsDiv.classList.remove('fj-hide');
-    self.thumbsDiv.classList.add('fj-show');
-};
-Thumbs.prototype.hideThumbs = function(self) {
-    self.thumbsDiv.classList.remove('fj-show');
-    self.thumbsDiv.classList.add('fj-hide');
-};
+function Thumbs(mplayer, thtimer, vidElement, thumbImgElement, thumbDivElement, progressBarElement) {
+    var logger = new Logger(this),
+        mediaPlayer = mplayer,
+        thumbsTrackIndex = -1,
+        video = vidElement,
+        thumbstimer = thtimer,
+        thumbsDiv = thumbDivElement,
+        thumbsImg = thumbImgElement,
+        progressBar = progressBarElement;
 
-/**
- * Event on mouse
- * * */
-Thumbs.prototype.renderThumbs = function(self, event) {
-    // first we convert from mouse to time position ..
-    var c, i, url, xywh;
-    var rect = self.progressBar.getBoundingClientRect();
-    var p = (event.pageX - rect.left) * (self.video.duration / (rect.right - rect.left));
-    var dur = self.player.duration(parseFloat(p));
-    if ((p > (self.video.duration + 2)) || (p < 0)) {
-        // some error ?
-        self.logger.error(' Position is bigger than duration >>', p, self.video.duration);
-        return;
-    }
-    // update ui ..then we find the matching cue..
-    c = self.video.textTracks[self.thumbsTrackIndex].cues;
-    if (c == null) {
-        // track eleme,t is not supprted : Firefox
-        self.logger.error(' cues is null @ ', self.thumbsTrackIndex, ' not supported , Firefox ?');
-        self.logger.error(' Cues are null @', self.video);
-        return;
-    }
+    function showThumbs() {
+        thumbsDiv.classList.remove('fj-hide');
+        thumbsDiv.classList.add('fj-show');
+    };
 
-    for (i = 0; i < c.length; i++) {
-        if (c[i].startTime <= p && c[i].endTime > p) {
-            break;
-        };
-    }
-    self.logger.log(' Render Thumbs  @ ', dur);
-    // ..next we unravel the JPG url and fragment query..
-    xywh = c[i].text.substr(c[i].text.indexOf('=') + 1).split(',');
+    function hideThumbs() {
+        thumbsDiv.classList.remove('fj-show');
+        thumbsDiv.classList.add('fj-hide');
+    };
 
-    // ..and last we style the thumbnail overlay
-    url = 'url(' + c[i].text.split('#')[0] + ')';
-    // self.logger.log(' fetching thum from ', url);
-    self.thumbsImg.style.backgroundImage = url;
-    self.thumbsImg.style.backgroundPosition = '-' + xywh[0] + 'px -' + xywh[1] + 'px';
-    self.thumbsImg.style.width = xywh[2] + 'px';
-    self.thumbsImg.style.height = xywh[3] + 'px';
-    self.thumbstimer.innerHTML = dur;
-    self.thumbsDiv.style.left = (event.pageX - xywh[2] / 2) + 'px';
-    self.thumbsDiv.style.top = (rect.top - (xywh[3] * 1.5) + 5) + 'px';
-    self.thumbsDiv.style.width = xywh[2] + 'px';
+    function renderThumbs(event) {
+        // first we convert from mouse to time position ..
+        var c, i, url, xywh;
+        var rect = progressBar.getBoundingClientRect();
+        var p = (event.pageX - rect.left) * (video.duration / (rect.right - rect.left));
+        var dur = mediaPlayer.duration(parseFloat(p));
+        if ((p > (video.duration + 2)) || (p < 0)) {
+            // some error ?
+            logger.error(' Position is bigger than duration >>', p, video.duration);
+            return;
+        }
+        // update ui ..then we find the matching cue..
+        c = video.textTracks[thumbsTrackIndex].cues;
+        if (c == null) {
+            // track eleme,t is not supprted : Firefox
+            logger.error(' cues is null @ ', thumbsTrackIndex, ' not supported , Firefox ?');
+            logger.error(' Cues are null @', video);
+            return;
+        }
+
+        for (i = 0; i < c.length; i++) {
+            if (c[i].startTime <= p && c[i].endTime > p) {
+                break;
+            };
+        }
+        logger.log(' Render Thumbs  @ ', dur);
+        // ..next we unravel the JPG url and fragment query..
+        xywh = c[i].text.substr(c[i].text.indexOf('=') + 1).split(',');
+
+        // ..and last we style the thumbnail overlay
+        url = 'url(' + c[i].text.split('#')[0] + ')';
+        // logger.log(' fetching thum from ', url);
+        thumbsImg.style.backgroundImage = url;
+        thumbsImg.style.backgroundPosition = '-' + xywh[0] + 'px -' + xywh[1] + 'px';
+        thumbsImg.style.width = xywh[2] + 'px';
+        thumbsImg.style.height = xywh[3] + 'px';
+        thumbstimer.innerHTML = dur;
+        thumbsDiv.style.left = (event.pageX - xywh[2] / 2) + 'px';
+        thumbsDiv.style.top = (rect.top - (xywh[3] * 1.5) + 5) + 'px';
+        thumbsDiv.style.width = xywh[2] + 'px';
+    };
+
+    function Setup(thumbsTrackIndex) {
+        thumbsTrackIndex = thumbsTrackIndex;
+        //
+        progressBar.addEventListener('mousemove', renderThumbs);
+        progressBar.addEventListener('mouseleave', hideThumbs);
+        progressBar.addEventListener('mouseover', showThumbs);
+        if (thumbsTrackIndex !== -1) {
+            return true;
+        }
+        return false;
+    };
+
+    function Destroy() {
+        thumbsTrackIndex = -1;
+        progressBar.removeEventListener('mousemove', renderThumbs);
+        progressBar.removeEventListener('mouseleave', hideThumbs);
+        progressBar.removeEventListener('mouseover', showThumbs);
+    };
+    // ************************************************************************************
+    // PUBLIC API
+    // ************************************************************************************
+    return {
+        Setup: Setup,
+        Destroy: Destroy,
+        hideThumbs: hideThumbs,
+        showThumbs: showThumbs,
+        off: removeEventListener,
+        constructor: Thumbs
+    };
 };
-
 export default Thumbs;
