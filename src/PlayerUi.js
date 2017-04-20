@@ -4,6 +4,7 @@ import Thumbs from './Thumbs';
 import SubsMenu from './SubsMenu';
 import AudsMenu from './AudsMenu';
 // import Overlays from './Overlays';
+import * as Utils from './Utils';
 import AdsManager from './AdsManager';
 var ejsContent = require('ejs!./fjplayer-tmpl.ejs');
 require('./player.css');
@@ -163,7 +164,7 @@ function PlayerUi(videoContId) {
         videoControls.style.display = 'none';
         videoInfo.style.display = 'block';
         // Create Thumbs Object
-        ThumbsMgr = new Thumbs(this, thumbstimer, video, thumbsImg, thumbsDiv, progressBar);
+        ThumbsMgr = new Thumbs(thumbstimer, thumbsImg, thumbsDiv, progressBar);
 
         if (fullScreenOnStart === 'true') {
             videoFigure.setAttribute('data-fullscreen', 'true');
@@ -176,27 +177,6 @@ function PlayerUi(videoContId) {
     // ************************************************************************************
     // PLAYBACK
     // ************************************************************************************
-    function duration(secDuration) {
-        var secNum = parseInt(secDuration, 10); // don't forget the second param
-        var hours = Math.floor(secNum / 3600);
-        var minutes = Math.floor((secNum - (hours * 3600)) / 60);
-        var seconds = secNum - (hours * 3600) - (minutes * 60);
-
-        if (minutes < 10) {
-            minutes = '0' + minutes;
-        }
-        if (seconds < 10) {
-            seconds = '0' + seconds;
-        }
-        if (hours === 0) {
-            return (minutes + ':' + seconds);
-        }
-        if (hours < 10) {
-            hours = '0' + hours;
-        }
-        return (hours + ':' + minutes + ':' + seconds);
-    };
-
     function onplaypauseClick(e) {
         if (!isStarted) {
             isStarted = true;
@@ -287,11 +267,11 @@ function PlayerUi(videoContId) {
             'color-stop(1, #8F9B9E)' +
             ')';
         // timer
-        timer.innerHTML = ' <span>' + duration(video.currentTime) +
-            '</span><span>/</span><span>' + duration(video.duration) + '</span>';
+        timer.innerHTML = ' <span>' + Utils.duration(video.currentTime) +
+            '</span><span>/</span><span>' + Utils.duration(video.duration) + '</span>';
         /* To be moved to PlayerMedia
             // thumbs
-            if (vttThumbs != null || vttThumbs !== undefined) {
+            if (vttThumbs !== null || vttThumbs !== undefined) {
                 track = document.createElement('track');
                 track.kind = 'metadata';
                 track.src = vttThumbs;
@@ -393,8 +373,8 @@ function PlayerUi(videoContId) {
         if (progressBar.max !== video.duration) {
             progressBar.max = video.duration;
         }
-        logger.log(' Seeking from ', duration(video.currentTime), '/',
-            duration(video.duration), 'to', duration(p), ' sec');
+        logger.log(' Seeking from ', Utils.duration(video.currentTime), '/',
+            Utils.duration(video.duration), 'to', Utils.duration(p), ' sec');
         // change current time
         video.currentTime = parseFloat(p);
         val = (progressBar.value - progressBar.min) / (progressBar.max - progressBar.min);
@@ -403,8 +383,8 @@ function PlayerUi(videoContId) {
             'color-stop(' + val + ', #8F9B9E)' +
             ')';
         // set timer
-        timer.innerHTML = ' <span>' + duration(p) +
-            '</span><span>/</span><span>' + duration(video.duration) + '</span>';
+        timer.innerHTML = ' <span>' + Utils.duration(p) +
+            '</span><span>/</span><span>' + Utils.duration(video.duration) + '</span>';
     };
     // ************************************************************************************
     // TIME/DURATION
@@ -423,8 +403,8 @@ function PlayerUi(videoContId) {
             'color-stop(' + val + ', #8F9B9E)' +
             ')';
         // set timer
-        timer.innerHTML = ' <span>' + duration(progressBar.value) +
-            '</span><span>/</span><span>' + duration(video.duration) + '</span>';
+        timer.innerHTML = ' <span>' + Utils.duration(progressBar.value) +
+            '</span><span>/</span><span>' + Utils.duration(video.duration) + '</span>';
     };
 
     // ************************************************************************************
@@ -840,13 +820,13 @@ function PlayerUi(videoContId) {
 
     function setDuration(value) {
         if (!isNaN(value)) {
-            durationDisplay.textContent = duration(value);
+            durationDisplay.textContent = Utils.duration(value);
         }
     }
 
     function setTime(value) {
         if (!isNaN(value)) {
-            timer.textContent = duration(value);
+            timer.textContent = Utils.duration(value);
         }
     };
 
@@ -856,6 +836,10 @@ function PlayerUi(videoContId) {
 
     function getVideo() {
         return video;
+    };
+
+    function SetupThumbsManager(videoDuration, thumbsTrackIndex) {
+        return ThumbsMgr.Setup(getVideo(), videoDuration, thumbsTrackIndex);
     };
 
     function getVideoFigure() {
@@ -969,6 +953,7 @@ function PlayerUi(videoContId) {
         setTime: setTime,
         setTitle: setTitle,
         getVideo: getVideo,
+        SetupThumbsManager: SetupThumbsManager,
         getVideoFigure: getVideoFigure,
         initialize: initialize,
         show: show,

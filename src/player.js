@@ -111,27 +111,27 @@ function Player(fjID, vidContainerId) {
         }
 
         playerUi.setTitle(item[Const.FJCONFIG_TITLE]);
-        /* TODO
         // set thumbs
-        if ((item[Const.FJCONFIG_THUMBS] !== undefined) && (item[Const.FJCONFIG_THUMBS] != null)) {
-            vttThumbs = item[Const.FJCONFIG_THUMBS];
-        }
+        // if ((item[Const.FJCONFIG_THUMBS] !== undefined) && (item[Const.FJCONFIG_THUMBS] !== null)) {
+        playerMedia.setThumbsUrl(item[Const.FJCONFIG_THUMBS]);
+        // }
+        /* TODO
         // Set sub, ads and overlays ..
-        if ((item[Const.FJCONFIG_SUBTITLES] !== undefined) && (item[Const.FJCONFIG_SUBTITLES] != null)) {
+        if ((item[Const.FJCONFIG_SUBTITLES] !== undefined) && (item[Const.FJCONFIG_SUBTITLES] !== null)) {
             subsJsObj = item[Const.FJCONFIG_SUBTITLES];
         }
         // Set overlays
-        if ((item[Const.FJCONFIG_OVERLAYS] !== undefined) && (item[Const.FJCONFIG_OVERLAYS] != null)) {
+        if ((item[Const.FJCONFIG_OVERLAYS] !== undefined) && (item[Const.FJCONFIG_OVERLAYS] !== null)) {
             overlaysObjs = item[Const.FJCONFIG_OVERLAYS];
             OverlaysMgr.Setup(overlaysObjs);
         }
         // Set ads
-        if ((item[Const.FJCONFIG_ADS] !== undefined) && (item[Const.FJCONFIG_ADS] != null)) {
+        if ((item[Const.FJCONFIG_ADS] !== undefined) && (item[Const.FJCONFIG_ADS] !== null)) {
             adsObjs = item[Const.FJCONFIG_ADS];
             AdsMgr.Setup(adsObjs);
         }
  */
-        if (item[Const.FJCONFIG_SRC] != null || item[Const.FJCONFIG_SRC] !== undefined) {
+        if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
             if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
                 // clear dash
                 playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER], false);

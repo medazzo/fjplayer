@@ -1,4 +1,5 @@
 import Logger from './Logger';
+import * as Utils from './Utils';
 require('./player.css');
 /**
  * @module Thumbs
@@ -10,15 +11,15 @@ require('./player.css');
  * @param thumbImgElement the div element used for thumbs
  * @param progressBarElement the progress element used for thumbs
  */
-function Thumbs(mplayer, thtimer, vidElement, thumbImgElement, thumbDivElement, progressBarElement) {
+function Thumbs(thtimer, thumbImgElement, thumbDivElement, progressBarElement) {
     var logger = new Logger(this),
-        mediaPlayer = mplayer,
         thumbsTrackIndex = -1,
-        video = vidElement,
+        video = null,
+        vidDuration = 0,
+        progressBar = progressBarElement,
         thumbstimer = thtimer,
         thumbsDiv = thumbDivElement,
-        thumbsImg = thumbImgElement,
-        progressBar = progressBarElement;
+        thumbsImg = thumbImgElement;
 
     function showThumbs() {
         thumbsDiv.classList.remove('fj-hide');
@@ -34,19 +35,19 @@ function Thumbs(mplayer, thtimer, vidElement, thumbImgElement, thumbDivElement, 
         // first we convert from mouse to time position ..
         var c, i, url, xywh;
         var rect = progressBar.getBoundingClientRect();
-        var p = (event.pageX - rect.left) * (video.duration / (rect.right - rect.left));
-        var dur = mediaPlayer.duration(parseFloat(p));
-        if ((p > (video.duration + 2)) || (p < 0)) {
+        var p = (event.pageX - rect.left) * (vidDuration / (rect.right - rect.left));
+        var dur = Utils.duration(parseFloat(p));
+        if ((p > (vidDuration + 2)) || (p < 0)) {
             // some error ?
-            logger.error(' Position is bigger than duration >>', p, video.duration);
+            logger.error(' Position is bigger than duration >>', p, vidDuration);
             return;
         }
         // update ui ..then we find the matching cue..
+        logger.warn(' trying to get cues of  >>', video, ' >>>>>  ', video.textTracks, ' >>>>>  ', thumbsTrackIndex);
         c = video.textTracks[thumbsTrackIndex].cues;
         if (c == null) {
             // track eleme,t is not supprted : Firefox
             logger.error(' cues is null @ ', thumbsTrackIndex, ' not supported , Firefox ?');
-            logger.error(' Cues are null @', video);
             return;
         }
 
@@ -55,7 +56,7 @@ function Thumbs(mplayer, thtimer, vidElement, thumbImgElement, thumbDivElement, 
                 break;
             };
         }
-        logger.log(' Render Thumbs  @ ', dur);
+        logger.log(dur, ' Render Thumbs  @ ', p, '#### ', i, '#### ', c.length);
         // ..next we unravel the JPG url and fragment query..
         xywh = c[i].text.substr(c[i].text.indexOf('=') + 1).split(',');
 
@@ -72,23 +73,26 @@ function Thumbs(mplayer, thtimer, vidElement, thumbImgElement, thumbDivElement, 
         thumbsDiv.style.width = xywh[2] + 'px';
     };
 
-    function Setup(thumbsTrackIndex) {
-        thumbsTrackIndex = thumbsTrackIndex;
-        //
-        progressBar.addEventListener('mousemove', renderThumbs);
-        progressBar.addEventListener('mouseleave', hideThumbs);
-        progressBar.addEventListener('mouseover', showThumbs);
-        if (thumbsTrackIndex !== -1) {
-            return true;
-        }
-        return false;
-    };
-
     function Destroy() {
         thumbsTrackIndex = -1;
         progressBar.removeEventListener('mousemove', renderThumbs);
         progressBar.removeEventListener('mouseleave', hideThumbs);
         progressBar.removeEventListener('mouseover', showThumbs);
+    };
+
+    function Setup(vidElement, videoDuration, thumbsTrindex) {
+        Destroy();
+        video = vidElement;
+        vidDuration = videoDuration;
+        thumbsTrackIndex = thumbsTrindex;
+        logger.info(' Setting index thumbs tracks on ', thumbsTrackIndex, ' and video duration ', vidDuration);
+        if (progressBar && (thumbsTrackIndex !== -1)) {
+            progressBar.addEventListener('mousemove', renderThumbs);
+            progressBar.addEventListener('mouseleave', hideThumbs);
+            progressBar.addEventListener('mouseover', showThumbs);
+            return true;
+        }
+        return false;
     };
     // ************************************************************************************
     // PUBLIC API

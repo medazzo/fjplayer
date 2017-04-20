@@ -13,6 +13,13 @@
             'FJThumbs': 'vtt/thumbs.vtt',
             'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
         };
+        var itemDashNoThumbs = {
+            'FJType': 'dash',
+            'FJPoster': 'img/sintel.jpg',
+            'FJTitle': ' title of movie',
+            'FJClass': 'vod',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        };
         var item = {
             'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
             'FJTitle': ' title of movie',
@@ -96,6 +103,7 @@
             var playlist = new fjplayer.Playlist();
             // playlist.addItem(item);
             playlist.addItem(itemDash);
+            // playlist.addItem(itemDashNoThumbs);
             var player = new fjplayer.Player('fjserverID1', 'playercontainer', false);
             player.loadPlaylist(playlist);
             player.playAt(0);

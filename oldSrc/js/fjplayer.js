@@ -328,7 +328,7 @@ controller('fjplayerCtrl', ['$scope', '$filter', '$interval', '$document', '$tim
                     txtduration = $filter('duration')(showDuration);
                     $scope.AdsInfo = $sce.trustAsHtml('you ads will end in ' + txtduration + ' sec');
                     // show ads
-                    if (adData != null) {
+                    if (adData !== null) {
                         console.debug('Data re not null ! ');
                         $scope.isAdsDataHidden = false;
                         $scope.AdsData = $sce.trustAsHtml(adData);

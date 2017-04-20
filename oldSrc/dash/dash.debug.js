@@ -59,7 +59,7 @@ function X2JS(matchers, attrPrefix, ignoreRoot) {
                     result[childName + "_asArray"] = new Array(1);
                     result[childName + "_asArray"][0] = result[childName];
                 } else {
-                    if (result[childName] != null) {
+                    if (result[childName] !== null) {
                         if (!(result[childName] instanceof Array)) {
                             var tmpObj = result[childName];
                             result[childName] = new Array();
@@ -68,7 +68,7 @@ function X2JS(matchers, attrPrefix, ignoreRoot) {
                         }
                     }
                     var aridx = 0;
-                    while (result[childName][aridx] != null) aridx++;
+                    while (result[childName][aridx] !== null) aridx++;
                     result[childName][aridx] = parseDOMChildren(child);
                 }
             }
@@ -83,27 +83,27 @@ function X2JS(matchers, attrPrefix, ignoreRoot) {
                 result[attrPrefix + attr.name] = value2;
             }
             var nodePrefix = getNodePrefix(node);
-            if (nodePrefix != null && nodePrefix != "") {
+            if (nodePrefix !== null && nodePrefix != "") {
                 result.__cnt++;
                 result.__prefix = nodePrefix;
             }
-            if (result.__cnt == 1 && result["#text"] != null) {
+            if (result.__cnt == 1 && result["#text"] !== null) {
                 result = result["#text"];
             }
-            if (result["#text"] != null) {
+            if (result["#text"] !== null) {
                 result.__text = result["#text"];
                 if (escapeMode) result.__text = unescapeXmlChars(result.__text);
                 delete result["#text"];
                 delete result["#text_asArray"];
             }
-            if (result["#cdata-section"] != null) {
+            if (result["#cdata-section"] !== null) {
                 result.__cdata = result["#cdata-section"];
                 delete result["#cdata-section"];
                 delete result["#cdata-section_asArray"];
             }
-            if (result.__text != null || result.__cdata != null) {
+            if (result.__text !== null || result.__cdata !== null) {
                 result.toString = function() {
-                    return (this.__text != null ? this.__text : "") + (this.__cdata != null ? this.__cdata : "");
+                    return (this.__text !== null ? this.__text : "") + (this.__cdata !== null ? this.__cdata : "");
                 };
             }
             return result;
@@ -114,8 +114,8 @@ function X2JS(matchers, attrPrefix, ignoreRoot) {
         }
     }
     function startTag(jsonObj, element, attrList, closed) {
-        var resultStr = "<" + (jsonObj != null && jsonObj.__prefix != null ? jsonObj.__prefix + ":" : "") + element;
-        if (attrList != null) {
+        var resultStr = "<" + (jsonObj !== null && jsonObj.__prefix !== null ? jsonObj.__prefix + ":" : "") + element;
+        if (attrList !== null) {
             for (var aidx = 0; aidx < attrList.length; aidx++) {
                 var attrName = attrList[aidx];
                 var attrVal = jsonObj[attrName];
@@ -126,7 +126,7 @@ function X2JS(matchers, attrPrefix, ignoreRoot) {
         return resultStr;
     }
     function endTag(jsonObj, elementName) {
-        return "</" + (jsonObj.__prefix != null ? jsonObj.__prefix + ":" : "") + elementName + ">";
+        return "</" + (jsonObj.__prefix !== null ? jsonObj.__prefix + ":" : "") + elementName + ">";
     }
     function endsWith(str, suffix) {
         return str.indexOf(suffix, str.length - suffix.length) !== -1;
@@ -157,10 +157,10 @@ function X2JS(matchers, attrPrefix, ignoreRoot) {
     }
     function parseJSONTextAttrs(jsonTxtObj) {
         var result = "";
-        if (jsonTxtObj.__cdata != null) {
+        if (jsonTxtObj.__cdata !== null) {
             result += "<![CDATA[" + jsonTxtObj.__cdata + "]]>";
         }
-        if (jsonTxtObj.__text != null) {
+        if (jsonTxtObj.__text !== null) {
             if (escapeMode) result += escapeXmlChars(jsonTxtObj.__text); else result += jsonTxtObj.__text;
         }
         return result;
@@ -169,7 +169,7 @@ function X2JS(matchers, attrPrefix, ignoreRoot) {
         var result = "";
         if (jsonTxtObj instanceof Object) {
             result += parseJSONTextAttrs(jsonTxtObj);
-        } else if (jsonTxtObj != null) {
+        } else if (jsonTxtObj !== null) {
             if (escapeMode) result += escapeXmlChars(jsonTxtObj); else result += jsonTxtObj;
         }
         return result;
@@ -202,7 +202,7 @@ function X2JS(matchers, attrPrefix, ignoreRoot) {
                         result += parseJSONArray(subObj, it, attrList);
                     } else {
                         var subObjElementsCnt = jsonXmlElemCount(subObj);
-                        if (subObjElementsCnt > 0 || subObj.__text != null || subObj.__cdata != null) {
+                        if (subObjElementsCnt > 0 || subObj.__text !== null || subObj.__cdata !== null) {
                             result += startTag(subObj, it, attrList, false);
                             result += parseJSONObject(subObj);
                             result += endTag(subObj, it);
@@ -294,7 +294,7 @@ function ObjectIron(map) {
                         if (typeof parentValue === "object" && typeof childValue === "object") {
                             mergeValues(parentValue, childValue);
                         } else {
-                            if (property.mergeFunction != null) {
+                            if (property.mergeFunction !== null) {
                                 child[property.name] = property.mergeFunction(parentValue, childValue);
                             } else {
                                 child[property.name] = parentValue + childValue;

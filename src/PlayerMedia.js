@@ -11,6 +11,8 @@ function PlayerMedia() {
     var CurrentPlayerUi = null,
         video = null,
         videoFigure = null,
+        thumbsTrackUrl = null,
+        thumbsTrackIndex = -1,
         getEndedEvent = false,
         CurrentStreamType = PlayerMedia.UNKNOWN,
         DashPlayer = MediaPlayer().create(),
@@ -160,6 +162,17 @@ function PlayerMedia() {
         }
         logger.warn(' No Media Loaded ! ');
     };
+
+    function setThumbsUrl(url) {
+        if (url != null || url !== undefined) {
+            thumbsTrackUrl = url;
+            logger.warn(' Setting url for thumbs @', url);
+        } else {
+            thumbsTrackUrl = null;
+            logger.warn(' Setting url for thumbs @', url);
+        }
+    };
+
     /**
      *
      */
@@ -282,6 +295,32 @@ function PlayerMedia() {
     };
 
     function onStreamInitialized() {
+        var i = 0;
+        // video tracks
+        thumbsTrackIndex = -1;
+        logger.log('>>>>>>>>>>>>>>', video);
+        if (thumbsTrackUrl !== null) {
+            for (i = 0; i < video.textTracks.length; i++) {
+                if (video.textTracks[i].kind === 'metadata' ) {
+                    thumbsTrackIndex = i;
+                    video.textTracks[i].mode = 'hidden'; // thanks Firefox
+                    logger.warn('find  metadata tumbs  @ ', thumbsTrackIndex,
+                        '/', video.textTracks.length, ' >>> ', video.textTracks[i],
+                        ' And vide oduration ;;; ', getDuration());
+                    CurrentPlayerUi.SetupThumbsManager(getDuration(), thumbsTrackIndex);
+
+                } else if ((video.textTracks[i].kind === 'captions') ||
+                    (video.textTracks[i].kind === 'subtitles')) {
+                    // SubsTrackIndex = i;
+                    logger.log('find  soustitres  @ ', thumbsTrackIndex,
+                        '/', video.textTracks.length, ' >>> ', video.textTracks[i]);
+
+                    break;
+                }
+            }
+        }
+        // setthumbs if exits
+
         // USED To inform ui and add entry on bitrates menu list and aud tracks
         // Bitrate Menu
         /* var contentFunc;
@@ -354,7 +393,7 @@ function PlayerMedia() {
             (CurrentStreamType === StreamTypes.DASH_ENCRYPTED)) {} else {
             DashPlayer.reset();
             // Unsetting Callbacks
-            DashPlayer.off(MediaPlayer.events.STREAM_INITIALIZED, onStreamInitialized, this);
+            DashPlayer.off(MediaPlayer.events.PLAYBACK_METADATA_LOADED, onStreamInitialized, this);
             DashPlayer.off(MediaPlayer.events.PLAYBACK_STARTED, onPlayStart, this);
             DashPlayer.off(MediaPlayer.events.PLAYBACK_PAUSED, onPlaybackPaused, this);
             DashPlayer.off(MediaPlayer.events.QUALITY_CHANGE_REQUESTED, onQualityChangeRequested, this);
@@ -372,6 +411,7 @@ function PlayerMedia() {
      * Used for clear video/mp4
      */
     function load(url, type, poster, autoplay) {
+        var track = null;
         var source = document.createElement('source');
         source.type = type;
         source.src = url;
@@ -381,6 +421,16 @@ function PlayerMedia() {
         video.appendChild(source);
         video.setAttribute('poster', poster);
         CurrentStreamType = StreamTypes.MP4_CLEAR;
+        // set thumbs
+        if (thumbsTrackUrl !== null || thumbsTrackUrl !== undefined) {
+            track = document.createElement('track');
+            track.kind = 'metadata';
+            track.src = thumbsTrackUrl;
+            logger.log(' Appending source thumbs to video', track);
+            video.appendChild(track);
+        } else {
+            logger.warn(' Thumbs was not found .');
+        }
         // Setting Callbacks
         video.addEventListener('loadedmetadata', onStreamInitialized, false);
         video.addEventListener('play', onPlayStart, false);
@@ -396,6 +446,7 @@ function PlayerMedia() {
      * Used for clear mpeg Dash
      */
     function loadDash(url, poster, autoplay) {
+        var track = null;
         video.setAttribute('poster', poster);
         video.preload = true;
         video.controls = false;
@@ -404,8 +455,18 @@ function PlayerMedia() {
         DashPlayer.initialize(video, url, autoplay);
         DashPlayer.attachVideoContainer(videoFigure);
         CurrentStreamType = StreamTypes.DASH_CLEAR;
+        // set thumbs
+        if (thumbsTrackUrl != null || thumbsTrackUrl !== undefined) {
+            track = document.createElement('track');
+            track.kind = 'metadata';
+            track.src = thumbsTrackUrl;
+            logger.log(' Appending source thumbs to video', track);
+            video.appendChild(track);
+        } else {
+            logger.warn(' Thumbs was not found .');
+        }
         // Setting Callbacks
-        DashPlayer.on(MediaPlayer.events.STREAM_INITIALIZED, onStreamInitialized, this);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_METADATA_LOADED, onStreamInitialized, this);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_STARTED, onPlayStart, this);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_PAUSED, onPlaybackPaused, this);
         DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_REQUESTED, onQualityChangeRequested, this);
@@ -421,6 +482,7 @@ function PlayerMedia() {
      * Used for Encrypted mpeg Dash
      */
     function loadDashDrm(url, poster, autoplay, drm) {
+        var track = null;
         video.setAttribute('poster', poster);
         video.preload = true;
         video.controls = false;
@@ -429,8 +491,18 @@ function PlayerMedia() {
         DashPlayer.attachVideoContainer(videoFigure);
         // TODO : set Drm
         CurrentStreamType = StreamTypes.DASH_ENCRYPTED;
+        // set thumbs
+        if (thumbsTrackUrl != null || thumbsTrackUrl !== undefined) {
+            track = document.createElement('track');
+            track.kind = 'metadata';
+            track.src = thumbsTrackUrl;
+            logger.log(' Appending source thumbs to video', track);
+            video.appendChild(track);
+        } else {
+            logger.warn(' Thumbs was not found .');
+        }
         // Setting Callbacks
-        DashPlayer.on(MediaPlayer.events.STREAM_INITIALIZED, onStreamInitialized, this);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_METADATA_LOADED, onStreamInitialized, this);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_STARTED, onPlayStart, this);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_PAUSED, onPlaybackPaused, this);
         DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_REQUESTED, onQualityChangeRequested, this);
@@ -460,6 +532,7 @@ function PlayerMedia() {
         setMute: setMute,
         setVolume: setVolume,
         getVolume: getVolume,
+        setThumbsUrl: setThumbsUrl,
         getDuration: getDuration,
         time: time,
         seek: seek,

@@ -78,10 +78,10 @@
         var inHtml =
             '<figure id=\"' + this.videoFigureId + '\" data-fullscreen=\"' + this.fullScreenOnStart + '\">' +
             '<video id=\"' + this.videoId + '\" class=\"divofVideo\" ';
-        if (this.vwidth != null) {
+        if (this.vwidth !== null) {
             inHtml += 'width=\"' + this.vwidth + '\" ';
         }
-        if (this.vwidth != null) {
+        if (this.vwidth !== null) {
             inHtml += 'height=\"' + this.vheight + '\" ';
         }
         inHtml += '     >' +
@@ -168,7 +168,7 @@
         self.timer.innerHTML = ' <span>' + self.duration(self.video.currentTime) +
             '</span><span>/</span><span>' + self.duration(self.video.duration) + '</span>';
         // thumbs
-        if (self.vttThumbs != null || self.vttThumbs !== undefined) {
+        if (self.vttThumbs !== null || self.vttThumbs !== undefined) {
             /* add thumbs */
             track = document.createElement('track');
             track.kind = 'metadata';
@@ -650,11 +650,11 @@
             }
 
             // Set Video
-            if ((poster !== undefined) && (poster != null)) {
+            if ((poster !== undefined) && (poster !== null)) {
                 this.video.setAttribute('poster', poster);
                 this.poster = poster;
             }
-            if (this.src != null || this.src !== undefined) {
+            if (this.src !== null || this.src !== undefined) {
                 /* add thumbs */
                 source = document.createElement('source');
                 source.src = this.src;
