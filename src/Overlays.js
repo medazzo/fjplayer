@@ -6,9 +6,8 @@ import * as Const from './constants';
  * @description The Overlays is that manage overlays of a video :
  *     it manage overlays for information ads , media or ovelay on ads video.
  */
-function Overlays(video, OverlayDiv) {
+function Overlays(OverlayDiv) {
     this.logger = new Logger(this);
-    this.video = video;
     this.overlays = null;
     this.settled = false;
     this.OverlayDiv = OverlayDiv;
