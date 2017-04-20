@@ -301,7 +301,7 @@ function PlayerMedia() {
         logger.log('>>>>>>>>>>>>>>', video);
         if (thumbsTrackUrl !== null) {
             for (i = 0; i < video.textTracks.length; i++) {
-                if (video.textTracks[i].kind === 'metadata' ) {
+                if (video.textTracks[i].kind === 'metadata') {
                     thumbsTrackIndex = i;
                     video.textTracks[i].mode = 'hidden'; // thanks Firefox
                     logger.warn('find  metadata tumbs  @ ', thumbsTrackIndex,
