@@ -16,6 +16,10 @@ function Overlays() {
 
     function Setup(overs) {
         var i = 0;
+        if (overs === null || overs === undefined) {
+            settled = false;
+            return;
+        }
         overlays = overs;
         settled = true;
         for (i = 0; i < overlays.length; i++) {

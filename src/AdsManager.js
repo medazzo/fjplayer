@@ -238,6 +238,10 @@ function AdsManager() {
         var sz;
         var item;
         var clas;
+        if (ads === null | ads === undefined) {
+            settled = false;
+            return;
+        }
         localAds = ads;
         mediaPlayer = player;
         mainVideoWidth = videoWidth;
