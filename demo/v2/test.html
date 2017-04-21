@@ -101,8 +101,8 @@
             console.info('VERSION', ver.getVersion());
             console.info('Hash HEAD', ver.getShortHash());
             var playlist = new fjplayer.Playlist();
-            // playlist.addItem(item);
-            playlist.addItem(itemDash);
+            playlist.addItem(item);
+            // playlist.addItem(itemDash);
             // playlist.addItem(itemDashNoThumbs);
             var player = new fjplayer.Player('fjserverID1', 'playercontainer', false);
             player.loadPlaylist(playlist);

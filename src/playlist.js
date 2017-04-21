@@ -147,7 +147,7 @@ function Playlist() {
             logger.warn('can Escape is missing , will be set to true ! ');
             item[Const.FJCONFIG_CAN_ESCAPE] = true;
         } else {
-            logger.warn('can Escape is already there : ', item[Const.FJCONFIG_CAN_ESCAPE]);
+            logger.debug('can Escape is already there : ', item[Const.FJCONFIG_CAN_ESCAPE]);
         }
         return true;
     };

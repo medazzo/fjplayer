@@ -50,7 +50,7 @@ function PlayerMedia() {
             throw new Error('Please call initialize with a valid Player UI having a video html 5 element ');
         }
         videoFigure = CurrentPlayerUi.getVideoFigure();
-        logger.warn(' Media player juste initilized with CurrentPlayerUi');
+        logger.debug(' Media player juste initilized with CurrentPlayerUi');
     };
     /**
      *
@@ -166,10 +166,10 @@ function PlayerMedia() {
     function setThumbsUrl(url) {
         if (url != null || url !== undefined) {
             thumbsTrackUrl = url;
-            logger.warn(' Setting url for thumbs @', url);
+            logger.debug(' Setting url for thumbs @', url);
         } else {
             thumbsTrackUrl = null;
-            logger.warn(' Setting url for thumbs @', url);
+            logger.debug(' Setting url for thumbs @', url);
         }
     };
 
@@ -298,15 +298,13 @@ function PlayerMedia() {
         var i = 0;
         // video tracks
         thumbsTrackIndex = -1;
-        logger.log('>>>>>>>>>>>>>>', video);
         if (thumbsTrackUrl !== null) {
             for (i = 0; i < video.textTracks.length; i++) {
                 if (video.textTracks[i].kind === 'metadata') {
                     thumbsTrackIndex = i;
                     video.textTracks[i].mode = 'hidden'; // thanks Firefox
-                    logger.warn('find  metadata tumbs  @ ', thumbsTrackIndex,
-                        '/', video.textTracks.length, ' >>> ', video.textTracks[i],
-                        ' And vide oduration ;;; ', getDuration());
+                    logger.debug('find  metadata tumbs  @ ', thumbsTrackIndex,
+                        '/', video.textTracks.length, ' >>> and video duration ;;; ', getDuration());
                     CurrentPlayerUi.SetupThumbsManager(getDuration(), thumbsTrackIndex);
 
                 } else if ((video.textTracks[i].kind === 'captions') ||
@@ -319,6 +317,7 @@ function PlayerMedia() {
                 }
             }
         }
+        // manage ads
         // setthumbs if exits
 
         // USED To inform ui and add entry on bitrates menu list and aud tracks

@@ -43,7 +43,7 @@ function Thumbs(thtimer, thumbImgElement, thumbDivElement, progressBarElement) {
             return;
         }
         // update ui ..then we find the matching cue..
-        logger.warn(' trying to get cues of  >>', video, ' >>>>>  ', video.textTracks, ' >>>>>  ', thumbsTrackIndex);
+        logger.debug(' trying to get cues of  >>', video, ' >>>>>  ', video.textTracks, ' >>>>>  ', thumbsTrackIndex);
         c = video.textTracks[thumbsTrackIndex].cues;
         if (c == null) {
             // track eleme,t is not supprted : Firefox

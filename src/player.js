@@ -5,6 +5,7 @@ import AdsManager from './AdsManager';*/
 import * as Const from './constants';
 import PlayerMedia from './PlayerMedia';
 import PlayerUi from './PlayerUi';
+import AdsManager from './AdsManager';
 /**
  *  Class player in whinch the player is implemented
  */
@@ -13,10 +14,11 @@ function Player(fjID, vidContainerId) {
         playerPlaylist = null,
         playlistLoaded = false,
         videoContainerId = vidContainerId,
-        /*  OverlaysMgr = new Overlays(document.getElementById(overlaysContainerDivId)),
-        AdsMgr = new AdsManager(this  , document.getElementById(adsContainerDivId) ),*/
+        /*  OverlaysMgr = new Overlays(document.getElementById(overlaysContainerDivId)),*/
         playerMedia = new PlayerMedia(),
-        playerUi = new PlayerUi(videoContainerId),
+        playerUi = new PlayerUi(this, videoContainerId),
+        // create ads Manager
+        AdsMgr = new AdsManager(document.getElementById(playerUi.getAdsContainerDivId())),
         supportsVideo = !!document.createElement('video').canPlayType;
 
     /**
@@ -45,7 +47,7 @@ function Player(fjID, vidContainerId) {
     /**
      * Function Called from AdsManager to
      *  freeze and hide player to show ads
-     *
+     */
     function freezePlayer(pauseIt, stillStarting, isEnding) {
         if (pauseIt === true) {
             // hide the player and pause it
@@ -73,7 +75,7 @@ function Player(fjID, vidContainerId) {
                 playerMedia.play();
             }
         }
-    };*/
+    };
     /**
      *
      */
@@ -125,12 +127,11 @@ function Player(fjID, vidContainerId) {
             overlaysObjs = item[Const.FJCONFIG_OVERLAYS];
             OverlaysMgr.Setup(overlaysObjs);
         }
+        */
         // Set ads
-        if ((item[Const.FJCONFIG_ADS] !== undefined) && (item[Const.FJCONFIG_ADS] !== null)) {
-            adsObjs = item[Const.FJCONFIG_ADS];
-            AdsMgr.Setup(adsObjs);
-        }
- */
+        AdsMgr.Setup(this, item[Const.FJCONFIG_ADS],
+            playerUi.getVideo().videoWidth, playerUi.getVideo().videoHeight);
+
         if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
             if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
                 // clear dash
@@ -144,12 +145,24 @@ function Player(fjID, vidContainerId) {
         logger.error('src of item is not valid , at index ', index);
         return false;
     };
+    /**
+     * Function to be called when user start play a video
+     */
+    function startPlay() {
+        if (AdsMgr.CheckPreAds() === true) {
+            /* videoControls.style.display = 'block';
+            BigPlayBtn.style.display = 'none';*/
+            playerUi.hide();
+        }
+
+    };
     // ************************************************************************************
     // PUBLIC API
     // ************************************************************************************
     return {
         duration: duration,
-        /* freezePlayer: freezePlayer,*/
+        startPlay: startPlay,
+        freezePlayer: freezePlayer,
         loadPlaylist: loadPlaylist,
         playAt: playAt,
         constructor: Player

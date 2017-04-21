@@ -5,7 +5,7 @@ import SubsMenu from './SubsMenu';
 import AudsMenu from './AudsMenu';
 // import Overlays from './Overlays';
 import * as Utils from './Utils';
-import AdsManager from './AdsManager';
+
 var ejsContent = require('ejs!./fjplayer-tmpl.ejs');
 require('./player.css');
 require('font-awesome/css/font-awesome.css');
@@ -15,8 +15,9 @@ require('font-awesome/css/font-awesome.css');
  * @description The PlayerUi is the html UI for the player
  *
  */
-function PlayerUi(videoContId) {
+function PlayerUi(mainPlayer, videoContId) {
     var logger = new Logger(this),
+        fjMainPlayer = mainPlayer,
         videoContainerId = videoContId,
         fullScreenOnStart = false,
         vwidth, vheight,
@@ -56,7 +57,6 @@ function PlayerUi(videoContId) {
         videoContainer,
         player = null,
         video = null,
-        AdsMgr = null,
         // OverlaysMgr = null,
         /* videoContainer = null,
         captionMenu = null,
@@ -77,9 +77,6 @@ function PlayerUi(videoContId) {
         durationDisplay,
         videoFigure,
         BigPlayBtn,
-        thumbsDiv,
-        thumbstimer,
-        thumbsImg,
         volumebar,
         ThumbsMgr = null,
         videoControls,
@@ -152,9 +149,6 @@ function PlayerUi(videoContId) {
 
         videoFigure = document.getElementById(videoFigureId);
         BigPlayBtn = document.getElementById(BigPlayBtnId);
-        thumbsDiv = document.getElementById(thumbsDivId);
-        thumbstimer = document.getElementById(thumbstimerId);
-        thumbsImg = document.getElementById(thumbsImgId);
 
         videoControls = document.getElementById(videoControlsId);
         videoInfo = document.getElementById(videoInfoId);
@@ -164,7 +158,8 @@ function PlayerUi(videoContId) {
         videoControls.style.display = 'none';
         videoInfo.style.display = 'block';
         // Create Thumbs Object
-        ThumbsMgr = new Thumbs(thumbstimer, thumbsImg, thumbsDiv, progressBar);
+        ThumbsMgr = new Thumbs(document.getElementById(thumbstimerId),
+            document.getElementById(thumbsImgId), document.getElementById(thumbsDivId), progressBar);
 
         if (fullScreenOnStart === 'true') {
             videoFigure.setAttribute('data-fullscreen', 'true');
@@ -180,11 +175,7 @@ function PlayerUi(videoContId) {
     function onplaypauseClick(e) {
         if (!isStarted) {
             isStarted = true;
-            if (AdsMgr.CheckPreAds() === true) {
-                videoControls.style.display = 'block';
-                BigPlayBtn.style.display = 'none';
-                return;
-            }
+            fjMainPlayer.startPlay();
         }
         if (player.isPaused() || player.isEnded()) {
             playpauseBtn.className = 'fa  fa-pause';
@@ -838,6 +829,10 @@ function PlayerUi(videoContId) {
         return video;
     };
 
+    function getAdsContainerDivId() {
+        return adsContainerDivId;
+    };
+
     function SetupThumbsManager(videoDuration, thumbsTrackIndex) {
         return ThumbsMgr.Setup(getVideo(), videoDuration, thumbsTrackIndex);
     };
@@ -857,7 +852,6 @@ function PlayerUi(videoContId) {
         SubMenu = new SubsMenu(video, subtitlesBtnId, subsdMenuContainerDivId);
 
         // OverlaysMgr = new Overlays(this.video, document.getElementById(this.overlaysContainerDivId));
-        AdsMgr = new AdsManager(this, this.video, document.getElementById(this.adsContainerDivId));
         videoController.addEventListener('mouseleave', magicMouseLeave);
         videoController.addEventListener('mouseenter', magicMouseEnter);
         videoController.addEventListener('mousemove', magicMouseMove);
@@ -953,6 +947,7 @@ function PlayerUi(videoContId) {
         setTime: setTime,
         setTitle: setTitle,
         getVideo: getVideo,
+        getAdsContainerDivId: getAdsContainerDivId,
         SetupThumbsManager: SetupThumbsManager,
         getVideoFigure: getVideoFigure,
         initialize: initialize,

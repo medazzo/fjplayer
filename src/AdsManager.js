@@ -1,5 +1,6 @@
 import Logger from './Logger';
 import * as Const from './constants';
+import * as Utils from './Utils';
 /**
  * @module AdsManager
  * @description The AdsManager is the class whinch will manage Ads
@@ -7,10 +8,11 @@ import * as Const from './constants';
  *  Ads will be played on a another video html overlaying current video
  */
 
-function AdsManager(player, video, AdsContainer) {
+function AdsManager(AdsContainer) {
     var logger = new Logger(this),
-        mediaPlayer = player,
-        mainVideo = video,
+        mediaPlayer = null,
+        mainVideoWidth = 0,
+        mainVideoHeight = 0,
         midAds = [],
         postAds = [],
         preAds = [],
@@ -75,6 +77,7 @@ function AdsManager(player, video, AdsContainer) {
         var item = midAds[index];
         if (adsType === AdsEnum.PRE) {
             item = preAds[index];
+            logger.info(index, 'starting PRE Ads ', preAds);
             logger.info(index, 'starting PRE Ads ', item[Const.FJCONFIG_SRC]);
         } else if (adsType === AdsEnum.MID) {
             item = midAds[index];
@@ -100,8 +103,8 @@ function AdsManager(player, video, AdsContainer) {
         adsvideo.controls = false;
         adsvideo.autoplay = false;
         // setting W/H !
-        adsvideo.setAttribute('width', mainVideo.videoWidth);
-        adsvideo.setAttribute('height', mainVideo.videoHeight);
+        adsvideo.setAttribute('width', mainVideoWidth);
+        adsvideo.setAttribute('height', mainVideoHeight);
         //
         infoDiv.innerHTML = '<span style=\"color: rgb(119, 255, 119); font-size: 0.95em;\">Annonce</span>' +
             ' This an Ads for <span style=\"color: rgb(255, 255, 0)\">' +
@@ -134,7 +137,7 @@ function AdsManager(player, video, AdsContainer) {
                 }
             } else {
                 infoDiv2.innerHTML = ', it ends after ' +
-                    mediaPlayer.duration(Math.round(adsvideo.duration - adsvideo.currentTime)) + ' .';
+                    Utils.duration(Math.round(adsvideo.duration - adsvideo.currentTime)) + ' .';
             }
         });
         adsvideo.addEventListener('click', function() {
@@ -164,7 +167,7 @@ function AdsManager(player, video, AdsContainer) {
                 if (midAds[i].started === false) {
                     logger.info(i, ' starting a new  Mid Ads .. ');
                     midAds[i].started = true;
-                    StartAds(this, i, AdsEnum.MID);
+                    StartAds(i, AdsEnum.MID);
                 } else {
                     logger.info(i, ' already started ', item[Const.FJCONFIG_URL],
                         ' @@ ', item[Const.FJCONFIG_SHOW_AT]);
@@ -188,9 +191,9 @@ function AdsManager(player, video, AdsContainer) {
             item = preAds[i];
             logger.info(i, ' starting Pre Ads Now .. ');
             if (preAds[i].started === false) {
-                logger.info(i, ' starting a new Pre Mid Ads .. ');
+                logger.info(i, ' starting a new Pre Ads .. @', i);
                 preAds[i].started = true;
-                StartAds(this, i, AdsEnum.PRE);
+                StartAds(i, AdsEnum.PRE);
                 return true;
             }
             logger.info(i, 'Pre already started ', item[Const.FJCONFIG_URL],
@@ -216,7 +219,7 @@ function AdsManager(player, video, AdsContainer) {
             if (postAds[i].started === false) {
                 logger.info(i, ' starting a new Post Ads .. ');
                 postAds[i].started = true;
-                StartAds(this, i, AdsEnum.POST);
+                StartAds(i, AdsEnum.POST);
                 return true;
             }
             logger.info(i, 'Post already started ', item[Const.FJCONFIG_URL],
@@ -225,24 +228,30 @@ function AdsManager(player, video, AdsContainer) {
         return false;
     };
 
-    function Setup(ads) {
+    function Setup(player, ads, videoWidth, videoHeight) {
         var i = 0;
         var sz;
         var item;
         var clas;
         localAds = ads;
+        mediaPlayer = player;
+        mainVideoWidth = videoWidth;
+        mainVideoHeight = videoHeight;
         for (i = 0; i < localAds.length; i++) {
             item = localAds[i];
             clas = item[Const.FJCONFIG_CLASS];
             if (clas === Const.FJCONFIG_ADS_CLASS_PRE_ROLL) {
+                logger.debug(' found a pre ads !');
                 sz = preAds.push(item);
                 preAds[sz - 1].started = false;
                 preAds[sz - 1].clicked = 0;
             } else if (clas === Const.FJCONFIG_ADS_CLASS_POST_ROLL) {
+                logger.debug(' found a post ads !');
                 sz = postAds.push(item);
                 postAds[sz - 1].started = false;
                 postAds[sz - 1].clicked = 0;
             } else {
+                logger.debug(' found a mid ads !');
                 sz = midAds.push(item);
                 midAds[sz - 1].started = false;
                 midAds[sz - 1].clicked = 0;
