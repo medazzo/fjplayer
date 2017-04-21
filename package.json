@@ -1,4 +1,21 @@
 {
+   "description" : "th Fjplayer html5 video player",
+   "license" : "MIT",
+   "bugs" : {
+      "url" : "https://easysoftin.com"
+   },
+   "scripts" : {
+      "version" : "perl ./version.pl",
+      "dev" : "webpack --progress --colors --watch --mode=dev",
+      "live" : "http-server -a localhost -p 8000 -c-1",
+      "test" : "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js",
+      "dist" : " concurrently \"npm run version\" \"npm run build\"",
+      "web" : "webpack-dev-server --progress --colors",
+      "start" : " concurrently \"npm run version\"  \"npm run dev\" \"npm run live\" ",
+      "build" : "webpack --mode=build"
+   },
+   "private" : true,
+   "version" : "0.2.4",
    "keywords" : [
       "mpegdash",
       "es6",
@@ -8,65 +25,48 @@
       "cenc",
       "ads"
    ],
-   "homepage" : "https://easysoftin.com",
-   "repository" : {
-      "type" : "git",
-      "url" : "https://easysoftin.com"
-   },
-   "scripts" : {
-      "dist" : " concurrently \"npm run version\" \"npm run build\"",
-      "build" : "webpack --mode=build",
-      "start" : " concurrently \"npm run version\"  \"npm run dev\" \"npm run live\" ",
-      "version" : "perl ./version.pl",
-      "test" : "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js",
-      "web" : "webpack-dev-server --progress --colors",
-      "dev" : "webpack --progress --colors --watch --mode=dev",
-      "live" : "http-server -a localhost -p 8000 -c-1"
-   },
-   "license" : "MIT",
-   "dependencies" : {
-      "dashjs" : "2.3.0",
-      "font-awesome" : "^4.3.0"
-   },
-   "description" : "th Fjplayer html5 video player",
-   "private" : true,
-   "author" : "Azzouni Mohamed",
-   "bugs" : {
-      "url" : "https://easysoftin.com"
-   },
-   "version" : 0,
-   "name" : "fjplayer",
    "devDependencies" : {
-      "babel-core" : "6.1.18",
-      "mocha" : "2.3.4",
-      "url-loader" : "^0.5.5",
-      "babel-plugin-add-module-exports" : "0.1.2",
-      "babel" : "6.3.13",
-      "jquery" : "~2.1.1",
-      "babel-eslint" : "5.0.0",
-      "yargs" : "3.32.0",
-      "concurrently" : "^2.2.0",
-      "html-loader" : "^0.4.4",
-      "imports-loader" : "^0.6.3",
-      "ejs-loader" : "^0.3.0",
-      "babel-loader" : "6.1.0",
       "webpack-dev-server" : "1.16.2",
-      "eslint-loader" : "1.1.0",
-      "less" : "^2.3.1",
-      "less-loader" : "^2.2.3",
+      "bootstrap" : "~3.3.0",
+      "webpack-version-file" : "^0.1.3",
+      "babel-plugin-add-module-exports" : "0.1.2",
       "css-loader" : "0.26.1",
-      "file-loader" : "^0.8.1",
-      "http-server" : "^0.9.0",
+      "babel-preset-es2015" : "6.3.13",
+      "chai" : "3.4.1",
+      "mocha" : "2.3.4",
+      "concurrently" : "^2.2.0",
+      "babel-loader" : "6.1.0",
+      "babel-core" : "6.1.18",
       "eslint" : "1.7.2",
       "ejs" : "^2.5.5",
+      "imports-loader" : "^0.6.3",
+      "file-loader" : "^0.8.1",
+      "less" : "^2.3.1",
+      "babel" : "6.3.13",
+      "babel-eslint" : "5.0.0",
+      "eslint-loader" : "1.1.0",
       "ejs-html-loader" : "^2.0.2",
-      "webpack-version-file" : "^0.1.3",
       "bootstrap-webpack" : "0.0.4",
+      "http-server" : "^0.9.0",
+      "less-loader" : "^2.2.3",
+      "url-loader" : "^0.5.5",
+      "ejs-loader" : "^0.3.0",
+      "yargs" : "3.32.0",
+      "html-loader" : "^0.4.4",
+      "jquery" : "~2.1.1",
       "webpack" : "1.12.9",
-      "babel-preset-es2015" : "6.3.13",
-      "bootstrap" : "~3.3.0",
-      "chai" : "3.4.1",
       "style-loader" : "0.13.1"
    },
-   "main" : "lib/fjplayer.js"
+   "dependencies" : {
+      "font-awesome" : "^4.3.0",
+      "dashjs" : "2.3.0"
+   },
+   "author" : "Azzouni Mohamed",
+   "main" : "lib/fjplayer.js",
+   "homepage" : "https://easysoftin.com",
+   "repository" : {
+      "url" : "https://easysoftin.com",
+      "type" : "git"
+   },
+   "name" : "fjplayer"
 }

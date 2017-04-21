@@ -38,7 +38,7 @@ if ($data->{version} eq $tag){
 }
 else{
     print"Version is not good ,need to be updated !";
-    $data->{version} = @tag;
+    $data->{version} = $tag;
     open my $fh, ">", "package.json";
     my $json = JSON->new;
     print $fh $json->pretty->encode($data);
