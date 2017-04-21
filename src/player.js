@@ -1,7 +1,5 @@
 import Logger from './Logger';
-/* import Playlist from './playlist';
-import Overlays from './Overlays';'
-import AdsManager from './AdsManager';*/
+import Overlays from './Overlays';
 import * as Const from './constants';
 import PlayerMedia from './PlayerMedia';
 import PlayerUi from './PlayerUi';
@@ -14,13 +12,12 @@ function Player(fjID, vidContainerId) {
         playerPlaylist = null,
         playlistLoaded = false,
         videoContainerId = vidContainerId,
-        /*  OverlaysMgr = new Overlays(document.getElementById(overlaysContainerDivId)),*/
+        OverlaysMgr = new Overlays(),
         playerMedia = new PlayerMedia(),
-        playerUi = new PlayerUi(this, videoContainerId),
+        playerUi = new PlayerUi(videoContainerId),
         // create ads Manager
-        AdsMgr = new AdsManager(document.getElementById(playerUi.getAdsContainerDivId())),
+        AdsMgr = new AdsManager(),
         supportsVideo = !!document.createElement('video').canPlayType;
-
     /**
      * function  to return a human redeable duration of secondes
      */
@@ -52,7 +49,7 @@ function Player(fjID, vidContainerId) {
         if (pauseIt === true) {
             // hide the player and pause it
             playerMedia.pause();
-            playerUi.getVideo().style.display = 'none';
+            playerUi.hideVideo();
             // hide controls
             playerUi.hide();
         } else {
@@ -71,9 +68,17 @@ function Player(fjID, vidContainerId) {
                     }
                 }
                 // resume the play and show it
-                playerUi.getVideo().style.display = 'block';
-                playerMedia.play();
+                playerUi.ShowVideo();
+                playerUi.onplaypauseClick();
+                // playerMedia.play();
             }
+        }
+    };
+
+    function MplayerEventing(e, args) {
+        logger.warn(' just a new event from mplayer ', e, args);
+        if (e === Const.PlayerEvents.PLAYBACK_ENDED) {
+            return AdsMgr.CheckPostAds();
         }
     };
     /**
@@ -88,8 +93,16 @@ function Player(fjID, vidContainerId) {
         if (playlist.getSize() > 0) {
             playerPlaylist = playlist;
             playlistLoaded = true;
-            playerUi.initialize(playerMedia);
+            playerUi.initialize(this, playerMedia);
+            playerMedia.on(Const.PlayerEvents.STREAM_LOADED, MplayerEventing);
+            playerMedia.on(Const.PlayerEvents.PLAYBACK_STARTED, MplayerEventing);
+            playerMedia.on(Const.PlayerEvents.PLAYBACK_PAUSED, MplayerEventing);
+            playerMedia.on(Const.PlayerEvents.PLAYBACK_ENDED, MplayerEventing);
+            playerMedia.on(Const.PlayerEvents.PLAYBACK_SEEKED, MplayerEventing);
+            playerMedia.on(Const.PlayerEvents.PLAYBACK_TIME_UPDATE, MplayerEventing);
             playerMedia.initialize(playerUi);
+            OverlaysMgr.initialize(document.getElementById(playerUi.getOverlaysContainerDivId()));
+            AdsMgr.initialize(document.getElementById(playerUi.getAdsContainerDivId()));
             return true;
         }
         logger.error(' playlist is empty: ', playlist.getSize());
@@ -128,6 +141,8 @@ function Player(fjID, vidContainerId) {
             OverlaysMgr.Setup(overlaysObjs);
         }
         */
+        // Set Overlays
+        OverlaysMgr.Setup(item[Const.FJCONFIG_OVERLAYS]);
         // Set ads
         AdsMgr.Setup(this, item[Const.FJCONFIG_ADS],
             playerUi.getVideo().videoWidth, playerUi.getVideo().videoHeight);
@@ -148,12 +163,19 @@ function Player(fjID, vidContainerId) {
     /**
      * Function to be called when user start play a video
      */
-    function startPlay() {
-        if (AdsMgr.CheckPreAds() === true) {
-            /* videoControls.style.display = 'block';
-            BigPlayBtn.style.display = 'none';*/
-            playerUi.hide();
-        }
+    function startPlayingChecks() {
+        return AdsMgr.CheckPreAds();
+
+    };
+
+    function midPlayingChecks(secondes) {
+        var ok = OverlaysMgr.CheckOverlays(secondes);
+        ok &= AdsMgr.CheckMidAds(secondes);
+        return ok;
+    };
+
+    function postPlayingChecks() {
+        return AdsMgr.CheckPostAds();
 
     };
     // ************************************************************************************
@@ -161,7 +183,9 @@ function Player(fjID, vidContainerId) {
     // ************************************************************************************
     return {
         duration: duration,
-        startPlay: startPlay,
+        startPlayingChecks: startPlayingChecks,
+        midPlayingChecks: midPlayingChecks,
+        postPlayingChecks: postPlayingChecks,
         freezePlayer: freezePlayer,
         loadPlaylist: loadPlaylist,
         playAt: playAt,

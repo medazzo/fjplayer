@@ -1,6 +1,7 @@
 import Logger from './Logger';
 import Eventing from './Eventing';
 import { MediaPlayer } from 'dashjs';
+import * as Const from './constants';
 // import * as Const from './constants';
 /**
  * @module PlayerMedia
@@ -29,13 +30,6 @@ function PlayerMedia() {
                 2: { name: 'DASH_CLEAR', value: 2, code: 'D' },
                 3: { name: 'DASH_ENCRYPTED', value: 3, code: 'E' }
             }
-        },
-        PlayerEvents = {
-            STREAM_LOADED: 'STREAM_LOADED',
-            PLAYBACK_STARTED: 'PLAYBACK_STARTED',
-            PLAYBACK_PAUSED: 'PLAYBACK_PAUSED',
-            PLAYBACK_SEEKED: 'PLAYBACK_SEEKED',
-            PLAYBACK_TIME_UPDATE: 'PLAYBACK_TIME_UPDATE'
         };
     /**
      *
@@ -56,13 +50,13 @@ function PlayerMedia() {
      *
      */
     function on(name, handler) {
-        return addEventListener(name, handler);
+        return events.on(name, handler);
     };
     /**
      *
      */
     function off(name, handler) {
-        return removeEventListener(name, handler);
+        return events.off(name, handler);
     };
     /**
      *
@@ -241,16 +235,16 @@ function PlayerMedia() {
         CurrentPlayerUi.setTime(time());
         CurrentPlayerUi.show();
         getEndedEvent = false;
-        events.fireEvent(PlayerEvents.PLAYBACK_STARTED);
+        events.fireEvent(Const.PlayerEvents.PLAYBACK_STARTED);
     };
 
     function onPlaybackPaused(e) {
-        events.fireEvent(PlayerEvents.PLAYBACK_PAUSED);
+        events.fireEvent(Const.PlayerEvents.PLAYBACK_PAUSED);
     };
 
     function onPlaybackEnded(e) {
         getEndedEvent = true;
-        events.fireEvent(PlayerEvents.PLAYBACK_ENDED);
+        events.fireEvent(Const.PlayerEvents.PLAYBACK_ENDED);
     };
 
     function onPlayTimeUpdate(e) {
@@ -265,11 +259,11 @@ function PlayerMedia() {
             return;
         }
         CurrentPlayerUi.setTime(time);
-        events.fireEvent(PlayerEvents.PLAYBACK_TIME_UPDATE, time);
+        events.fireEvent(Const.PlayerEvents.PLAYBACK_TIME_UPDATE, time);
     };
 
     function onSeeked(e) {
-        events.fireEvent(PlayerEvents.PLAYBACK_SEEKED);
+        events.fireEvent(Const.PlayerEvents.PLAYBACK_SEEKED);
     };
 
     function onError(e) {
@@ -365,7 +359,7 @@ function PlayerMedia() {
             }
         }*/
         logger.info(' stream is completly loaded  ');
-        events.fireEvent(PlayerEvents.STREAM_LOADED);
+        events.fireEvent(Const.PlayerEvents.STREAM_LOADED);
     };
     /**
      * Used to Clean loaded data video
@@ -521,7 +515,6 @@ function PlayerMedia() {
         on: on,
         off: off,
         StreamTypes: StreamTypes,
-        PlayerEvents: PlayerEvents,
         CurrentStreamType: CurrentStreamType,
         play: play,
         pause: pause,

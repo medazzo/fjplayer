@@ -8,7 +8,7 @@ import * as Utils from './Utils';
  *  Ads will be played on a another video html overlaying current video
  */
 
-function AdsManager(AdsContainer) {
+function AdsManager() {
     var logger = new Logger(this),
         mediaPlayer = null,
         mainVideoWidth = 0,
@@ -18,7 +18,7 @@ function AdsManager(AdsContainer) {
         preAds = [],
         localAds = null,
         settled = false,
-        AdsContainerdiv = AdsContainer,
+        AdsContainerdiv = null,
         AdsEnum = {
             PRE: 0,
             MID: 1,
@@ -96,8 +96,6 @@ function AdsManager(AdsContainer) {
         } else {
             mediaPlayer.freezePlayer(true, false, false);
         }
-        // hide all div ads content
-        AdsContainerdiv.style.display = 'none';
         // fill ads container
         adsvideo.preload = true;
         adsvideo.controls = false;
@@ -105,7 +103,8 @@ function AdsManager(AdsContainer) {
         // setting W/H !
         adsvideo.setAttribute('width', mainVideoWidth);
         adsvideo.setAttribute('height', mainVideoHeight);
-        //
+        adsvideo.setAttribute('width', '100%');
+        adsvideo.setAttribute('height', '100%');
         infoDiv.innerHTML = '<span style=\"color: rgb(119, 255, 119); font-size: 0.95em;\">Annonce</span>' +
             ' This an Ads for <span style=\"color: rgb(255, 255, 0)\">' +
             item[Const.FJCONFIG_URL] + '</span>';
@@ -147,6 +146,7 @@ function AdsManager(AdsContainer) {
         adsvideo.addEventListener('ended', function(e) {
             StopAds(index, adsType);
         });
+        logger.warn('Will set ads video like ', adsvideo);
     };
     /**
      * Function to be called from event 'timeupdate' from video
@@ -159,6 +159,7 @@ function AdsManager(AdsContainer) {
         if (settled !== true) {
             return;
         }
+        logger.info(secondes, ' Cheking ads midium  .. ');
         for (i = 0; i < midAds.length; i++) {
             item = midAds[i];
             show = parseInt(item[Const.FJCONFIG_SHOW_AT], 10);
@@ -228,6 +229,10 @@ function AdsManager(AdsContainer) {
         return false;
     };
 
+    function initialize(AdsContainer) {
+        AdsContainerdiv = AdsContainer;
+    };
+
     function Setup(player, ads, videoWidth, videoHeight) {
         var i = 0;
         var sz;
@@ -272,6 +277,7 @@ function AdsManager(AdsContainer) {
         CheckPreAds: CheckPreAds,
         CheckPostAds: CheckPostAds,
         Setup: Setup,
+        initialize: initialize,
         constructor: AdsManager
     };
 };

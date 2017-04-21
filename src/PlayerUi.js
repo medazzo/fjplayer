@@ -15,9 +15,9 @@ require('font-awesome/css/font-awesome.css');
  * @description The PlayerUi is the html UI for the player
  *
  */
-function PlayerUi(mainPlayer, videoContId) {
+function PlayerUi(videoContId) {
     var logger = new Logger(this),
-        fjMainPlayer = mainPlayer,
+        fjMainPlayer = null,
         videoContainerId = videoContId,
         fullScreenOnStart = false,
         vwidth, vheight,
@@ -67,6 +67,7 @@ function PlayerUi(mainPlayer, videoContId) {
         seeking = false,
         videoControllerVisibleTimeout = 0,*/
         videoController,
+        videoControllerFigure,
         playpauseBtn,
         muteBtn,
         volumeBar,
@@ -132,8 +133,8 @@ function PlayerUi(mainPlayer, videoContId) {
          lastVolumeLevel = NaN;
         seeking = false;
         videoControllerVisibleTimeout = 0; */
-
-        videoController = document.getElementById(videoFigureId);
+        videoController = document.getElementById(videoControlsId);
+        videoControllerFigure = document.getElementById(videoFigureId);
         video = document.getElementById(videoId);
         if (!video) {
             throw new Error('The video element still null');
@@ -172,11 +173,15 @@ function PlayerUi(mainPlayer, videoContId) {
     // ************************************************************************************
     // PLAYBACK
     // ************************************************************************************
-    function onplaypauseClick(e) {
+    function onplaypauseClick() {
         if (!isStarted) {
             isStarted = true;
-            fjMainPlayer.startPlay();
+            logger.warn(' onplaypauseClick Playerui with ', fjMainPlayer);
+            if (fjMainPlayer.startPlayingChecks() === true) {
+                return;
+            }
         }
+
         if (player.isPaused() || player.isEnded()) {
             playpauseBtn.className = 'fa  fa-pause';
             // hide big play button
@@ -186,14 +191,15 @@ function PlayerUi(mainPlayer, videoContId) {
             player.play();
         } else {
             playpauseBtn.className = 'fa  fa-play';
-            player.pause();
             // show big play button
             BigPlayBtn.style.display = 'block';
             // hide video controls
             videoControls.style.display = 'none';
             SubMenu.HideMenu();
             AudiosMenu.HideMenu();
+            player.pause();
         }
+
         logger.log('clicking pause/play !');
     };
 
@@ -396,6 +402,9 @@ function PlayerUi(mainPlayer, videoContId) {
         // set timer
         timer.innerHTML = ' <span>' + Utils.duration(progressBar.value) +
             '</span><span>/</span><span>' + Utils.duration(video.duration) + '</span>';
+
+        fjMainPlayer.midPlayingChecks(Math.round(progressBar.value));
+
     };
 
     // ************************************************************************************
@@ -833,16 +842,21 @@ function PlayerUi(mainPlayer, videoContId) {
         return adsContainerDivId;
     };
 
+    function getOverlaysContainerDivId() {
+        return overlaysContainerDivId;
+    };
+
     function SetupThumbsManager(videoDuration, thumbsTrackIndex) {
         return ThumbsMgr.Setup(getVideo(), videoDuration, thumbsTrackIndex);
     };
 
     function getVideoFigure() {
-        return videoController;
+        return videoControllerFigure;
     };
 
-    function initialize(playerMedia) {
+    function initialize(mainPlayer, playerMedia) {
         create(videoContainerId);
+        fjMainPlayer = mainPlayer;
         player = playerMedia;
         if (!player) {
             throw new Error('Please pass an instance of player when instantiating');
@@ -852,9 +866,9 @@ function PlayerUi(mainPlayer, videoContId) {
         SubMenu = new SubsMenu(video, subtitlesBtnId, subsdMenuContainerDivId);
 
         // OverlaysMgr = new Overlays(this.video, document.getElementById(this.overlaysContainerDivId));
-        videoController.addEventListener('mouseleave', magicMouseLeave);
-        videoController.addEventListener('mouseenter', magicMouseEnter);
-        videoController.addEventListener('mousemove', magicMouseMove);
+        videoControllerFigure.addEventListener('mouseleave', magicMouseLeave);
+        videoControllerFigure.addEventListener('mouseenter', magicMouseEnter);
+        videoControllerFigure.addEventListener('mousemove', magicMouseMove);
         BigPlayBtn.addEventListener('click', onplaypauseClick);
         video.addEventListener('click', onplaypauseClick);
         video.addEventListener('dblclick', handleFullscreen);
@@ -873,12 +887,27 @@ function PlayerUi(mainPlayer, videoContId) {
         document.addEventListener('webkitfullscreenchange', onFullScreenChange);
     };
 
+    function hideVideo() {
+        BigPlayBtn.style.display = 'none';
+        videoInfo.style.display = 'none';
+        video.style.display = 'none';
+        videoController.style.display = 'none';
+    };
+
+    function ShowVideo() {
+        BigPlayBtn.style.display = 'block';
+        videoInfo.style.display = 'block';
+        video.style.display = 'block';
+        videoController.style.display = 'block';
+    };
+
     function show() {
-        videoController.classList.remove('hide');
+        // videoController.classList.remove('hide');
     };
 
     function hide() {
-        videoController.classList.add('hide');
+        // videoController.style.visibility = 'hidden';
+        //         videoController.classList.add('hide');
     };
 
     function disable() {
@@ -948,14 +977,18 @@ function PlayerUi(mainPlayer, videoContId) {
         setTitle: setTitle,
         getVideo: getVideo,
         getAdsContainerDivId: getAdsContainerDivId,
+        getOverlaysContainerDivId: getOverlaysContainerDivId,
         SetupThumbsManager: SetupThumbsManager,
         getVideoFigure: getVideoFigure,
         initialize: initialize,
         show: show,
         hide: hide,
+        hideVideo: hideVideo,
+        ShowVideo: ShowVideo,
         disable: disable,
         enable: enable,
         reset: reset,
+        onplaypauseClick: onplaypauseClick,
         destroy: destroy,
         constructor: PlayerUi
     };

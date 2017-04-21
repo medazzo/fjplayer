@@ -6,18 +6,17 @@ import * as Const from './constants';
  * @description The Overlays is that manage overlays of a video :
  *     it manage overlays for information ads , media or ovelay on ads video.
  */
-function Overlays(OverDiv) {
+function Overlays() {
     var logger = new Logger(this),
         overlays = null,
         settled = false,
-        OverlayDiv = OverDiv,
+        OverlayDiv = null,
         OverlayInnerDiv = null,
         OverlayClosingDiv = null;
 
-
-    function Setup(overlays) {
+    function Setup(overs) {
         var i = 0;
-        overlays = overlays;
+        overlays = overs;
         settled = true;
         for (i = 0; i < overlays.length; i++) {
             overlays[i].started = false;
@@ -113,6 +112,10 @@ function Overlays(OverDiv) {
             }
         }
     };
+
+    function initialize(overdiv) {
+        OverlayDiv = overdiv;
+    };
     // ************************************************************************************
     // PUBLIC API
     // ************************************************************************************
@@ -120,6 +123,7 @@ function Overlays(OverDiv) {
         StartOverlay: StartOverlay,
         StopOverlay: StopOverlay,
         clicked: clicked,
+        initialize: initialize,
         Setup: Setup,
         CheckOverlays: CheckOverlays,
         constructor: Overlays

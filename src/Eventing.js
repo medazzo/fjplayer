@@ -10,7 +10,7 @@ function Eventing() {
     /**
      *
      */
-    function addEventListener(name, handler) {
+    function addListener(name, handler) {
         logger.debug(' Adding Eventing Listener for event :',
             name, ', the handler is ', handler);
         if (events.hasOwnProperty(name)) {
@@ -22,7 +22,7 @@ function Eventing() {
     /**
      *
      */
-    function removeEventListener(name, handler) {
+    function removeListener(name, handler) {
         var index = -1;
         logger.debug(' Removing Eventing Listener for event :',
             name, ', the handler is ', handler);
@@ -41,17 +41,20 @@ function Eventing() {
      */
     function fireEvent(name, args) {
         var evs, l, i;
-        logger.debug(' Firing Eventing on event :', name);
+        logger.debug(' Firing Eventing on event :', name, args);
         if (!events.hasOwnProperty(name)) {
+            logger.debug(' Firing Eventing on event :', name, args);
             return;
         }
         if (!args || !args.length) {
+            logger.debug(' Firing Eventing on event :', name, args);
             args = [];
         }
         evs = events[name];
         l = evs.length;
         for (i = 0; i < l; i++) {
-            evs[i].apply(null, args);
+            logger.debug(' Firing Eventing on event :', name, args);
+            evs[i](name, args);
         }
     };
     // ************************************************************************************
@@ -59,10 +62,10 @@ function Eventing() {
     // ************************************************************************************
     return {
         fireEvent: fireEvent,
-        addEventListener: addEventListener,
-        removeEventListener: removeEventListener,
-        on: addEventListener,
-        off: removeEventListener,
+        addEventListener: addListener,
+        removeEventListener: removeListener,
+        on: addListener,
+        off: removeListener,
         constructor: Eventing
     };
 };
