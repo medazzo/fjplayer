@@ -125,6 +125,7 @@ function AdsManager() {
         });
         adsvideo.addEventListener('click', function() {
             item.clicked++;
+            events.fireEvent(Const.AdsEvents.ADS_USER_CLICKED);
             window.open(item[Const.FJCONFIG_URL], '_blank');
         });
         adsvideo.addEventListener('ended', function(e) {

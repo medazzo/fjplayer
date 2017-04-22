@@ -56,7 +56,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         subsdMenuContainerDivId = 'smcd' + id,
         audMenuContainerDivId = 'amcd' + id,
         videoContainer,
-        player = null,
         video = null,
         // OverlaysMgr = null,
         /* videoContainer = null,
@@ -183,13 +182,14 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             }
         }
 
-        if (player.isPaused() || player.isEnded()) {
+        if (fjMainPlayer.isPaused() || fjMainPlayer.isEnded()) {
             playpauseBtn.className = 'fa  fa-pause';
             // hide big play button
             BigPlayBtn.style.display = 'none';
             // show video controls
             videoControls.style.display = 'block';
-            player.play();
+            fjMainPlayer.play();
+            logger.log('clicking play !');
         } else {
             playpauseBtn.className = 'fa  fa-play';
             // show big play button
@@ -198,10 +198,9 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             videoControls.style.display = 'none';
             SubMenu.HideMenu();
             AudiosMenu.HideMenu();
-            player.pause();
+            fjMainPlayer.pause();
+            logger.log('clicking pause !');
         }
-
-        logger.log('clicking pause/play !');
     };
 
     function magicMouseLeave() {
@@ -383,32 +382,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         timer.innerHTML = ' <span>' + Utils.duration(p) +
             '</span><span>/</span><span>' + Utils.duration(video.duration) + '</span>';
     };
-    // ************************************************************************************
-    // TIME/DURATION
-    // ************************************************************************************
-    function onvideoTimeupdate() {
-        var val = 0.0;
-        // For mobile browsers, ensure that the progress element's max attribute is set
-        if (progressBar.max !== video.duration) {
-            progressBar.max = video.duration;
-        }
-        // set progress
-        progressBar.value = video.currentTime;
-        val = (progressBar.value - progressBar.min) / (progressBar.max - progressBar.min);
-        progressBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
-            'color-stop(' + val + ', #FF0000), ' +
-            'color-stop(' + val + ', #8F9B9E)' +
-            ')';
-        // set timer
-        timer.innerHTML = ' <span>' + Utils.duration(progressBar.value) +
-            '</span><span>/</span><span>' + Utils.duration(video.duration) + '</span>';
-
-        fjMainPlayer.midPlayingChecks(Math.round(progressBar.value));
-        logger.warn(' VIDEO widthXheight ', video.width, video.height);
-        logger.warn(' VIDEO widthXheight ', video.videoWidth, video.videoHeight);
-
-    };
-
     // ************************************************************************************
     // FULLSCREEN
     // ************************************************************************************
@@ -823,12 +796,20 @@ function PlayerUi(videoContId, VWidth, WHeight) {
     function setDuration(value) {
         if (!isNaN(value)) {
             durationDisplay.textContent = Utils.duration(value);
+            progressBar.max = value;
         }
     }
 
-    function setTime(value) {
+    function UpdateProgress(value) {
+        var val = 0.0;
         if (!isNaN(value)) {
             timer.textContent = Utils.duration(value);
+            progressBar.value = value;
+            val = (progressBar.value - progressBar.min) / (progressBar.max - progressBar.min);
+            progressBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
+                'color-stop(' + val + ', #FF0000), ' +
+                'color-stop(' + val + ', #8F9B9E)' +
+                ')';
         }
     };
 
@@ -856,11 +837,10 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         return videoControllerFigure;
     };
 
-    function initialize(mainPlayer, playerMedia) {
+    function initialize(mainPlayer) {
         create(videoContainerId);
         fjMainPlayer = mainPlayer;
-        player = playerMedia;
-        if (!player) {
+        if (!fjMainPlayer) {
             throw new Error('Please pass an instance of player when instantiating');
         }
 
@@ -880,7 +860,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         muteBtn.addEventListener('click', onmuteClick);
         fullScreenBtn.addEventListener('click', handleFullscreen);
         expandBtn.addEventListener('click', handleExpand);
-        video.addEventListener('timeupdate', onvideoTimeupdate);
         progressBar.addEventListener('click', onprogressClick);
 
         document.addEventListener('fullscreenchange', onFullScreenChange);
@@ -954,16 +933,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         muteBtn.removeEventListener('click', onmuteClick);
         fullScreenBtn.removeEventListener('click', handleFullscreen);
         expandBtn.removeEventListener('click', handleExpand);
-        video.removeEventListener('timeupdate', onvideoTimeupdate);
         progressBar.removeEventListener('click', onprogressClick);
-        /*
-                    player.off(dashjs.MediaPlayer.events.PLAYBACK_STARTED, onPlayStart, this);
-                    player.off(dashjs.MediaPlayer.events.PLAYBACK_PAUSED, onPlaybackPaused, this);
-                    player.off(dashjs.MediaPlayer.events.PLAYBACK_TIME_UPDATED, onPlayTimeUpdate, this);
-                    player.off(dashjs.MediaPlayer.events.PLAYBACK_SEEKED, onSeeked, this);
-                    player.off(dashjs.MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, this);
-                    player.off(dashjs.MediaPlayer.events.STREAM_INITIALIZED, onStreamInitialized, this);
-        */
         document.removeEventListener('fullscreenchange', onFullScreenChange);
         document.removeEventListener('MSFullscreenChange', onFullScreenChange);
         document.removeEventListener('mozfullscreenchange', onFullScreenChange);
@@ -975,7 +945,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
     return {
         setVolume: setVolume,
         setDuration: setDuration,
-        setTime: setTime,
+        UpdateProgress: UpdateProgress,
         setTitle: setTitle,
         getVideo: getVideo,
         getAdsContainerDivId: getAdsContainerDivId,

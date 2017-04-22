@@ -1,6 +1,7 @@
 import Logger from './Logger';
 require('./player.css');
 import * as Const from './constants';
+import Eventing from './Eventing';
 /**
  * @module Overlay
  * @description The Overlays is that manage overlays of a video :
@@ -12,6 +13,7 @@ function Overlays() {
         settled = false,
         OverlayDiv = null,
         OverlayInnerDiv = null,
+        events = new Eventing(),
         OverlayClosingDiv = null;
 
     function Setup(overs) {
@@ -32,6 +34,7 @@ function Overlays() {
     function clicked(index) {
         var item = overlays[index];
         overlays[index].clicked++;
+        events.fireEvent(Const.OverlayEvents.OVERLAY_USER_CLICKED);
         window.open(item[Const.FJCONFIG_URL], '_blank');
     };
 
@@ -51,6 +54,7 @@ function Overlays() {
         }
         OverlayDiv.innerHTML = '';
         OverlayDiv.style.display = 'none';
+        events.fireEvent(Const.OverlayEvents.OVERLAY_ENDED);
     };
 
     /**
@@ -81,6 +85,7 @@ function Overlays() {
         OverlayDiv.appendChild(OverlayInnerDiv);
         OverlayDiv.style.display = 'block';
         OverlayDiv.classList.add('over-HL');
+        events.fireEvent(Const.OverlayEvents.OVERLAY_STARTED);
         // add click
         url = item[Const.FJCONFIG_URL];
         logger.info('Setting click on overlay going to  ', url);
@@ -120,6 +125,18 @@ function Overlays() {
     function initialize(overdiv) {
         OverlayDiv = overdiv;
     };
+    /**
+     *
+     */
+    function on(name, handler) {
+        return events.on(name, handler);
+    };
+    /**
+     *
+     */
+    function off(name, handler) {
+        return events.off(name, handler);
+    };
     // ************************************************************************************
     // PUBLIC API
     // ************************************************************************************
@@ -129,6 +146,8 @@ function Overlays() {
         clicked: clicked,
         initialize: initialize,
         Setup: Setup,
+        on: on,
+        off: off,
         CheckOverlays: CheckOverlays,
         constructor: Overlays
     };

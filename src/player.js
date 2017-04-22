@@ -76,7 +76,6 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
                 // resume the play and show it
                 playerUi.ShowVideo();
                 playerUi.onplaypauseClick();
-                // playerMedia.play();
             }
         }
     };
@@ -107,13 +106,33 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         }
     };
 
+    function midPlayingChecks(secondes) {
+        var ok;
+        logger.warn(' Cheking Mid player overlays and ads @ ', secondes);
+        OverlaysMgr.CheckOverlays(secondes);
+        ok &= AdsMgr.CheckMidAds(secondes);
+        return ok;
+    };
+
     function MplayerEventing(e, args) {
         var item, vid;
         logger.debug(' just a new event from mplayer ', e, args);
+        if (e === Const.PlayerEvents.PLAYBACK_STARTED) {
+            playerUi.setDuration(playerMedia.getDuration());
+            playerUi.show();
+        }
+        if (e === Const.PlayerEvents.PLAYBACK_TIME_UPDATE) {
+            playerUi.UpdateProgress(playerMedia.time());
+            midPlayingChecks(Math.round(playerMedia.time()));
+        }
         if (e === Const.PlayerEvents.PLAYBACK_ENDED) {
             return AdsMgr.CheckPostAds();
         }
         if (e === Const.PlayerEvents.STREAM_LOADED) {
+            // checks thumbs
+            if (args !== null) {
+                playerUi.SetupThumbsManager(playerMedia.getDuration(), args);
+            }
             item = playerPlaylist.getItem(currentPlaying);
             // Set Overlays
             OverlaysMgr.Setup(item[Const.FJCONFIG_OVERLAYS]);
@@ -136,7 +155,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         if (playlist.getSize() > 0) {
             playerPlaylist = playlist;
             playlistLoaded = true;
-            playerUi.initialize(this, playerMedia);
+            playerUi.initialize(this);
             playerMedia.on(Const.PlayerEvents.STREAM_LOADED, MplayerEventing);
             playerMedia.on(Const.PlayerEvents.PLAYBACK_STARTED, MplayerEventing);
             playerMedia.on(Const.PlayerEvents.PLAYBACK_PAUSED, MplayerEventing);
@@ -148,7 +167,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
             AdsMgr.on(Const.AdsEvents.ADS_PLAYBACK_ERROR, AdsEventing);
             AdsMgr.on(Const.AdsEvents.ADS_PLAYBACK_ENDED, AdsEventing);
 
-            playerMedia.initialize(playerUi);
+            playerMedia.initialize(playerUi.getVideo(), playerUi.getVideoFigure());
             OverlaysMgr.initialize(document.getElementById(playerUi.getOverlaysContainerDivId()));
             AdsMgr.initialize(document.getElementById(playerUi.getAdsContainerDivId()));
             return true;
@@ -200,15 +219,25 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
 
     };
 
-    function midPlayingChecks(secondes) {
-        var ok = OverlaysMgr.CheckOverlays(secondes);
-        ok &= AdsMgr.CheckMidAds(secondes);
-        return ok;
-    };
-
     function postPlayingChecks() {
         return AdsMgr.CheckPostAds();
 
+    };
+
+    function play() {
+        playerMedia.play();
+    };
+
+    function pause() {
+        playerMedia.pause();
+    };
+
+    function isPaused() {
+        return playerMedia.isPaused();
+    };
+
+    function isEnded() {
+        return playerMedia.isEnded();
     };
     // ************************************************************************************
     // PUBLIC API
@@ -220,6 +249,10 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         postPlayingChecks: postPlayingChecks,
         loadPlaylist: loadPlaylist,
         playAt: playAt,
+        play: play,
+        pause: pause,
+        isPaused: isPaused,
+        isEnded: isEnded,
         constructor: Player
     };
 };

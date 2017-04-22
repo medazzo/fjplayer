@@ -9,8 +9,7 @@ import * as Const from './constants';
  *
  */
 function PlayerMedia() {
-    var CurrentPlayerUi = null,
-        video = null,
+    var video = null,
         videoFigure = null,
         thumbsTrackUrl = null,
         thumbsTrackIndex = -1,
@@ -34,17 +33,13 @@ function PlayerMedia() {
     /**
      *
      */
-    function initialize(playerUi) {
-        CurrentPlayerUi = playerUi;
-        if (!CurrentPlayerUi) {
-            throw new Error('Please call initialize with a valid Player UI object');
-        }
-        video = CurrentPlayerUi.getVideo();
+    function initialize(playerUiVideo, playerUiVideoFigure) {
+        video = playerUiVideo;
         if (!video) {
             throw new Error('Please call initialize with a valid Player UI having a video html 5 element ');
         }
-        videoFigure = CurrentPlayerUi.getVideoFigure();
-        logger.debug(' Media player juste initilized with CurrentPlayerUi');
+        videoFigure = playerUiVideoFigure;
+        logger.debug(' Media player juste initilized with playerUiVideo');
     };
     /**
      *
@@ -222,19 +217,6 @@ function PlayerMedia() {
     };
 
     function onPlayStart(e) {
-        if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-            CurrentPlayerUi.setTime(video.currentTime);
-        } else if ((CurrentStreamType === StreamTypes.DASH_CLEAR) ||
-            (CurrentStreamType === StreamTypes.DASH_ENCRYPTED)) {
-            CurrentPlayerUi.setTime(DashPlayer.time());
-        } else {
-            logger.warn(' Internal error !');
-            return;
-        }
-        CurrentPlayerUi.setDuration(getDuration());
-        CurrentPlayerUi.setTime(time());
-        CurrentPlayerUi.show();
-        getEndedEvent = false;
         events.fireEvent(Const.PlayerEvents.PLAYBACK_STARTED);
     };
 
@@ -258,7 +240,6 @@ function PlayerMedia() {
             logger.warn(' Internal error !');
             return;
         }
-        CurrentPlayerUi.setTime(time);
         events.fireEvent(Const.PlayerEvents.PLAYBACK_TIME_UPDATE, time);
     };
 
@@ -299,8 +280,6 @@ function PlayerMedia() {
                     video.textTracks[i].mode = 'hidden'; // thanks Firefox
                     logger.debug('find  metadata tumbs  @ ', thumbsTrackIndex,
                         '/', video.textTracks.length, ' >>> and video duration ;;; ', getDuration());
-                    CurrentPlayerUi.SetupThumbsManager(getDuration(), thumbsTrackIndex);
-
                 } else if ((video.textTracks[i].kind === 'captions') ||
                     (video.textTracks[i].kind === 'subtitles')) {
                     // SubsTrackIndex = i;
@@ -359,7 +338,11 @@ function PlayerMedia() {
             }
         }*/
         logger.info(' stream is completly loaded  ');
-        events.fireEvent(Const.PlayerEvents.STREAM_LOADED);
+        if ((thumbsTrackIndex !== -1) && (thumbsTrackUrl !== null)) {
+            events.fireEvent(Const.PlayerEvents.STREAM_LOADED, thumbsTrackIndex);
+        } else {
+            events.fireEvent(Const.PlayerEvents.STREAM_LOADED, null);
+        }
     };
     /**
      * Used to Clean loaded data video
