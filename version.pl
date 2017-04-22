@@ -20,7 +20,7 @@ if ($size eq '1'){
     $ll = (length @gitArray[2])-1 ;
     $hash = substr @gitArray[2],0,$ll;    
 }
-print  "<<<< TAG  '$tag' .\n";
+print  "> TAG  '$tag' .\n";
 # update package json version file 
 my $data;
 my $fjson = 'package.json';
@@ -31,13 +31,13 @@ if (open (my $json_str, $fjson))
   $data = $json->decode(<$json_str>);
   close($json_stream);
 }
-print  " current version '$data->{version}' .\n";
+print  "> Current version '$data->{version}' .\n";
 
 if ($data->{version} eq $tag){
-    print"Version is good \n";
+    print "> Version is good \n";
 }
 else{
-    print"Version is not good ,need to be updated !";
+    print" >> Version is not good ,need to be updated !";
     $data->{version} = $tag;
     open my $fh, ">", "package.json";
     my $json = JSON->new;
@@ -55,8 +55,8 @@ print $fh "/* Version.js File */
 function Version() {
 };
 
-const GIT_VERSION = '@tag';
-const GIT_COMMIT_SINCE_TAG = '@commit';
+const GIT_VERSION = '$tag';
+const GIT_COMMIT_SINCE_TAG = '$commit';
 const GIT_HEAD_SHORT_HASH = '$hash';
 
 Version.prototype.getVersion = function() {

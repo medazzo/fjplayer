@@ -11,8 +11,6 @@ function Eventing() {
      *
      */
     function addListener(name, handler) {
-        logger.debug(' Adding Eventing Listener for event :',
-            name, ', the handler is ', handler);
         if (events.hasOwnProperty(name)) {
             events[name].push(handler);
         } else {
@@ -24,8 +22,6 @@ function Eventing() {
      */
     function removeListener(name, handler) {
         var index = -1;
-        logger.debug(' Removing Eventing Listener for event :',
-            name, ', the handler is ', handler);
         /* This is a bit tricky, because how would you identify functions?
            This simple solution should work if you pass THE SAME handler. */
         if (!events.hasOwnProperty(name)) {
@@ -43,17 +39,15 @@ function Eventing() {
         var evs, l, i;
         logger.debug(' Firing Eventing on event :', name, args);
         if (!events.hasOwnProperty(name)) {
-            logger.debug(' Firing Eventing on event :', name, args);
             return;
         }
-        if (!args || !args.length) {
+        /* if (!args || !args.length) {
             logger.debug(' Firing Eventing on event :', name, args);
             args = [];
-        }
+        }*/
         evs = events[name];
         l = evs.length;
         for (i = 0; i < l; i++) {
-            logger.debug(' Firing Eventing on event :', name, args);
             evs[i](name, args);
         }
     };

@@ -1,6 +1,7 @@
 import Logger from './Logger';
 import * as Const from './constants';
 import * as Utils from './Utils';
+import Eventing from './Eventing';
 /**
  * @module AdsManager
  * @description The AdsManager is the class whinch will manage Ads
@@ -10,25 +11,15 @@ import * as Utils from './Utils';
 
 function AdsManager() {
     var logger = new Logger(this),
-        mediaPlayer = null,
+        settled = false,
+        events = new Eventing(),
         mainVideoWidth = 0,
         mainVideoHeight = 0,
         midAds = [],
         postAds = [],
         preAds = [],
         localAds = null,
-        settled = false,
-        AdsContainerdiv = null,
-        AdsEnum = {
-            PRE: 0,
-            MID: 1,
-            POST: 2,
-            properties: {
-                0: { name: 'preroll', value: 0, code: 'P' },
-                1: { name: 'midroll', value: 1, code: 'M' },
-                2: { name: 'postroll', value: 2, code: 'A' }
-            }
-        };
+        AdsContainerdiv = null;
     /**
      * Function used to stop Ads
      * @param {*} index index of ads in his arry
@@ -38,9 +29,13 @@ function AdsManager() {
         var el = AdsContainerdiv;
         var elClone = null;
         var item = midAds[index];
-        if (adsType === AdsEnum.PRE) {
+        if (settled !== true) {
+            logger.warn(' AdsMgr is not yet cettled !');
+            return;
+        }
+        if (adsType === Const.AdsEnum.ADS_PRE_ROLL) {
             item = preAds[index];
-        } else if (adsType === AdsEnum.MID) {
+        } else if (adsType === Const.AdsEnum.ADS_MID_ROLL) {
             item = midAds[index];
         } else {
             item = postAds[index];
@@ -58,14 +53,7 @@ function AdsManager() {
         }
         AdsContainerdiv.innerHTML = '';
         AdsContainerdiv.style.display = 'none';
-        // resume current video
-        if (adsType === AdsEnum.PRE) {
-            mediaPlayer.freezePlayer(false, true, false);
-        } else if (adsType === AdsEnum.POST) {
-            mediaPlayer.freezePlayer(false, false, true);
-        } else {
-            mediaPlayer.freezePlayer(false, false, false);
-        }
+        events.fireEvent(Const.AdsEvents.ADS_PLAYBACK_ENDED, adsType);
     };
 
     function StartAds(index, adsType) {
@@ -75,11 +63,15 @@ function AdsManager() {
         var adsvideo = document.createElement('video');
         var source = document.createElement('source');
         var item = midAds[index];
-        if (adsType === AdsEnum.PRE) {
+        if (settled !== true) {
+            logger.warn(' AdsMgr is not yet cettled !');
+            return;
+        }
+        if (adsType === Const.AdsEnum.ADS_PRE_ROLL) {
             item = preAds[index];
             logger.info(index, 'starting PRE Ads ', preAds);
             logger.info(index, 'starting PRE Ads ', item[Const.FJCONFIG_SRC]);
-        } else if (adsType === AdsEnum.MID) {
+        } else if (adsType === Const.AdsEnum.ADS_MID_ROLL) {
             item = midAds[index];
             logger.info(index, 'starting MId Ads ', item[Const.FJCONFIG_SRC],
                 ' @@ ', item[Const.FJCONFIG_SHOW_AT]);
@@ -89,13 +81,7 @@ function AdsManager() {
         }
         item.started = true;
         // pause current video and play ads
-        if (adsType === AdsEnum.PRE) {
-            mediaPlayer.freezePlayer(true, true, false);
-        } else if (adsType === AdsEnum.POST) {
-            mediaPlayer.freezePlayer(true, false, true);
-        } else {
-            mediaPlayer.freezePlayer(true, false, false);
-        }
+        events.fireEvent(Const.AdsEvents.ADS_PLAYBACK_STARTED, adsType);
         // fill ads container
         adsvideo.preload = true;
         adsvideo.controls = false;
@@ -103,8 +89,6 @@ function AdsManager() {
         // setting W/H !
         adsvideo.setAttribute('width', mainVideoWidth);
         adsvideo.setAttribute('height', mainVideoHeight);
-        adsvideo.setAttribute('width', '100%');
-        adsvideo.setAttribute('height', '100%');
         infoDiv.innerHTML = '<span style=\"color: rgb(119, 255, 119); font-size: 0.95em;\">Annonce</span>' +
             ' This an Ads for <span style=\"color: rgb(255, 255, 0)\">' +
             item[Const.FJCONFIG_URL] + '</span>';
@@ -157,6 +141,7 @@ function AdsManager() {
         var item = null;
         var show = 0;
         if (settled !== true) {
+            logger.warn(' AdsMgr is not yet cettled !');
             return;
         }
         logger.info(secondes, ' Cheking ads midium  .. ');
@@ -168,7 +153,7 @@ function AdsManager() {
                 if (midAds[i].started === false) {
                     logger.info(i, ' starting a new  Mid Ads .. ');
                     midAds[i].started = true;
-                    StartAds(i, AdsEnum.MID);
+                    StartAds(i, Const.AdsEnum.ADS_MID_ROLL);
                 } else {
                     logger.info(i, ' already started ', item[Const.FJCONFIG_URL],
                         ' @@ ', item[Const.FJCONFIG_SHOW_AT]);
@@ -186,6 +171,7 @@ function AdsManager() {
         var item = null;
         logger.info(' Cheking Pre Ads Now .. ');
         if (settled !== true) {
+            logger.warn(' AdsMgr is not yet cettled !');
             return false;
         }
         for (i = 0; i < preAds.length; i++) {
@@ -194,7 +180,7 @@ function AdsManager() {
             if (preAds[i].started === false) {
                 logger.info(i, ' starting a new Pre Ads .. @', i);
                 preAds[i].started = true;
-                StartAds(i, AdsEnum.PRE);
+                StartAds(i, Const.AdsEnum.ADS_PRE_ROLL);
                 return true;
             }
             logger.info(i, 'Pre already started ', item[Const.FJCONFIG_URL],
@@ -212,6 +198,7 @@ function AdsManager() {
         var item = null;
         logger.info(' Cheking Post Ads Now .. ');
         if (settled !== true) {
+            logger.warn(' AdsMgr is not yet cettled !');
             return false;
         }
         for (i = 0; i < postAds.length; i++) {
@@ -220,7 +207,7 @@ function AdsManager() {
             if (postAds[i].started === false) {
                 logger.info(i, ' starting a new Post Ads .. ');
                 postAds[i].started = true;
-                StartAds(i, AdsEnum.POST);
+                StartAds(i, Const.AdsEnum.ADS_POST_ROLL);
                 return true;
             }
             logger.info(i, 'Post already started ', item[Const.FJCONFIG_URL],
@@ -233,7 +220,7 @@ function AdsManager() {
         AdsContainerdiv = AdsContainer;
     };
 
-    function Setup(player, ads, videoWidth, videoHeight) {
+    function Setup(ads, videoWidth, videoHeight) {
         var i = 0;
         var sz;
         var item;
@@ -243,7 +230,6 @@ function AdsManager() {
             return;
         }
         localAds = ads;
-        mediaPlayer = player;
         mainVideoWidth = videoWidth;
         mainVideoHeight = videoHeight;
         for (i = 0; i < localAds.length; i++) {
@@ -272,7 +258,18 @@ function AdsManager() {
         logger.warn('Cheking MID ROLL Ads .. ', midAds.length);
         logger.warn('Cheking POST ROLL Ads .. ', postAds.length);
     };
-
+    /**
+     *
+     */
+    function on(name, handler) {
+        return events.on(name, handler);
+    };
+    /**
+     *
+     */
+    function off(name, handler) {
+        return events.off(name, handler);
+    };
     // ************************************************************************************
     // PUBLIC API
     // ************************************************************************************
@@ -281,6 +278,8 @@ function AdsManager() {
         CheckPreAds: CheckPreAds,
         CheckPostAds: CheckPostAds,
         Setup: Setup,
+        on: on,
+        off: off,
         initialize: initialize,
         constructor: AdsManager
     };

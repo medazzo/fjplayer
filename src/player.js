@@ -7,14 +7,15 @@ import AdsManager from './AdsManager';
 /**
  *  Class player in whinch the player is implemented
  */
-function Player(fjID, vidContainerId) {
+function Player(fjID, vidContainerId, vwidth, vheight) {
     var logger = new Logger(this),
         playerPlaylist = null,
+        currentPlaying = -1,
         playlistLoaded = false,
         videoContainerId = vidContainerId,
         OverlaysMgr = new Overlays(),
         playerMedia = new PlayerMedia(),
-        playerUi = new PlayerUi(videoContainerId),
+        playerUi = new PlayerUi(videoContainerId, vwidth !== null 1280, 720),
         // create ads Manager
         AdsMgr = new AdsManager(),
         supportsVideo = !!document.createElement('video').canPlayType;
@@ -75,10 +76,47 @@ function Player(fjID, vidContainerId) {
         }
     };
 
+    function AdsEventing(e, args) {
+        logger.debug(' just a new event from adsmgr ', e, args);
+        if (e === Const.AdsEvents.ADS_PLAYBACK_ENDED) {
+            if (args === Const.AdsEnum.ADS_PRE_ROLL) {
+                freezePlayer(false, true, false);
+            } else if (args === Const.AdsEnum.ADS_POST_ROLL) {
+                freezePlayer(false, false, true);
+            } else if (args === Const.AdsEnum.ADS_MID_ROLL) {
+                freezePlayer(false, false, false);
+            } else {
+                logger.warn(' unknwn Ads type !! ', args);
+            }
+        }
+        if (e === Const.AdsEvents.ADS_PLAYBACK_STARTED) {
+            if (args === Const.AdsEnum.ADS_PRE_ROLL) {
+                freezePlayer(true, true, false);
+            } else if (args === Const.AdsEnum.ADS_POST_ROLL) {
+                freezePlayer(true, false, true);
+            } else if (args === Const.AdsEnum.ADS_MID_ROLL) {
+                freezePlayer(true, false, false);
+            } else {
+                logger.warn(' unknwn Ads type !! ', args);
+            }
+        }
+    };
+
     function MplayerEventing(e, args) {
-        logger.warn(' just a new event from mplayer ', e, args);
+        var item, vid;
+        logger.debug(' just a new event from mplayer ', e, args);
         if (e === Const.PlayerEvents.PLAYBACK_ENDED) {
             return AdsMgr.CheckPostAds();
+        }
+        if (e === Const.PlayerEvents.STREAM_LOADED) {
+            item = playerPlaylist.getItem(currentPlaying);
+            // Set Overlays
+            OverlaysMgr.Setup(item[Const.FJCONFIG_OVERLAYS]);
+            // Set ads
+            vid = playerUi.getVideo();
+            logger.warn('Video object hXw ', vid.videoWidth, vid.videoHeight);
+            AdsMgr.Setup(item[Const.FJCONFIG_ADS], vid.videoWidth, vid.videoHeight);
+
         }
     };
     /**
@@ -100,6 +138,11 @@ function Player(fjID, vidContainerId) {
             playerMedia.on(Const.PlayerEvents.PLAYBACK_ENDED, MplayerEventing);
             playerMedia.on(Const.PlayerEvents.PLAYBACK_SEEKED, MplayerEventing);
             playerMedia.on(Const.PlayerEvents.PLAYBACK_TIME_UPDATE, MplayerEventing);
+
+            AdsMgr.on(Const.AdsEvents.ADS_PLAYBACK_STARTED, AdsEventing);
+            AdsMgr.on(Const.AdsEvents.ADS_PLAYBACK_ERROR, AdsEventing);
+            AdsMgr.on(Const.AdsEvents.ADS_PLAYBACK_ENDED, AdsEventing);
+
             playerMedia.initialize(playerUi);
             OverlaysMgr.initialize(document.getElementById(playerUi.getOverlaysContainerDivId()));
             AdsMgr.initialize(document.getElementById(playerUi.getAdsContainerDivId()));
@@ -114,6 +157,8 @@ function Player(fjID, vidContainerId) {
      */
     function playAt(index) {
         var item;
+        currentPlaying = index;
+        index;
         if (!playlistLoaded) {
             logger.error(' No playlist is loaded on player ');
             return false;
@@ -124,28 +169,10 @@ function Player(fjID, vidContainerId) {
                 ' playlist is sized ', playerPlaylist.getSize());
             return false;
         }
-
+        // settitle
         playerUi.setTitle(item[Const.FJCONFIG_TITLE]);
         // set thumbs
-        // if ((item[Const.FJCONFIG_THUMBS] !== undefined) && (item[Const.FJCONFIG_THUMBS] !== null)) {
         playerMedia.setThumbsUrl(item[Const.FJCONFIG_THUMBS]);
-        // }
-        /* TODO
-        // Set sub, ads and overlays ..
-        if ((item[Const.FJCONFIG_SUBTITLES] !== undefined) && (item[Const.FJCONFIG_SUBTITLES] !== null)) {
-            subsJsObj = item[Const.FJCONFIG_SUBTITLES];
-        }
-        // Set overlays
-        if ((item[Const.FJCONFIG_OVERLAYS] !== undefined) && (item[Const.FJCONFIG_OVERLAYS] !== null)) {
-            overlaysObjs = item[Const.FJCONFIG_OVERLAYS];
-            OverlaysMgr.Setup(overlaysObjs);
-        }
-        */
-        // Set Overlays
-        OverlaysMgr.Setup(item[Const.FJCONFIG_OVERLAYS]);
-        // Set ads
-        AdsMgr.Setup(this, item[Const.FJCONFIG_ADS],
-            playerUi.getVideo().videoWidth, playerUi.getVideo().videoHeight);
 
         if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
             if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
@@ -186,7 +213,6 @@ function Player(fjID, vidContainerId) {
         startPlayingChecks: startPlayingChecks,
         midPlayingChecks: midPlayingChecks,
         postPlayingChecks: postPlayingChecks,
-        freezePlayer: freezePlayer,
         loadPlaylist: loadPlaylist,
         playAt: playAt,
         constructor: Player

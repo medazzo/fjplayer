@@ -20,6 +20,12 @@
             'FJClass': 'vod',
             'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
         };
+        var itemOnly = {
+            'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
+            'FJTitle': ' title of movie',
+            'FJClass': 'vod',
+            'FJType': 'video/mp4'
+        };
         var item = {
             'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
             'FJTitle': ' title of movie',
@@ -101,14 +107,26 @@
             console.info('VERSION', ver.getVersion());
             console.info('Hash HEAD', ver.getShortHash());
             var playlist = new fjplayer.Playlist();
-            // playlist.addItem(item);
-            playlist.addItem(itemDash);
+            playlist.addItem(item);
+            // playlist.addItem(itemOnly);
+            // playlist.addItem(itemDash);
             // playlist.addItem(itemDashNoThumbs);
             var player = new fjplayer.Player('fjserverID1', 'playercontainer', false);
             player.loadPlaylist(playlist);
             player.playAt(0);
         }
     </script>
+    <style type="text/css">
+        .container {
+            width: 100%;
+            overflow: auto;
+        }
+        
+        .cube {
+            width: 150px;
+            height: 150px;
+        }
+    </style>
 </head>
 
 <div id="playercontainer">

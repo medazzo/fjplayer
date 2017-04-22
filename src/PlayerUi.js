@@ -15,12 +15,13 @@ require('font-awesome/css/font-awesome.css');
  * @description The PlayerUi is the html UI for the player
  *
  */
-function PlayerUi(videoContId) {
+function PlayerUi(videoContId, VWidth, WHeight) {
     var logger = new Logger(this),
         fjMainPlayer = null,
         videoContainerId = videoContId,
         fullScreenOnStart = false,
-        vwidth, vheight,
+        vwidth = VWidth,
+        vheight = WHeight,
         expandScreen = false,
         isStarted = false,
         AudiosMenu = null,
@@ -248,7 +249,6 @@ function PlayerUi(videoContId) {
     };
 
     function InitPlayer(e) {
-        //  var item = null;
         // progress bar
         progressBar.max = video.duration;
         progressBar.min = 0;
@@ -404,6 +404,8 @@ function PlayerUi(videoContId) {
             '</span><span>/</span><span>' + Utils.duration(video.duration) + '</span>';
 
         fjMainPlayer.midPlayingChecks(Math.round(progressBar.value));
+        logger.warn(' VIDEO widthXheight ', video.width, video.height);
+        logger.warn(' VIDEO widthXheight ', video.videoWidth, video.videoHeight);
 
     };
 
