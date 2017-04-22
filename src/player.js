@@ -12,13 +12,18 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         playerPlaylist = null,
         currentPlaying = -1,
         playlistLoaded = false,
+        videoWidth = vwidth,
+        videoHeight = vheight,
         videoContainerId = vidContainerId,
         OverlaysMgr = new Overlays(),
         playerMedia = new PlayerMedia(),
-        playerUi = new PlayerUi(videoContainerId, vwidth !== null 1280, 720),
+        playerUi = null,
         // create ads Manager
         AdsMgr = new AdsManager(),
         supportsVideo = !!document.createElement('video').canPlayType;
+    if (videoHeight === null) videoHeight = 710;
+    if (videoWidth === null) videoWidth = 1280;
+    playerUi = new PlayerUi(videoContainerId, videoWidth, videoHeight);
     /**
      * function  to return a human redeable duration of secondes
      */
