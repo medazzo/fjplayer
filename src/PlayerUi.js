@@ -246,73 +246,303 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             }
         }
     };
+    /*
+        function InitPlayer() {
+                // video tracks
+                thumbsTrackIndex = -1;
+                for (i = 0; i < video.textTracks.length; i++) {
+                    if (video.textTracks[i].kind === 'metadata') {
+                        thumbsTrackIndex = i;
+                        video.textTracks[i].mode = 'hidden'; // thanks Firefox
+                    } else if ((video.textTracks[i].kind === 'captions') ||
+                        (video.textTracks[i].kind === 'subtitles')) {
+                        containsSubs = true;
+                        logger.log('find  soustitres  @ ', i, '/', video.textTracks.length,
+                            ' >>> ', video.textTracks[i]);
+                    }
+                }
+                // subs track
+                if (subsJsObj) {
+                    for (i = 0; i < subsJsObj.length; i++) {
+                        item = subsJsObj[i];
+                        track = document.createElement('track');
+                        track.kind = 'subtitles';
+                        track.src = item[Const.FJCONFIG_SRC];
+                        track.srclang = item[Const.FJCONFIG_LANG];
+                        track.label = item[Const.FJCONFIG_LABEL];
+                        video.appendChild(track);
+                    }
+                }
+                // Init Thumbs
 
-    function InitPlayer(e) {
-        // progress bar
-        progressBar.max = video.duration;
-        progressBar.min = 0;
-        progressBar.step = 0.01;
-        progressBar.value = 0;
-        // volume bar
-        volumeBar.min = 0;
-        volumeBar.step = 1;
-        volumeBar.max = 100;
-        volumeBar.value = 100;
-        volumeBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
-            'color-stop(1, #FF0000), ' +
-            'color-stop(1, #8F9B9E)' +
-            ')';
-        // timer
-        timer.innerHTML = ' <span>' + Utils.duration(video.currentTime) +
-            '</span><span>/</span><span>' + Utils.duration(video.duration) + '</span>';
-        /* To be moved to PlayerMedia
-            // thumbs
-            if (vttThumbs !== null || vttThumbs !== undefined) {
-                track = document.createElement('track');
-                track.kind = 'metadata';
-                track.src = vttThumbs;
-                logger.log(' Appending source thumbs to video', track);
-                video.appendChild(track);
+                // Init menus for subs and audio
+                // AudiosMenu.Setup(extraDiv1Id);
+                if (SubMenu.Setup() !== true) {
+                    document.getElementById(subtitlesBtnId).style.display = 'none';
+                }
+        };
+    */
+    // ************************************************************************************
+    // Audio Video MENU
+    // ************************************************************************************
+    /*
+        function onTracksAdded(e) {
+            // Subtitles/Captions Menu //XXX we need to add two layers for captions & subtitles if present.
+            var contentFunc, func;
+            if (!this.captionMenu) {
+                contentFunc = function(element, index) {
+                    return isNaN(index) ? 'OFF' : element.lang + ' : ' + element.kind;
+                };
+                this.captionMenu = this.createMenu({ menuType: 'caption', arr: e.tracks }, contentFunc);
+
+                func = function() {
+                    this.onMenuClick(this.captionMenu, this.captionBtn);
+                };
+                this.menuHandlersList.push(func);
+                this.captionBtn.addEventListener('click', func);
+                this.captionBtn.classList.remove('hide');
+            }
+        };
+
+        function onStreamInitialized(e) {
+            var func, func2;
+            var contentFunc;
+            var availableTracks = { menuType: 'track' };
+            var availableBitrates = { menuType: 'bitrate' };
+            // Bitrate Menu
+            if (this.bitrateListBtn) {
+                this.destroyBitrateMenu();
+                availableBitrates.audio = this.player.getBitrateInfoListFor('audio') || [];
+                availableBitrates.video = this.player.getBitrateInfoListFor('video') || [];
+                if (availableBitrates.audio.length > 1 || availableBitrates.video.length > 1) {
+                    contentFunc = function(element, index) {
+                        return isNaN(index) ? ' Auto Switch' : Math.floor(element.bitrate / 1000) + ' kbps';
+                    };
+                    this.bitrateListMenu = this.createMenu(availableBitrates, contentFunc);
+                    func = function() {
+                        this.onMenuClick(this.bitrateListMenu, this.bitrateListBtn);
+                    };
+                    this.menuHandlersList.push(func);
+                    this.bitrateListBtn.addEventListener('click', func);
+                    this.bitrateListBtn.classList.remove('hide');
+
+                } else {
+                    this.bitrateListBtn.classList.add('hide');
+                }
+            }
+
+            // Track Switch Menu
+            if (!this.trackSwitchMenu && this.trackSwitchBtn) {
+
+                availableTracks.audio = this.player.getTracksFor('audio');
+                availableTracks.video = this.player.getTracksFor('video');
+                // these return empty arrays so no need to cehck for null
+                if (availableTracks.audio.length > 1 || availableTracks.video.length > 1) {
+                    contentFunc = function(element) {
+                        return 'Language: ' + element.lang + ' - Role: ' + element.roles[0];
+                    };
+                    this.trackSwitchMenu = this.createMenu(availableTracks, contentFunc);
+                    func2 = function() {
+                        this.onMenuClick(this.trackSwitchMenu, this.trackSwitchBtn);
+                    };
+                    this.menuHandlersList.push(func2);
+                    this.trackSwitchBtn.addEventListener('click', func2);
+                    this.trackSwitchBtn.classList.remove('hide');
+                }
+            }
+        };
+
+        function createMenu(info, contentFunc) {
+            var menuType = info.menuType;
+            var el = document.createElement('div');
+            el.id = menuType + 'Menu';
+            el.classList.add('menu');
+            el.classList.add('hide');
+            el.classList.add('unselectable');
+            el.classList.add('menu-item-unselected');
+            this.videoController.appendChild(el);
+            switch (menuType) {
+                case 'caption':
+                    el.appendChild(document.createElement('ul'));
+                    el = this.createMenuContent(el,
+                        this.getMenuContent(menuType, info.arr, contentFunc), 'caption', menuType + '-list');
+                    this.setMenuItemsState(this.getMenuInitialIndex(info, menuType), menuType + '-list');
+                    break;
+                case 'track':
+                case 'bitrate':
+                    if (info.video.length > 1) {
+                        el.appendChild(this.createMediaTypeMenu('video'));
+                        el = this.createMenuContent(el,
+                            this.getMenuContent(menuType, info.video, contentFunc), 'video', 'video-' +
+                            menuType + '-list');
+                        this.setMenuItemsState(
+                            this.getMenuInitialIndex(info.video, menuType, 'video'), 'video-' + menuType + '-list');
+                    }
+                    if (info.audio.length > 1) {
+                        el.appendChild(this.createMediaTypeMenu('audio'));
+                        el = this.createMenuContent(el,
+                            this.getMenuContent(menuType, info.audio, contentFunc), 'audio', 'audio-' +
+                            menuType + '-list');
+                        this.setMenuItemsState(
+                            this.getMenuInitialIndex(info.audio, menuType, 'audio'), 'audio-' + menuType + '-list');
+                    }
+                    break;
+            }
+            window.addEventListener('resize', this.handleMenuPositionOnResize, true);
+            return el;
+        };
+
+        function getMenuInitialIndex(info, menuType, mediaType) {
+            var idx = 0,
+                mediaInfo;
+            if (menuType === 'track') {
+                mediaInfo = this.player.getCurrentTrackFor(mediaType);
+                info.some(function(element, index) {
+                    if (this.isTracksEqual(element, mediaInfo)) {
+                        idx = index;
+                        return true;
+                    }
+                });
+                return idx;
+
+            } else if (menuType === 'bitrate') {
+                return this.player.getAutoSwitchQualityFor(mediaType) ? 0 : this.player.getQualityFor(mediaType);
+            } else if (menuType === 'caption') {
+                info.arr.some(function(element, index) {
+                    if (element.defaultTrack) {
+                        idx = index + 1;
+                        return true;
+                    }
+                });
+                return idx;
+            }
+        };
+
+        function isTracksEqual(t1, t2) {
+            var sameId = t1.id === t2.id;
+            var sameViewpoint = t1.viewpoint === t2.viewpoint;
+            var sameLang = t1.lang === t2.lang;
+            var sameRoles = t1.roles.toString() === t2.roles.toString();
+            var sameAccessibility = t1.accessibility.toString() === t2.accessibility.toString();
+            var sameAudioChannelConfiguration =
+                t1.audioChannelConfiguration.toString() === t2.audioChannelConfiguration.toString();
+            return (sameId && sameViewpoint && sameLang && sameRoles &&
+                sameAccessibility && sameAudioChannelConfiguration);
+        };
+
+        function getMenuContent(type, arr, contentFunc) {
+
+            var content = [];
+            arr.forEach(function(element, index) {
+                content.push(contentFunc(element, index));
+            });
+            if (type !== 'track') {
+                content.unshift(contentFunc(null, NaN));
+            }
+            return content;
+        };
+
+        function createMediaTypeMenu(type) {
+
+            var div = document.createElement('div');
+            var title = document.createElement('div');
+            var content = document.createElement('ul');
+
+            div.id = type;
+
+            title.textContent = type === 'video' ? 'Video' : 'Audio';
+            title.classList.add('menu-sub-menu-title');
+
+            content.id = type + 'Content';
+            content.classList.add(type + '-menu-content');
+
+            div.appendChild(title);
+            div.appendChild(content);
+
+            return div;
+        };
+
+        function createMenuContent(menu, arr, mediaType, name) {
+            var i, item, el;
+            for (i = 0; i < arr.length; i++) {
+                item = document.createElement('li');
+                item.id = name + 'Item_' + i;
+                item.index = i;
+                item.mediaType = mediaType;
+                item.name = name;
+                item.selected = false;
+                item.textContent = arr[i];
+                item.onmouseover = function(e) {
+                    if (this.selected !== true) {
+                        this.classList.add('menu-item-over');
+                    }
+                };
+                item.onmouseout = function(e) {
+                    this.classList.remove('menu-item-over');
+                };
+                item.onclick = this.setMenuItemsState.bind(item);
+                if (mediaType === 'caption') {
+                    el = menu.querySelector('ul');
+                } else {
+                    el = menu.querySelector('.' + mediaType + '-menu-content');
+                }
+                el.appendChild(item);
+            }
+            return menu;
+        };
+
+        function onMenuClick(menu, btn) {
+
+            if (menu.classList.contains('hide')) {
+                menu.classList.remove('hide');
+                menu.onmouseleave = function(e) {
+                    this.classList.add('hide');
+                };
             } else {
-                logger.warn(' Thumbs was not found .');
+                menu.classList.add('hide');
             }
-            // video tracks
-            thumbsTrackIndex = -1;
-            for (i = 0; i < video.textTracks.length; i++) {
-                if (video.textTracks[i].kind === 'metadata') {
-                    thumbsTrackIndex = i;
-                    video.textTracks[i].mode = 'hidden'; // thanks Firefox
-                } else if ((video.textTracks[i].kind === 'captions') ||
-                    (video.textTracks[i].kind === 'subtitles')) {
-                    containsSubs = true;
-                    logger.log('find  soustitres  @ ', i, '/', video.textTracks.length,
-                        ' >>> ', video.textTracks[i]);
-                }
-            }
-            // subs track
-            if (subsJsObj) {
-                for (i = 0; i < subsJsObj.length; i++) {
-                    item = subsJsObj[i];
-                    track = document.createElement('track');
-                    track.kind = 'subtitles';
-                    track.src = item[Const.FJCONFIG_SRC];
-                    track.srclang = item[Const.FJCONFIG_LANG];
-                    track.label = item[Const.FJCONFIG_LABEL];
-                    video.appendChild(track);
-                }
-            }
-            // Init Thumbs
-            if (ThumbsMgr.Setup(thumbsTrackIndex) !== true) {
-                logger.info('No thumbs will be displayed !');
-            }
-            // Init menus for subs and audio
-            // AudiosMenu.Setup(extraDiv1Id);
-            if (SubMenu.Setup() !== true) {
-                document.getElementById(subtitlesBtnId).style.display = 'none';
-            }
-        */
-    };
+            menu.style.position = isFullscreen() ? 'fixed' : 'absolute';
+            this.positionMenu(menu, btn);
+        };
 
+        function setMenuItemsState(value, type) {
+            var i;
+            var self = typeof value === 'number' ? document.getElementById(type + 'Item_' + value) : this,
+                nodes = self.parentElement.children;
+
+            for (i = 0; i < nodes.length; i++) {
+                nodes[i].selected = false;
+                nodes[i].classList.remove('menu-item-selected');
+                nodes[i].classList.add('menu-item-unselected');
+            }
+            self.selected = true;
+            self.classList.remove('menu-item-over');
+            self.classList.remove('menu-item-unselected');
+            self.classList.add('menu-item-selected');
+            if (type === undefined) { // User clicked so type is part of item binding.
+                switch (self.name) {
+                    case 'video-bitrate-list':
+                    case 'audio-bitrate-list':
+                        if (self.index > 0) {
+                            if (this.player.getAutoSwitchQualityFor(self.mediaType)) {
+                                this.player.setAutoSwitchQualityFor(self.mediaType, false);
+                            }
+                            this.player.setQualityFor(self.mediaType, self.index - 1);
+                        } else {
+                            this.player.setAutoSwitchQualityFor(self.mediaType, true);
+                        }
+                        break;
+                    case 'caption-list':
+                        this.player.setTextTrack(self.index - 1);
+                        break;
+                    case 'video-track-list':
+                    case 'audio-track-list':
+                        this.player.setCurrentTrack(this.player.getTracksFor(self.mediaType)[self.index]);
+                        break;
+                }
+            }
+        };
+        */
     // ************************************************************************************
     // VOLUME
     // ************************************************************************************
@@ -457,316 +687,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         }
 
     };
-    /*
-            onFullscreenClick = function(e) {
-                if (!isFullscreen()) {
-                    enterFullscreen();
-                } else {
-                    exitFullscreen();
-                }
-                if (captionMenu) {
-                    captionMenu.classList.add('hide');
-                }
-                if (bitrateListMenu) {
-                    bitrateListMenu.classList.add('hide');
-                }
-                if (trackSwitchMenu) {
-                    trackSwitchMenu.classList.add('hide');
-                }
-            }, */
-    // ************************************************************************************
-    // Audio Video MENU
-    // ************************************************************************************
-
-    /* onTracksAdded = function(e) {
-        // Subtitles/Captions Menu //XXX we need to add two layers for captions & subtitles if present.
-        var contentFunc, func;
-        if (!captionMenu) {
-            contentFunc = function(element, index) {
-                return isNaN(index) ? 'OFF' : element.lang + ' : ' + element.kind;
-            };
-            captionMenu = createMenu({ menuType: 'caption', arr: e.tracks }, contentFunc);
-
-            func = function() {
-                onMenuClick(captionMenu, captionBtn);
-            };
-            menuHandlersList.push(func);
-            captionBtn.addEventListener('click', func);
-            captionBtn.classList.remove('hide');
-        }
-    },*/
-
-    /* onStreamInitialized = function(e) {
-                    var func, func2;
-                    var contentFunc;
-                    var availableTracks = { menuType: 'track' };
-                    var availableBitrates = { menuType: 'bitrate' };
-                    // Bitrate Menu
-                    if (bitrateListBtn) {
-                        destroyBitrateMenu();
-                        availableBitrates.audio = player.getBitrateInfoListFor('audio') || [];
-                        availableBitrates.video = player.getBitrateInfoListFor('video') || [];
-                        if (availableBitrates.audio.length > 1 || availableBitrates.video.length > 1) {
-                            contentFunc = function(element, index) {
-                                return isNaN(index) ? ' Auto Switch' : Math.floor(element.bitrate / 1000) + ' kbps';
-                            };
-                            bitrateListMenu = createMenu(availableBitrates, contentFunc);
-                            func = function() {
-                                onMenuClick(bitrateListMenu, bitrateListBtn);
-                            };
-                            menuHandlersList.push(func);
-                            bitrateListBtn.addEventListener('click', func);
-                            bitrateListBtn.classList.remove('hide');
-
-                        } else {
-                            bitrateListBtn.classList.add('hide');
-                        }
-                    }
-
-                    // Track Switch Menu
-                    if (!trackSwitchMenu && trackSwitchBtn) {
-
-                        availableTracks.audio = player.getTracksFor('audio');
-                        availableTracks.video = player.getTracksFor('video');
-                        // these return empty arrays so no need to cehck for null
-                        if (availableTracks.audio.length > 1 || availableTracks.video.length > 1) {
-                            contentFunc = function(element) {
-                                return 'Language: ' + element.lang + ' - Role: ' + element.roles[0];
-                            };
-                            trackSwitchMenu = createMenu(availableTracks, contentFunc);
-                            func2 = function() {
-                                onMenuClick(trackSwitchMenu, trackSwitchBtn);
-                            };
-                            menuHandlersList.push(func2);
-                            trackSwitchBtn.addEventListener('click', func2);
-                            trackSwitchBtn.classList.remove('hide');
-                        }
-                    }
-                },
-
-                createMenu = function(info, contentFunc) {
-                    var menuType = info.menuType;
-                    var el = document.createElement('div');
-                    el.id = menuType + 'Menu';
-                    el.classList.add('menu');
-                    el.classList.add('hide');
-                    el.classList.add('unselectable');
-                    el.classList.add('menu-item-unselected');
-                    videoController.appendChild(el);
-                    switch (menuType) {
-                        case 'caption':
-                            el.appendChild(document.createElement('ul'));
-                            el = createMenuContent(el,
-                                getMenuContent(menuType, info.arr, contentFunc),
-                                'caption', menuType + '-list');
-                            setMenuItemsState(getMenuInitialIndex(info, menuType), menuType + '-list');
-                            break;
-                        case 'track':
-                        case 'bitrate':
-                            if (info.video.length > 1) {
-                                el.appendChild(createMediaTypeMenu('video'));
-                                el = createMenuContent(el,
-                                    getMenuContent(menuType, info.video, contentFunc), 'video', 'video-' +
-                                    menuType + '-list');
-                                setMenuItemsState(
-                                    getMenuInitialIndex(info.video,
-                                    menuType, 'video'), 'video-' + menuType + '-list');
-                            }
-                            if (info.audio.length > 1) {
-                                el.appendChild(createMediaTypeMenu('audio'));
-                                el = createMenuContent(el,
-                                    getMenuContent(menuType, info.audio, contentFunc), 'audio', 'audio-' +
-                                    menuType + '-list');
-                                setMenuItemsState(
-                                    getMenuInitialIndex(info.audio, menuType, 'audio'),
-                                     'audio-' + menuType + '-list');
-                            }
-                            break;
-                    }
-                    window.addEventListener('resize', handleMenuPositionOnResize, true);
-                    return el;
-                },
-
-                getMenuInitialIndex = function(info, menuType, mediaType) {
-                    var idx = 0,
-                        mediaInfo;
-                    if (menuType === 'track') {
-                        mediaInfo = player.getCurrentTrackFor(mediaType);
-                        info.some(function(element, index) {
-                            if (isTracksEqual(element, mediaInfo)) {
-                                idx = index;
-                                return true;
-                            }
-                        });
-                        return idx;
-
-                    } else if (menuType === 'bitrate') {
-                        return player.getAutoSwitchQualityFor(mediaType) ? 0 :
-                         player.getQualityFor(mediaType);
-                    } else if (menuType === 'caption') {
-                        info.arr.some(function(element, index) {
-                            if (element.defaultTrack) {
-                                idx = index + 1;
-                                return true;
-                            }
-                        });
-                        return idx;
-                    }
-                },
-
-                isTracksEqual = function(t1, t2) {
-                    var sameId = t1.id === t2.id;
-                    var sameViewpoint = t1.viewpoint === t2.viewpoint;
-                    var sameLang = t1.lang === t2.lang;
-                    var sameRoles = t1.roles.toString() === t2.roles.toString();
-                    var sameAccessibility = t1.accessibility.toString() === t2.accessibility.toString();
-                    var sameAudioChannelConfiguration =
-                        t1.audioChannelConfiguration.toString() === t2.audioChannelConfiguration.toString();
-                    return (sameId && sameViewpoint && sameLang && sameRoles &&
-                        sameAccessibility && sameAudioChannelConfiguration);
-                },
-
-                getMenuContent = function(type, arr, contentFunc) {
-
-                    var content = [];
-                    arr.forEach(function(element, index) {
-                        content.push(contentFunc(element, index));
-                    });
-                    if (type !== 'track') {
-                        content.unshift(contentFunc(null, NaN));
-                    }
-                    return content;
-                },
-
-                createMediaTypeMenu = function(type) {
-
-                    var div = document.createElement('div');
-                    var title = document.createElement('div');
-                    var content = document.createElement('ul');
-
-                    div.id = type;
-
-                    title.textContent = type === 'video' ? 'Video' : 'Audio';
-                    title.classList.add('menu-sub-menu-title');
-
-                    content.id = type + 'Content';
-                    content.classList.add(type + '-menu-content');
-
-                    div.appendChild(title);
-                    div.appendChild(content);
-
-                    return div;
-                },
-
-                createMenuContent = function(menu, arr, mediaType, name) {
-                    var i, item, el;
-                    for (i = 0; i < arr.length; i++) {
-                        item = document.createElement('li');
-                        item.id = name + 'Item_' + i;
-                        item.index = i;
-                        item.mediaType = mediaType;
-                        item.name = name;
-                        item.selected = false;
-                        item.textContent = arr[i];
-                        item.onmouseover = function(e) {
-                            if (selected !== true) {
-                                classList.add('menu-item-over');
-                            }
-                        };
-                        item.onmouseout = function(e) {
-                            classList.remove('menu-item-over');
-                        };
-                        item.onclick = setMenuItemsState.bind(item);
-                        if (mediaType === 'caption') {
-                            el = menu.querySelector('ul');
-                        } else {
-                            el = menu.querySelector('.' + mediaType + '-menu-content');
-                        }
-                        el.appendChild(item);
-                    }
-                    return menu;
-                },
-
-                onMenuClick = function(menu, btn) {
-
-                    if (menu.classList.contains('hide')) {
-                        menu.classList.remove('hide');
-                        menu.onmouseleave = function(e) {
-                            classList.add('hide');
-                        };
-                    } else {
-                        menu.classList.add('hide');
-                    }
-                    menu.style.position = isFullscreen() ? 'fixed' : 'absolute';
-                    positionMenu(menu, btn);
-                },
-
-                setMenuItemsState = function(value, type) {
-                    var i;
-                    var self = typeof value === 'number' ? document.getElementById(type + 'Item_' + value) : this,
-                        nodes = self.parentElement.children;
-
-                    for (i = 0; i < nodes.length; i++) {
-                        nodes[i].selected = false;
-                        nodes[i].classList.remove('menu-item-selected');
-                        nodes[i].classList.add('menu-item-unselected');
-                    }
-                    self.selected = true;
-                    self.classList.remove('menu-item-over');
-                    self.classList.remove('menu-item-unselected');
-                    self.classList.add('menu-item-selected');
-                    if (type === undefined) { // User clicked so type is part of item binding.
-                        switch (self.name) {
-                            case 'video-bitrate-list':
-                            case 'audio-bitrate-list':
-                                if (self.index > 0) {
-                                    if (player.getAutoSwitchQualityFor(self.mediaType)) {
-                                        player.setAutoSwitchQualityFor(self.mediaType, false);
-                                    }
-                                    player.setQualityFor(self.mediaType, self.index - 1);
-                                } else {
-                                    player.setAutoSwitchQualityFor(self.mediaType, true);
-                                }
-                                break;
-                            case 'caption-list':
-                                player.setTextTrack(self.index - 1);
-                                break;
-                            case 'video-track-list':
-                            case 'audio-track-list':
-                                player.setCurrentTrack(player.getTracksFor(self.mediaType)[self.index]);
-                                break;
-                        }
-                    }
-                },
-        handleMenuPositionOnResize = function(e) {
-                if (captionMenu) {
-                    positionMenu(captionMenu, captionBtn);
-                }
-                if (bitrateListMenu) {
-                    positionMenu(bitrateListMenu, bitrateListBtn);
-                }
-                if (trackSwitchMenu) {
-                    positionMenu(trackSwitchMenu, trackSwitchBtn);
-                }
-            },
-
-            /* positionMenu = function(menu, btn) {
-                var menuY = videoController.offsetTop - menu.offsetHeight;
-                menu.style.top = menuY + 'px';
-                menu.style.left = btn.offsetLeft + 'px';
-            },
-
-            destroyBitrateMenu = function() {
-                if (bitrateListMenu) {
-                    menuHandlersList.forEach(function(item) {
-                        bitrateListBtn.removeEventListener('click', item);
-                    });
-                    videoController.removeChild(bitrateListMenu);
-                    bitrateListMenu = null;
-                }
-            };
-    */
-
     // ************************************************************************************
     // PUBLIC API
     // ************************************************************************************
@@ -855,7 +775,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         video.addEventListener('click', onplaypauseClick);
         video.addEventListener('dblclick', handleFullscreen);
         volumeBar.addEventListener('click', OnvbClick);
-        video.addEventListener('loadedmetadata', InitPlayer);
         playpauseBtn.addEventListener('click', onplaypauseClick);
         muteBtn.addEventListener('click', onmuteClick);
         fullScreenBtn.addEventListener('click', handleFullscreen);
@@ -866,6 +785,20 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         document.addEventListener('MSFullscreenChange', onFullScreenChange);
         document.addEventListener('mozfullscreenchange', onFullScreenChange);
         document.addEventListener('webkitfullscreenchange', onFullScreenChange);
+
+        // progress bar
+        progressBar.min = 0;
+        progressBar.step = 0.01;
+        progressBar.value = 0;
+        // volume bar
+        volumeBar.min = 0;
+        volumeBar.step = 1;
+        volumeBar.max = 100;
+        volumeBar.value = 100;
+        volumeBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
+            'color-stop(1, #FF0000), ' +
+            'color-stop(1, #8F9B9E)' +
+            ')';
     };
 
     function hideVideo() {
@@ -928,7 +861,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         video.removeEventListener('click', onplaypauseClick);
         video.removeEventListener('dblclick', handleFullscreen);
         volumeBar.removeEventListener('click', OnvbClick);
-        video.removeEventListener('loadedmetadata', InitPlayer);
         playpauseBtn.removeEventListener('click', onplaypauseClick);
         muteBtn.removeEventListener('click', onmuteClick);
         fullScreenBtn.removeEventListener('click', handleFullscreen);

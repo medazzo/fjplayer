@@ -133,6 +133,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
             if (args !== null) {
                 playerUi.SetupThumbsManager(playerMedia.getDuration(), args);
             }
+            playerUi.setDuration(playerMedia.getDuration());
             item = playerPlaylist.getItem(currentPlaying);
             // Set Overlays
             OverlaysMgr.Setup(item[Const.FJCONFIG_OVERLAYS]);
