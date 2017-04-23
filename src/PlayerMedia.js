@@ -153,12 +153,12 @@ function PlayerMedia() {
     };
 
     function setThumbsUrl(url) {
-        if (url !== null || url !== undefined) {
+        if (url !== null && url !== undefined) {
             thumbsTrackUrl = url;
             logger.debug(' Setting url for thumbs @', url);
         } else {
             thumbsTrackUrl = null;
-            logger.debug(' Setting url for thumbs @', url);
+            logger.debug(' No Setting url for thumbs ');
         }
     };
 
@@ -338,7 +338,7 @@ function PlayerMedia() {
             }
         }*/
         logger.info(' stream is completly loaded  ');
-        if ((thumbsTrackIndex !== -1) && (thumbsTrackUrl !== null)) {
+        if ((thumbsTrackIndex !== -1) && (thumbsTrackUrl !== -1)) {
             events.fireEvent(Const.PlayerEvents.STREAM_LOADED, thumbsTrackIndex);
         } else {
             events.fireEvent(Const.PlayerEvents.STREAM_LOADED, null);
@@ -395,10 +395,12 @@ function PlayerMedia() {
         video.controls = false;
         video.autoplay = autoplay;
         video.appendChild(source);
-        video.setAttribute('poster', poster);
+        if (poster !== null && poster !== undefined) {
+            video.setAttribute('poster', poster);
+        }
         CurrentStreamType = StreamTypes.MP4_CLEAR;
         // set thumbs
-        if (thumbsTrackUrl !== null || thumbsTrackUrl !== undefined) {
+        if (thumbsTrackUrl !== null && thumbsTrackUrl !== undefined) {
             track = document.createElement('track');
             track.kind = 'metadata';
             track.src = thumbsTrackUrl;
@@ -423,7 +425,9 @@ function PlayerMedia() {
      */
     function loadDash(url, poster, autoplay) {
         var track = null;
-        video.setAttribute('poster', poster);
+        if (poster !== null && poster !== undefined) {
+            video.setAttribute('poster', poster);
+        }
         video.preload = true;
         video.controls = false;
         video.autoplay = autoplay;
@@ -432,7 +436,7 @@ function PlayerMedia() {
         DashPlayer.attachVideoContainer(videoFigure);
         CurrentStreamType = StreamTypes.DASH_CLEAR;
         // set thumbs
-        if (thumbsTrackUrl !== null || thumbsTrackUrl !== undefined) {
+        if (thumbsTrackUrl !== null && thumbsTrackUrl !== undefined) {
             track = document.createElement('track');
             track.kind = 'metadata';
             track.src = thumbsTrackUrl;
@@ -453,13 +457,17 @@ function PlayerMedia() {
         DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKED, onSeeked, this);
         DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, this);
         DashPlayer.on(MediaPlayer.events.ERROR, onError, this);
+
+        logger.info(' Clear DASH stream is loaded @ ', url);
     };
     /**
      * Used for Encrypted mpeg Dash
      */
     function loadDashDrm(url, poster, autoplay, drm) {
         var track = null;
-        video.setAttribute('poster', poster);
+        if (poster !== null && poster !== undefined) {
+            video.setAttribute('poster', poster);
+        }
         video.preload = true;
         video.controls = false;
         video.autoplay = autoplay;
@@ -468,7 +476,7 @@ function PlayerMedia() {
         // TODO : set Drm
         CurrentStreamType = StreamTypes.DASH_ENCRYPTED;
         // set thumbs
-        if (thumbsTrackUrl !== null || thumbsTrackUrl !== undefined) {
+        if (thumbsTrackUrl !== null && thumbsTrackUrl !== undefined) {
             track = document.createElement('track');
             track.kind = 'metadata';
             track.src = thumbsTrackUrl;
@@ -489,6 +497,8 @@ function PlayerMedia() {
         DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKED, onSeeked, this);
         DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, this);
         DashPlayer.on(MediaPlayer.events.ERROR, onError, this);
+
+        logger.info(' Clear ENC DASH stream is loaded @ ', url);
     };
     // ************************************************************************************
     // PUBLIC API

@@ -3,7 +3,6 @@ var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 var path = require('path');
 var env = require('yargs').argv.mode;
 
-
 var libraryName = 'fjplayer';
 
 var plugins = [],
@@ -34,7 +33,6 @@ var config = {
     module: {
         loaders: [
             { test: /(\.jsx|\.js)$/, loader: 'babel', exclude: /(node_modules|bower_components)/ },
-            { test: /(\.jsx|\.js)$/, loader: "eslint-loader", exclude: /node_modules/ },
             { test: /\.scss$/, loaders: ['style', 'css', 'less'] },
             { test: /\.png$/, loader: "file-loader?name=img/[name].png" },
             /* images disponible dans le bundle à l'url /img/[nom-image].png */
