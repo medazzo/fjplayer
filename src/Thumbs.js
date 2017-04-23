@@ -72,7 +72,7 @@ function Thumbs(thtimer, thumbImgElement, thumbDivElement, progressBarElement) {
         thumbsDiv.style.width = xywh[2] + 'px';
     };
 
-    function Destroy() {
+    function Reset() {
         thumbsTrackIndex = -1;
         progressBar.removeEventListener('mousemove', renderThumbs);
         progressBar.removeEventListener('mouseleave', hideThumbs);
@@ -80,7 +80,7 @@ function Thumbs(thtimer, thumbImgElement, thumbDivElement, progressBarElement) {
     };
 
     function Setup(vidElement, videoDuration, thumbsTrindex) {
-        Destroy();
+        Reset();
         video = vidElement;
         vidDuration = videoDuration;
         thumbsTrackIndex = thumbsTrindex;
@@ -98,7 +98,7 @@ function Thumbs(thtimer, thumbImgElement, thumbDivElement, progressBarElement) {
     // ************************************************************************************
     return {
         Setup: Setup,
-        Destroy: Destroy,
+        Reset: Reset,
         hideThumbs: hideThumbs,
         showThumbs: showThumbs,
         off: removeEventListener,

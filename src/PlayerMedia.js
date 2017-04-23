@@ -357,6 +357,8 @@ function PlayerMedia() {
         while (video.hasChildNodes()) {
             video.removeChild(video.firstChild);
         }
+        // unset attr
+        video.removeAttribute('poster');
         if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
             video.removeEventListener('loadedmetadata', onStreamInitialized);
             video.removeEventListener('play', onPlayStart);

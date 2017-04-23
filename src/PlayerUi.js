@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 import Logger from './Logger';
 import Thumbs from './Thumbs';
 import SubsMenu from './SubsMenu';
@@ -23,7 +23,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         vwidth = VWidth,
         vheight = WHeight,
         expandScreen = false,
-        isStarted = false,
         AudiosMenu = null,
         SubMenu = null,
         timeout = null,
@@ -169,43 +168,49 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         if (!fullScreenEnabled) {
             fullScreenBtn.style.display = 'none';
         }
-    };
+    }
     // ************************************************************************************
     // PLAYBACK
     // ************************************************************************************
     function onplaypauseClick() {
-        if (!isStarted) {
-            isStarted = true;
-            logger.warn(' onplaypauseClick Playerui with ', fjMainPlayer);
-            /*   if (fjMainPlayer.startPlayingChecks() === true) {
-                   return;
-               }
-               */
-        }
-
         if (fjMainPlayer.isPaused() || fjMainPlayer.isEnded()) {
-            playpauseBtn.className = 'fa  fa-pause';
+            fjMainPlayer.play();
+        } else {
+            fjMainPlayer.pause();
+        }
+    }
+
+    function toggleplaypauseBtn() {
+        if (fjMainPlayer.isPlayingAds()) {
             // hide big play button
             BigPlayBtn.style.display = 'none';
-            // show video controls
-            videoControls.style.display = 'block';
-            fjMainPlayer.play();
-            logger.log('clicking play !');
-        } else {
-            playpauseBtn.className = 'fa  fa-play';
-            // show big play button
-            BigPlayBtn.style.display = 'block';
             // hide video controls
             videoControls.style.display = 'none';
             SubMenu.HideMenu();
             AudiosMenu.HideMenu();
-            fjMainPlayer.pause();
-            logger.log('clicking pause !');
+        } else {
+            if (fjMainPlayer.isPaused() || fjMainPlayer.isEnded()) {
+                playpauseBtn.className = 'fa  fa-play';
+                // show big play button
+                BigPlayBtn.style.display = 'block';
+                // hide video controls
+                videoControls.style.display = 'none';
+                SubMenu.HideMenu();
+                AudiosMenu.HideMenu();
+                logger.log('UI is pausing !');
+            } else {
+                playpauseBtn.className = 'fa  fa-pause';
+                // hide big play button
+                BigPlayBtn.style.display = 'none';
+                // show video controls
+                videoControls.style.display = 'block';
+                logger.log('UI is playing !');
+            }
         }
-    };
+    }
 
     function magicMouseLeave() {
-        if (isStarted) {
+        if (!fjMainPlayer.isPaused() && !fjMainPlayer.isEnded() && !fjMainPlayer.isPlayingAds()) {
             // delete fadeIn
             videoControls.classList.remove('m-fadeIn');
             videoInfo.classList.remove('m-fadeIn');
@@ -218,10 +223,10 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             AudiosMenu.HideMenu();
             ThumbsMgr.hideThumbs(ThumbsMgr);
         }
-    };
+    }
 
     function magicMouseEnter() {
-        if (isStarted) {
+        if (!fjMainPlayer.isPaused() && !fjMainPlayer.isEnded() && !fjMainPlayer.isPlayingAds()) {
             // delete fadeOut
             videoControls.classList.remove('m-fadeOut');
             videoInfo.classList.remove('m-fadeOut');
@@ -231,10 +236,10 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             // other
             video.style.cursor = 'auto';
         }
-    };
+    }
 
     function magicMouseMove() {
-        if (isStarted) {
+        if (!fjMainPlayer.isPaused() && !fjMainPlayer.isEnded() && !fjMainPlayer.isPlayingAds()) {
             if (video.style.cursor === 'none') {
                 magicMouseEnter();
             } else {
@@ -246,7 +251,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
                 }, HideControlsTimeout);
             }
         }
-    };
+    }
     /*
         function InitPlayer() {
                 // video tracks
@@ -587,7 +592,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             'color-stop(' + val + ', #FF0000), ' +
             'color-stop(' + val + ', #8F9B9E)' +
             ')';
-    };
+    }
 
     // ************************************************************************************
     // SEEKING
@@ -619,11 +624,11 @@ function PlayerUi(videoContId, VWidth, WHeight) {
     function isFullScreen(g) {
         return document.fullscreenElement || document.msFullscreenElement ||
             document.mozFullScreen || document.webkitIsFullScreen;
-    };
+    }
 
     function setFullscreenData(state) {
         videoFigure.setAttribute('data-fullscreen', !!state);
-    };
+    }
 
     function handleFullscreen() {
         // If fullscreen mode is active...
@@ -656,7 +661,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             setFullscreenData(true);
 
         }
-    };
+    }
 
     function handleExpand() {
         if (isFullScreen()) {
@@ -671,7 +676,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             expandBtn.className = 'fa fa-compress';
             expandScreen = true;
         }
-    };
+    }
 
     function onFullScreenChange(e) {
         if (e.event === 'fullscreenchange') {
@@ -687,7 +692,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             setFullscreenData(!!document.msFullscreenElement);
         }
 
-    };
+    }
     // ************************************************************************************
     // PUBLIC API
     // ************************************************************************************
@@ -732,31 +737,35 @@ function PlayerUi(videoContId, VWidth, WHeight) {
                 'color-stop(' + val + ', #8F9B9E)' +
                 ')';
         }
-    };
+    }
 
     function setTitle(ltitle) {
         document.getElementById(titleId).innerHTML = ltitle;
-    };
+    }
 
     function getVideo() {
         return video;
-    };
+    }
 
     function getAdsContainerDivId() {
         return adsContainerDivId;
-    };
+    }
 
     function getOverlaysContainerDivId() {
         return overlaysContainerDivId;
-    };
+    }
 
     function SetupThumbsManager(videoDuration, thumbsTrackIndex) {
-        return ThumbsMgr.Setup(getVideo(), videoDuration, thumbsTrackIndex);
-    };
+        if (thumbsTrackIndex !== null) {
+            return ThumbsMgr.Setup(getVideo(), videoDuration, thumbsTrackIndex);
+        }
+        return ThumbsMgr.Reset();
+
+    }
 
     function getVideoFigure() {
         return videoControllerFigure;
-    };
+    }
 
     function initialize(mainPlayer) {
         create(videoContainerId);
@@ -800,38 +809,38 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             'color-stop(1, #FF0000), ' +
             'color-stop(1, #8F9B9E)' +
             ')';
-    };
+    }
 
     function hideVideo() {
         BigPlayBtn.style.display = 'none';
         videoInfo.style.display = 'none';
         video.style.display = 'none';
         videoController.style.display = 'none';
-    };
+    }
 
     function ShowVideo() {
         BigPlayBtn.style.display = 'block';
         videoInfo.style.display = 'block';
         video.style.display = 'block';
         videoController.style.display = 'block';
-    };
+    }
 
     function show() {
         // videoController.classList.remove('hide');
-    };
+    }
 
     function hide() {
         // videoController.style.visibility = 'hidden';
         //         videoController.classList.add('hide');
-    };
+    }
 
     function disable() {
         videoController.classList.add('disable');
-    };
+    }
 
     function enable() {
         videoController.classList.remove('disable');
-    };
+    }
 
     function reset() {
         /* window.removeEventListener('resize', handleMenuPositionOnResize);
@@ -852,7 +861,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         }
         menuHandlersList = [];
         seeking = false;*/
-    };
+    }
 
     function destroy() {
 
@@ -871,7 +880,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         document.removeEventListener('MSFullscreenChange', onFullScreenChange);
         document.removeEventListener('mozfullscreenchange', onFullScreenChange);
         document.removeEventListener('webkitfullscreenchange', onFullScreenChange);
-    };
+    }
     // ************************************************************************************
     // PUBLIC API
     // ************************************************************************************
@@ -886,6 +895,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         SetupThumbsManager: SetupThumbsManager,
         getVideoFigure: getVideoFigure,
         initialize: initialize,
+        toggleplaypauseBtn: toggleplaypauseBtn,
         show: show,
         hide: hide,
         hideVideo: hideVideo,

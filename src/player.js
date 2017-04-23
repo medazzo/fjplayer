@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 import Logger from './Logger';
 import Overlays from './Overlays';
 import * as Const from './constants';
@@ -15,6 +15,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         loopingList = false,
         currentPlaying = -1,
         playlistLoaded = false,
+        playingAds = false,
         videoWidth = vwidth,
         videoHeight = vheight,
         videoContainerId = vidContainerId,
@@ -50,71 +51,6 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         }
         return (hours + ':' + minutes + ':' + seconds);
     }
-    /**
-     * Function Called from AdsManager to
-     *  freeze and hide player to show ads
-     */
-    function freezePlayer(pauseIt, stillStarting, isEnding) {
-        if (pauseIt === true) {
-            // hide the player and pause it
-            playerMedia.pause();
-            playerUi.hideVideo();
-            // hide controls
-            playerUi.hide();
-        } else {
-            if (isEnding === true) {
-                // still playing pre preroll ads
-                if (AdsMgr.CheckPostAds() === true) {
-                    return;
-                }
-                playerUi.getVideo().style.display = 'block';
-                // playpauseBtn.className = 'fa  fa-play';
-            } else {
-                if (stillStarting === true) {
-                    // still playing pre preroll ads
-                    if (AdsMgr.CheckPreAds() === true) {
-                        return;
-                    }
-                }
-                // resume the play and show it
-                playerUi.ShowVideo();
-                playerUi.onplaypauseClick();
-            }
-        }
-    }
-
-    function AdsEventing(e, args) {
-        logger.debug(' just a new event from adsmgr ', e, args);
-        if (e === Const.AdsEvents.ADS_PLAYBACK_ENDED) {
-            if (args === Const.AdsEnum.ADS_PRE_ROLL) {
-                freezePlayer(false, true, false);
-            } else if (args === Const.AdsEnum.ADS_POST_ROLL) {
-                freezePlayer(false, false, true);
-            } else if (args === Const.AdsEnum.ADS_MID_ROLL) {
-                freezePlayer(false, false, false);
-            } else {
-                logger.warn(' unknwn Ads type !! ', args);
-            }
-        }
-        if (e === Const.AdsEvents.ADS_PLAYBACK_STARTED) {
-            if (args === Const.AdsEnum.ADS_PRE_ROLL) {
-                freezePlayer(true, true, false);
-            } else if (args === Const.AdsEnum.ADS_POST_ROLL) {
-                freezePlayer(true, false, true);
-            } else if (args === Const.AdsEnum.ADS_MID_ROLL) {
-                freezePlayer(true, false, false);
-            } else {
-                logger.warn(' unknwn Ads type !! ', args);
-            }
-        }
-    };
-
-    function midPlayingChecks(secondes) {
-        var ok;
-        OverlaysMgr.CheckOverlays(secondes);
-        ok &= AdsMgr.CheckMidAds(secondes);
-        return ok;
-    }
 
     function playItem(itemPosition) {
         var item;
@@ -133,7 +69,9 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         playerUi.setTitle(item[Const.FJCONFIG_TITLE]);
         // set thumbs
         playerMedia.setThumbsUrl(item[Const.FJCONFIG_THUMBS]);
-
+        // unload old
+        playerMedia.Unload();
+        // load new item
         if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
             if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
                 // clear dash
@@ -172,6 +110,56 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         return true;
     }
 
+    function AdsEventing(e, args) {
+        logger.debug(' just a new event from adsmgr ', e, args);
+        if (e === Const.AdsEvents.ADS_PLAYBACK_ENDED) {
+            playingAds = false;
+            if (args === Const.AdsEnum.ADS_PRE_ROLL) {
+                if (AdsMgr.CheckPreAds() === true) {
+                    return;
+                }
+                playerUi.ShowVideo();
+                playerMedia.play();
+                playerUi.toggleplaypauseBtn();
+                return;
+                // freezePlayer(false, true, false);
+            } else if (args === Const.AdsEnum.ADS_POST_ROLL) {
+                if (AdsMgr.CheckPostAds() === true) {
+                    return;
+                }
+                // check if in playlist then play list
+                if (playingList === true) {
+                    playerUi.toggleplaypauseBtn();
+                    playerUi.ShowVideo();
+                    playNext();
+                }
+                // freezePlayer(false, false, true);
+            } else if (args === Const.AdsEnum.ADS_MID_ROLL) {
+                playerUi.ShowVideo();
+                playerMedia.play();
+                playerUi.toggleplaypauseBtn();
+                // freezePlayer(false, false, false);
+            } else {
+                logger.warn(' unknwn Ads type !! ', args);
+            }
+        }
+        if (e === Const.AdsEvents.ADS_PLAYBACK_STARTED) {
+            playingAds = true;
+            // hide the player and pause it
+            playerMedia.pause();
+            playerUi.hideVideo();
+        }
+    }
+
+    function midPlayingChecks(secondes) {
+        var ok;
+        OverlaysMgr.CheckOverlays(secondes);
+        ok &= AdsMgr.CheckMidAds(secondes);
+        return ok;
+    }
+
+
+
     function playPrev() {
         if (!playlistLoaded) {
             logger.error(' No playlist is loaded on player ');
@@ -207,17 +195,18 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
             midPlayingChecks(Math.round(playerMedia.time()));
         }
         if (e === Const.PlayerEvents.PLAYBACK_ENDED) {
-            AdsMgr.CheckPostAds();
-            // check if in playlist then play list
-            if (playingList === true) {
-                playNext();
+            if (AdsMgr.CheckPostAds() === true) {
+                logger.debug('starting  post ads !!');
+            } else {
+                // check if in playlist then play list
+                if (playingList === true) {
+                    playNext();
+                }
             }
         }
         if (e === Const.PlayerEvents.STREAM_LOADED) {
             // checks thumbs
-            if (args !== null) {
-                playerUi.SetupThumbsManager(playerMedia.getDuration(), args);
-            }
+            playerUi.SetupThumbsManager(playerMedia.getDuration(), args);
             playerUi.setDuration(playerMedia.getDuration());
             item = playerPlaylist.getItem(currentPlaying);
             // Set Overlays
@@ -303,25 +292,22 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         logger.error('src of item is not valid , at index ', currentPlaying);
         return false;
     }
-    /**
-     * Function to be called when user start play a video
-     */
-    function startPlayingChecks() {
-        return AdsMgr.CheckPreAds();
-
-    }
-
-    function postPlayingChecks() {
-        return AdsMgr.CheckPostAds();
-
-    }
 
     function play() {
-        playerMedia.play();
+        // playerMedia.play();
+        if (AdsMgr.CheckPreAds() === false) {
+            playerMedia.play();
+        }
+        playerUi.toggleplaypauseBtn();
     }
 
     function pause() {
         playerMedia.pause();
+        playerUi.toggleplaypauseBtn();
+    }
+
+    function isPlayingAds() {
+        return playingAds;
     }
 
     function isPaused() {
@@ -336,9 +322,6 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
     // ************************************************************************************
     return {
         duration: duration,
-        startPlayingChecks: startPlayingChecks,
-        midPlayingChecks: midPlayingChecks,
-        postPlayingChecks: postPlayingChecks,
         loadPlaylist: loadPlaylist,
         playAt: playAt,
         startPlaylist: startPlaylist,
@@ -347,6 +330,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         playPrev: playPrev,
         pause: pause,
         isPaused: isPaused,
+        isPlayingAds: isPlayingAds,
         isEnded: isEnded,
         constructor: Player
     };
