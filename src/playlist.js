@@ -18,9 +18,13 @@ function Playlist() {
      * Used to get item of playlist at position index
      */
     function getItem(index) {
-        var item = items[index];
-        logger.info(' Getting item at position ', index, '>> ', items);
-        return item;
+        logger.info(' Getting item at position ', index);
+        if (items.length > index) {
+            return items[index];
+        }
+        logger.error(' No item to play at index ', index,
+            ' playlist is sized ', items.length);
+        return null;
     };
     /* ** ** ** ** ** ** ** CHECK'S ** ** ** ** ** ** ** */
     /**

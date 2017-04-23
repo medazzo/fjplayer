@@ -1,3 +1,4 @@
+'use strict';
 import Logger from './Logger';
 import Overlays from './Overlays';
 import * as Const from './constants';
@@ -48,7 +49,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
             hours = '0' + hours;
         }
         return (hours + ':' + minutes + ':' + seconds);
-    };
+    }
     /**
      * Function Called from AdsManager to
      *  freeze and hide player to show ads
@@ -80,7 +81,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
                 playerUi.onplaypauseClick();
             }
         }
-    };
+    }
 
     function AdsEventing(e, args) {
         logger.debug(' just a new event from adsmgr ', e, args);
@@ -113,7 +114,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         OverlaysMgr.CheckOverlays(secondes);
         ok &= AdsMgr.CheckMidAds(secondes);
         return ok;
-    };
+    }
 
     function playItem(itemPosition) {
         var item;
@@ -122,18 +123,13 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
             logger.error(' No playlist is loaded on player ');
             return false;
         }
-        if (playerPlaylist.indexOf(itemPosition) === -1) {
+        item = playerPlaylist.getItem(itemPosition);
+        if (item === null) {
             logger.error(' No item to play at index ', currentPlaying,
                 ' playlist is sized ', playerPlaylist.getSize());
             return false;
         }
-        item = playerPlaylist.getItem(currentPlaying);
-        if (item === undefined) {
-            logger.error(' No item to play at index ', currentPlaying,
-                ' playlist is sized ', playerPlaylist.getSize());
-            return false;
-        }
-        // settitle
+        // set title
         playerUi.setTitle(item[Const.FJCONFIG_TITLE]);
         // set thumbs
         playerMedia.setThumbsUrl(item[Const.FJCONFIG_THUMBS]);
@@ -150,7 +146,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         }
         logger.error('src of item is not valid , at index ', currentPlaying);
         return false;
-    };
+    }
 
     function playNext() {
         if (!playlistLoaded) {
@@ -160,18 +156,48 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         // set playlist again
         playingList = true;
         currentPlaying++;
-        if (playerPlaylist.indexOf(currentPlaying) === -1) {
+        logger.log(' will play next', currentPlaying, ' in playlist is loaded on player ');
+        if (playerPlaylist.getSize() < currentPlaying) {
             if (loopingList === true) {
-                return playItem(0);
+                currentPlaying = 0;
             }
             // playlist if ended
             return false;
         }
-    };
+        // play next
+        playItem(currentPlaying);
+        // auto play it
+        playerUi.ShowVideo();
+        playerUi.onplaypauseClick();
+        return true;
+    }
+
+    function playPrev() {
+        if (!playlistLoaded) {
+            logger.error(' No playlist is loaded on player ');
+            return false;
+        }
+        // set playlist again
+        playingList = true;
+        currentPlaying--;
+        logger.log(' will play next', currentPlaying, ' in playlist is loaded on player ');
+        if (currentPlaying < 0) {
+            if (loopingList === true) {
+                currentPlaying = playerPlaylist.getSize() - 1;
+            }
+            // playlist if ended
+            return false;
+        }
+        // play next
+        playItem(currentPlaying);
+        // auto play it
+        playerUi.ShowVideo();
+        playerUi.onplaypauseClick();
+        return true;
+    }
 
     function MplayerEventing(e, args) {
         var item, vid;
-        logger.debug(' just a new event from mplayer ', e, args);
         if (e === Const.PlayerEvents.PLAYBACK_STARTED) {
             playerUi.setDuration(playerMedia.getDuration());
             playerUi.show();
@@ -202,7 +228,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
             AdsMgr.Setup(item[Const.FJCONFIG_ADS], vid.videoWidth, vid.videoHeight);
 
         }
-    };
+    }
     /**
      *
      */
@@ -235,7 +261,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         logger.error(' playlist is empty: ', playlist.getSize());
         playlistLoaded = false;
         return false;
-    };
+    }
     /**
      *
      */
@@ -283,28 +309,28 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
     function startPlayingChecks() {
         return AdsMgr.CheckPreAds();
 
-    };
+    }
 
     function postPlayingChecks() {
         return AdsMgr.CheckPostAds();
 
-    };
+    }
 
     function play() {
         playerMedia.play();
-    };
+    }
 
     function pause() {
         playerMedia.pause();
-    };
+    }
 
     function isPaused() {
         return playerMedia.isPaused();
-    };
+    }
 
     function isEnded() {
         return playerMedia.isEnded();
-    };
+    }
     // ************************************************************************************
     // PUBLIC API
     // ************************************************************************************
@@ -318,6 +344,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         startPlaylist: startPlaylist,
         play: play,
         playNext: playNext,
+        playPrev: playPrev,
         pause: pause,
         isPaused: isPaused,
         isEnded: isEnded,

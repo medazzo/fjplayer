@@ -177,9 +177,10 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         if (!isStarted) {
             isStarted = true;
             logger.warn(' onplaypauseClick Playerui with ', fjMainPlayer);
-            if (fjMainPlayer.startPlayingChecks() === true) {
-                return;
-            }
+            /*   if (fjMainPlayer.startPlayingChecks() === true) {
+                   return;
+               }
+               */
         }
 
         if (fjMainPlayer.isPaused() || fjMainPlayer.isEnded()) {

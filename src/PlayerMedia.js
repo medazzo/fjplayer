@@ -382,7 +382,7 @@ function PlayerMedia() {
             DashPlayer.off(MediaPlayer.events.ERROR, onError, this);
         }
         CurrentStreamType = PlayerMedia.UNKNOWN;
-    };
+    }
     /**
      * Used for clear video/mp4
      */

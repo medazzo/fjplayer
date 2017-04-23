@@ -1,3 +1,4 @@
+'use strict';
 import Logger from './Logger';
 import * as Const from './constants';
 import * as Utils from './Utils';
@@ -30,7 +31,7 @@ function AdsManager() {
         var elClone = null;
         var item = midAds[index];
         if (settled !== true) {
-            logger.warn(' AdsMgr is not yet cettled !');
+            logger.warn(' AdsMgr is not yet settled !');
             return;
         }
         if (adsType === Const.AdsEnum.ADS_PRE_ROLL) {
@@ -54,7 +55,7 @@ function AdsManager() {
         AdsContainerdiv.innerHTML = '';
         AdsContainerdiv.style.display = 'none';
         events.fireEvent(Const.AdsEvents.ADS_PLAYBACK_ENDED, adsType);
-    };
+    }
 
     function StartAds(index, adsType) {
         var done = false;
@@ -132,7 +133,7 @@ function AdsManager() {
             StopAds(index, adsType);
         });
         logger.warn('Will set ads video like ', adsvideo);
-    };
+    }
     /**
      * Function to be called from event 'timeupdate' from video
      * called to check if ads has to be played
@@ -142,10 +143,8 @@ function AdsManager() {
         var item = null;
         var show = 0;
         if (settled !== true) {
-            logger.debug(' AdsMgr is not yet settled !');
             return;
         }
-        logger.info(secondes, ' Cheking ads midium  .. ');
         for (i = 0; i < midAds.length; i++) {
             item = midAds[i];
             show = parseInt(item[Const.FJCONFIG_SHOW_AT], 10);
@@ -161,7 +160,7 @@ function AdsManager() {
                 }
             }
         }
-    };
+    }
 
     /**
      * Function to be called just before starting video
@@ -170,9 +169,9 @@ function AdsManager() {
     function CheckPreAds() {
         var i = 0;
         var item = null;
-        logger.info(' Cheking Pre Ads Now .. ');
+        logger.info(' Checking Pre Ads Now .. ');
         if (settled !== true) {
-            logger.warn(' AdsMgr is not yet cettled !');
+            logger.warn(' AdsMgr is not yet Settled !');
             return false;
         }
         for (i = 0; i < preAds.length; i++) {
@@ -188,7 +187,7 @@ function AdsManager() {
                 ' @@ ', item[Const.FJCONFIG_SHOW_AT]);
         }
         return false;
-    };
+    }
 
     /**
      * Function to be called just before starting video
@@ -197,9 +196,9 @@ function AdsManager() {
     function CheckPostAds() {
         var i = 0;
         var item = null;
-        logger.info(' Cheking Post Ads Now .. ');
+        logger.info(' Checking Post Ads Now .. ');
         if (settled !== true) {
-            logger.warn(' AdsMgr is not yet cettled !');
+            logger.warn(' AdsMgr is not yet settled !');
             return false;
         }
         for (i = 0; i < postAds.length; i++) {
@@ -215,11 +214,11 @@ function AdsManager() {
                 ' @@ ', item[Const.FJCONFIG_SHOW_AT]);
         }
         return false;
-    };
+    }
 
     function initialize(AdsContainer) {
         AdsContainerdiv = AdsContainer;
-    };
+    }
 
     function Setup(ads, videoWidth, videoHeight) {
         var i = 0;
@@ -255,22 +254,22 @@ function AdsManager() {
         }
         settled = true;
         logger.info('Ads Setup is settled ', settled);
-        logger.warn('Cheking PRE ROLL Ads .. ', preAds.length);
-        logger.warn('Cheking MID ROLL Ads .. ', midAds.length);
-        logger.warn('Cheking POST ROLL Ads .. ', postAds.length);
-    };
+        logger.warn('Checking PRE ROLL Ads .. ', preAds.length);
+        logger.warn('Checking MID ROLL Ads .. ', midAds.length);
+        logger.warn('Checking POST ROLL Ads .. ', postAds.length);
+    }
     /**
      *
      */
     function on(name, handler) {
         return events.on(name, handler);
-    };
+    }
     /**
      *
      */
     function off(name, handler) {
         return events.off(name, handler);
-    };
+    }
     // ************************************************************************************
     // PUBLIC API
     // ************************************************************************************
@@ -284,5 +283,5 @@ function AdsManager() {
         initialize: initialize,
         constructor: AdsManager
     };
-};
+}
 export default AdsManager;
