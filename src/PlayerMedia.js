@@ -153,7 +153,7 @@ function PlayerMedia() {
     };
 
     function setThumbsUrl(url) {
-        if (url != null || url !== undefined) {
+        if (url !== null || url !== undefined) {
             thumbsTrackUrl = url;
             logger.debug(' Setting url for thumbs @', url);
         } else {
@@ -432,7 +432,7 @@ function PlayerMedia() {
         DashPlayer.attachVideoContainer(videoFigure);
         CurrentStreamType = StreamTypes.DASH_CLEAR;
         // set thumbs
-        if (thumbsTrackUrl != null || thumbsTrackUrl !== undefined) {
+        if (thumbsTrackUrl !== null || thumbsTrackUrl !== undefined) {
             track = document.createElement('track');
             track.kind = 'metadata';
             track.src = thumbsTrackUrl;
@@ -468,7 +468,7 @@ function PlayerMedia() {
         // TODO : set Drm
         CurrentStreamType = StreamTypes.DASH_ENCRYPTED;
         // set thumbs
-        if (thumbsTrackUrl != null || thumbsTrackUrl !== undefined) {
+        if (thumbsTrackUrl !== null || thumbsTrackUrl !== undefined) {
             track = document.createElement('track');
             track.kind = 'metadata';
             track.src = thumbsTrackUrl;

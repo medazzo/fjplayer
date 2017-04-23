@@ -169,6 +169,7 @@ function Playlist() {
         if (item === undefined) {
             return false;
         }
+        logger.log(' Item is ', item);
         // check item
         logger.log('  class of item  : ', item[Const.FJCONFIG_CLASS]);
         if (Const.FJCONFIG_CLASSES.indexOf(item[Const.FJCONFIG_CLASS]) === -1) {

@@ -1,10 +1,6 @@
 /**
  * @module Constants
  */
-export const FJCONFIG_LOOP = 'FJLoop';
-export const FJCONFIG_START_PLAYING = 'FJStartplaying';
-export const FJCONFIG_ENABLE_BACK_LINK = 'FJEnableFullScreenBackLink';
-export const FJCONFIG_APP_ID = 'FJAppId';
 export const FJCONFIG_CLASS = 'FJClass';
 export const FJCONFIG_TYPE = 'FJType';
 export const FJCONFIG_TITLE = 'FJTitle';

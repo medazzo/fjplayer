@@ -142,7 +142,7 @@ function AdsManager() {
         var item = null;
         var show = 0;
         if (settled !== true) {
-            logger.warn(' AdsMgr is not yet cettled !');
+            logger.debug(' AdsMgr is not yet settled !');
             return;
         }
         logger.info(secondes, ' Cheking ads midium  .. ');

@@ -1,12 +1,10 @@
-import Logger from './Logger';
 /**
  * @module Eventing
  * @description The Eventing is the class eventing mgr
  *
  */
 function Eventing() {
-    var logger = new Logger(this),
-        events = {};
+    var events = {};
     /**
      *
      */
@@ -37,7 +35,6 @@ function Eventing() {
      */
     function fireEvent(name, args) {
         var evs, l, i;
-        logger.debug(' Firing Eventing on event :', name, args);
         if (!events.hasOwnProperty(name)) {
             return;
         }

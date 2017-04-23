@@ -10,6 +10,8 @@ import AdsManager from './AdsManager';
 function Player(fjID, vidContainerId, vwidth, vheight) {
     var logger = new Logger(this),
         playerPlaylist = null,
+        playingList = false,
+        loopingList = false,
         currentPlaying = -1,
         playlistLoaded = false,
         videoWidth = vwidth,
@@ -108,10 +110,63 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
 
     function midPlayingChecks(secondes) {
         var ok;
-        logger.warn(' Cheking Mid player overlays and ads @ ', secondes);
         OverlaysMgr.CheckOverlays(secondes);
         ok &= AdsMgr.CheckMidAds(secondes);
         return ok;
+    };
+
+    function playItem(itemPosition) {
+        var item;
+        currentPlaying = itemPosition;
+        if (!playlistLoaded) {
+            logger.error(' No playlist is loaded on player ');
+            return false;
+        }
+        if (playerPlaylist.indexOf(itemPosition) === -1) {
+            logger.error(' No item to play at index ', currentPlaying,
+                ' playlist is sized ', playerPlaylist.getSize());
+            return false;
+        }
+        item = playerPlaylist.getItem(currentPlaying);
+        if (item === undefined) {
+            logger.error(' No item to play at index ', currentPlaying,
+                ' playlist is sized ', playerPlaylist.getSize());
+            return false;
+        }
+        // settitle
+        playerUi.setTitle(item[Const.FJCONFIG_TITLE]);
+        // set thumbs
+        playerMedia.setThumbsUrl(item[Const.FJCONFIG_THUMBS]);
+
+        if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
+            if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
+                // clear dash
+                playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER], false);
+            } else {
+                playerMedia.load(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_TYPE],
+                    item[Const.FJCONFIG_POSTER], false);
+            }
+            return true;
+        }
+        logger.error('src of item is not valid , at index ', currentPlaying);
+        return false;
+    };
+
+    function playNext() {
+        if (!playlistLoaded) {
+            logger.error(' No playlist is loaded on player ');
+            return false;
+        }
+        // set playlist again
+        playingList = true;
+        currentPlaying++;
+        if (playerPlaylist.indexOf(currentPlaying) === -1) {
+            if (loopingList === true) {
+                return playItem(0);
+            }
+            // playlist if ended
+            return false;
+        }
     };
 
     function MplayerEventing(e, args) {
@@ -126,7 +181,11 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
             midPlayingChecks(Math.round(playerMedia.time()));
         }
         if (e === Const.PlayerEvents.PLAYBACK_ENDED) {
-            return AdsMgr.CheckPostAds();
+            AdsMgr.CheckPostAds();
+            // check if in playlist then play list
+            if (playingList === true) {
+                playNext();
+            }
         }
         if (e === Const.PlayerEvents.STREAM_LOADED) {
             // checks thumbs
@@ -181,24 +240,30 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
      *
      */
     function playAt(index) {
+        playingList = false;
+        return playItem(index);
+    };
+
+    function startPlaylist(positionToStartFrom, loop, randomPlay) {
         var item;
-        currentPlaying = index;
-        index;
+        currentPlaying = positionToStartFrom;
         if (!playlistLoaded) {
             logger.error(' No playlist is loaded on player ');
             return false;
         }
-        item = playerPlaylist.getItem(index);
+        item = playerPlaylist.getItem(currentPlaying);
         if (item === undefined) {
-            logger.error(' No item to play at index ', index,
+            logger.error(' No item to play at index ', currentPlaying,
                 ' playlist is sized ', playerPlaylist.getSize());
             return false;
         }
+        playingList = true;
+        loopingList = loop;
         // settitle
         playerUi.setTitle(item[Const.FJCONFIG_TITLE]);
         // set thumbs
         playerMedia.setThumbsUrl(item[Const.FJCONFIG_THUMBS]);
-
+        // play item
         if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
             if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
                 // clear dash
@@ -209,9 +274,9 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
             }
             return true;
         }
-        logger.error('src of item is not valid , at index ', index);
+        logger.error('src of item is not valid , at index ', currentPlaying);
         return false;
-    };
+    }
     /**
      * Function to be called when user start play a video
      */
@@ -250,7 +315,9 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         postPlayingChecks: postPlayingChecks,
         loadPlaylist: loadPlaylist,
         playAt: playAt,
+        startPlaylist: startPlaylist,
         play: play,
+        playNext: playNext,
         pause: pause,
         isPaused: isPaused,
         isEnded: isEnded,
