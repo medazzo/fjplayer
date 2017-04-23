@@ -25,8 +25,12 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         // create ads Manager
         AdsMgr = new AdsManager(),
         supportsVideo = !!document.createElement('video').canPlayType;
-    if (videoHeight === null) videoHeight = 710;
-    if (videoWidth === null) videoWidth = 1280;
+    if (videoHeight === null || videoHeight === undefined) {
+        videoHeight = 710;
+    }
+    if (videoWidth === null || videoWidth === undefined) {
+        videoWidth = 1280;
+    }
     playerUi = new PlayerUi(videoContainerId, videoWidth, videoHeight);
     /**
      * function  to return a human redeable duration of secondes
@@ -192,6 +196,10 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         }
         if (e === Const.PlayerEvents.PLAYBACK_TIME_UPDATE) {
             playerUi.UpdateProgress(playerMedia.time());
+            vid = playerUi.getVideo();
+            logger.warn('Video  dimensions ', vid.videoWidth, 'X', vid.videoHeight,
+                ' while asked are ', videoWidth, 'X', videoHeight);
+
             midPlayingChecks(Math.round(playerMedia.time()));
         }
         if (e === Const.PlayerEvents.PLAYBACK_ENDED) {
@@ -213,7 +221,12 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
             OverlaysMgr.Setup(item[Const.FJCONFIG_OVERLAYS]);
             // Set ads
             vid = playerUi.getVideo();
-            logger.warn('Video object hXw ', vid.videoWidth, vid.videoHeight);
+            logger.warn('Video  dimensions ', vid.videoWidth, 'X', vid.videoHeight,
+                ' while asked are ', videoWidth, 'X', videoHeight);
+            vid.videoWidth = videoWidth;
+            vid.videoHeight = videoHeight;
+            logger.warn('Video  dimensions ', vid.videoWidth, 'X', vid.videoHeight,
+                ' while asked are ', videoWidth, 'X', videoHeight);
             AdsMgr.Setup(item[Const.FJCONFIG_ADS], vid.videoWidth, vid.videoHeight);
 
         }
@@ -293,6 +306,10 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         return false;
     }
 
+    function seek(time) {
+        playerMedia.seek(time);
+    }
+
     function play() {
         // playerMedia.play();
         if (AdsMgr.CheckPreAds() === false) {
@@ -326,6 +343,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         playAt: playAt,
         startPlaylist: startPlaylist,
         play: play,
+        seek: seek,
         playNext: playNext,
         playPrev: playPrev,
         pause: pause,

@@ -17,6 +17,7 @@ require('font-awesome/css/font-awesome.css');
  */
 function PlayerUi(videoContId, VWidth, WHeight) {
     var logger = new Logger(this),
+        mediaDuration = 0,
         fjMainPlayer = null,
         videoContainerId = videoContId,
         fullScreenOnStart = false,
@@ -601,23 +602,16 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         var val = 0;
         // var p = progressBar.value;
         var rect = progressBar.getBoundingClientRect();
-        var p = (event.pageX - rect.left) * (video.duration / (rect.right - rect.left));
-        if (progressBar.max !== video.duration) {
-            progressBar.max = video.duration;
-        }
-        logger.log(' Seeking from ', Utils.duration(video.currentTime), '/',
-            Utils.duration(video.duration), 'to', Utils.duration(p), ' sec');
-        // change current time
-        video.currentTime = parseFloat(p);
+        var p = (event.pageX - rect.left) * (mediaDuration / (rect.right - rect.left));
+        logger.log(' Seeking from ', Utils.duration(p), '/',
+            Utils.duration(mediaDuration), 'to', Utils.duration(p), ' sec');
+        fjMainPlayer.seek(p);
         val = (progressBar.value - progressBar.min) / (progressBar.max - progressBar.min);
         progressBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
             'color-stop(' + val + ', #FF0000), ' +
             'color-stop(' + val + ', #8F9B9E)' +
             ')';
-        // set timer
-        timer.innerHTML = ' <span>' + Utils.duration(p) +
-            '</span><span>/</span><span>' + Utils.duration(video.duration) + '</span>';
-    };
+    }
     // ************************************************************************************
     // FULLSCREEN
     // ************************************************************************************
@@ -721,6 +715,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
 
     function setDuration(value) {
         if (!isNaN(value)) {
+            mediaDuration = value;
             durationDisplay.textContent = Utils.duration(value);
             progressBar.max = value;
         }
