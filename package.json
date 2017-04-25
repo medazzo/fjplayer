@@ -1,72 +1,73 @@
 {
-   "main" : "lib/fjplayer.js",
-   "version" : "2.0.6",
-   "devDependencies" : {
-      "url-loader" : "^0.5.5",
-      "mocha" : "2.3.4",
-      "eslint-loader" : "1.1.0",
-      "babel-loader" : "6.1.0",
-      "chai" : "3.4.1",
-      "ejs-loader" : "^0.3.0",
-      "babel" : "6.3.13",
-      "bootstrap-webpack" : "0.0.4",
-      "ejs" : "^2.5.5",
-      "bootstrap" : "~3.3.0",
-      "babel-core" : "6.1.18",
-      "less" : "^2.3.1",
-      "webpack-version-file" : "^0.1.3",
-      "eslint" : "1.7.2",
-      "less-loader" : "^2.2.3",
-      "css-loader" : "0.26.1",
-      "http-server" : "^0.9.0",
-      "html-loader" : "^0.4.4",
-      "babel-preset-es2015" : "6.3.13",
-      "jquery" : "~2.1.1",
-      "babel-plugin-add-module-exports" : "0.1.2",
-      "webpack-dev-server" : "1.16.2",
-      "style-loader" : "0.13.1",
-      "ejs-html-loader" : "^2.0.2",
-      "file-loader" : "^0.8.1",
-      "concurrently" : "^2.2.0",
-      "imports-loader" : "^0.6.3",
-      "webpack" : "1.12.9",
-      "babel-eslint" : "5.0.0",
-      "yargs" : "3.32.0"
-   },
-   "description" : "th Fjplayer html5 video player",
-   "homepage" : "https://easysoftin.com",
-   "repository" : {
-      "url" : "https://easysoftin.com",
-      "type" : "git"
-   },
-   "scripts" : {
-      "web" : "webpack-dev-server --progress --colors",
-      "test" : "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js",
-      "start" : " concurrently \"npm run version\"  \"npm run dev\" \"npm run live\" ",
-      "version" : "perl ./version.pl",
-      "dev" : "webpack --progress --colors --watch --mode=dev",
-      "dist" : " concurrently \"npm run version\" \"npm run build\"",
-      "build" : "webpack --mode=build",
-      "live" : "http-server -a localhost -p 8000 -c-1"
-   },
-   "keywords" : [
-      "mpegdash",
-      "es6",
-      "dashjs",
-      "html5",
-      "player",
-      "cenc",
-      "ads"
-   ],
-   "dependencies" : {
-      "font-awesome" : "^4.3.0",
-      "dashjs" : "2.3.0"
-   },
-   "license" : "MIT",
-   "name" : "fjplayer",
-   "author" : "Azzouni Mohamed",
-   "bugs" : {
-      "url" : "https://easysoftin.com"
-   },
-   "private" : true
+    "main": "lib/fjplayer.js",
+    "version": "2.0.6",
+    "devDependencies": {
+        "chai": "3.4.1",
+        "url-loader": "^0.5.5",
+        "mocha": "2.3.4",
+        "eslint-loader": "1.1.0",
+        "babel-loader": "6.1.0",
+        "chai": "3.4.1",
+        "ejs-loader": "^0.3.0",
+        "babel": "6.3.13",
+        "bootstrap-webpack": "0.0.4",
+        "ejs": "^2.5.5",
+        "bootstrap": "~3.3.0",
+        "babel-core": "6.1.18",
+        "less": "^2.3.1",
+        "webpack-version-file": "^0.1.3",
+        "eslint": "1.7.2",
+        "less-loader": "^2.2.3",
+        "css-loader": "0.26.1",
+        "http-server": "^0.9.0",
+        "html-loader": "^0.4.4",
+        "babel-preset-es2015": "6.3.13",
+        "jquery": "~2.1.1",
+        "babel-plugin-add-module-exports": "0.1.2",
+        "webpack-dev-server": "1.16.2",
+        "style-loader": "0.13.1",
+        "ejs-html-loader": "^2.0.2",
+        "file-loader": "^0.8.1",
+        "concurrently": "^2.2.0",
+        "imports-loader": "^0.6.3",
+        "webpack": "1.12.9",
+        "babel-eslint": "5.0.0",
+        "yargs": "3.32.0"
+    },
+    "description": "th Fjplayer html5 video player",
+    "homepage": "https://easysoftin.com",
+    "repository": {
+        "url": "https://easysoftin.com",
+        "type": "git"
+    },
+    "scripts": {
+        "web": "webpack-dev-server --progress --colors",
+        "test": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js",
+        "start": " concurrently \"npm run version\"  \"npm run dev\" \"npm run live\" ",
+        "version": "perl ./version.pl",
+        "dev": "webpack --progress --colors --watch --mode=dev",
+        "dist": " concurrently \"npm run version\" \"npm run build\"",
+        "build": "webpack --mode=build",
+        "live": "http-server -a localhost -p 8000 -c-1"
+    },
+    "keywords": [
+        "mpegdash",
+        "es6",
+        "dashjs",
+        "html5",
+        "player",
+        "cenc",
+        "ads"
+    ],
+    "dependencies": {
+        "font-awesome": "^4.3.0",
+        "dashjs": "2.3.0"
+    },
+    "license": "MIT",
+    "name": "fjplayer",
+    "author": "Azzouni Mohamed",
+    "bugs": {
+        "url": "https://easysoftin.com"
+    },
+    "private": true
 }

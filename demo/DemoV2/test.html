@@ -7,15 +7,15 @@
     <script type="text/javascript">
         var itemDash = {
             'FJType': 'dash',
-            'FJPoster': 'img/sintel.jpg',
+            'FJPoster': '../img/sintel.jpg',
             'FJTitle': ' title of movie itemDash 2',
             'FJClass': 'vod',
-            'FJThumbs': 'vtt/thumbs.vtt',
+            'FJThumbs': '../vtt/thumbs.vtt',
             'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
         };
         var itemDashNoThumbs = {
             'FJType': 'dash',
-            'FJPoster': 'img/sintel.jpg',
+            'FJPoster': '../img/sintel.jpg',
             'FJTitle': ' title of movie itemDashNoThumbs 3',
             'FJClass': 'vod',
             'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
@@ -31,8 +31,8 @@
             'FJTitle': ' title of movie item 4 ',
             'FJClass': 'vod',
             'FJType': 'video/mp4',
-            'FJPoster': 'img/poster.jpg',
-            'FJThumbs': 'vtt/thumbs.vtt',
+            'FJPoster': '../img/poster.jpg',
+            'FJThumbs': '../vtt/thumbs.vtt',
             'FJAds': [{
                 'FJType': 'video/mp4',
                 'FJSrc': 'videos/berber_pub.mp4',
@@ -74,15 +74,15 @@
             'FJSubtitles': [{
                 'FJLabel': 'English',
                 'FJLang': 'en',
-                'FJSrc': 'vtt/sintel-en.vtt'
+                'FJSrc': '../vtt/sintel-en.vtt'
             }, {
                 'FJLabel': 'Espagnol',
                 'FJLang': 'es',
-                'FJSrc': 'vtt/sintel-es.vtt'
+                'FJSrc': '../vtt/sintel-es.vtt'
             }, {
                 'FJLabel': 'Deutsch',
                 'FJLang': 'de',
-                'FJSrc': 'vtt/sintel-de.vtt'
+                'FJSrc': '../vtt/sintel-de.vtt'
             }],
             'FJOverlays': [{
                 'FJData': 'Hello there Overlay 1',
@@ -107,11 +107,11 @@
             console.info('VERSION', ver.getVersion());
             console.info('Hash HEAD', ver.getShortHash());
             var playlist = new fjplayer.Playlist();
-            // playlist.addItem(item);
+            playlist.addItem(item);
             // playlist.addItem(itemOnly);
             // playlist.addItem(itemDash);
             // playlist.addItem(item);
-            playlist.addItem(itemDashNoThumbs);
+            // playlist.addItem(itemDashNoThumbs);
             var player = new fjplayer.Player('fjserverID1', 'playercontainer');
             player.loadPlaylist(playlist);
             //player.playAt(0);
