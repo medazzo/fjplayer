@@ -222,9 +222,9 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
             // Set ads
             vid = playerUi.getVideo();
             logger.warn('Video  dimensions ', vid.videoWidth, 'X', vid.videoHeight,
-                ' while asked are ', videoWidth, 'X', videoHeight);
-            vid.videoWidth = videoWidth;
-            vid.videoHeight = videoHeight;
+                ' while asked are ', videoWidth, 'X', videoHeight, ' for video ', vid);
+            vid.width = videoWidth;
+            vid.height = videoHeight;
             logger.warn('Video  dimensions ', vid.videoWidth, 'X', vid.videoHeight,
                 ' while asked are ', videoWidth, 'X', videoHeight);
             AdsMgr.Setup(item[Const.FJCONFIG_ADS], vid.videoWidth, vid.videoHeight);
