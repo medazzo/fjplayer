@@ -2,22 +2,18 @@ var webpack = require('webpack');
 var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 var path = require('path');
 var env = require('yargs').argv.mode;
-
 var libraryName = 'fjplayer';
-
 var plugins = [],
-    outputFile;
-
-// for ejs
-plugins.push(new webpack.ProvidePlugin({
-    _: 'underscore'
-}));
+    outputFile,
+    devToolMode;
 
 if (env === 'build') {
     plugins.push(new UglifyJsPlugin({ minimize: true }));
     outputFile = libraryName + '.min.js';
+    devToolMode = 'nosources-source-map';
 } else {
     outputFile = libraryName + '.js';
+    devToolMode = 'inline-source-map';
 }
 
 var config = {
@@ -31,24 +27,50 @@ var config = {
         umdNamedDefine: true
     },
     module: {
-        loaders: [
-            { test: /(\.jsx|\.js)$/, loader: 'babel', exclude: /(node_modules|bower_components)/ },
-            { test: /\.scss$/, loaders: ['style', 'css', 'less'] },
+        rules: [{
+                test: /\.ejs$/,
+                loader: 'ejs-loader',
+                options: {
+                    strict: true,
+                    _with: false
+                }
+            },
+            {
+                test: /(\.jsx|\.js)$/,
+                loader: 'babel-loader',
+                exclude: /(node_modules|bower_components)/
+            },
             { test: /\.png$/, loader: "file-loader?name=img/[name].png" },
-            /* images disponible dans le bundle à l'url /img/[nom-image].png */
-            { test: /\.css$/, loader: "style!css?sourceMap" },
-            { test: /bootstrap\/js\//, loader: 'imports?jQuery=jquery' },
-            { test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
-            { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
-            { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
-            { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' }
+            {
+                test: /\.css$/,
+                use: [{
+                        loader: "style-loader"
+                    },
+                    {
+                        loader: "css-loader",
+                        options: {
+                            modules: false
+                        }
+                    }
+                ]
+            },
+            { test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
+            { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream' },
+            { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader' },
+            { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml' }
         ]
     },
     resolve: {
-        root: path.resolve('./src'),
-        extensions: ['', '.js']
+        modules: [
+            path.join(__dirname, "src"),
+            "node_modules"
+        ],
+        extensions: [".js", ".json", ".jsx", ".css"],
     },
-    plugins: plugins
+    plugins: plugins,
+    devtool: devToolMode,
+    context: __dirname,
+    target: "web"
 };
 
 module.exports = config;

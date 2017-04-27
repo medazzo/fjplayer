@@ -1,4 +1,3 @@
-"use strict";
 import Logger from './Logger';
 import Overlays from './Overlays';
 import * as Const from './constants';

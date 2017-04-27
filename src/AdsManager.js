@@ -1,4 +1,3 @@
-'use strict';
 import Logger from './Logger';
 import * as Const from './constants';
 import * as Utils from './Utils';

@@ -1,4 +1,3 @@
-"use strict";
 import Logger from './Logger';
 import Thumbs from './Thumbs';
 import SubsMenu from './SubsMenu';
@@ -6,7 +5,7 @@ import AudsMenu from './AudsMenu';
 // import Overlays from './Overlays';
 import * as Utils from './Utils';
 
-var ejsContent = require('ejs!./fjplayer-tmpl.ejs');
+var ejsContent = require('./fjplayer-tmpl.ejs');
 require('./player.css');
 require('font-awesome/css/font-awesome.css');
 
