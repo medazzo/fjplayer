@@ -1,4 +1,4 @@
-import { fjplayer } from '../lib/fjplayer.js';
+import { fjplayer } from '../dist/fjplayer.js';
 
 describe("Fjplayer", function() {
 

@@ -35,10 +35,12 @@ var config = {
     module: {
         rules: [{
                 test: /\.ejs$/,
-                loader: 'ejs-loader',
+                loader: 'ejs-compiled-loader',
                 options: {
-                    strict: false,
-                    _with: false
+                    strict: true,
+                    _with: false,
+                    beautify: true,
+                    compileDebug: true
                 }
             },
             {
