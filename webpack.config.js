@@ -1,28 +1,34 @@
 var webpack = require('webpack');
-var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 var path = require('path');
-var env = require('yargs').argv.mode;
-var libraryName = 'fjplayer';
-var plugins = [],
-    outputFile,
-    devToolMode;
+var plugins = [];
 
-if (env === 'build') {
-    plugins.push(new UglifyJsPlugin({ minimize: true }));
-    outputFile = libraryName + '.min.js';
-    devToolMode = 'nosources-source-map';
-} else {
-    outputFile = libraryName + '.js';
-    devToolMode = 'inline-source-map';
-}
+console.error("############################################");
+console.error(" Building in Development Mode ");
+console.error("############################################");
+
+
+// for jquery
+plugins.push(new webpack.ProvidePlugin({
+    jQuery: 'jquery',
+    $: 'jquery',
+    jquery: 'jquery'
+}));
+
+plugins.push(new webpack.LoaderOptionsPlugin({
+    debug: true
+}));
+
 
 var config = {
-    entry: __dirname + '/src/',
+    entry: {
+        fjplayer: "./src/index.js"
+    },
     devtool: 'source-map',
     output: {
-        path: __dirname + '/lib',
-        filename: outputFile,
-        library: libraryName,
+        path: path.resolve(__dirname, "lib"),
+        filename: 'fjplayer.js',
+        publicPath: "/assets/",
+        library: 'fjplayer',
         libraryTarget: 'umd',
         umdNamedDefine: true
     },
@@ -31,14 +37,21 @@ var config = {
                 test: /\.ejs$/,
                 loader: 'ejs-loader',
                 options: {
-                    strict: true,
+                    strict: false,
                     _with: false
                 }
             },
             {
                 test: /(\.jsx|\.js)$/,
                 loader: 'babel-loader',
-                exclude: /(node_modules|bower_components)/
+                options: {
+                    presets: ["es2015"]
+                },
+                exclude: [
+                    path.resolve("./node_modules"),
+                    path.resolve("./bower_components"),
+                    path.resolve("./tests")
+                ]
             },
             { test: /\.png$/, loader: "file-loader?name=img/[name].png" },
             {
@@ -54,6 +67,7 @@ var config = {
                     }
                 ]
             },
+            { test: /bootstrap\/js\//, loader: 'imports?jQuery=jquery' },
             { test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
             { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream' },
             { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader' },
@@ -68,9 +82,15 @@ var config = {
         extensions: [".js", ".json", ".jsx", ".css"],
     },
     plugins: plugins,
-    devtool: devToolMode,
+    devtool: 'inline-source-map',
+    stats: 'verbose',
     context: __dirname,
-    target: "web"
+    target: "web",
+    devServer: {
+        contentBase: path.join(__dirname),
+        compress: true,
+        port: 9000
+    }
 };
 
 module.exports = config;
