@@ -25,9 +25,9 @@ var config = {
     },
     devtool: 'source-map',
     output: {
-        path: path.resolve(__dirname, "lib"),
+        path: path.resolve(__dirname, "dist"),
         filename: 'fjplayer.js',
-        publicPath: "/assets/",
+        publicPath: "/dist/",
         library: 'fjplayer',
         libraryTarget: 'umd',
         umdNamedDefine: true
@@ -87,7 +87,7 @@ var config = {
     context: __dirname,
     target: "web",
     devServer: {
-        contentBase: path.join(__dirname),
+        contentBase: path.join(__dirname, '/demo/'),
         compress: true,
         port: 9000
     }
