@@ -18,7 +18,6 @@ plugins.push(new webpack.LoaderOptionsPlugin({
     debug: true
 }));
 
-
 var config = {
     entry: {
         fjplayer: "./src/index.js"
@@ -34,16 +33,6 @@ var config = {
     },
     module: {
         rules: [{
-                test: /\.ejs$/,
-                loader: 'ejs-compiled-loader',
-                options: {
-                    strict: true,
-                    _with: false,
-                    beautify: true,
-                    compileDebug: true
-                }
-            },
-            {
                 test: /(\.jsx|\.js)$/,
                 loader: 'babel-loader',
                 options: {

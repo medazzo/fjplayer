@@ -22,23 +22,15 @@ var config = {
     },
     devtool: 'source-map',
     output: {
-        path: path.resolve(__dirname, "lib"),
+        path: path.resolve(__dirname, "dist"),
         filename: 'fjplayer.min.js',
-        publicPath: "/assets/",
+        publicPath: "/dist/",
         library: 'fjplayer',
         libraryTarget: 'umd',
         umdNamedDefine: true
     },
     module: {
         rules: [{
-                test: /\.ejs$/,
-                loader: 'ejs-loader',
-                options: {
-                    strict: false,
-                    _with: false
-                }
-            },
-            {
                 test: /(\.jsx|\.js)$/,
                 loader: 'babel-loader',
                 options: {

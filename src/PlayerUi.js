@@ -2,10 +2,8 @@ import Logger from './Logger';
 import Thumbs from './Thumbs';
 import SubsMenu from './SubsMenu';
 import AudsMenu from './AudsMenu';
-// import Overlays from './Overlays';
 import * as Utils from './Utils';
-
-var ejsContent = require('./fjplayer-tmpl.ejs');
+import tmpl from './fjplayer-tmpl';
 require('./player.css');
 require('font-awesome/css/font-awesome.css');
 
@@ -113,16 +111,9 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             throw new Error('The video container element still null');
         }
         videoContainer.classList.add('fjPlayer');
-        videoContainer.innerHTML = ejsContent(data);
+        videoContainer.innerHTML = new tmpl().GetHtml(data);
         video = null;
         videoContainer = null;
-        /* captionMenu = null;
-         bitrateListMenu = null;
-        trackSwitchMenu = null;
-        menuHandlersList = [];
-         lastVolumeLevel = NaN;
-        seeking = false;
-        videoControllerVisibleTimeout = 0; */
         videoController = document.getElementById(videoControlsId);
         videoControllerFigure = document.getElementById(videoFigureId);
         video = document.getElementById(videoId);
