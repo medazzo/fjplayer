@@ -1,5 +1,6 @@
 import Logger from './Logger';
 import * as Const from './constants';
+import * as Langs from './isoLangs';
 /**
  *  Class playlist in whixh all the playliost will be checked and saved
  */
@@ -31,6 +32,10 @@ function Playlist() {
      * used to check if an item of subtitle is correct
      */
     function checkSubtitle(subItem) {
+        var tmp;
+        if (subItem === null || subItem === undefined) {
+            return false;
+        }
         if (subItem[Const.FJCONFIG_LABEL]) {
             logger.log(' playlist Subtitle label is',
                 subItem[Const.FJCONFIG_LABEL]);
@@ -39,8 +44,13 @@ function Playlist() {
             return false;
         }
         if (subItem[Const.FJCONFIG_LANG]) {
-            logger.log(' playlist Subtitle lang is',
+            tmp = Langs.isoLangs[subItem[Const.FJCONFIG_LANG]];
+            logger.log(tmp, ' playlist Subtitle lang is',
                 subItem[Const.FJCONFIG_LANG]);
+            if (tmp === null || tmp === undefined) {
+                logger.error('No ISO code of lang  ', tmp);
+                return false;
+            }
         } else {
             logger.error('Empty Subtitle lang  ');
             return false;
@@ -59,6 +69,9 @@ function Playlist() {
      */
     function checkOverlay(subItem) {
         var val = subItem;
+        if (subItem === null || subItem === undefined) {
+            return false;
+        }
         val = subItem[Const.FJCONFIG_DATA];
         if (val !== null && val !== '') {
             logger.log(' playlist Overlay data ', val);
@@ -103,6 +116,9 @@ function Playlist() {
      * used to check if an item of drm is correct
      */
     function checkDrm(drm) {
+        if (drm === null || drm === undefined) {
+            return false;
+        }
         if (Const.FJCONFIG_DRM_SCHEMES.indexOf(drm[Const.FJCONFIG_DRM_SCHEME]) === -1) {
             logger.error('BAD DRM Scheme Value ! ', drm[Const.FJCONFIG_DRM_SCHEME]);
             return false;
@@ -123,6 +139,9 @@ function Playlist() {
      * used to check if an item of ads is correct
      */
     function checkAds(item) {
+        if (item === null || item === undefined) {
+            return false;
+        }
         if (Const.FJCONFIG_TYPES.indexOf(item[Const.FJCONFIG_TYPE]) === -1) {
             logger.error('BAD type Value ! ');
             return false;
@@ -156,13 +175,6 @@ function Playlist() {
         return true;
     };
     /**
-     * used to check if an item of audiois correct
-     */
-    function checkAudio(item) {
-        /* TODO */
-        return false;
-    };
-    /**
      * used to check if an item is correct
      */
     function checkItem(item) {
@@ -170,7 +182,7 @@ function Playlist() {
         var drm = {};
         var j, list;
 
-        if (item === undefined) {
+        if (item === null || item === undefined) {
             return false;
         }
         logger.log(' Item is ', item);
@@ -363,7 +375,6 @@ function Playlist() {
         checkOverlay: checkOverlay,
         checkDrm: checkDrm,
         checkAds: checkAds,
-        checkAudio: checkAudio,
         checkItem: checkItem,
         constructor: Playlist
     };
