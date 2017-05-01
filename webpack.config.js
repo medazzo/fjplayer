@@ -29,6 +29,7 @@ var config = {
         publicPath: "/dist/",
         library: 'fjplayer',
         libraryTarget: 'umd',
+        pathinfo: true,
         umdNamedDefine: true
     },
     module: {
@@ -67,8 +68,8 @@ var config = {
     },
     resolve: {
         modules: [
-            path.join(__dirname, "src"),
-            "node_modules"
+            path.resolve(__dirname, "./node_modules"),
+            path.resolve(__dirname, "./src")
         ],
         extensions: [".js", ".json", ".jsx", ".css"],
     },

@@ -14,7 +14,6 @@ plugins.push(new webpack.ProvidePlugin({
     $: 'jquery',
     jquery: 'jquery'
 }));
-/*plugins.push(new UglifyJsPlugin({ minimize: true }));*/
 
 var config = {
     entry: {
