@@ -73,21 +73,21 @@ function Playlist() {
             return false;
         }
         val = subItem[Const.FJCONFIG_DATA];
-        if (val !== null && val !== '') {
+        if (val !== undefined && val !== null && val !== '') {
             logger.log(' playlist Overlay data ', val);
         } else {
             logger.error('Empty Overlay data');
             return false;
         }
         val = subItem[Const.FJCONFIG_URL];
-        if (val !== null && val !== '') {
+        if (val !== undefined && val !== null && val !== '') {
             logger.log(' playlist Overlay url ', subItem[Const.FJCONFIG_URL]);
         } else {
             logger.error('Empty Overlay url');
             return false;
         }
         val = subItem[Const.FJCONFIG_DURATION];
-        if (val !== null && val !== '') {
+        if (val !== undefined && val !== null && val !== '') {
             if ((val === parseInt(val, 10))) {
                 logger.log(' integer playlist Overlay duration ', val);
             } else {
@@ -99,7 +99,7 @@ function Playlist() {
             return false;
         }
         val = subItem[Const.FJCONFIG_SHOW_AT];
-        if (val !== null && val !== '') {
+        if (val !== undefined && val !== null && val !== '') {
             if ((val === parseInt(val, 10))) {
                 logger.log(' integer playlist Overlay show at ', val);
             } else {

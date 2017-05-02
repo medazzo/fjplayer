@@ -1,0 +1,7 @@
+#############################################################
+                   TODO List
+#############################################################
+
+1. add internalisation , on player construct choose iso country code
+2. remove label from subtitle, use only iso lan code 
+     to deduct label reagarding player UI Language
