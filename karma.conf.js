@@ -15,7 +15,32 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'tests/*spec.js'
+            'tests/*.spec.js',
+            {
+                pattern: 'demo/img/*.png',
+                watched: false,
+                included: false
+            },
+            {
+                pattern: 'demo/img/*.jpg',
+                watched: false,
+                included: false
+            },
+            {
+                pattern: 'demo/css/*.css',
+                watched: false,
+                included: false
+            },
+            {
+                pattern: 'demo/videos/*.mp4',
+                watched: false,
+                included: false
+            },
+            {
+                pattern: 'demo/vtt/*.vtt',
+                watched: false,
+                included: false
+            }
         ],
 
 

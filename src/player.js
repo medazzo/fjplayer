@@ -326,6 +326,10 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         return playingAds;
     }
 
+    function isReady() {
+        return playlistLoaded;
+    }
+
     function isPaused() {
         return playerMedia.isPaused();
     }
@@ -348,6 +352,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         pause: pause,
         isPaused: isPaused,
         isPlayingAds: isPlayingAds,
+        isReady: isReady,
         isEnded: isEnded,
         constructor: Player
     };

@@ -1,7 +1,7 @@
 "use strict";
 import Playlist from '../src/playlist';
 import chai from 'chai';
-import DataPlaylist from './playlistData.spec';
+import DataPlaylist from './data.spec';
 
 const expect = chai.expect;
 let P, data, time = 18305;
@@ -385,6 +385,9 @@ describe('Playlist', function() {
         });
         it('should return false on no src', () => {
             expect(P.checkItem(data.items[20])).to.be.equal(false);
+        });
+        it('inserting full item to playlist', () => {
+            expect(P.addItem(data.Fullitem)).to.be.equal(true);
         });
     });
 });
