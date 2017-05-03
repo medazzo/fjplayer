@@ -198,12 +198,14 @@ function Playlist() {
             return false;
         }
         logger.log('  title of item  ', item[Const.FJCONFIG_TITLE]);
-        if (!item[Const.FJCONFIG_TITLE]) {
+        if (item[Const.FJCONFIG_TITLE] === undefined || item[Const.FJCONFIG_TITLE] === null ||
+            item[Const.FJCONFIG_TITLE] === '' || !item[Const.FJCONFIG_TITLE]) {
             logger.error('BAD title Value ! ');
             return false;
         }
         logger.log('  src of item  ', item[Const.FJCONFIG_SRC]);
-        if (!item[Const.FJCONFIG_SRC]) {
+        if (item[Const.FJCONFIG_SRC] === undefined || item[Const.FJCONFIG_SRC] === null ||
+            item[Const.FJCONFIG_SRC] === '' || !item[Const.FJCONFIG_SRC]) {
             logger.error('BAD src Value ! ');
             return false;
         }

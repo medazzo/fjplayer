@@ -386,14 +386,161 @@ let ads = [{
 ];
 
 let items = [{
-        'FJType': 'dash',
-        'FJPoster': '../img/sintel.jpg',
-        'FJTitle': ' title of movie itemDash 2',
-        'FJClass': 'vod',
-        'FJThumbs': '../vtt/thumbs.vtt',
-        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-    }]
-    /*********************************************************
+            'FJType': 'dash',
+            'FJPoster': '../img/sintel.jpg',
+            'FJTitle': ' title of movie itemDash 2',
+            'FJClass': 'vod',
+            'FJThumbs': '../vtt/thumbs.vtt',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        },
+
+        {
+            'FJTyp': 'dash',
+            'FJPoster': '../img/sintel.jpg',
+            'FJTitle': ' title of movie itemDash 2',
+            'FJClass': 'vod',
+            'FJThumbs': '../vtt/thumbs.vtt',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        }, {
+            'FJType': 'dashoood',
+            'FJPoster': '../img/sintel.jpg',
+            'FJTitle': ' title of movie itemDash 2',
+            'FJClass': 'vod',
+            'FJThumbs': '../vtt/thumbs.vtt',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        }, {
+            'FJType': '',
+            'FJPoster': '../img/sintel.jpg',
+            'FJTitle': ' title of movie itemDash 2',
+            'FJClass': 'vod',
+            'FJThumbs': '../vtt/thumbs.vtt',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        }, {
+            'FJPoster': '../img/sintel.jpg',
+            'FJTitle': ' title of movie itemDash 2',
+            'FJClass': 'vod',
+            'FJThumbs': '../vtt/thumbs.vtt',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        },
+
+        {
+            'FJType': 'dash',
+            'FJPoste': '../img/sintel.jpg',
+            'FJTitle': ' title of movie itemDash 2',
+            'FJClass': 'vod',
+            'FJThumbs': '../vtt/thumbs.vtt',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        }, {
+            'FJType': 'dash',
+            'FJPoster': '',
+            'FJTitle': ' title of movie itemDash 2',
+            'FJClass': 'vod',
+            'FJThumbs': '../vtt/thumbs.vtt',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        }, {
+            'FJType': 'dash',
+            'FJTitle': ' title of movie itemDash 2',
+            'FJClass': 'vod',
+            'FJThumbs': '../vtt/thumbs.vtt',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        },
+
+        {
+            'FJType': 'dash',
+            'FJPoster': '../img/sintel.jpg',
+            'FJTitleddd': ' title of movie itemDash 2',
+            'FJClass': 'vod',
+            'FJThumbs': '../vtt/thumbs.vtt',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        }, {
+            'FJType': 'dash',
+            'FJPoster': '../img/sintel.jpg',
+            'FJTitle': '',
+            'FJClass': 'vod',
+            'FJThumbs': '../vtt/thumbs.vtt',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        }, {
+            'FJType': 'dash',
+            'FJPoster': '../img/sintel.jpg',
+            'FJClass': 'vod',
+            'FJThumbs': '../vtt/thumbs.vtt',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        },
+
+        {
+            'FJType': 'dash',
+            'FJPoster': '../img/sintel.jpg',
+            'FJTitle': ' title of movie itemDash 2',
+            'FJCla': 'vod',
+            'FJThumbs': '../vtt/thumbs.vtt',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        }, {
+            'FJType': 'dash',
+            'FJPoster': '../img/sintel.jpg',
+            'FJTitle': ' title of movie itemDash 2',
+            'FJClass': 'voddf',
+            'FJThumbs': '../vtt/thumbs.vtt',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        }, {
+            'FJType': 'dash',
+            'FJPoster': '../img/sintel.jpg',
+            'FJTitle': ' title of movie itemDash 2',
+            'FJClass': '',
+            'FJThumbs': '../vtt/thumbs.vtt',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        }, {
+            'FJType': 'dash',
+            'FJPoster': '../img/sintel.jpg',
+            'FJTitle': ' title of movie itemDash 2',
+            'FJThumbs': '../vtt/thumbs.vtt',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        },
+
+        {
+            'FJType': 'dash',
+            'FJPoster': '../img/sintel.jpg',
+            'FJTitle': ' title of movie itemDash 2',
+            'FJClass': 'vod',
+            'FJThum': '../vtt/thumbs.vtt',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        }, {
+            'FJType': 'dash',
+            'FJPoster': '../img/sintel.jpg',
+            'FJTitle': ' title of movie itemDash 2',
+            'FJClass': 'vod',
+            'FJThumbs': '',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        }, {
+            'FJType': 'dash',
+            'FJPoster': '../img/sintel.jpg',
+            'FJTitle': ' title of movie itemDash 2',
+            'FJClass': 'vod',
+            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        },
+
+        {
+            'FJType': 'dash',
+            'FJPoster': '../img/sintel.jpg',
+            'FJTitle': ' title of movie itemDash 2',
+            'FJClass': 'vod',
+            'FJThumbs': '../vtt/thumbs.vtt',
+            'FJSrcXX': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+        }, {
+            'FJType': 'dash',
+            'FJPoster': '../img/sintel.jpg',
+            'FJTitle': ' title of movie itemDash 2',
+            'FJClass': 'vod',
+            'FJThumbs': '../vtt/thumbs.vtt',
+            'FJSrc': ''
+        }, {
+            'FJType': 'dash',
+            'FJPoster': '../img/sintel.jpg',
+            'FJTitle': ' title of movie itemDash 2',
+            'FJClass': 'vod',
+            'FJThumbs': '../vtt/thumbs.vtt'
+        }
+    ]
+    /**********************************************************
      *  *  *  *  *  *  *  *  unitary tests  *  *  *  *  *  *  *
      **********************************************************/
 describe('Playlist', function() {
@@ -704,10 +851,73 @@ describe('Playlist', function() {
             expect(P.checkItem(undefined)).to.be.equal(false);
         });
         it('should return true on correct item', () => {
-            expect(P.checkOverlay(items[0])).to.be.equal(true);
+            expect(P.checkItem(items[0])).to.be.equal(true);
+        });
+
+        it('should return false on bad tag type ', () => {
+            expect(P.checkItem(items[1])).to.be.equal(false);
+        });
+        it('should return false on bad type value', () => {
+            expect(P.checkItem(items[2])).to.be.equal(false);
+        });
+        it('should return false on empty type', () => {
+            expect(P.checkItem(items[3])).to.be.equal(false);
+        });
+        it('should return false on no type', () => {
+            expect(P.checkItem(items[4])).to.be.equal(false);
+        });
+
+        it('should return true on bad tag poster ', () => {
+            expect(P.checkItem(items[5])).to.be.equal(true);
+        });
+        it('should return true on empty poster value', () => {
+            expect(P.checkItem(items[6])).to.be.equal(true);
+        });
+        it('should return true on no poster', () => {
+            expect(P.checkItem(items[7])).to.be.equal(true);
+        });
+
+        it('should return false on bad tag title ', () => {
+            expect(P.checkItem(items[8])).to.be.equal(false);
+        });
+        it('should return false on empty title', () => {
+            expect(P.checkItem(items[9])).to.be.equal(false);
+        });
+        it('should return false on no title', () => {
+            expect(P.checkItem(items[10])).to.be.equal(false);
+        });
+
+        it('should return false on bad tag class ', () => {
+            expect(P.checkItem(items[11])).to.be.equal(false);
+        });
+        it('should return false on bad class value', () => {
+            expect(P.checkItem(items[12])).to.be.equal(false);
+        });
+        it('should return false on empty class', () => {
+            expect(P.checkItem(items[13])).to.be.equal(false);
+        });
+        it('should return false on no class', () => {
+            expect(P.checkItem(items[14])).to.be.equal(false);
+        });
+
+        it('should return true on bad tag thumbs ', () => {
+            expect(P.checkItem(items[15])).to.be.equal(true);
+        });
+        it('should return true on empty thumbs value', () => {
+            expect(P.checkItem(items[16])).to.be.equal(true);
+        });
+        it('should return true on no thumbs', () => {
+            expect(P.checkItem(items[17])).to.be.equal(true);
+        });
+
+        it('should return false on bad tag src ', () => {
+            expect(P.checkItem(items[18])).to.be.equal(false);
+        });
+        it('should return false on empty src value', () => {
+            expect(P.checkItem(items[19])).to.be.equal(false);
+        });
+        it('should return false on no src', () => {
+            expect(P.checkItem(items[20])).to.be.equal(false);
         });
     });
-
-
-
 });
