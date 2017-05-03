@@ -120,6 +120,282 @@ let overs = [{
     'FJShowAt': 'dsfzsfuyg'
 }];
 
+let drms = [{
+    'FJDrmScheme': 'forja',
+    'FJLicenceServer': 'http://www.facebook.com',
+    'FJHeadersOnLicenseRequest': {
+        'header1': 'value1',
+        'header2': 'value2',
+    },
+    'FJHeadersOnSegmentsRequest': {
+        'header-1': 'value-1',
+        'header-2': 'value-2',
+    }
+}, {
+    'FJDrmSchem': 'forja',
+    'FJLicenceServer': 'http://www.facebook.com',
+    'FJHeadersOnLicenseRequest': {
+        'header1': 'value1',
+        'header2': 'value2',
+    },
+    'FJHeadersOnSegmentsRequest': {
+        'header-1': 'value-1',
+        'header-2': 'value-2',
+    }
+}, {
+    'FJDrmScheme': '',
+    'FJLicenceServer': 'http://www.facebook.com',
+    'FJHeadersOnLicenseRequest': {
+        'header1': 'value1',
+        'header2': 'value2',
+    },
+    'FJHeadersOnSegmentsRequest': {
+        'header-1': 'value-1',
+        'header-2': 'value-2',
+    }
+}, {
+    'FJLicenceServer': 'http://www.facebook.com',
+    'FJHeadersOnLicenseRequest': {
+        'header1': 'value1',
+        'header2': 'value2',
+    },
+    'FJHeadersOnSegmentsRequest': {
+        'header-1': 'value-1',
+        'header-2': 'value-2',
+    }
+}, {
+    'FJDrmScheme': 'dvdvv',
+    'FJLicenceServer': 'http://www.facebook.com',
+    'FJHeadersOnLicenseRequest': {
+        'header1': 'value1',
+        'header2': 'value2',
+    },
+    'FJHeadersOnSegmentsRequest': {
+        'header-1': 'value-1',
+        'header-2': 'value-2',
+    }
+}, {
+    'FJDrmScheme': 'forja',
+    'FJLicenceServe': 'http://www.facebook.com',
+    'FJHeadersOnLicenseRequest': {
+        'header1': 'value1',
+        'header2': 'value2',
+    },
+    'FJHeadersOnSegmentsRequest': {
+        'header-1': 'value-1',
+        'header-2': 'value-2',
+    }
+}, {
+    'FJDrmScheme': 'forja',
+    'FJLicenceServer': '',
+    'FJHeadersOnLicenseRequest': {
+        'header1': 'value1',
+        'header2': 'value2',
+    },
+    'FJHeadersOnSegmentsRequest': {
+        'header-1': 'value-1',
+        'header-2': 'value-2',
+    }
+}, {
+    'FJDrmScheme': 'forja',
+    'FJHeadersOnLicenseRequest': {
+        'header1': 'value1',
+        'header2': 'value2',
+    },
+    'FJHeadersOnSegmentsRequest': {
+        'header-1': 'value-1',
+        'header-2': 'value-2',
+    }
+}, {
+    'FJDrmScheme': 'forja',
+    'FJLicenceServer': 'http://www.facebook.com',
+    'FJHeadersOnLicenseRequestd': {
+        'header1': 'value1',
+        'header2': 'value2',
+    },
+    'FJHeadersOnSegmentsRequest': {
+        'header-1': 'value-1',
+        'header-2': 'value-2',
+    }
+}, {
+    'FJDrmScheme': 'forja',
+    'FJLicenceServer': 'http://www.facebook.com',
+    'FJHeadersOnLicenseRequest': {},
+    'FJHeadersOnSegmentsRequest': {
+        'header-1': 'value-1',
+        'header-2': 'value-2',
+    }
+}, {
+    'FJDrmScheme': 'forja',
+    'FJLicenceServer': 'http://www.facebook.com',
+    'FJHeadersOnSegmentsRequest': {
+        'header-1': 'value-1',
+        'header-2': 'value-2',
+    }
+}, {
+    'FJDrmScheme': 'forja',
+    'FJLicenceServer': 'http://www.facebook.com',
+    'FJHeadersOnLicenseRequest': {
+        'header1': 'value1',
+        'header2': 'value2',
+    },
+    'FJHeadersOnSegmentsRequestd': {
+        'header-1': 'value-1',
+        'header-2': 'value-2',
+    }
+}, {
+    'FJDrmScheme': 'forja',
+    'FJLicenceServer': 'http://www.facebook.com',
+    'FJHeadersOnLicenseRequest': {
+        'header1': 'value1',
+        'header2': 'value2',
+    },
+    'FJHeadersOnSegmentsRequest': {}
+}, {
+    'FJDrmScheme': 'forja',
+    'FJLicenceServer': 'http://www.facebook.com',
+    'FJHeadersOnLicenseRequest': {
+        'header1': 'value1',
+        'header2': 'value2',
+    }
+}];
+
+let ads = [{
+        'FJSrc': '../videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    },
+
+    {
+        'FJSr': '../videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    }, {
+        'FJSrc': '',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    }, {
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    },
+
+    {
+        'FJSrc': '../videos/ikea-twins.mp4',
+        'FJTyp': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    }, {
+        'FJSrc': '../videos/ikea-twins.mp4',
+        'FJType': 'videomp',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    }, {
+        'FJSrc': '../videos/ikea-twins.mp4',
+        'FJType': '',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    }, {
+        'FJSrc': '../videos/ikea-twins.mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    },
+
+    {
+        'FJSrc': '../videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClas': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    }, {
+        'FJSrc': '../videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'posoll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    }, {
+        'FJSrc': '../videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': '',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    }, {
+        'FJSrc': '../videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    },
+
+    {
+        'FJSrc': '../videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUr': 'http://www.google.com',
+        'FJCanEscape': true
+    }, {
+        'FJSrc': '../videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': '',
+        'FJCanEscape': true
+    }, {
+        'FJSrc': '../videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJCanEscape': true
+    },
+
+    {
+        'FJSrc': '../videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscap': true
+    },
+    {
+        'FJSrc': '../videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': 'trdue'
+    },
+    {
+        'FJSrc': '../videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': ''
+    },
+    {
+        'FJSrc': '../videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com'
+    }
+];
+
+let items = [{
+        'FJType': 'dash',
+        'FJPoster': '../img/sintel.jpg',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJClass': 'vod',
+        'FJThumbs': '../vtt/thumbs.vtt',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    }]
+    /*********************************************************
+     *  *  *  *  *  *  *  *  unitary tests  *  *  *  *  *  *  *
+     **********************************************************/
 describe('Playlist', function() {
     P = new Playlist();
 
@@ -266,7 +542,8 @@ describe('Playlist', function() {
             expect(P.checkOverlay(overs[14])).to.be.equal(false);
         });
     });
-    // checks Drm : todo
+
+    // checks Drm 
     describe('when I check on Drm', function() {
         it('should return false on null item', () => {
             expect(P.checkDrm(null)).to.be.equal(false);
@@ -274,8 +551,65 @@ describe('Playlist', function() {
         it('should return false on undefined item', () => {
             expect(P.checkDrm(undefined)).to.be.equal(false);
         });
+
+        it('should return true on correct item', () => {
+            expect(P.checkDrm(drms[0])).to.be.equal(true);
+        });
+
+        it('should return false on bad tag scheme', () => {
+            expect(P.checkDrm(drms[1])).to.be.equal(false);
+        });
+
+        it('should return false on empty scheme', () => {
+            expect(P.checkDrm(drms[2])).to.be.equal(false);
+        });
+
+        it('should return false on no scheme', () => {
+            expect(P.checkDrm(drms[3])).to.be.equal(false);
+        });
+
+        it('should return false on bad scheme value', () => {
+            expect(P.checkDrm(drms[4])).to.be.equal(false);
+        });
+
+        it('should return false on bad tag laurl', () => {
+            expect(P.checkDrm(drms[5])).to.be.equal(false);
+        });
+
+        it('should return false on  empty laurl', () => {
+            expect(P.checkDrm(drms[6])).to.be.equal(false);
+        });
+
+        it('should return false on no laurl', () => {
+            expect(P.checkDrm(drms[7])).to.be.equal(false);
+        });
+
+        it('should return true on bad headers tag', () => {
+            expect(P.checkDrm(drms[8])).to.be.equal(true);
+        });
+
+        it('should return true on empty headers', () => {
+            expect(P.checkDrm(drms[9])).to.be.equal(true);
+        });
+
+        it('should return true on no headers', () => {
+            expect(P.checkDrm(drms[10])).to.be.equal(true);
+        });
+
+        it('should return true on  bad headers tag', () => {
+            expect(P.checkDrm(drms[11])).to.be.equal(true);
+        });
+
+        it('should return true on  empty headers', () => {
+            expect(P.checkDrm(drms[12])).to.be.equal(true);
+        });
+
+        it('should return true no headers', () => {
+            expect(P.checkDrm(drms[13])).to.be.equal(true);
+        });
     });
-    // checks Ads : todo
+
+    // checks Ads
     describe('when I check on Ads', function() {
         it('should return false on null item', () => {
             expect(P.checkAds(null)).to.be.equal(false);
@@ -283,7 +617,84 @@ describe('Playlist', function() {
         it('should return false on undefined item', () => {
             expect(P.checkAds(undefined)).to.be.equal(false);
         });
+
+        it('should return true on correct item', () => {
+            expect(P.checkAds(ads[0])).to.be.equal(true);
+        });
+
+        it('should return false on bad tag src', () => {
+            expect(P.checkAds(ads[1])).to.be.equal(false);
+        });
+
+        it('should return false on empty src', () => {
+            expect(P.checkAds(ads[2])).to.be.equal(false);
+        });
+
+        it('should return false on no src', () => {
+            expect(P.checkAds(ads[3])).to.be.equal(false);
+        });
+
+        it('should return false on bad tag type', () => {
+            expect(P.checkAds(ads[4])).to.be.equal(false);
+        });
+
+        it('should return false on bad value type', () => {
+            expect(P.checkAds(ads[5])).to.be.equal(false);
+        });
+
+        it('should return false on empty value type', () => {
+            expect(P.checkAds(ads[6])).to.be.equal(false);
+        });
+
+        it('should return false on no type', () => {
+            expect(P.checkAds(ads[7])).to.be.equal(false);
+        });
+
+        it('should return false on bad class tag', () => {
+            expect(P.checkAds(ads[8])).to.be.equal(false);
+        });
+
+        it('should return false on bad class value', () => {
+            expect(P.checkAds(ads[9])).to.be.equal(false);
+        });
+
+        it('should return false on empty class value', () => {
+            expect(P.checkAds(ads[10])).to.be.equal(false);
+        });
+
+        it('should return false on no class', () => {
+            expect(P.checkAds(ads[11])).to.be.equal(false);
+        });
+
+        it('should return false on bad tag url', () => {
+            expect(P.checkAds(ads[12])).to.be.equal(false);
+        });
+
+        it('should return false on empty url', () => {
+            expect(P.checkAds(ads[13])).to.be.equal(false);
+        });
+
+        it('should return false on no url', () => {
+            expect(P.checkAds(ads[14])).to.be.equal(false);
+        });
+
+        it('should return true on bad tag escape', () => {
+            expect(P.checkAds(ads[15])).to.be.equal(true);
+        });
+
+        it('should return true on bad value escape', () => {
+            expect(P.checkAds(ads[16])).to.be.equal(true);
+        });
+
+        it('should return true on empty escape', () => {
+            expect(P.checkAds(ads[17])).to.be.equal(true);
+        });
+
+        it('should return true on no escape', () => {
+            expect(P.checkAds(ads[18])).to.be.equal(true);
+        });
     });
+
     // checks Item : todo
     describe('when I check on Item', function() {
         it('should return false on null item', () => {
@@ -291,6 +702,9 @@ describe('Playlist', function() {
         });
         it('should return false on undefined item', () => {
             expect(P.checkItem(undefined)).to.be.equal(false);
+        });
+        it('should return true on correct item', () => {
+            expect(P.checkOverlay(items[0])).to.be.equal(true);
         });
     });
 

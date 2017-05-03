@@ -81,7 +81,7 @@ function Playlist() {
         }
         val = subItem[Const.FJCONFIG_URL];
         if (val !== undefined && val !== null && val !== '') {
-            logger.log(' playlist Overlay url ', subItem[Const.FJCONFIG_URL]);
+            logger.log(' ok playlist Overlay url ', val);
         } else {
             logger.error('Empty Overlay url');
             return false;
@@ -159,7 +159,7 @@ function Playlist() {
             logger.error('Missing Show At for mid Roll Class ! ');
             return false;
         }
-        if (item[Const.FJCONFIG_URL] !== null && item[Const.FJCONFIG_URL] !== '') {
+        if (item[Const.FJCONFIG_URL] !== undefined && item[Const.FJCONFIG_URL] !== null && item[Const.FJCONFIG_URL] !== '') {
             logger.log(' playlist Overlay url ', item[Const.FJCONFIG_URL]);
         } else {
             logger.error('Empty Overlay url');
@@ -210,19 +210,9 @@ function Playlist() {
         logger.log('  poster of item  ', item[Const.FJCONFIG_POSTER]);
         logger.log('  thumbs of item  ', item[Const.FJCONFIG_THUMBS]);
 
-        // check audio
-        list = item[Const.FJCONFIG_AUDIOS];
-        if ((list !== undefined) && (list.length > 0)) {
-            for (j = 0; j < list.length; j++) {
-                subItem = list[j];
-                if (checkAudio(subItem) === false) {
-                    return false;
-                }
-            }
-        }
         // check ads
         list = item[Const.FJCONFIG_ADS];
-        if ((list !== undefined) && (list.length > 0)) {
+        if ((list !== null) && (list !== undefined) && (list.length > 0)) {
             for (j = 0; j < list.length; j++) {
                 subItem = list[j];
                 if (checkAds(subItem) === false) {
@@ -239,7 +229,7 @@ function Playlist() {
         }
         // check subtitles
         list = item[Const.FJCONFIG_SUBTITLES];
-        if ((list !== undefined) && (list.length > 0)) {
+        if ((list !== null) && (list !== undefined) && (list.length > 0)) {
             for (j = 0; j < list.length; j++) {
                 subItem = list[j];
                 if (checkSubtitle(subItem) === false) {
@@ -249,7 +239,7 @@ function Playlist() {
         }
         // check overlays
         list = item[Const.FJCONFIG_OVERLAYS];
-        if ((list !== undefined) && (list.length > 0)) {
+        if ((list !== null) && (list !== undefined) && (list.length > 0)) {
             for (j = 0; j < list.length; j++) {
                 subItem = list[j];
                 if (checkOverlay(subItem) === false) {
@@ -325,23 +315,7 @@ function Playlist() {
         list.push(drm);
         return true;
     };
-    /**
-     *  used to add an Audio to item at index in the playlist
-     */
-    function addAudio(index, audio) {
-        var item = items[index];
-        var list = item[Const.FJCONFIG_AUDIOS];
-        if (item === undefined) {
-            return false;
-        } else if (checkAudio(audio) === false) {
-            return false;
-        }
-        if ((list === undefined) || (list.length === 0)) {
-            list = [];
-        }
-        list.push(audio);
-        return true;
-    };
+
     /**
      *  used to add an ads to item at index in the playlist
      */
@@ -369,7 +343,6 @@ function Playlist() {
         addSubtitle: addSubtitle,
         addOverlay: addOverlay,
         setDrm: setDrm,
-        addAudio: addAudio,
         addAds: addAds,
         checkSubtitle: checkSubtitle,
         checkOverlay: checkOverlay,
