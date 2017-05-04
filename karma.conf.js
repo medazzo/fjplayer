@@ -19,30 +19,38 @@ module.exports = function(config) {
             {
                 pattern: 'demo/img/*.png',
                 watched: false,
-                included: false
+                included: false,
+                served: true
             },
             {
                 pattern: 'demo/img/*.jpg',
                 watched: false,
-                included: false
+                included: false,
+                served: true
             },
             {
                 pattern: 'demo/css/*.css',
                 watched: false,
-                included: false
+                included: false,
+                served: true
             },
             {
                 pattern: 'demo/videos/*.mp4',
                 watched: false,
-                included: false
+                included: false,
+                served: true
             },
             {
                 pattern: 'demo/vtt/*.vtt',
                 watched: false,
-                included: false
+                included: false,
+                served: true
             }
         ],
 
+        proxies: {
+            '/demo/': '/base/demo/'
+        },
 
         // list of files to exclude
         exclude: [],
@@ -91,7 +99,7 @@ module.exports = function(config) {
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
         // browsers: ['Chrome', 'Firefox', 'PhantomJS'],
-        browsers: ['Chrome'],
+        browsers: ['Firefox'],
 
 
         // Continuous Integration mode

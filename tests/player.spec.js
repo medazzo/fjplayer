@@ -16,7 +16,7 @@ describe('Player', function() {
     data = new DataPlaylist();
 
     // inject the HTML fixture for the tests
-    before(function() {
+    beforeEach(function() {
         var fixture = '<div id=\"playercontainer\"></div>';
         document.body.insertAdjacentHTML(
             'afterbegin',
@@ -24,9 +24,11 @@ describe('Player', function() {
     });
 
     // remove the html fixture from the DOM
-    after(function() {
-        document.body.removeChild(document.getElementById('fixture'));
+    afterEach(function() {
+        //document.body.removeChild(document.getElementById('fixture'));
     });
+
+
 
     //    describe('Playing  a full item ', function() {
     it('inserting full item to playlist', () => {
@@ -45,5 +47,6 @@ describe('Player', function() {
     it('playing item 0', () => {
         expect(player.startPlaylist(0, true)).to.be.equal(true);
     });
-    //  });
+
+    // });
 });
