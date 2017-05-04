@@ -32,3 +32,6 @@ bower_components/
 tmp
 .DS_Store
 .idea
+.nyc_output
+.tmp
+.vscode
