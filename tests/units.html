@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Unit Tests - A sample project description</title>
+    <style type="text/css">html,body{font-family:Arial,sans-serif;font-size:1rem;margin:0;padding:0;}body{padding:10px 40px;}h1{margin-bottom:0;}h2{margin-top:0;margin-bottom:0;color:#999;}table{width:100%;margin-top:20px;margin-bottom:20px;table-layout:fixed;}tr.header{background:#ddd;font-weight:bold;border-bottom:none;}td{padding:7px;border-top:none;border-left:1px black solid;border-bottom:1px black solid;border-right:none;word-break:break-all;word-wrap:break-word;}tr.pass td{color:#003b07;background:#86e191;}tr.skip td{color:#7d3a00;background:#ffd24a;}tr.fail td{color:#5e0e00;background:#ff9c8a;}tr:first-child td{border-top:1px black solid;}td:last-child{border-right:1px black solid;}tr.overview{font-weight:bold;color:#777;}tr.overview td{padding-bottom:0px;border-bottom:none;}tr.system-out td{color:#777;}tr.system-errors td{color:#f00;}hr{height:2px;margin:30px 0;background:#000;border:none;}section{margin-top:40px;}h3{margin:6px 0;}.overview{color:#333;font-weight:bold;}.system-out{margin:0.4rem 0;}.system-errors{color:#a94442}.spec{padding:0.8rem;margin:0.3rem 0;}.spec--pass{color:#3c763d;background-color:#dff0d8;border:1px solid #d6e9c6;}.spec--skip{color:#8a6d3b;background-color:#fcf8e3;border:1px solid #faebcc;}.spec--fail{color:#a94442;background-color:#f2dede;border:1px solid #ebccd1;}.spec--group{color:#636363;background-color:#f0f0f0;border:1px solid #e6e6e6;margin:0;}.spec--group:not(:first-of-type){margin:20px 0 0 0;}.spec__title{display:inline;}.spec__suite{display:inline;}.spec__descrip{font-weight:normal;}.spec__status{float:right;}.spec__log{padding-left: 2.3rem;}.hidden{display:none;}body.compact .spec p{margin-top:0;margin-bottom:0.5rem;}body.compact .spec,body.compact tr,body.compact .overview,body.compact .system-out,body.compact .system-errors{font-size:0.85rem;}body.compact .spec{padding:0.3rem 0.5rem;}body.compact section{margin-top:30px;}</style>
+  </head>
+  <body class="compact">
+    <h1>Unit Tests</h1>
+    <h2>A sample project description</h2>
+    <table cellspacing="0" cellpadding="0" border="0">
+      <tr class="overview">
+        <td colspan="3" title="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:53.0) Gecko/20100101 Firefox/53.0">Browser: Firefox 53.0.0 (Ubuntu 0.0.0)</td>
+      </tr>
+      <tr class="overview">
+        <td colspan="3">Timestamp: 5/5/2017 16:06:20</td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          97 tests / 
+          0 errors / 
+          0 failures / 
+          96 skipped / 
+          runtime: 0.045s
+        </td>
+      </tr>
+      <tr class="header">
+        <td>Status</td>
+        <td>Spec</td>
+        <td>Suite / Results</td>
+      </tr>
+      <tr class="pass">
+        <td>Passed in 0.045s</td>
+        <td>Simple Player Test</td>
+        <td>FjTestPlayer</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return the empty size</td>
+        <td>FjTestlaylist &raquo; when I get the size</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return null</td>
+        <td>FjTestlaylist &raquo; when I get an non existant item @ 0</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return null</td>
+        <td>FjTestlaylist &raquo; when I get an non existant item @  1 </td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on null item</td>
+        <td>FjTestlaylist &raquo; when I check on Subtitle</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on undefined item</td>
+        <td>FjTestlaylist &raquo; when I check on Subtitle</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on correct item</td>
+        <td>FjTestlaylist &raquo; when I check on Subtitle</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad tag label</td>
+        <td>FjTestlaylist &raquo; when I check on Subtitle</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on no label</td>
+        <td>FjTestlaylist &raquo; when I check on Subtitle</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on empty label value</td>
+        <td>FjTestlaylist &raquo; when I check on Subtitle</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad tag lang</td>
+        <td>FjTestlaylist &raquo; when I check on Subtitle</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on empty tag lang</td>
+        <td>FjTestlaylist &raquo; when I check on Subtitle</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on no tag lang</td>
+        <td>FjTestlaylist &raquo; when I check on Subtitle</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on no iso code lang</td>
+        <td>FjTestlaylist &raquo; when I check on Subtitle</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on no src tag</td>
+        <td>FjTestlaylist &raquo; when I check on Subtitle</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on empty src value</td>
+        <td>FjTestlaylist &raquo; when I check on Subtitle</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on missing src</td>
+        <td>FjTestlaylist &raquo; when I check on Subtitle</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on null item</td>
+        <td>FjTestlaylist &raquo; when I check on Overlay</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on undefined item</td>
+        <td>FjTestlaylist &raquo; when I check on Overlay</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on correct item</td>
+        <td>FjTestlaylist &raquo; when I check on Overlay</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad tag data</td>
+        <td>FjTestlaylist &raquo; when I check on Overlay</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on no data</td>
+        <td>FjTestlaylist &raquo; when I check on Overlay</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on empty data value</td>
+        <td>FjTestlaylist &raquo; when I check on Overlay</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad tag url</td>
+        <td>FjTestlaylist &raquo; when I check on Overlay</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on empty tag url</td>
+        <td>FjTestlaylist &raquo; when I check on Overlay</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on no tag url</td>
+        <td>FjTestlaylist &raquo; when I check on Overlay</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad tag duration</td>
+        <td>FjTestlaylist &raquo; when I check on Overlay</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on null duration value</td>
+        <td>FjTestlaylist &raquo; when I check on Overlay</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on no duration</td>
+        <td>FjTestlaylist &raquo; when I check on Overlay</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad duration value</td>
+        <td>FjTestlaylist &raquo; when I check on Overlay</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad tag show at</td>
+        <td>FjTestlaylist &raquo; when I check on Overlay</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on null show at value</td>
+        <td>FjTestlaylist &raquo; when I check on Overlay</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on no show at</td>
+        <td>FjTestlaylist &raquo; when I check on Overlay</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad show at value </td>
+        <td>FjTestlaylist &raquo; when I check on Overlay</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on null item</td>
+        <td>FjTestlaylist &raquo; when I check on Drm</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on undefined item</td>
+        <td>FjTestlaylist &raquo; when I check on Drm</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on correct item</td>
+        <td>FjTestlaylist &raquo; when I check on Drm</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad tag scheme</td>
+        <td>FjTestlaylist &raquo; when I check on Drm</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on empty scheme</td>
+        <td>FjTestlaylist &raquo; when I check on Drm</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on no scheme</td>
+        <td>FjTestlaylist &raquo; when I check on Drm</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad scheme value</td>
+        <td>FjTestlaylist &raquo; when I check on Drm</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad tag laurl</td>
+        <td>FjTestlaylist &raquo; when I check on Drm</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on  empty laurl</td>
+        <td>FjTestlaylist &raquo; when I check on Drm</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on no laurl</td>
+        <td>FjTestlaylist &raquo; when I check on Drm</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on bad headers tag</td>
+        <td>FjTestlaylist &raquo; when I check on Drm</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on empty headers</td>
+        <td>FjTestlaylist &raquo; when I check on Drm</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on no headers</td>
+        <td>FjTestlaylist &raquo; when I check on Drm</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on  bad headers tag</td>
+        <td>FjTestlaylist &raquo; when I check on Drm</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on  empty headers</td>
+        <td>FjTestlaylist &raquo; when I check on Drm</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true no headers</td>
+        <td>FjTestlaylist &raquo; when I check on Drm</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on null item</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on undefined item</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on correct item</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad tag src</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on empty src</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on no src</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad tag type</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad value type</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on empty value type</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on no type</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad class tag</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad class value</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on empty class value</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on no class</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad tag url</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on empty url</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on no url</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on bad tag escape</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on bad value escape</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on empty escape</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on no escape</td>
+        <td>FjTestlaylist &raquo; when I check on data.ads</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on null item</td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on undefined item</td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on correct item</td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad tag type </td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad type value</td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on empty type</td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on no type</td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on bad tag poster </td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on empty poster value</td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on no poster</td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad tag title </td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on empty title</td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on no title</td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad tag class </td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad class value</td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on empty class</td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on no class</td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on bad tag thumbs </td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on empty thumbs value</td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return true on no thumbs</td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on bad tag src </td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on empty src value</td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return false on no src</td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>inserting a correct full item to playlist</td>
+        <td>FjTestlaylist &raquo; when I check on Item</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return the version</td>
+        <td>FjTestUtils &raquo; when I need the version</td>
+      </tr>
+      <tr class="skip">
+        <td>Skipped</td>
+        <td>should return transform duration</td>
+        <td>FjTestUtils &raquo; when I need the utils Duration</td>
+      </tr>
+      <tr class="system-out">
+        <td colspan="3"><strong>System output:</strong><br />Firefox 53.0.0 (Ubuntu 0.0.0) ERROR: ' Before  Test !'
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'Playlist: ', 'can Escape is already there : ', true
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) WARN: 'Playlist: ', 'can Escape is missing , will be set to true ! '
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'Playlist: ', 'can Escape is already there : ', true
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'Playlist: ', 'can Escape is already there : ', true
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'Playlist: ', 'can Escape is already there : ', true
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'Playlist: ', 'can Escape is already there : ', false
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'Playlist: ', 'Item is ok ', Object{FJSrc: 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4', FJTitle: ' title of movie item 4 ', FJClass: 'vod', FJType: 'video/mp4', FJPoster: 'demo/img/poster.jpg', FJThumbs: 'demo/vtt/thumbs.vtt', FJAds: [Object{FJType: ..., FJSrc: ..., FJClass: ..., FJCanEscape: ..., FJUrl: ...}, Object{FJSrc: ..., FJType: ..., FJUrl: ..., FJClass: ..., FJCanEscape: ...}, Object{FJSrc: ..., FJType: ..., FJClass: ..., FJUrl: ..., FJCanEscape: ...}, Object{FJSrc: ..., FJType: ..., FJClass: ..., FJUrl: ..., FJCanEscape: ...}, Object{FJType: ..., FJSrc: ..., FJClass: ..., FJCanEscape: ..., FJUrl: ..., FJShowAt: ...}, Object{FJType: ..., FJSrc: ..., FJClass: ..., FJCanEscape: ..., FJUrl: ..., FJShowAt: ...}], FJSubtitles: [Object{FJLabel: ..., FJLang: ..., FJSrc: ...}, Object{FJLabel: ..., FJLang: ..., FJSrc: ...}, Object{FJLabel: ..., FJLang: ..., FJSrc: ...}], FJOverlays: [Object{FJData: ..., FJUrl: ..., FJDuration: ..., FJShowAt: ...}, Object{FJData: ..., FJUrl: ..., FJDuration: ..., FJShowAt: ...}, Object{FJData: ..., FJShowAt: ..., FJDuration: ..., FJUrl: ...}]}
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'Playlist: ', 'Item added ok ', 1
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'PlayerUi: ', ' container if of the player ', 'playercontainer'
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'PlayerMedia: ', ' Media player juste initilized with playerUiVideo'
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'Playlist: ', ' Getting item at position ', 0
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'PlayerMedia: ', ' Setting url for thumbs @', 'demo/vtt/thumbs.vtt'
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'PlayerMedia: ', ' Clear MP4 stream is loaded @ ', 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4'
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) ERROR: ' After  Test !'
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'PlayerMedia: ', 'find  metadata tumbs  @ ', 0, '/', 1, ' >>> and video duration ;;; ', 888.066122
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'PlayerMedia: ', ' stream is completly loaded  '
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'Thumbs: ', ' Setting index thumbs tracks on ', 0, ' and video duration ', 888.066122
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'Playlist: ', ' Getting item at position ', 0
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'Overlays: ', 'Setup is settled ', true, ' cheking overlays .. ', [Object{FJData: 'Hello there Overlay 1', FJUrl: 'http://www.facebook.com', FJDuration: 25, FJShowAt: 5, started: false, clicked: 0}, Object{FJData: 'Hello Overlay 2 ', FJUrl: 'http://www.yahoo.com', FJDuration: 11, FJShowAt: 33, started: false, clicked: 0}, Object{FJData: '<div  style="cursor:pointer;"> <img src="img/2000px-Smiley.svg.png" alt="Smiley face" width="20" height="30"> Your ADS is Here; clikc to go to google !</div> ', FJShowAt: 45, FJDuration: 10, FJUrl: 'http://www.google.com', started: false, clicked: 0}]
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) WARN: 'Player: ', 'Video  dimensions ', 640, 'X', 272, ' while asked are ', 1280, 'X', 710, ' for video ', <video id="vo3180946" class="divofVideo" preload="true" poster="demo/img/poster.jpg" width="1280" height="710">     <source type="video/mp4" src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4"><track kind="metadata" src="demo/vtt/thumbs.vtt"></video>
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) WARN: 'Player: ', 'Video  dimensions ', 640, 'X', 272, ' while asked are ', 1280, 'X', 710
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'AdsManager: ', ' found a pre ads !'
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'AdsManager: ', ' found a pre ads !'
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'AdsManager: ', ' found a post ads !'
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'AdsManager: ', ' found a post ads !'
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'AdsManager: ', ' found a mid ads !'
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'AdsManager: ', ' found a mid ads !'
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'AdsManager: ', 'Ads Setup is settled ', true
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) WARN: 'AdsManager: ', 'Checking PRE ROLL Ads .. ', 2
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) WARN: 'AdsManager: ', 'Checking MID ROLL Ads .. ', 2
+<br />Firefox 53.0.0 (Ubuntu 0.0.0) WARN: 'AdsManager: ', 'Checking POST ROLL Ads .. ', 2
+</td>
+      </tr>
+    </table>
+    <hr/>
+  </body>
+</html>

@@ -11,6 +11,7 @@ import * as Const from './constants';
 function PlayerMedia() {
     var video = null,
         videoFigure = null,
+        startingCount = 0,
         thumbsTrackUrl = null,
         thumbsTrackIndex = -1,
         getEndedEvent = false,
@@ -217,7 +218,8 @@ function PlayerMedia() {
     };
 
     function onPlayStart(e) {
-        events.fireEvent(Const.PlayerEvents.PLAYBACK_STARTED);
+        startingCount++;
+        events.fireEvent(Const.PlayerEvents.PLAYBACK_STARTED, startingCount);
     };
 
     function onPlaybackPaused(e) {

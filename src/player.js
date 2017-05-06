@@ -55,8 +55,11 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         return (hours + ':' + minutes + ':' + seconds);
     }
 
-    function playItem(itemPosition) {
+    function playItem(itemPosition, autostart) {
         var item;
+        var start = true;
+        if (autostart !== true)
+            start = false;
         currentPlaying = itemPosition;
         if (!playlistLoaded) {
             logger.error(' No playlist is loaded on player ');
@@ -78,10 +81,10 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
             if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
                 // clear dash
-                playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER], false);
+                playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER], start);
             } else {
                 playerMedia.load(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_TYPE],
-                    item[Const.FJCONFIG_POSTER], false);
+                    item[Const.FJCONFIG_POSTER], start);
             }
             return true;
         }
@@ -190,6 +193,14 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
     function MplayerEventing(e, args) {
         var item, vid;
         if (e === Const.PlayerEvents.PLAYBACK_STARTED) {
+            if (args === 1) // first starting  only
+            {
+                playerMedia.pause();
+                if (AdsMgr.CheckPreAds() === false) {
+                    playerMedia.play();
+                }
+                playerUi.toggleplaypauseBtn();
+            }
             playerUi.setDuration(playerMedia.getDuration());
             playerUi.show();
         }
@@ -266,13 +277,19 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
     /**
      *
      */
-    function playAt(index) {
+    function playAt(index, autostart) {
+        var start = true;
+        if (autostart !== true)
+            start = false;
         playingList = false;
-        return playItem(index);
+        return playItem(index, start);
     };
 
-    function startPlaylist(positionToStartFrom, loop, randomPlay) {
+    function startPlaylist(positionToStartFrom, loop, randomPlay, autostart) {
         var item;
+        var start = true;
+        if (autostart !== true)
+            start = false;
         currentPlaying = positionToStartFrom;
         if (!playlistLoaded) {
             logger.error(' No playlist is loaded on player ');
@@ -294,10 +311,10 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
             if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
                 // clear dash
-                playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER], false);
+                playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER], start);
             } else {
                 playerMedia.load(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_TYPE],
-                    item[Const.FJCONFIG_POSTER], false);
+                    item[Const.FJCONFIG_POSTER], start);
             }
             return true;
         }
@@ -310,7 +327,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
     }
 
     function play() {
-        // playerMedia.play();
+        playerMedia.pause();
         if (AdsMgr.CheckPreAds() === false) {
             playerMedia.play();
         }

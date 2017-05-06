@@ -9,7 +9,7 @@ let P, data, time = 18305;
 /**********************************************************
  *  *  *  *  *  *  *  *  unitary tests  *  *  *  *  *  *  *
  **********************************************************/
-describe('Playlist', function() {
+describe('FjTestlaylist', function() {
     P = new Playlist();
     data = new DataPlaylist();
 
@@ -386,7 +386,7 @@ describe('Playlist', function() {
         it('should return false on no src', () => {
             expect(P.checkItem(data.items[20])).to.be.equal(false);
         });
-        it('inserting full item to playlist', () => {
+        it('inserting a correct full item to playlist', () => {
             expect(P.addItem(data.Fullitem)).to.be.equal(true);
         });
     });

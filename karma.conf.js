@@ -70,8 +70,18 @@ module.exports = function(config) {
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['progress', 'verbose'],
+        reporters: ['progress', 'verbose', 'html'],
 
+        htmlReporter: {
+            outputFile: 'tests/units.html',
+
+            // Optional 
+            pageTitle: 'Unit Tests',
+            subPageTitle: 'A sample project description',
+            groupSuites: true,
+            useCompactStyle: true,
+            useLegacyStyle: true
+        },
         client: {
             captureConsole: true,
             mocha: {

@@ -10,7 +10,7 @@ const expect = chai.expect;
 
 let V, ver, time = 18305;
 
-describe('Utils', function() {
+describe('FjTestUtils', function() {
     V = new Version();
     ver = V.getVersion();
 

@@ -10,14 +10,16 @@ var player, P, data, time = 18305;
 /**********************************************************
  *  *  *  *  *  *  *  *  unitary tests  *  *  *  *  *  *  *
  **********************************************************/
-describe('Player', function() {
+describe('FjTestPlayer', function() {
 
     P = new Playlist();
     data = new DataPlaylist();
 
     // inject the HTML fixture for the tests
     beforeEach(function() {
-        var fixture = '<div id=\"playercontainer\"></div>';
+        console.error(" Before  Test !");
+
+        var fixture = '<div id=\"fixture\"><div id=\"playercontainer\"></div></div>';
         document.body.insertAdjacentHTML(
             'afterbegin',
             fixture);
@@ -25,28 +27,21 @@ describe('Player', function() {
 
     // remove the html fixture from the DOM
     afterEach(function() {
-        //document.body.removeChild(document.getElementById('fixture'));
+        console.error(" After  Test !");
+        document.body.removeChild(document.getElementById('fixture'));
     });
-
-
 
     //    describe('Playing  a full item ', function() {
-    it('inserting full item to playlist', () => {
+    it('Simple Player Test', () => {
         expect(P.addItem(data.Fullitem)).to.be.equal(true);
-    });
 
-    it('Creating player', () => {
         player = new Player('fjserverID1', 'playercontainer');
         expect(player.isReady()).to.be.equal(false);
-    });
 
-    it('Loading playlist to player', () => {
         expect(player.loadPlaylist(P)).to.be.equal(true);
+
+        expect(player.startPlaylist(0, true, true, true)).to.be.equal(true);
     });
 
-    it('playing item 0', () => {
-        expect(player.startPlaylist(0, true)).to.be.equal(true);
-    });
 
-    // });
 });
