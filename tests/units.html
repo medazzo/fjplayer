@@ -10,18 +10,18 @@
     <h2>A sample project description</h2>
     <table cellspacing="0" cellpadding="0" border="0">
       <tr class="overview">
-        <td colspan="3" title="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:53.0) Gecko/20100101 Firefox/53.0">Browser: Firefox 53.0.0 (Ubuntu 0.0.0)</td>
+        <td colspan="3" title="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36">Browser: Chrome 55.0.2883 (Linux 0.0.0)</td>
       </tr>
       <tr class="overview">
-        <td colspan="3">Timestamp: 5/5/2017 16:06:20</td>
+        <td colspan="3">Timestamp: 7/5/2017 01:35:33</td>
       </tr>
       <tr>
         <td colspan="3">
-          97 tests / 
+          98 tests / 
           0 errors / 
           0 failures / 
           96 skipped / 
-          runtime: 0.045s
+          runtime: 0.243s
         </td>
       </tr>
       <tr class="header">
@@ -30,8 +30,13 @@
         <td>Suite / Results</td>
       </tr>
       <tr class="pass">
-        <td>Passed in 0.045s</td>
-        <td>Simple Player Test</td>
+        <td>Passed in 0.144s</td>
+        <td>Simple Player Loaded Event</td>
+        <td>FjTestPlayer</td>
+      </tr>
+      <tr class="pass">
+        <td>Passed in 0.099s</td>
+        <td>Simple Player Started Event</td>
         <td>FjTestPlayer</td>
       </tr>
       <tr class="skip">
@@ -515,38 +520,43 @@
         <td>FjTestUtils &raquo; when I need the utils Duration</td>
       </tr>
       <tr class="system-out">
-        <td colspan="3"><strong>System output:</strong><br />Firefox 53.0.0 (Ubuntu 0.0.0) ERROR: ' Before  Test !'
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'Playlist: ', 'can Escape is already there : ', true
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) WARN: 'Playlist: ', 'can Escape is missing , will be set to true ! '
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'Playlist: ', 'can Escape is already there : ', true
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'Playlist: ', 'can Escape is already there : ', true
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'Playlist: ', 'can Escape is already there : ', true
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'Playlist: ', 'can Escape is already there : ', false
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'Playlist: ', 'Item is ok ', Object{FJSrc: 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4', FJTitle: ' title of movie item 4 ', FJClass: 'vod', FJType: 'video/mp4', FJPoster: 'demo/img/poster.jpg', FJThumbs: 'demo/vtt/thumbs.vtt', FJAds: [Object{FJType: ..., FJSrc: ..., FJClass: ..., FJCanEscape: ..., FJUrl: ...}, Object{FJSrc: ..., FJType: ..., FJUrl: ..., FJClass: ..., FJCanEscape: ...}, Object{FJSrc: ..., FJType: ..., FJClass: ..., FJUrl: ..., FJCanEscape: ...}, Object{FJSrc: ..., FJType: ..., FJClass: ..., FJUrl: ..., FJCanEscape: ...}, Object{FJType: ..., FJSrc: ..., FJClass: ..., FJCanEscape: ..., FJUrl: ..., FJShowAt: ...}, Object{FJType: ..., FJSrc: ..., FJClass: ..., FJCanEscape: ..., FJUrl: ..., FJShowAt: ...}], FJSubtitles: [Object{FJLabel: ..., FJLang: ..., FJSrc: ...}, Object{FJLabel: ..., FJLang: ..., FJSrc: ...}, Object{FJLabel: ..., FJLang: ..., FJSrc: ...}], FJOverlays: [Object{FJData: ..., FJUrl: ..., FJDuration: ..., FJShowAt: ...}, Object{FJData: ..., FJUrl: ..., FJDuration: ..., FJShowAt: ...}, Object{FJData: ..., FJShowAt: ..., FJDuration: ..., FJUrl: ...}]}
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'Playlist: ', 'Item added ok ', 1
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'PlayerUi: ', ' container if of the player ', 'playercontainer'
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'PlayerMedia: ', ' Media player juste initilized with playerUiVideo'
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'Playlist: ', ' Getting item at position ', 0
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'PlayerMedia: ', ' Setting url for thumbs @', 'demo/vtt/thumbs.vtt'
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'PlayerMedia: ', ' Clear MP4 stream is loaded @ ', 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4'
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) ERROR: ' After  Test !'
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'PlayerMedia: ', 'find  metadata tumbs  @ ', 0, '/', 1, ' >>> and video duration ;;; ', 888.066122
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'PlayerMedia: ', ' stream is completly loaded  '
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'Thumbs: ', ' Setting index thumbs tracks on ', 0, ' and video duration ', 888.066122
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'Playlist: ', ' Getting item at position ', 0
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'Overlays: ', 'Setup is settled ', true, ' cheking overlays .. ', [Object{FJData: 'Hello there Overlay 1', FJUrl: 'http://www.facebook.com', FJDuration: 25, FJShowAt: 5, started: false, clicked: 0}, Object{FJData: 'Hello Overlay 2 ', FJUrl: 'http://www.yahoo.com', FJDuration: 11, FJShowAt: 33, started: false, clicked: 0}, Object{FJData: '<div  style="cursor:pointer;"> <img src="img/2000px-Smiley.svg.png" alt="Smiley face" width="20" height="30"> Your ADS is Here; clikc to go to google !</div> ', FJShowAt: 45, FJDuration: 10, FJUrl: 'http://www.google.com', started: false, clicked: 0}]
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) WARN: 'Player: ', 'Video  dimensions ', 640, 'X', 272, ' while asked are ', 1280, 'X', 710, ' for video ', <video id="vo3180946" class="divofVideo" preload="true" poster="demo/img/poster.jpg" width="1280" height="710">     <source type="video/mp4" src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4"><track kind="metadata" src="demo/vtt/thumbs.vtt"></video>
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) WARN: 'Player: ', 'Video  dimensions ', 640, 'X', 272, ' while asked are ', 1280, 'X', 710
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'AdsManager: ', ' found a pre ads !'
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'AdsManager: ', ' found a pre ads !'
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'AdsManager: ', ' found a post ads !'
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'AdsManager: ', ' found a post ads !'
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'AdsManager: ', ' found a mid ads !'
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) DEBUG: 'AdsManager: ', ' found a mid ads !'
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) INFO: 'AdsManager: ', 'Ads Setup is settled ', true
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) WARN: 'AdsManager: ', 'Checking PRE ROLL Ads .. ', 2
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) WARN: 'AdsManager: ', 'Checking MID ROLL Ads .. ', 2
-<br />Firefox 53.0.0 (Ubuntu 0.0.0) WARN: 'AdsManager: ', 'Checking POST ROLL Ads .. ', 2
+        <td colspan="3"><strong>System output:</strong><br />Chrome 55.0.2883 (Linux 0.0.0) ERROR: ' Before  Test !'
+<br />Chrome 55.0.2883 (Linux 0.0.0) INFO: 'Playlist: ', 'Item is ok ', Object{FJSrc: 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4', FJTitle: ' title of movie itemOnly 1', FJClass: 'vod', FJType: 'video/mp4'}
+<br />Chrome 55.0.2883 (Linux 0.0.0) INFO: 'Playlist: ', 'Item added ok ', 1
+<br />Chrome 55.0.2883 (Linux 0.0.0) INFO: 'PlayerUi: ', ' container if of the player ', 'playercontainer'
+<br />Chrome 55.0.2883 (Linux 0.0.0) DEBUG: 'PlayerMedia: ', ' Media player juste initilized with playerUiVideo'
+<br />Chrome 55.0.2883 (Linux 0.0.0) INFO: 'Playlist: ', ' Getting item at position ', 0
+<br />Chrome 55.0.2883 (Linux 0.0.0) DEBUG: 'PlayerMedia: ', ' No Setting url for thumbs '
+<br />Chrome 55.0.2883 (Linux 0.0.0) WARN: 'PlayerMedia: ', ' Thumbs was not found .'
+<br />Chrome 55.0.2883 (Linux 0.0.0) INFO: 'PlayerMedia: ', ' Clear MP4 stream is loaded @ ', 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4'
+<br />Chrome 55.0.2883 (Linux 0.0.0) INFO: 'PlayerMedia: ', ' stream is completly loaded  '
+<br />Chrome 55.0.2883 (Linux 0.0.0) INFO: 'Playlist: ', ' Getting item at position ', 0
+<br />Chrome 55.0.2883 (Linux 0.0.0) WARN: 'Player: ', 'Video  dimensions ', 639, 'X', 272, ' while asked are ', 1280, 'X', 710, ' for video ', <video id="vo3733419" class="divofVideo" width="1280" height="710" preload="true" autoplay="">     <source type="video/mp4" src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4"></video>
+<br />Chrome 55.0.2883 (Linux 0.0.0) WARN: 'Player: ', 'Video  dimensions ', 639, 'X', 272, ' while asked are ', 1280, 'X', 710
+<br />Chrome 55.0.2883 (Linux 0.0.0) WARN: 'Player: ', 'Sending Event >>>>>>>>>>>>>>>>>   ', 'STREAM_LOADED'
+<br />Chrome 55.0.2883 (Linux 0.0.0) WARN: ' *********************************** Having event LOADED ', 'STREAM_LOADED'
+<br />Chrome 55.0.2883 (Linux 0.0.0) ERROR: ' After  Test !'
+<br />Chrome 55.0.2883 (Linux 0.0.0) ERROR: ' Before  Test !'
+<br />Chrome 55.0.2883 (Linux 0.0.0) INFO: 'Playlist: ', 'Item is ok ', Object{FJSrc: 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4', FJTitle: ' title of movie itemOnly 1', FJClass: 'vod', FJType: 'video/mp4'}
+<br />Chrome 55.0.2883 (Linux 0.0.0) INFO: 'Playlist: ', 'Item added ok ', 2
+<br />Chrome 55.0.2883 (Linux 0.0.0) INFO: 'PlayerUi: ', ' container if of the player ', 'playercontainer'
+<br />Chrome 55.0.2883 (Linux 0.0.0) DEBUG: 'PlayerMedia: ', ' Media player juste initilized with playerUiVideo'
+<br />Chrome 55.0.2883 (Linux 0.0.0) INFO: 'Playlist: ', ' Getting item at position ', 0
+<br />Chrome 55.0.2883 (Linux 0.0.0) DEBUG: 'PlayerMedia: ', ' No Setting url for thumbs '
+<br />Chrome 55.0.2883 (Linux 0.0.0) WARN: 'PlayerMedia: ', ' Thumbs was not found .'
+<br />Chrome 55.0.2883 (Linux 0.0.0) INFO: 'PlayerMedia: ', ' Clear MP4 stream is loaded @ ', 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4'
+<br />Chrome 55.0.2883 (Linux 0.0.0) INFO: 'PlayerMedia: ', ' stream is completly loaded  '
+<br />Chrome 55.0.2883 (Linux 0.0.0) INFO: 'Playlist: ', ' Getting item at position ', 0
+<br />Chrome 55.0.2883 (Linux 0.0.0) WARN: 'Player: ', 'Video  dimensions ', 639, 'X', 272, ' while asked are ', 1280, 'X', 710, ' for video ', <video id="vo3733558" class="divofVideo" width="1280" height="710" preload="true" autoplay="">     <source type="video/mp4" src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4"></video>
+<br />Chrome 55.0.2883 (Linux 0.0.0) WARN: 'Player: ', 'Video  dimensions ', 639, 'X', 272, ' while asked are ', 1280, 'X', 710
+<br />Chrome 55.0.2883 (Linux 0.0.0) WARN: 'Player: ', 'Sending Event >>>>>>>>>>>>>>>>>   ', 'STREAM_LOADED'
+<br />Chrome 55.0.2883 (Linux 0.0.0) INFO: 'AdsManager: ', ' Checking Pre Ads Now .. '
+<br />Chrome 55.0.2883 (Linux 0.0.0) WARN: 'AdsManager: ', ' AdsMgr is not yet Settled !'
+<br />Chrome 55.0.2883 (Linux 0.0.0) WARN: 'Player: ', 'Sending Event >>>>>>>>>>>>>>>>>   ', 'PLAYBACK_STARTED'
+<br />Chrome 55.0.2883 (Linux 0.0.0) WARN: ' *********************************** Having event STARTED ', 'PLAYBACK_STARTED'
+<br />Chrome 55.0.2883 (Linux 0.0.0) ERROR: ' After  Test !'
+<br />Chrome 55.0.2883 (Linux 0.0.0) WARN: 'Player: ', 'Video  dimensions ', 639, 'X', 272, ' while asked are ', 1280, 'X', 710
+<br />Chrome 55.0.2883 (Linux 0.0.0) WARN: 'Player: ', 'Sending Event >>>>>>>>>>>>>>>>>   ', 'PLAYBACK_PAUSED'
 </td>
       </tr>
     </table>

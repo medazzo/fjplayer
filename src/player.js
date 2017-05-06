@@ -1,5 +1,6 @@
 import Logger from './Logger';
 import Overlays from './Overlays';
+import Eventing from './Eventing';
 import * as Const from './constants';
 import PlayerMedia from './PlayerMedia';
 import PlayerUi from './PlayerUi';
@@ -17,6 +18,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         playingAds = false,
         videoWidth = vwidth,
         videoHeight = vheight,
+        events = new Eventing(),
         videoContainerId = vidContainerId,
         OverlaysMgr = new Overlays(),
         playerMedia = new PlayerMedia(),
@@ -192,18 +194,6 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
 
     function MplayerEventing(e, args) {
         var item, vid;
-        if (e === Const.PlayerEvents.PLAYBACK_STARTED) {
-            if (args === 1) // first starting  only
-            {
-                playerMedia.pause();
-                if (AdsMgr.CheckPreAds() === false) {
-                    playerMedia.play();
-                }
-                playerUi.toggleplaypauseBtn();
-            }
-            playerUi.setDuration(playerMedia.getDuration());
-            playerUi.show();
-        }
         if (e === Const.PlayerEvents.PLAYBACK_TIME_UPDATE) {
             playerUi.UpdateProgress(playerMedia.time());
             vid = playerUi.getVideo();
@@ -211,35 +201,55 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
                 ' while asked are ', videoWidth, 'X', videoHeight);
 
             midPlayingChecks(Math.round(playerMedia.time()));
-        }
-        if (e === Const.PlayerEvents.PLAYBACK_ENDED) {
-            if (AdsMgr.CheckPostAds() === true) {
-                logger.debug('starting  post ads !!');
-            } else {
-                // check if in playlist then play list
-                if (playingList === true) {
-                    playNext();
+        } else {
+            if (e === Const.PlayerEvents.PLAYBACK_ENDED) {
+                if (AdsMgr.CheckPostAds() === true) {
+                    logger.debug('starting  post ads !!');
+                } else {
+                    // check if in playlist then play list
+                    if (playingList === true) {
+                        playNext();
+                    }
                 }
             }
-        }
-        if (e === Const.PlayerEvents.STREAM_LOADED) {
-            // checks thumbs
-            playerUi.SetupThumbsManager(playerMedia.getDuration(), args);
-            playerUi.setDuration(playerMedia.getDuration());
-            item = playerPlaylist.getItem(currentPlaying);
-            // Set Overlays
-            OverlaysMgr.Setup(item[Const.FJCONFIG_OVERLAYS]);
-            // Set ads
-            vid = playerUi.getVideo();
-            logger.warn('Video  dimensions ', vid.videoWidth, 'X', vid.videoHeight,
-                ' while asked are ', videoWidth, 'X', videoHeight, ' for video ', vid);
-            vid.width = videoWidth;
-            vid.height = videoHeight;
-            logger.warn('Video  dimensions ', vid.videoWidth, 'X', vid.videoHeight,
-                ' while asked are ', videoWidth, 'X', videoHeight);
-            AdsMgr.Setup(item[Const.FJCONFIG_ADS], vid.videoWidth, vid.videoHeight);
+            if (e === Const.PlayerEvents.PLAYBACK_STARTED) {
+                if (args === 1) // first starting  only
+                {
 
+                    if (AdsMgr.CheckPreAds() === false) {
+                        playerMedia.play();
+                    } else {
+                        playerMedia.pause();
+                    }
+                    playerUi.toggleplaypauseBtn();
+                }
+                playerUi.setDuration(playerMedia.getDuration());
+                playerUi.show();
+            }
+
+            if (e === Const.PlayerEvents.STREAM_LOADED) {
+                // checks thumbs
+                playerUi.SetupThumbsManager(playerMedia.getDuration(), args);
+                playerUi.setDuration(playerMedia.getDuration());
+                item = playerPlaylist.getItem(currentPlaying);
+                // Set Overlays
+                OverlaysMgr.Setup(item[Const.FJCONFIG_OVERLAYS]);
+                // Set ads
+                vid = playerUi.getVideo();
+                logger.warn('Video  dimensions ', vid.videoWidth, 'X', vid.videoHeight,
+                    ' while asked are ', videoWidth, 'X', videoHeight, ' for video ', vid);
+                vid.width = videoWidth;
+                vid.height = videoHeight;
+                logger.warn('Video  dimensions ', vid.videoWidth, 'X', vid.videoHeight,
+                    ' while asked are ', videoWidth, 'X', videoHeight);
+                AdsMgr.Setup(item[Const.FJCONFIG_ADS], vid.videoWidth, vid.videoHeight);
+
+            }
+            //send Event to listener
+            logger.warn('Sending Event >>>>>>>>>>>>>>>>>   ', e);
+            events.fireEvent(e);
         }
+
     }
     /**
      *
@@ -354,6 +364,18 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
     function isEnded() {
         return playerMedia.isEnded();
     }
+    /**
+     *
+     */
+    function on(name, handler) {
+        return events.on(name, handler);
+    };
+    /**
+     *
+     */
+    function off(name, handler) {
+        return events.off(name, handler);
+    };
     // ************************************************************************************
     // PUBLIC API
     // ************************************************************************************
@@ -371,6 +393,8 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         isPlayingAds: isPlayingAds,
         isReady: isReady,
         isEnded: isEnded,
+        on: on,
+        off: off,
         constructor: Player
     };
 };

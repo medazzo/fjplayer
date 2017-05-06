@@ -102,6 +102,9 @@
             }]
         };
 
+        function fjplayerEvent(e, args) {
+            console.warn(" We are having an event : ", e, args);
+        };
         window.onload = function() {
             var ver = new fjplayer.Version();
             console.info('VERSION', ver.getVersion());
@@ -113,6 +116,7 @@
             // playlist.addItem(item);
             // playlist.addItem(itemDashNoThumbs);
             var player = new fjplayer.Player('fjserverID1', 'playercontainer');
+            player.on(fjplayer.PlayerEvents.STREAM_LOADED, fjplayerEvent);
             player.loadPlaylist(playlist);
             //player.playAt(0);
             player.startPlaylist(0, true, false, true);

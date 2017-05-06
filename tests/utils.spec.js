@@ -22,7 +22,7 @@ describe('FjTestUtils', function() {
     describe('when I need the version', function() {
         console.log(" Version is ", ver);
         it('should return the version', () => {
-            expect(ver).to.be.equal('0.2.8');
+            expect(ver).to.be.equal('0.2.9');
         });
     });
 
