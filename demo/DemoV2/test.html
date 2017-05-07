@@ -101,16 +101,30 @@
                 'FJUrl': 'http://www.google.com'
             }]
         };
+        var itemOnlyAds = {
+            'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
+            'FJTitle': ' title of movie itemOnly 1',
+            'FJClass': 'vod',
+            'FJType': 'video/mp4',
+            'FJAds': [{
+                'FJType': 'video/mp4',
+                'FJSrc': '../videos/berber_pub.mp4',
+                'FJClass': 'pre-roll',
+                'FJCanEscape': true,
+                'FJUrl': 'http://www.google.com'
+            }]
+        };
 
         function fjplayerEvent(e, args) {
             console.warn(" We are having an event : ", e, args);
         };
         window.onload = function() {
+            console.error('>>> ', fjplayer);
             var ver = new fjplayer.Version();
             console.info('VERSION', ver.getVersion());
             console.info('Hash HEAD', ver.getShortHash());
             var playlist = new fjplayer.Playlist();
-            playlist.addItem(item);
+            playlist.addItem(itemOnlyAds);
             // playlist.addItem(itemOnly);
             // playlist.addItem(itemDash);
             // playlist.addItem(item);

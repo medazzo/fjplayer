@@ -120,6 +120,9 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
 
     function AdsEventing(e, args) {
         logger.debug(' just a new event from adsmgr ', e, args);
+        //send Event to listener
+        logger.warn('Sending Ads Event >>>>>>>>>>>>>>>>>   ', e);
+        events.fireEvent(e);
         if (e === Const.AdsEvents.ADS_PLAYBACK_ENDED) {
             playingAds = false;
             if (args === Const.AdsEnum.ADS_PRE_ROLL) {
@@ -148,11 +151,14 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
                 playerUi.toggleplaypauseBtn();
                 // freezePlayer(false, false, false);
             } else {
-                logger.warn(' unknwn Ads type !! ', args);
+                logger.warn(' unknown Ads type !! ', args);
             }
         }
         if (e === Const.AdsEvents.ADS_PLAYBACK_STARTED) {
             playingAds = true;
+            //send Event to listener
+            logger.warn('Sending Ads Event >>>>>>>>>>>>>>>>>   ', e);
+            events.fireEvent(e);
             // hide the player and pause it
             playerMedia.pause();
             playerUi.hideVideo();
@@ -197,8 +203,8 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         if (e === Const.PlayerEvents.PLAYBACK_TIME_UPDATE) {
             playerUi.UpdateProgress(playerMedia.time());
             vid = playerUi.getVideo();
-            logger.warn('Video  dimensions ', vid.videoWidth, 'X', vid.videoHeight,
-                ' while asked are ', videoWidth, 'X', videoHeight);
+            /*  logger.warn('Video  dimensions ', vid.videoWidth, 'X', vid.videoHeight,
+                  ' while asked are ', videoWidth, 'X', videoHeight);*/
 
             midPlayingChecks(Math.round(playerMedia.time()));
         } else {
@@ -215,7 +221,6 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
             if (e === Const.PlayerEvents.PLAYBACK_STARTED) {
                 if (args === 1) // first starting  only
                 {
-
                     if (AdsMgr.CheckPreAds() === false) {
                         playerMedia.play();
                     } else {

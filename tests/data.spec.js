@@ -551,8 +551,21 @@ function DataPlaylist() {
         'FJClass': 'vod',
         'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
     };
-    var itemOnly = {
+    var itemOnlyAds = {
         'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
+        'FJTitle': ' title of movie itemOnly 1',
+        'FJClass': 'vod',
+        'FJType': 'video/mp4',
+        'FJAds': [{
+            'FJType': 'video/mp4',
+            'FJSrc': 'demo/videos/berber_pub.mp4',
+            'FJClass': 'pre-roll',
+            'FJCanEscape': true,
+            'FJUrl': 'http://www.google.com'
+        }]
+    };
+    var itemOnly = {
+        'FJSrc': 'demo/videos/berber_pub.mp4',
         'FJTitle': ' title of movie itemOnly 1',
         'FJClass': 'vod',
         'FJType': 'video/mp4'
@@ -640,6 +653,7 @@ function DataPlaylist() {
         overs: overs,
         drms: drms,
         ads: ads,
+        itemOnlyAds: itemOnlyAds,
         items: items,
         itemDash: itemDash,
         itemDashNoThumbs: itemDashNoThumbs,

@@ -4,8 +4,7 @@
 import Playlist from './playlist';
 import Player from './player';
 import Version from './Version';
-import * as Const from './constants';
-
+import { PlayerEvents, AdsEvents, OverlayEvents } from './constants';
 
 // Shove both of these into the global scope
 var context = (typeof window !== 'undefined' && window) || global;
@@ -19,9 +18,9 @@ if (!fjplayer) {
 fjplayer.Playlist = Playlist;
 fjplayer.Player = Player;
 fjplayer.Version = Version;
-fjplayer.PlayerEvents = Const.PlayerEvents;
-fjplayer.AdsEvents = Const.AdsEvents;
-fjplayer.OverlayEvents = Const.OverlayEvents;
+fjplayer.PlayerEvents = PlayerEvents;
+fjplayer.AdsEvents = AdsEvents;
+fjplayer.OverlayEvents = OverlayEvents;
 
 
 export default fjplayer;

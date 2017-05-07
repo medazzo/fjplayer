@@ -183,6 +183,7 @@ function Playlist() {
         var j, list;
 
         if (item === null || item === undefined) {
+            logger.error(' Item is NULL !', item);
             return false;
         }
         logger.log(' Item is ', item);

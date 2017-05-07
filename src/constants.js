@@ -64,7 +64,14 @@ export const FJCONFIG_DRM_SCHEMES = [
     FJCONFIG_DRM_SCHEME_PLAYREADY
 ];
 
-export const PlayerEvents = {
+export const AdsEnum = {
+    ADS_PRE_ROLL: 'ADS_PRE_ROLL',
+    ADS_MID_ROLL: 'ADS_MID_ROLL',
+    ADS_POST_ROLL: 'ADS_POST_ROLL'
+};
+
+
+const PlayerEvents = {
     STREAM_LOADED: 'STREAM_LOADED',
     PLAYBACK_STARTED: 'PLAYBACK_STARTED',
     PLAYBACK_PAUSED: 'PLAYBACK_PAUSED',
@@ -73,14 +80,14 @@ export const PlayerEvents = {
     PLAYBACK_TIME_UPDATE: 'PLAYBACK_TIME_UPDATE'
 };
 
-export const AdsEvents = {
+const AdsEvents = {
     ADS_USER_CLICKED: 'ADS_USER_CLICKED',
     ADS_PLAYBACK_STARTED: 'ADS_PLAYBACK_STARTED',
     ADS_PLAYBACK_ENDED: 'ADS_PLAYBACK_ENDED',
     ADS_PLAYBACK_ERROR: 'ADS_PLAYBACK_ERROR'
 };
 
-export const OverlayEvents = {
+const OverlayEvents = {
     OVERLAY_USER_CLICKED: 'OVERLAY_USER_CLICKED',
     OVERLAY_STARTED: 'OVERLAY_STARTED',
     OVERLAY_ENDED: 'OVERLAY_ENDED',
@@ -88,8 +95,5 @@ export const OverlayEvents = {
     OVERLAY_SKIPPED: 'OVERLAY_SKIPPED'
 };
 
-export const AdsEnum = {
-    ADS_PRE_ROLL: 'ADS_PRE_ROLL',
-    ADS_MID_ROLL: 'ADS_MID_ROLL',
-    ADS_POST_ROLL: 'ADS_POST_ROLL'
-};
+
+export { PlayerEvents, AdsEvents, OverlayEvents }
