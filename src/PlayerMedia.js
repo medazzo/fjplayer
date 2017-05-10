@@ -249,6 +249,10 @@ function PlayerMedia() {
         events.fireEvent(Const.PlayerEvents.PLAYBACK_SEEKED);
     };
 
+    function onSeeking(e) {
+        events.fireEvent(Const.PlayerEvents.PLAYBACK_SEEKING);
+    }
+
     function onError(e) {
         throw new Error('error : ', e);
     };
@@ -367,6 +371,7 @@ function PlayerMedia() {
             video.removeEventListener('pause', onPlaybackPaused);
             video.removeEventListener('ended', onPlaybackEnded);
             video.removeEventListener('timeupdate', onPlayTimeUpdate);
+            video.removeEventListener('seeking', onSeeking);
             video.removeEventListener('seeked', onSeeked);
             video.removeEventListener('error', onError);
         } else if ((CurrentStreamType === StreamTypes.DASH_CLEAR) ||
@@ -382,6 +387,7 @@ function PlayerMedia() {
             DashPlayer.off(MediaPlayer.events.PLAYBACK_ENDED, onPlaybackEnded, this);
             DashPlayer.off(MediaPlayer.events.PLAYBACK_TIME_UPDATED, onPlayTimeUpdate, this);
             DashPlayer.off(MediaPlayer.events.PLAYBACK_SEEKED, onSeeked, this);
+            DashPlayer.off(MediaPlayer.events.PLAYBACK_SEEKING, onSeeking, this);
             DashPlayer.off(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, this);
             DashPlayer.off(MediaPlayer.events.ERROR, onError, this);
         }
@@ -420,6 +426,7 @@ function PlayerMedia() {
         video.addEventListener('ended', onPlaybackEnded, false);
         video.addEventListener('timeupdate', onPlayTimeUpdate, false);
         video.addEventListener('seeked', onSeeked, false);
+        video.addEventListener('seeking', onSeeking, false);
         video.addEventListener('error', onError, false);
 
         logger.info(' Clear MP4 stream is loaded @ ', url);
@@ -459,6 +466,7 @@ function PlayerMedia() {
         DashPlayer.on(MediaPlayer.events.PLAYBACK_ENDED, onPlaybackEnded, this);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_TIME_UPDATED, onPlayTimeUpdate, this);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKED, onSeeked, this);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKING, onSeeking, this);
         DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, this);
         DashPlayer.on(MediaPlayer.events.ERROR, onError, this);
 
@@ -499,6 +507,7 @@ function PlayerMedia() {
         DashPlayer.on(MediaPlayer.events.PLAYBACK_ENDED, onPlaybackEnded, this);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_TIME_UPDATED, onPlayTimeUpdate, this);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKED, onSeeked, this);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKING, onSeeking, this);
         DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, this);
         DashPlayer.on(MediaPlayer.events.ERROR, onError, this);
 

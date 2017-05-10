@@ -81,7 +81,7 @@
         "build": "webpack   --color --config webpack.prod.config.js  -p  ",
         "testPlayer": "NODE_ENV=testing karma run  -- --grep=FjTestPlayer",
         "testPlaylist": "NODE_ENV=testing karma run  -- --grep=FjTestPlaylist",
-        "start": " concurrently \"npm run version\"  \"npm run dev\" \"npm run live\" ",
+        "start": " concurrently \"npm run version\"  \"npm run live\" ",
         "testServer": "NODE_ENV=testing karma start ",
         "test:watch": "NODE_ENV=testing karma start --single-run=false --auto-watch",
         "web": "webpack-dev-server --progress ",

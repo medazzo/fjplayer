@@ -156,9 +156,6 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         }
         if (e === Const.AdsEvents.ADS_PLAYBACK_STARTED) {
             playingAds = true;
-            //send Event to listener
-            logger.warn('Sending Ads Event >>>>>>>>>>>>>>>>>   ', e);
-            events.fireEvent(e);
             // hide the player and pause it
             playerMedia.pause();
             playerUi.hideVideo();
@@ -274,6 +271,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
             playerMedia.on(Const.PlayerEvents.PLAYBACK_PAUSED, MplayerEventing);
             playerMedia.on(Const.PlayerEvents.PLAYBACK_ENDED, MplayerEventing);
             playerMedia.on(Const.PlayerEvents.PLAYBACK_SEEKED, MplayerEventing);
+            playerMedia.on(Const.PlayerEvents.PLAYBACK_SEEKING, MplayerEventing);
             playerMedia.on(Const.PlayerEvents.PLAYBACK_TIME_UPDATE, MplayerEventing);
 
             AdsMgr.on(Const.AdsEvents.ADS_PLAYBACK_STARTED, AdsEventing);
