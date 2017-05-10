@@ -1,10 +1,10 @@
 /**
  * The entry point for the library FJplayer.JS
  */
-import Playlist from './playlist';
-import Player from './player';
-import Version from './Version';
-import { PlayerEvents, AdsEvents, OverlayEvents } from './constants';
+import Playlist from './js/playlist';
+import Player from './js/player';
+import Version from './js/Version';
+import { PlayerEvents, AdsEvents, OverlayEvents } from './js/constants';
 
 // Shove both of these into the global scope
 var context = (typeof window !== 'undefined' && window) || global;

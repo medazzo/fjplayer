@@ -4,7 +4,7 @@ import SubsMenu from './SubsMenu';
 import AudsMenu from './AudsMenu';
 import * as Utils from './Utils';
 import tmpl from './fjplayer-tmpl';
-require('./player.css');
+require('../css/player.css');
 require('font-awesome/css/font-awesome.css');
 
 /**

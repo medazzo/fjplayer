@@ -1,7 +1,7 @@
 "use strict";
-import Playlist from '../src/playlist';
-import * as Const from '../src/constants';
-import Player from '../src/player';
+import Playlist from '../src/js/playlist';
+import * as Const from '../src/js/constants';
+import Player from '../src/js/player';
 import chai from 'chai';
 import DataPlaylist from './data.spec';
 

@@ -1,6 +1,6 @@
 import Logger from './Logger';
 import * as Utils from './Utils';
-require('./player.css');
+require('../css/player.css');
 /**
  * @module Thumbs
  * @description The Thumbs module is responsible for rendering

@@ -1,5 +1,5 @@
 "use strict";
-import Playlist from '../src/playlist';
+import Playlist from '../src/js/playlist';
 import chai from 'chai';
 import DataPlaylist from './data.spec';
 

@@ -1,7 +1,7 @@
 "use strict";
 import 'babel-polyfill';
-import Version from '../src/Version';
-import * as Utils from '../src/Utils';
+import Version from '../src/js/Version';
+import * as Utils from '../src/js/Utils';
 import chai from 'chai';
 
 chai.expect();
