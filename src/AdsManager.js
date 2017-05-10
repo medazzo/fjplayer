@@ -89,6 +89,7 @@ function AdsManager() {
         // setting W/H !
         adsvideo.setAttribute('width', mainVideoWidth);
         adsvideo.setAttribute('height', mainVideoHeight);
+        logger.warn(' ads video width/height is ', mainVideoWidth, mainVideoHeight);
         infoDiv.innerHTML = '<span style=\"color: rgb(119, 255, 119); font-size: 0.95em;\">Annonce</span>' +
             ' This an Ads for <span style=\"color: rgb(255, 255, 0)\">' +
             item[Const.FJCONFIG_URL] + '</span>';
@@ -131,7 +132,6 @@ function AdsManager() {
         adsvideo.addEventListener('ended', function(e) {
             StopAds(index, adsType);
         });
-        logger.warn('Will set ads video like ', adsvideo);
     }
     /**
      * Function to be called from event 'timeupdate' from video

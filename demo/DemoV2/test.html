@@ -119,7 +119,6 @@
             console.warn(" We are having an event : ", e, args);
         };
         window.onload = function() {
-            console.error('>>> ', fjplayer);
             var ver = new fjplayer.Version();
             console.info('VERSION', ver.getVersion());
             console.info('Hash HEAD', ver.getShortHash());
@@ -137,17 +136,6 @@
         }
     </script>
     <script type="text/javascript" src="/dist/fjplayer.js"></script>
-    <style type="text/css">
-        .container {
-            width: 100%;
-            overflow: auto;
-        }
-        
-        .cube {
-            width: 150px;
-            height: 150px;
-        }
-    </style>
 </head>
 
 <div id="playercontainer">

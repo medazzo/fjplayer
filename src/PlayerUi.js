@@ -29,6 +29,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         timerId = 'trd' + id,
         durationId = 'drd' + id,
         titleId = 'tld' + id,
+        spinnerId = 'spin' + id,
         BigPlayBtnId = 'bp' + id,
         videoInfoId = 'vi' + id,
         videoFigureId = 'vf' + id,
@@ -55,6 +56,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         videoContainer,
         video = null,
         videoController,
+        spinner = null,
         videoControllerFigure,
         playpauseBtn,
         muteBtn,
@@ -81,6 +83,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             'vheight': vheight,
             'videoInfoId': videoInfoId,
             'titleId': titleId,
+            'spinnerId': spinnerId,
             'BigPlayBtnId': BigPlayBtnId,
             'videoControlsId': videoControlsId,
             'progressDivId': progressDivId,
@@ -116,6 +119,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         videoContainer = null;
         videoController = document.getElementById(videoControlsId);
         videoControllerFigure = document.getElementById(videoFigureId);
+        spinner = document.getElementById(spinnerId);
         video = document.getElementById(videoId);
         if (!video) {
             throw new Error('The video element still null');
@@ -801,13 +805,13 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         videoController.style.display = 'block';
     }
 
-    function show() {
-        // videoController.classList.remove('hide');
+
+    function ShowSpinner() {
+        spinner.classList.remove('fj-hide');
     }
 
-    function hide() {
-        // videoController.style.visibility = 'hidden';
-        //         videoController.classList.add('hide');
+    function HideSpinner() {
+        spinner.classList.add('fj-hide');
     }
 
     function disable() {
@@ -872,13 +876,13 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         getVideoFigure: getVideoFigure,
         initialize: initialize,
         toggleplaypauseBtn: toggleplaypauseBtn,
-        show: show,
-        hide: hide,
         hideVideo: hideVideo,
         ShowVideo: ShowVideo,
         disable: disable,
         enable: enable,
         reset: reset,
+        ShowSpinner: ShowSpinner,
+        HideSpinner: HideSpinner,
         onplaypauseClick: onplaypauseClick,
         destroy: destroy,
         constructor: PlayerUi

@@ -1,3 +1,4 @@
+'use strict';
 import Logger from './Logger';
 import Eventing from './Eventing';
 import { MediaPlayer } from 'dashjs';
@@ -10,6 +11,7 @@ import * as Const from './constants';
  */
 function PlayerMedia() {
     var video = null,
+        self = this,
         videoFigure = null,
         startingCount = 0,
         thumbsTrackUrl = null,
@@ -457,18 +459,18 @@ function PlayerMedia() {
             logger.warn(' Thumbs was not found .');
         }
         // Setting Callbacks
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_METADATA_LOADED, onStreamInitialized, this);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_STARTED, onPlayStart, this);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_PAUSED, onPlaybackPaused, this);
-        DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_REQUESTED, onQualityChangeRequested, this);
-        DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_RENDERED, onQualityChangeRendered, this);
-        DashPlayer.on(MediaPlayer.events.PERIOD_SWITCH_COMPLETED, onSwitchCompleted, this);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_ENDED, onPlaybackEnded, this);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_TIME_UPDATED, onPlayTimeUpdate, this);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKED, onSeeked, this);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKING, onSeeking, this);
-        DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, this);
-        DashPlayer.on(MediaPlayer.events.ERROR, onError, this);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_METADATA_LOADED, onStreamInitialized, self);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_STARTED, onPlayStart, self);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_PAUSED, onPlaybackPaused, self);
+        DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_REQUESTED, onQualityChangeRequested, self);
+        DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_RENDERED, onQualityChangeRendered, self);
+        DashPlayer.on(MediaPlayer.events.PERIOD_SWITCH_COMPLETED, onSwitchCompleted, self);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_ENDED, onPlaybackEnded, self);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_TIME_UPDATED, onPlayTimeUpdate, self);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKED, onSeeked, self);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKING, onSeeking, self);
+        DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, self);
+        DashPlayer.on(MediaPlayer.events.ERROR, onError, self);
 
         logger.info(' Clear DASH stream is loaded @ ', url);
     };
@@ -498,18 +500,18 @@ function PlayerMedia() {
             logger.warn(' Thumbs was not found .');
         }
         // Setting Callbacks
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_METADATA_LOADED, onStreamInitialized, this);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_STARTED, onPlayStart, this);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_PAUSED, onPlaybackPaused, this);
-        DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_REQUESTED, onQualityChangeRequested, this);
-        DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_RENDERED, onQualityChangeRendered, this);
-        DashPlayer.on(MediaPlayer.events.PERIOD_SWITCH_COMPLETED, onSwitchCompleted, this);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_ENDED, onPlaybackEnded, this);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_TIME_UPDATED, onPlayTimeUpdate, this);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKED, onSeeked, this);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKING, onSeeking, this);
-        DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, this);
-        DashPlayer.on(MediaPlayer.events.ERROR, onError, this);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_METADATA_LOADED, onStreamInitialized, self);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_STARTED, onPlayStart, self);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_PAUSED, onPlaybackPaused, self);
+        DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_REQUESTED, onQualityChangeRequested, self);
+        DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_RENDERED, onQualityChangeRendered, self);
+        DashPlayer.on(MediaPlayer.events.PERIOD_SWITCH_COMPLETED, onSwitchCompleted, self);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_ENDED, onPlaybackEnded, self);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_TIME_UPDATED, onPlayTimeUpdate, self);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKED, onSeeked, self);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKING, onSeeking, self);
+        DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, self);
+        DashPlayer.on(MediaPlayer.events.ERROR, onError, self);
 
         logger.info(' Clear ENC DASH stream is loaded @ ', url);
     };

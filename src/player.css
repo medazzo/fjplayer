@@ -34,6 +34,32 @@
 }
 
 
+/* ----------------------- spinner  ------------------------ */
+
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner:before {
+    content: '';
+    box-sizing: border-box;
+    z-index: 2147483647;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    margin-top: -15px;
+    margin-left: -15px;
+    border-radius: 50%;
+    border: 3px solid #ccc;
+    border-top-color: #FF0000;
+    animation: spinner .6s linear infinite;
+}
+
+
 /* ---------------------- Thumbs style --------------------- */
 
 .thumbsBlockDiv {
@@ -125,10 +151,19 @@ put it in a Conditional comment without the !ie7 hack if you wish! */
     white-space: nowrap;
 }
 
-.divInfo {
+.divInfoTop {
     z-index: 2147483647;
     border-radius: 5px;
     top: 10%;
+    width: 80%;
+    position: absolute;
+    left: 10%;
+}
+
+.divInfoCenter {
+    z-index: 2147483647;
+    border-radius: 5px;
+    top: 50%;
     width: 80%;
     position: absolute;
     left: 10%;
@@ -138,7 +173,7 @@ put it in a Conditional comment without the !ie7 hack if you wish! */
     font-size: 3.2em;
     z-index: 2147483647;
     border-radius: 5px;
-    top: 35%;
+    margin-top: -30px;
     position: absolute;
     left: 45%;
     background-color: rgba(0, 0, 0, 0.5);
@@ -258,8 +293,6 @@ input[type=range]:focus {
 
 .fj-hide {
     visibility: hidden;
-    opacity: 0;
-    transition: visibility 200ms, opacity 200ms;
 }
 
 .fj-show {
@@ -524,6 +557,13 @@ figure[data-fullscreen=true] span.fa.fa-3x {
 figure[data-fullscreen=true] span.fa {
     font-size: 2em;
     margin-bottom: 5px;
+}
+
+figure[data-fullscreen=true] .spinner::before {
+    width: 55px;
+    height: 55px;
+    border: 5px solid #ccc;
+    border-top-color: #FF0000;
 }
 
 

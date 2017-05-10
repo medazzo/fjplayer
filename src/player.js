@@ -1,3 +1,4 @@
+'use strict';
 import Logger from './Logger';
 import Overlays from './Overlays';
 import Eventing from './Eventing';
@@ -27,10 +28,10 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         AdsMgr = new AdsManager(),
         supportsVideo = !!document.createElement('video').canPlayType;
     if (videoHeight === null || videoHeight === undefined) {
-        videoHeight = 710;
+        videoHeight = 480;
     }
     if (videoWidth === null || videoWidth === undefined) {
-        videoWidth = 1280;
+        videoWidth = 720;
     }
     playerUi = new PlayerUi(videoContainerId, videoWidth, videoHeight);
     /**
@@ -60,8 +61,9 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
     function playItem(itemPosition, autostart) {
         var item;
         var start = true;
-        if (autostart !== true)
+        if (autostart !== true) {
             start = false;
+        }
         currentPlaying = itemPosition;
         if (!playlistLoaded) {
             logger.error(' No playlist is loaded on player ');
@@ -120,7 +122,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
 
     function AdsEventing(e, args) {
         logger.debug(' just a new event from adsmgr ', e, args);
-        //send Event to listener
+        // send Event to listener
         logger.warn('Sending Ads Event >>>>>>>>>>>>>>>>>   ', e);
         events.fireEvent(e);
         if (e === Const.AdsEvents.ADS_PLAYBACK_ENDED) {
@@ -216,8 +218,9 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
                 }
             }
             if (e === Const.PlayerEvents.PLAYBACK_STARTED) {
-                if (args === 1) // first starting  only
-                {
+                // first starting  only
+                if (args === 1) {
+                    playerUi.HideSpinner();
                     if (AdsMgr.CheckPreAds() === false) {
                         playerMedia.play();
                     } else {
@@ -226,10 +229,10 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
                     playerUi.toggleplaypauseBtn();
                 }
                 playerUi.setDuration(playerMedia.getDuration());
-                playerUi.show();
             }
 
             if (e === Const.PlayerEvents.STREAM_LOADED) {
+                playerUi.ShowSpinner();
                 // checks thumbs
                 playerUi.SetupThumbsManager(playerMedia.getDuration(), args);
                 playerUi.setDuration(playerMedia.getDuration());
@@ -238,16 +241,23 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
                 OverlaysMgr.Setup(item[Const.FJCONFIG_OVERLAYS]);
                 // Set ads
                 vid = playerUi.getVideo();
-                logger.warn('Video  dimensions ', vid.videoWidth, 'X', vid.videoHeight,
-                    ' while asked are ', videoWidth, 'X', videoHeight, ' for video ', vid);
                 vid.width = videoWidth;
                 vid.height = videoHeight;
                 logger.warn('Video  dimensions ', vid.videoWidth, 'X', vid.videoHeight,
                     ' while asked are ', videoWidth, 'X', videoHeight);
-                AdsMgr.Setup(item[Const.FJCONFIG_ADS], vid.videoWidth, vid.videoHeight);
+                AdsMgr.Setup(item[Const.FJCONFIG_ADS], videoWidth, videoHeight);
+                //  vid.videoWidth, vid.videoHeight);
 
             }
-            //send Event to listener
+            if (e === Const.PlayerEvents.PLAYBACK_SEEKING) {
+                playerUi.ShowSpinner();
+            }
+            if (e === Const.PlayerEvents.PLAYBACK_SEEKED) {
+                playerUi.HideSpinner();
+            }
+
+
+            // send Event to listener
             logger.warn('Sending Event >>>>>>>>>>>>>>>>>   ', e);
             events.fireEvent(e);
         }
@@ -292,8 +302,9 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
      */
     function playAt(index, autostart) {
         var start = true;
-        if (autostart !== true)
+        if (autostart !== true) {
             start = false;
+        }
         playingList = false;
         return playItem(index, start);
     };
@@ -301,8 +312,9 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
     function startPlaylist(positionToStartFrom, loop, randomPlay, autostart) {
         var item;
         var start = true;
-        if (autostart !== true)
+        if (autostart !== true) {
             start = false;
+        }
         currentPlaying = positionToStartFrom;
         if (!playlistLoaded) {
             logger.error(' No playlist is loaded on player ');
