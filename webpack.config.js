@@ -7,17 +7,6 @@ console.error(" Building in Development Mode ");
 console.error("############################################");
 
 
-// for jquery
-plugins.push(new webpack.ProvidePlugin({
-    jQuery: 'jquery',
-    $: 'jquery',
-    jquery: 'jquery'
-}));
-
-plugins.push(new webpack.LoaderOptionsPlugin({
-    debug: true
-}));
-
 var config = {
     entry: {
         fjplayer: "./src/index.js"
@@ -73,7 +62,13 @@ var config = {
         ],
         extensions: [".js", ".json", ".jsx", ".css"],
     },
-    plugins: plugins,
+    plugins: [new webpack.LoaderOptionsPlugin({
+            debug: true
+        }),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': '"developpment"'
+        })
+    ],
     devtool: 'inline-source-map',
     stats: 'verbose',
     context: __dirname,
