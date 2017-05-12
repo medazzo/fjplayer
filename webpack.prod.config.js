@@ -7,19 +7,10 @@ console.error("############################################");
 console.warn(" Building in Production Mode ");
 console.error("############################################");
 
-
-// for jquery
-plugins.push(new webpack.ProvidePlugin({
-    jQuery: 'jquery',
-    $: 'jquery',
-    jquery: 'jquery'
-}));
-
 var config = {
     entry: {
         fjplayer: "./src/index.js"
     },
-    devtool: 'source-map',
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: 'fjplayer.min.js',
@@ -70,7 +61,7 @@ var config = {
         extensions: [".js", ".json", ".jsx", ".css"],
     },
     plugins: plugins,
-    devtool: 'nosources-source-map',
+    devtool: 'cheap-module-source-map',
     stats: 'minimal',
     context: __dirname,
     target: "web"
