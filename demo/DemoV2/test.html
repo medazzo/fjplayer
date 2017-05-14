@@ -26,6 +26,27 @@
             'FJClass': 'vod',
             'FJType': 'video/mp4'
         };
+
+        var itemOnlySubs = {
+            'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
+            'FJTitle': ' title of movie itemOnly 1',
+            'FJClass': 'vod',
+            'FJType': 'video/mp4',
+            'FJSubtitles': [{
+                'FJLabel': 'English',
+                'FJLang': 'en',
+                'FJSrc': '../vtt/sintel-en.vtt'
+            }, {
+                'FJLabel': 'Espagnol',
+                'FJLang': 'es',
+                'FJSrc': '../vtt/sintel-es.vtt'
+            }, {
+                'FJLabel': 'Deutsch',
+                'FJLang': 'de',
+                'FJSrc': '../vtt/sintel-de.vtt'
+            }]
+        };
+
         var item = {
             'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
             'FJTitle': ' title of movie item 4 ',
@@ -123,7 +144,8 @@
             console.info('VERSION', ver.getVersion());
             console.info('Hash HEAD', ver.getShortHash());
             var playlist = new fjplayer.Playlist();
-            playlist.addItem(itemOnlyAds);
+            playlist.addItem(itemOnlySubs);
+            // playlist.addItem(itemOnlyAds);
             // playlist.addItem(itemOnly);
             // playlist.addItem(itemDash);
             // playlist.addItem(item);

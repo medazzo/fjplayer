@@ -36,13 +36,6 @@ function Playlist() {
         if (subItem === null || subItem === undefined) {
             return false;
         }
-        if (subItem[Const.FJCONFIG_LABEL]) {
-            logger.log(' playlist Subtitle label is',
-                subItem[Const.FJCONFIG_LABEL]);
-        } else {
-            logger.error('Empty Subtitle label ');
-            return false;
-        }
         if (subItem[Const.FJCONFIG_LANG]) {
             tmp = Langs.isoLangs[subItem[Const.FJCONFIG_LANG]];
             logger.log(tmp, ' playlist Subtitle lang is',

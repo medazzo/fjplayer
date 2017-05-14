@@ -569,6 +569,8 @@ figure[data-fullscreen=true] .spinner::before {
 
 /* Closing X */
 
+
+/*
 .close {
     position: relative;
     display: inline-block;
@@ -660,3 +662,4 @@ figure[data-fullscreen=true] .spinner::before {
         }
     }
 }
+*/

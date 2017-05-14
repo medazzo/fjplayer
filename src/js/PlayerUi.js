@@ -5,7 +5,8 @@ import AudsMenu from './AudsMenu';
 import * as Utils from './Utils';
 import tmpl from './fjplayer-tmpl';
 require('../css/player.css');
-require('font-awesome/css/font-awesome.css');
+require('../css/fjfa.css');
+
 
 /**
  * @module PlayerUi
