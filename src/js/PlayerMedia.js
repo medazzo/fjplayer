@@ -57,6 +57,18 @@ function PlayerMedia() {
     function off(name, handler) {
         return events.off(name, handler);
     };
+
+    function stop() {
+        if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
+            video.pause();
+        } else if ((CurrentStreamType === StreamTypes.DASH_CLEAR) ||
+            (CurrentStreamType === StreamTypes.DASH_ENCRYPTED)) {
+            DashPlayer.pause();
+            DashPlayer.reset();
+        } else {
+            logger.warn(' No Media Loaded , nothing to play ');
+        }
+    }
     /**
      *
      */
@@ -627,6 +639,7 @@ function PlayerMedia() {
         StreamTypes: StreamTypes,
         CurrentStreamType: CurrentStreamType,
         play: play,
+        stop: stop,
         pause: pause,
         setTextTrack: setTextTrack,
         isPaused: isPaused,

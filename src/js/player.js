@@ -359,6 +359,12 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         playerMedia.seek(time);
     }
 
+    function stop() {
+        playerMedia.stop();
+        playerMedia.Unload();
+        playerUi.toggleplaypauseBtn();
+    }
+
     function play() {
         playerMedia.pause();
         if (AdsMgr.CheckPreAds() === false) {
@@ -408,6 +414,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         playAt: playAt,
         startPlaylist: startPlaylist,
         play: play,
+        stop: stop,
         seek: seek,
         playNext: playNext,
         playPrev: playPrev,
