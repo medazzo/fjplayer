@@ -14,6 +14,7 @@ function playerTemplate() {
         '<figure id=\"<%= videoFigureId %>\" class=\"fjfigure\" data-fullscreen=\"<%= fullScreenOnStart %>\"> ' +
         '<video id=\"<%= videoId %>\" class=\"divofVideo\" width=\"<%= vwidth %>\" height=\"<%= vheight %>\"> ' +
         '    </video> ' +
+        '<div id=\"<%= videoCaptionId %>\"></div>' +
         '<div class=\"divInfoTop\" id=\"<%= videoInfoId %>\"> ' +
         '    <span class=\" divIconBtn divconeontrolLeft fa  fa-arrow-left\"> </span> ' +
         '    <p class=\" divTspanitleSeparator divconeontrolLeft \"> </p> ' +

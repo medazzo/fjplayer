@@ -13,13 +13,22 @@
             'FJThumbs': '../vtt/thumbs.vtt',
             'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
         };
-        var itemDashNoThumbs = {
+        var itemDashNoThumbs2 = {
             'FJType': 'dash',
             'FJPoster': '../img/sintel.jpg',
             'FJTitle': ' title of movie itemDashNoThumbs 3',
             'FJClass': 'vod',
             'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
         };
+
+        var itemDashNoThumbs = {
+            'FJType': 'dash',
+            'FJPoster': '../img/sintel.jpg',
+            'FJTitle': ' title of movie itemDashNoThumbs 3',
+            'FJClass': 'vod',
+            'FJSrc': 'http://vm2.dashif.org/dash/vod/testpic_2s/multi_subs.mpd'
+        };
+
         var itemOnly = {
             'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
             'FJTitle': ' title of movie itemOnly 1',
@@ -144,8 +153,8 @@
             console.info('VERSION', ver.getVersion());
             console.info('Hash HEAD', ver.getShortHash());
             var playlist = new fjplayer.Playlist();
-            playlist.addItem(itemOnlySubs);
-            // playlist.addItem(itemOnlyAds);
+            //             playlist.addItem(itemOnlySubs);
+            playlist.addItem(itemDashNoThumbs);
             // playlist.addItem(itemOnly);
             // playlist.addItem(itemDash);
             // playlist.addItem(item);

@@ -85,10 +85,12 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
             if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
                 // clear dash
-                playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER], start);
+                logger.warn(' will play a clear dash on caption obect ', playerUi.getVideoCaption());
+                playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER],
+                    item[Const.FJCONFIG_SUBTITLES], playerUi.getVideoCaption(), start);
             } else {
                 playerMedia.load(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_TYPE],
-                    item[Const.FJCONFIG_POSTER], start);
+                    item[Const.FJCONFIG_POSTER], item[Const.FJCONFIG_SUBTITLES], start);
             }
             return true;
         }
@@ -202,9 +204,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         if (e === Const.PlayerEvents.PLAYBACK_TIME_UPDATE) {
             playerUi.UpdateProgress(playerMedia.time());
             vid = playerUi.getVideo();
-            /*  logger.warn('Video  dimensions ', vid.videoWidth, 'X', vid.videoHeight,
-                  ' while asked are ', videoWidth, 'X', videoHeight);*/
-
+            playerUi.setDuration(playerMedia.getDuration());
             midPlayingChecks(Math.round(playerMedia.time()));
         } else {
             if (e === Const.PlayerEvents.PLAYBACK_ENDED) {
@@ -230,11 +230,17 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
                 }
                 playerUi.setDuration(playerMedia.getDuration());
             }
+            if (e === Const.PlayerEvents.TRACKS_ADDED) {
+                logger.warn(' Eventing TRACKS _ADDED !! ');
+                // this a specific dahs event so pass playerMedia
+                playerUi.SetupSubsAudsManager(playerMedia);
+            }
 
             if (e === Const.PlayerEvents.STREAM_LOADED) {
                 playerUi.ShowSpinner();
                 // checks thumbs
                 playerUi.SetupThumbsManager(playerMedia.getDuration(), args);
+                playerUi.SetupSubsAudsManager(playerMedia);
                 playerUi.setDuration(playerMedia.getDuration());
                 item = playerPlaylist.getItem(currentPlaying);
                 // Set Overlays
@@ -276,6 +282,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
             playerPlaylist = playlist;
             playlistLoaded = true;
             playerUi.initialize(this);
+            playerMedia.on(Const.PlayerEvents.TRACKS_ADDED, MplayerEventing);
             playerMedia.on(Const.PlayerEvents.STREAM_LOADED, MplayerEventing);
             playerMedia.on(Const.PlayerEvents.PLAYBACK_STARTED, MplayerEventing);
             playerMedia.on(Const.PlayerEvents.PLAYBACK_PAUSED, MplayerEventing);
@@ -336,10 +343,11 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
             if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
                 // clear dash
-                playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER], start);
+                playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER],
+                    item[Const.FJCONFIG_SUBTITLES], playerUi.getVideoCaption(), start);
             } else {
                 playerMedia.load(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_TYPE],
-                    item[Const.FJCONFIG_POSTER], start);
+                    item[Const.FJCONFIG_POSTER], item[Const.FJCONFIG_SUBTITLES], start);
             }
             return true;
         }

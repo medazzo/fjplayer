@@ -32,6 +32,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         titleId = 'tld' + id,
         spinnerId = 'spin' + id,
         BigPlayBtnId = 'bp' + id,
+        videoCaptionId = 'vc' + id,
         videoInfoId = 'vi' + id,
         videoFigureId = 'vf' + id,
         videoId = 'vo' + id,
@@ -82,6 +83,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             'videoId': videoId,
             'vwidth': vwidth,
             'vheight': vheight,
+            'videoCaptionId': videoCaptionId,
             'videoInfoId': videoInfoId,
             'titleId': titleId,
             'spinnerId': spinnerId,
@@ -239,42 +241,26 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             }
         }
     }
-    /*
-        function InitPlayer() {
-                // video tracks
-                thumbsTrackIndex = -1;
-                for (i = 0; i < video.textTracks.length; i++) {
-                    if (video.textTracks[i].kind === 'metadata') {
-                        thumbsTrackIndex = i;
-                        video.textTracks[i].mode = 'hidden'; // thanks Firefox
-                    } else if ((video.textTracks[i].kind === 'captions') ||
-                        (video.textTracks[i].kind === 'subtitles')) {
-                        containsSubs = true;
-                        logger.log('find  soustitres  @ ', i, '/', video.textTracks.length,
-                            ' >>> ', video.textTracks[i]);
-                    }
-                }
-                // subs track
-                if (subsJsObj) {
-                    for (i = 0; i < subsJsObj.length; i++) {
-                        item = subsJsObj[i];
-                        track = document.createElement('track');
-                        track.kind = 'subtitles';
-                        track.src = item[Const.FJCONFIG_SRC];
-                        track.srclang = item[Const.FJCONFIG_LANG];
-                        track.label = item[Const.FJCONFIG_LABEL];
-                        video.appendChild(track);
-                    }
-                }
-                // Init Thumbs
 
-                // Init menus for subs and audio
-                // AudiosMenu.Setup(extraDiv1Id);
-                if (SubMenu.Setup() !== true) {
-                    document.getElementById(subtitlesBtnId).style.display = 'none';
-                }
-        };
-    */
+    function SetupSubsAudsManager(mediaplayer) {
+        var done = false;
+        logger.warn(' Will setup Audio and subs menus !!!!!!!');
+        done = AudiosMenu.Setup(mediaplayer) !== true;
+        logger.warn(' Will setup Audio >>>>>  ', done);
+        if (done === true) {
+            document.getElementById(subtitlesBtnId).style.display = 'none';
+        } else {
+            document.getElementById(subtitlesBtnId).style.display = 'block';
+        }
+        done = SubMenu.Setup(mediaplayer);
+        logger.warn(' Will setup Subs >>>>>  ', done);
+        if (done !== true) {
+            document.getElementById(subtitlesBtnId).style.display = 'none';
+        } else {
+            document.getElementById(subtitlesBtnId).style.display = 'block';
+        }
+    };
+
     // ************************************************************************************
     // Audio Video MENU
     // ************************************************************************************
@@ -823,6 +809,11 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         videoController.classList.remove('disable');
     }
 
+    function getVideoCaption() {
+        var ele = document.getElementById(videoCaptionId);
+        return ele;
+    }
+
     function reset() {
         /* window.removeEventListener('resize', handleMenuPositionOnResize);
         destroyBitrateMenu();
@@ -874,9 +865,11 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         getAdsContainerDivId: getAdsContainerDivId,
         getOverlaysContainerDivId: getOverlaysContainerDivId,
         SetupThumbsManager: SetupThumbsManager,
+        SetupSubsAudsManager: SetupSubsAudsManager,
         getVideoFigure: getVideoFigure,
         initialize: initialize,
         toggleplaypauseBtn: toggleplaypauseBtn,
+        getVideoCaption: getVideoCaption,
         hideVideo: hideVideo,
         ShowVideo: ShowVideo,
         disable: disable,

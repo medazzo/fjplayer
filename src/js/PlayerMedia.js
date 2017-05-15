@@ -3,6 +3,7 @@ import Logger from './Logger';
 import Eventing from './Eventing';
 import { MediaPlayer } from 'dashjs';
 import * as Const from './constants';
+import * as Langs from './isoLangs';
 // import * as Const from './constants';
 /**
  * @module PlayerMedia
@@ -165,6 +166,25 @@ function PlayerMedia() {
         }
     };
 
+    function setTextTrack(index) {
+        logger.warn(" Setting text track to index : ", index);
+        if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
+            var i = 0
+            for (i = 0; i < video.textTracks.length; i++) {
+                if ((video.textTracks[i].kind === 'captions') ||
+                    (video.textTracks[i].kind === 'subtitles')) {
+                    if (index === i) {
+                        video.textTracks[i].mode = 'showing';
+                    } else {
+                        video.textTracks[i].mode = 'hidden';
+                    }
+                }
+            }
+        } else {
+            DashPlayer.setTextTrack(index);
+        }
+    };
+
     /**
      *
      */
@@ -260,7 +280,8 @@ function PlayerMedia() {
     };
 
     function onTracksAdded(e) {
-        logger.warn(' Adding new  track :', e);
+        logger.warn('########################################## Adding new  track :', e);
+        events.fireEvent(Const.PlayerEvents.TRACKS_ADDED);
         // USED To inform ui and add entry on subtitles menu list
         /* if (!captionMenu) {
             var contentFunc = function(element, index) {
@@ -279,6 +300,7 @@ function PlayerMedia() {
 
     function onStreamInitialized() {
         var i = 0;
+        var availableTracks = null;
         // video tracks
         thumbsTrackIndex = -1;
         if (thumbsTrackUrl !== null) {
@@ -286,21 +308,26 @@ function PlayerMedia() {
                 if (video.textTracks[i].kind === 'metadata') {
                     thumbsTrackIndex = i;
                     video.textTracks[i].mode = 'hidden'; // thanks Firefox
-                    logger.debug('find  metadata tumbs  @ ', thumbsTrackIndex,
+                    logger.warn('find  metadata tumbs  @ ', thumbsTrackIndex,
                         '/', video.textTracks.length, ' >>> and video duration ;;; ', getDuration());
                 } else if ((video.textTracks[i].kind === 'captions') ||
                     (video.textTracks[i].kind === 'subtitles')) {
                     // SubsTrackIndex = i;
-                    logger.log('find  soustitres  @ ', thumbsTrackIndex,
+                    logger.warn('find  soustitres  @ ', thumbsTrackIndex,
                         '/', video.textTracks.length, ' >>> ', video.textTracks[i]);
 
                     break;
                 }
             }
         }
-        // manage ads
-        // setthumbs if exits
 
+        if ((CurrentStreamType === StreamTypes.DASH_CLEAR) ||
+            (CurrentStreamType === StreamTypes.DASH_ENCRYPTED)) {
+            // add dash subtitles to menu
+            availableTracks = DashPlayer.getTracksFor('captions');
+            logger.warn(' Find subtitles track on dash Stream !! : ', availableTracks);
+
+        }
         // USED To inform ui and add entry on bitrates menu list and aud tracks
         // Bitrate Menu
         /* var contentFunc;
@@ -352,6 +379,57 @@ function PlayerMedia() {
             events.fireEvent(Const.PlayerEvents.STREAM_LOADED, null);
         }
     };
+
+    function SetManuallysubs(subs, video) {
+        var track = null,
+            item = null,
+            tmp = null,
+            label = null,
+            i = 0,
+            n = 0;
+        // set subs
+        if (subs !== null && subs !== undefined) {
+            for (i = 0; i < subs.length; i++) {
+                item = subs[i];
+                track = document.createElement('track');
+                track.kind = 'subtitles';
+                track.src = item[Const.FJCONFIG_SRC];
+                track.srclang = item[Const.FJCONFIG_LANG];
+                tmp = Langs.isoLangs[item[Const.FJCONFIG_LANG]];
+                logger.log(' Appending track substitles with Label', tmp.name);
+                n = tmp.name.indexOf(",");
+                if (n === -1) {
+                    n = tmp.name.indexOf(";");
+                }
+                if (n === -1) {
+                    label = tmp.name;
+                } else {
+                    label = tmp.name.substr(0, n);
+                }
+                track.label = label;
+                video.appendChild(track);
+            }
+        } else {
+            logger.warn(' Subs was not found .');
+        }
+    };
+
+    function doesTimeMarchesOn() {
+        var version;
+        var REQUIRED_VERSION = 49.0;
+
+        if (typeof navigator !== 'undefined') {
+            if (!navigator.userAgent.match(/Firefox/)) {
+                return true;
+            }
+
+            version = parseFloat(navigator.userAgent.match(/rv:([0-9.]+)/)[1]);
+
+            if (!isNaN(version) && version >= REQUIRED_VERSION) {
+                return true;
+            }
+        }
+    };
     /**
      * Used to Clean loaded data video
      */
@@ -380,7 +458,7 @@ function PlayerMedia() {
             (CurrentStreamType === StreamTypes.DASH_ENCRYPTED)) {} else {
             DashPlayer.reset();
             // Unsetting Callbacks
-            DashPlayer.off(MediaPlayer.events.PLAYBACK_METADATA_LOADED, onStreamInitialized, this);
+            DashPlayer.off(MediaPlayer.events.STREAM_INITIALIZED, onStreamInitialized, this);
             DashPlayer.off(MediaPlayer.events.PLAYBACK_STARTED, onPlayStart, this);
             DashPlayer.off(MediaPlayer.events.PLAYBACK_PAUSED, onPlaybackPaused, this);
             DashPlayer.off(MediaPlayer.events.QUALITY_CHANGE_REQUESTED, onQualityChangeRequested, this);
@@ -398,7 +476,7 @@ function PlayerMedia() {
     /**
      * Used for clear video/mp4
      */
-    function load(url, type, poster, autoplay) {
+    function load(url, type, poster, subs, autoplay) {
         var track = null;
         var source = document.createElement('source');
         source.type = type;
@@ -421,6 +499,8 @@ function PlayerMedia() {
         } else {
             logger.warn(' Thumbs was not found .');
         }
+        // set subs
+        SetManuallysubs(subs, video);
         // Setting Callbacks
         video.addEventListener('loadedmetadata', onStreamInitialized, false);
         video.addEventListener('play', onPlayStart, false);
@@ -436,7 +516,7 @@ function PlayerMedia() {
     /**
      * Used for clear mpeg Dash
      */
-    function loadDash(url, poster, autoplay) {
+    function loadDash(url, poster, subs, videoCaption, autoplay) {
         var track = null;
         if (poster !== null && poster !== undefined) {
             video.setAttribute('poster', poster);
@@ -444,9 +524,17 @@ function PlayerMedia() {
         video.preload = true;
         video.controls = false;
         video.autoplay = autoplay;
-        DashPlayer = MediaPlayer().create();
-        DashPlayer.initialize(video, url, autoplay);
+        if (DashPlayer === null) {
+            DashPlayer = MediaPlayer().create();
+        }
+        DashPlayer.initialize(video, null, autoplay);
+        DashPlayer.setFastSwitchEnabled(true);
         DashPlayer.attachVideoContainer(videoFigure);
+        // Add HTML-rendered TTML subtitles except for Firefox < v49 (issue #1164)
+        if (doesTimeMarchesOn()) {
+            DashPlayer.attachTTMLRenderingDiv(videoCaption);
+        }
+
         CurrentStreamType = StreamTypes.DASH_CLEAR;
         // set thumbs
         if (thumbsTrackUrl !== null && thumbsTrackUrl !== undefined) {
@@ -458,8 +546,10 @@ function PlayerMedia() {
         } else {
             logger.warn(' Thumbs was not found .');
         }
+        // set subs
+        SetManuallysubs(subs, video);
         // Setting Callbacks
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_METADATA_LOADED, onStreamInitialized, self);
+        DashPlayer.on(MediaPlayer.events.STREAM_INITIALIZED, onStreamInitialized, self);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_STARTED, onPlayStart, self);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_PAUSED, onPlaybackPaused, self);
         DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_REQUESTED, onQualityChangeRequested, self);
@@ -469,15 +559,16 @@ function PlayerMedia() {
         DashPlayer.on(MediaPlayer.events.PLAYBACK_TIME_UPDATED, onPlayTimeUpdate, self);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKED, onSeeked, self);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKING, onSeeking, self);
-        DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, self);
+        DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, this);
         DashPlayer.on(MediaPlayer.events.ERROR, onError, self);
-
+        // attach to play url
+        DashPlayer.attachSource(url);
         logger.info(' Clear DASH stream is loaded @ ', url);
     };
     /**
      * Used for Encrypted mpeg Dash
      */
-    function loadDashDrm(url, poster, autoplay, drm) {
+    function loadDashDrm(url, poster, subs, videoCaption, autoplay, drm) {
         var track = null;
         if (poster !== null && poster !== undefined) {
             video.setAttribute('poster', poster);
@@ -485,8 +576,16 @@ function PlayerMedia() {
         video.preload = true;
         video.controls = false;
         video.autoplay = autoplay;
-        DashPlayer.initialize(video, url, autoplay);
+        if (DashPlayer === null) {
+            DashPlayer = MediaPlayer().create();
+        }
+        DashPlayer.initialize(video, null, autoplay);
+        DashPlayer.setFastSwitchEnabled(true);
         DashPlayer.attachVideoContainer(videoFigure);
+        // Add HTML-rendered TTML subtitles except for Firefox < v49 (issue #1164)
+        if (doesTimeMarchesOn()) {
+            DashPlayer.attachTTMLRenderingDiv(videoCaption);
+        }
         // TODO : set Drm
         CurrentStreamType = StreamTypes.DASH_ENCRYPTED;
         // set thumbs
@@ -499,8 +598,10 @@ function PlayerMedia() {
         } else {
             logger.warn(' Thumbs was not found .');
         }
+        // set subs
+        SetManuallysubs(subs, video);
         // Setting Callbacks
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_METADATA_LOADED, onStreamInitialized, self);
+        DashPlayer.on(MediaPlayer.events.STREAM_INITIALIZED, onStreamInitialized, self);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_STARTED, onPlayStart, self);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_PAUSED, onPlaybackPaused, self);
         DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_REQUESTED, onQualityChangeRequested, self);
@@ -510,9 +611,10 @@ function PlayerMedia() {
         DashPlayer.on(MediaPlayer.events.PLAYBACK_TIME_UPDATED, onPlayTimeUpdate, self);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKED, onSeeked, self);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKING, onSeeking, self);
-        DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, self);
+        DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, this);
         DashPlayer.on(MediaPlayer.events.ERROR, onError, self);
-
+        // attach to play url
+        DashPlayer.attachSource(url);
         logger.info(' Clear ENC DASH stream is loaded @ ', url);
     };
     // ************************************************************************************
@@ -526,6 +628,7 @@ function PlayerMedia() {
         CurrentStreamType: CurrentStreamType,
         play: play,
         pause: pause,
+        setTextTrack: setTextTrack,
         isPaused: isPaused,
         isEnded: isEnded,
         isMuted: isMuted,

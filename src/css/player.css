@@ -283,12 +283,14 @@ input[type=range]:focus {
     cursor: pointer;
     text-align: left;
     border-radius: 2px;
+    text-decoration: underline;
     opacity: 1;
 }
 
 .subtitles-menu-item {
     cursor: pointer;
     text-align: left;
+    opacity: 0.9;
 }
 
 .fj-hide {
