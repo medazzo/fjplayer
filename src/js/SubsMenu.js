@@ -72,7 +72,7 @@ function SubsMenu(mainVideo, subsBtnId, subsdMenuContDivId) {
         var item = null;
         SubsExist = false;
         mediaPlayer = playerMedia;
-        logger.warn(' Trying to setup menu subs !!! ', video.textTracks);
+        logger.warn(' Trying to setup menu subs !!! ');
         subsMenuDiv = document.getElementById(subsdMenuContainerDivId);
         subsMenuDiv.style.display = 'none';
         // check if exist
@@ -86,7 +86,7 @@ function SubsMenu(mainVideo, subsBtnId, subsdMenuContDivId) {
             }
         }
         if (SubsExist === false) {
-            logger.log(' Subs Menu Not created !! ');
+            logger.warn(' Subs Menu Not created !! ');
             return SubsExist;
         }
         // Setting btn

@@ -174,10 +174,11 @@ function PlayerMedia() {
         }
     };
 
-    function setTextTrack(index) {
+    function setTextTrack(textTrackIndex) {
+        var index = parseInt(textTrackIndex);
+        var i = 0;
         logger.warn(" Setting text track to index : ", index);
         if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-            var i = 0
             for (i = 0; i < video.textTracks.length; i++) {
                 if ((video.textTracks[i].kind === 'captions') ||
                     (video.textTracks[i].kind === 'subtitles')) {
@@ -445,6 +446,7 @@ function PlayerMedia() {
         }
         CurrentStreamType = PlayerMedia.UNKNOWN;
     }
+
     /**
      * Used for clear video/mp4
      */
@@ -524,8 +526,11 @@ function PlayerMedia() {
         // set subs
         SetManuallysubs(subs, video);
         // Setting Callbacks
-        DashPlayer.on(MediaPlayer.events.STREAM_INITIALIZED, onStreamInitialized, self);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_METADATA_LOADED, onStreamInitialized, this);
+        // next is commented because it trigger spinner on change text track !
+        // DashPlayer.on(MediaPlayer.events.STREAM_INITIALIZED, onStreamInitialized, self);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_STARTED, onPlayStart, self);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_PLAYING, onPlayStart, self);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_PAUSED, onPlaybackPaused, self);
         DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_REQUESTED, onQualityChangeRequested, self);
         DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_RENDERED, onQualityChangeRendered, self);
@@ -536,6 +541,7 @@ function PlayerMedia() {
         DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKING, onSeeking, self);
         DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, this);
         DashPlayer.on(MediaPlayer.events.ERROR, onError, self);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_ERROR, onError, this);
         // attach to play url
         DashPlayer.attachSource(url);
         logger.info(' Clear DASH stream is loaded @ ', url);

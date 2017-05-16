@@ -15,6 +15,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         playingList = false,
         loopingList = false,
         currentPlaying = -1,
+        currentIsDash = false,
         playlistLoaded = false,
         playingAds = false,
         videoWidth = vwidth,
@@ -85,6 +86,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
             if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
                 // clear dash
+                currentIsDash = true;
                 logger.warn(' will play a clear dash on caption obect ', playerUi.getVideoCaption());
                 playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER],
                     item[Const.FJCONFIG_SUBTITLES], playerUi.getVideoCaption(), start);
@@ -240,7 +242,10 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
                 playerUi.ShowSpinner();
                 // checks thumbs
                 playerUi.SetupThumbsManager(playerMedia.getDuration(), args);
-                playerUi.SetupSubsAudsManager(playerMedia);
+                // needed for mp4
+                if (currentIsDash === false) {
+                    playerUi.SetupSubsAudsManager(playerMedia);
+                }
                 playerUi.setDuration(playerMedia.getDuration());
                 item = playerPlaylist.getItem(currentPlaying);
                 // Set Overlays
@@ -343,6 +348,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
             if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
                 // clear dash
+                currentIsDash = true;
                 playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER],
                     item[Const.FJCONFIG_SUBTITLES], playerUi.getVideoCaption(), start);
             } else {
