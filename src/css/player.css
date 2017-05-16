@@ -68,7 +68,7 @@
     visibility: hidden;
     border-radius: 2px;
     z-index: 2147483647;
-    /*background: rgba(0, 0, 0, 0.5);*/
+    bottom: 14%;
     background: rgba(10, 10, 10, 0.8);
     font-size: 12px;
     border-radius: 5px;

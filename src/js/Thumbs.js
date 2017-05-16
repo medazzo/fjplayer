@@ -33,7 +33,7 @@ function Thumbs(thtimer, thumbImgElement, thumbDivElement, progressBarElement) {
 
     function renderThumbs(event) {
         // first we convert from mouse to time position ..
-        var c, i, url, xywh;
+        var c, i, url, xywh, left;
         var rect = progressBar.getBoundingClientRect();
         var p = (event.pageX - rect.left) * (vidDuration / (rect.right - rect.left));
         var dur = Utils.duration(parseFloat(p));
@@ -55,10 +55,10 @@ function Thumbs(thtimer, thumbImgElement, thumbDivElement, progressBarElement) {
                 break;
             };
         }
-        logger.log(dur, ' Render Thumbs  @ ', p, '#### ', i, '#### ', c.length);
         // ..next we unravel the JPG url and fragment query..
         xywh = c[i].text.substr(c[i].text.indexOf('=') + 1).split(',');
-
+        left = (event.pageX - xywh[2] / 2) + 'px';
+        // logger.log(' Render Thumbs  @ ', p, '/', dur, 'pgX', event.pageX, 'Rec', xywh, 'seconds, displayed on left: ', left);
         // ..and last we style the thumbnail overlay
         url = 'url(' + c[i].text.split('#')[0] + ')';
         // logger.log(' fetching thum from ', url);
@@ -67,8 +67,8 @@ function Thumbs(thtimer, thumbImgElement, thumbDivElement, progressBarElement) {
         thumbsImg.style.width = xywh[2] + 'px';
         thumbsImg.style.height = xywh[3] + 'px';
         thumbstimer.innerHTML = dur;
-        thumbsDiv.style.left = (event.pageX - xywh[2] / 2) + 'px';
-        thumbsDiv.style.top = (rect.top - (xywh[3] * 1.5) + 5) + 'px';
+        thumbsDiv.style.left = left;
+        // thumbsDiv.style.top = top;
         thumbsDiv.style.width = xywh[2] + 'px';
     };
 

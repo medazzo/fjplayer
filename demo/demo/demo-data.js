@@ -1,7 +1,7 @@
  'use strict';
 
  var data = {
-     'itemDash': {
+     'itemDashThumbs': {
          'FJType': 'dash',
          'FJPoster': '../img/sintel.jpg',
          'FJTitle': ' title of movie itemDash 2',
@@ -9,27 +9,34 @@
          'FJThumbs': '../vtt/thumbs.vtt',
          'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
      },
-     'itemDashNoThumbs2': {
+     'itemDashNoThumbs': {
          'FJType': 'dash',
          'FJPoster': '../img/sintel.jpg',
          'FJTitle': ' title of movie itemDashNoThumbs 3',
          'FJClass': 'vod',
          'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
      },
-     'itemDashNoThumbs': {
+     'itemDashSubsNoThumbs': {
          'FJType': 'dash',
          'FJPoster': '../img/sintel.jpg',
          'FJTitle': ' title of movie itemDashNoThumbs 3',
          'FJClass': 'vod',
          'FJSrc': 'http://vm2.dashif.org/dash/vod/testpic_2s/multi_subs.mpd'
      },
-     'itemOnly': {
+     'itemMp4Thumbs': {
+         'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
+         'FJTitle': ' title of movie itemOnly 1',
+         'FJClass': 'vod',
+         'FJThumbs': '../vtt/thumbs.vtt',
+         'FJType': 'video/mp4'
+     },
+     'itemMp4NoThumbs': {
          'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
          'FJTitle': ' title of movie itemOnly 1',
          'FJClass': 'vod',
          'FJType': 'video/mp4'
      },
-     'itemOnlySubs': {
+     'itemMp4SubsNoThumbs': {
          'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
          'FJTitle': ' title of movie itemOnly 1',
          'FJClass': 'vod',
@@ -48,7 +55,7 @@
              'FJSrc': '../vtt/sintel-de.vtt'
          }]
      },
-     'item': {
+     'itemMp4Full': {
          'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
          'FJTitle': ' title of movie item 4 ',
          'FJClass': 'vod',
@@ -123,7 +130,7 @@
              'FJUrl': 'http://www.google.com'
          }]
      },
-     'itemOnlyAds': {
+     'itemMp4OnlyPreAds': {
          'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
          'FJTitle': ' title of movie itemOnly 1',
          'FJClass': 'vod',
