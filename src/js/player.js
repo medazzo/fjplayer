@@ -359,10 +359,9 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         playerMedia.seek(time);
     }
 
-    function stop() {
-        playerMedia.stop();
+    function reset() {
         playerMedia.Unload();
-        playerUi.toggleplaypauseBtn();
+        playerUi.reset();
     }
 
     function play() {
@@ -414,7 +413,7 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         playAt: playAt,
         startPlaylist: startPlaylist,
         play: play,
-        stop: stop,
+        reset: reset,
         seek: seek,
         playNext: playNext,
         playPrev: playPrev,

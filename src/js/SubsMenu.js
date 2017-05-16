@@ -45,23 +45,23 @@ function SubsMenu(mainVideo, subsBtnId, subsdMenuContDivId) {
      * Event CALLBACK ; called on menu Click
      */
     function onshowHideMenu(menuContainer, ev) {
-        menuContainer.style.position = 'absolute';
-        menuContainer.style.left = (ev.pageX - 20) + 'px';
-        menuContainer.style.top = (ev.pageY - 90) + 'px';
+        // menuContainer.style.position = 'absolute';
+        // menuContainer.style.left = (ev.pageX - 20) + 'px';
+        // menuContainer.style.top = (ev.pageY - 90) + 'px';
 
-        if (menuContainer.style.display === 'none') {
-            menuContainer.style.display = 'block';
-        } else {
-            menuContainer.style.display = 'none';
-        }
-        logger.log(' Showing or Hiding an menu ', menuContainer);
+        // if (menuContainer.style.display === 'none') {
+        menuContainer.style.display = 'block';
+        // } else {
+        //    menuContainer.style.display = 'none';
+        // }
+        logger.log(ev, ' !!!! Showing or Hiding an menu ', menuContainer);
     };
     /**
      * Used to Hide menu
      */
     function HideMenu() {
         if (SubsExist === true) {
-            subsMenuDiv.style.display = 'none';
+            //  subsMenuDiv.style.display = 'none';
         }
     };
     /**
@@ -108,10 +108,9 @@ function SubsMenu(mainVideo, subsBtnId, subsdMenuContDivId) {
 
         subsMenuDiv.className = 'settingMenuDiv';
         subsMenuDiv.innerHTML =
-            '<div class=\"settingMenuSubMenuLeft\" >' +
-            '<ul class=\"subtitles-menu\" id=\"' + subsMenuListId + '\" >' +
-            '</ul>	' +
-            '</div>';
+            '<ul  class=\"settingSubsUl\" id=\"' + subsMenuListId + '\" >' +
+            '</ul>	';
+
         // video array
         menuListSubs = document.getElementById(subsMenuListId);
         for (i = 0; i < video.textTracks.length; i++) {

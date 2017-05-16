@@ -293,6 +293,12 @@ input[type=range]:focus {
     opacity: 0.9;
 }
 
+.settingMenuSubMenuLeft {
+    float: left;
+    /*  border-left: 1px solid #2A2A2A; */
+    border-left: none;
+}
+
 .fj-hide {
     visibility: hidden;
 }
@@ -321,21 +327,23 @@ input[type=range]:focus {
 .settingMenuDiv {
     position: absolute;
     background: rgba(10, 10, 10, 0.8);
-    float: left;
-    font-size: 12px;
-    /* visibility: hidden;*/
+    float: right;
+    bottom: 8%;
+    left: 85%;
     padding: 5px;
+    margin-bottom: 5px;
     border-radius: 5px;
     z-index: 2147483647;
 }
 
-ul {
+.settingMenuDiv ul {
     padding: 2px;
     margin: 2px;
+    margin-bottom: 2px;
     list-style-type: none;
 }
 
-ul li {}
+.settingMenuDiv ul li {}
 
 .settingMenuSubMenuRight {
     float: left;
@@ -449,6 +457,8 @@ ul li {}
 .hprogressbar {
     width: 99%;
     left: 0.5%;
+    margin-bottom: 1%;
+    margin-top: 0.5%;
     text-align: center;
     display: inline-block;
 }

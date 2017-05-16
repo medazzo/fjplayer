@@ -58,17 +58,6 @@ function PlayerMedia() {
         return events.off(name, handler);
     };
 
-    function stop() {
-        if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-            video.pause();
-        } else if ((CurrentStreamType === StreamTypes.DASH_CLEAR) ||
-            (CurrentStreamType === StreamTypes.DASH_ENCRYPTED)) {
-            DashPlayer.pause();
-            DashPlayer.reset();
-        } else {
-            logger.warn(' No Media Loaded , nothing to play ');
-        }
-    }
     /**
      *
      */
@@ -105,6 +94,7 @@ function PlayerMedia() {
             return DashPlayer.isPaused();
         }
         logger.warn(' No Media Loaded ! ');
+        return true;
     };
     /**
      *
@@ -117,6 +107,7 @@ function PlayerMedia() {
             return getEndedEvent;
         }
         logger.warn(' No Media Loaded ! ');
+        return true;
     };
     /**
      *
@@ -129,6 +120,7 @@ function PlayerMedia() {
             return DashPlayer.isMuted();
         }
         logger.warn(' No Media Loaded ! ');
+        return true;
     };
     /**
      *
@@ -169,7 +161,7 @@ function PlayerMedia() {
     };
 
     function setThumbsUrl(url) {
-        if (url !== null && url !== undefined) {
+        if (url !== null && url !== undefined && url !== '') {
             thumbsTrackUrl = url;
             logger.debug(' Setting url for thumbs @', url);
         } else {
@@ -340,50 +332,7 @@ function PlayerMedia() {
             logger.warn(' Find subtitles track on dash Stream !! : ', availableTracks);
 
         }
-        // USED To inform ui and add entry on bitrates menu list and aud tracks
-        // Bitrate Menu
-        /* var contentFunc;
-           if (bitrateListBtn) {
-            destroyBitrateMenu();
-            var availableBitrates = { menuType: 'bitrate' };
-            availableBitrates.audio = DashPlayer.getBitrateInfoListFor("audio") || [];
-            availableBitrates.video = DashPlayer.getBitrateInfoListFor("video") || [];
-            if (availableBitrates.audio.length > 1 || availableBitrates.video.length > 1) {
-                contentFunc = function(element, index) {
-                    return isNaN(index) ? " Auto Switch" : Math.floor(element.bitrate / 1000) + " kbps";
-                }
-                bitrateListMenu = createMenu(availableBitrates, contentFunc);
-                var func = function() {
-                    onMenuClick(bitrateListMenu, bitrateListBtn);
-                };
-                menuHandlersList.push(func);
-                bitrateListBtn.addEventListener("click", func);
-                bitrateListBtn.classList.remove("hide");
 
-            } else {
-                bitrateListBtn.classList.add("hide");
-            }
-        } */
-        // Track Switch Menu
-        /* if (!trackSwitchMenu && trackSwitchBtn) {
-            var availableTracks = { menuType: "track" };
-            availableTracks.audio = DashPlayer.getTracksFor("audio");
-            availableTracks.video = DashPlayer.getTracksFor("video");
-            // these return empty arrays so no need to cehck for null
-
-            if (availableTracks.audio.length > 1 || availableTracks.video.length > 1) {
-                contentFunc = function(element) {
-                    return 'Language: ' + element.lang + ' - Role: ' + element.roles[0];
-                }
-                trackSwitchMenu = createMenu(availableTracks, contentFunc);
-                var func = function() {
-                    onMenuClick(trackSwitchMenu, trackSwitchBtn);
-                };
-                menuHandlersList.push(func);
-                trackSwitchBtn.addEventListener("click", func);
-                trackSwitchBtn.classList.remove("hide");
-            }
-        }*/
         logger.info(' stream is completly loaded  ');
         if ((thumbsTrackIndex !== -1) && (thumbsTrackUrl !== -1)) {
             events.fireEvent(Const.PlayerEvents.STREAM_LOADED, thumbsTrackIndex);
@@ -497,7 +446,7 @@ function PlayerMedia() {
         video.controls = false;
         video.autoplay = autoplay;
         video.appendChild(source);
-        if (poster !== null && poster !== undefined) {
+        if (poster !== null && poster !== undefined && poster !== '') {
             video.setAttribute('poster', poster);
         }
         CurrentStreamType = StreamTypes.MP4_CLEAR;
@@ -530,7 +479,7 @@ function PlayerMedia() {
      */
     function loadDash(url, poster, subs, videoCaption, autoplay) {
         var track = null;
-        if (poster !== null && poster !== undefined) {
+        if (poster !== null && poster !== undefined && poster !== '') {
             video.setAttribute('poster', poster);
         }
         video.preload = true;
@@ -582,7 +531,7 @@ function PlayerMedia() {
      */
     function loadDashDrm(url, poster, subs, videoCaption, autoplay, drm) {
         var track = null;
-        if (poster !== null && poster !== undefined) {
+        if (poster !== null && poster !== undefined && poster !== '') {
             video.setAttribute('poster', poster);
         }
         video.preload = true;

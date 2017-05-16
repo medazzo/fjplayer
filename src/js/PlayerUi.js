@@ -32,25 +32,25 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         titleId = 'tld' + id,
         spinnerId = 'spin' + id,
         BigPlayBtnId = 'bp' + id,
-        videoCaptionId = 'vc' + id,
-        videoInfoId = 'vi' + id,
-        videoFigureId = 'vf' + id,
-        videoId = 'vo' + id,
-        videoControlsId = 'vc' + id,
-        playpauseBtnId = 'pp' + id,
-        muteBtnId = 'mb' + id,
-        volumeBarId = 'vb' + id,
-        volumeDivId = 'vd' + id,
-        progressDivId = 'pd' + id,
-        progressBarId = 'pb' + id,
-        fullScreenBtnId = 'fs' + id,
-        subtitlesDivId = 'sd' + id,
-        subtitlesBtnId = 'sb' + id,
-        thumbsDivId = 'td' + id,
-        thumbsImgId = 'ti' + id,
-        thumbstimerId = 'tt' + id,
-        expandDivId = 'ed' + id,
-        expandBtnId = 'eb' + id,
+        videoCaptionId = 'vcp' + id,
+        videoInfoId = 'vif' + id,
+        videoFigureId = 'vfg' + id,
+        videoId = 'voi' + id,
+        videoControlsId = 'vct' + id,
+        playpauseBtnId = 'ppb' + id,
+        muteBtnId = 'mbt' + id,
+        volumeBarId = 'vbr' + id,
+        volumeDivId = 'vvd' + id,
+        progressDivId = 'pgd' + id,
+        progressBarId = 'pgb' + id,
+        fullScreenBtnId = 'fsb' + id,
+        subtitlesDivId = 'sbd' + id,
+        subtitlesBtnId = 'sbb' + id,
+        thumbsDivId = 'tbd' + id,
+        thumbsImgId = 'tbi' + id,
+        thumbstimerId = 'tbt' + id,
+        expandDivId = 'exd' + id,
+        expandBtnId = 'exb' + id,
         adsContainerDivId = 'adscd' + id,
         overlaysContainerDivId = 'ovscd' + id,
         subsdMenuContainerDivId = 'smcd' + id,
@@ -726,7 +726,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         if (thumbsTrackIndex !== null) {
             return ThumbsMgr.Setup(getVideo(), videoDuration, thumbsTrackIndex);
         }
-        return ThumbsMgr.Reset();
+        return ThumbsMgr.reset();
 
     }
 
@@ -815,6 +815,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
     }
 
     function reset() {
+        console.warn(" >>> Resetting player ui !!");
         /* window.removeEventListener('resize', handleMenuPositionOnResize);
         destroyBitrateMenu();
         menuHandlersList.forEach(function(item) {
@@ -833,11 +834,12 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         }
         menuHandlersList = [];
         seeking = false;*/
-    }
 
-    function destroy() {
-
-        this.reset();
+        ThumbsMgr.reset();
+        // OverlaysMgr = new Overlays(this.video, document.getElementById(this.overlaysContainerDivId));
+        videoControllerFigure.removeEventListener('mouseleave', magicMouseLeave);
+        videoControllerFigure.removeEventListener('mouseenter', magicMouseEnter);
+        videoControllerFigure.removeEventListener('mousemove', magicMouseMove);
 
         BigPlayBtn.removeEventListener('click', onplaypauseClick);
         video.removeEventListener('click', onplaypauseClick);
@@ -848,10 +850,13 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         fullScreenBtn.removeEventListener('click', handleFullscreen);
         expandBtn.removeEventListener('click', handleExpand);
         progressBar.removeEventListener('click', onprogressClick);
+
         document.removeEventListener('fullscreenchange', onFullScreenChange);
         document.removeEventListener('MSFullscreenChange', onFullScreenChange);
         document.removeEventListener('mozfullscreenchange', onFullScreenChange);
         document.removeEventListener('webkitfullscreenchange', onFullScreenChange);
+
+        toggleplaypauseBtn();
     }
     // ************************************************************************************
     // PUBLIC API
@@ -878,7 +883,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         ShowSpinner: ShowSpinner,
         HideSpinner: HideSpinner,
         onplaypauseClick: onplaypauseClick,
-        destroy: destroy,
         constructor: PlayerUi
     };
 };

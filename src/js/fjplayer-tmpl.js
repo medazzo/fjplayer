@@ -30,6 +30,9 @@ function playerTemplate() {
         '    </div> ' +
         '</div> ' +
         '<div class=\"fjcontrols-panel\" id=\"<%= videoControlsId %>\"> ' +
+        '    <div class=\"fjcontrols-panel-controls  \"> ' +
+        '       <div id=\"<%= subsdMenuContainerDivId %>\"></div> ' +
+        '    </div> ' +
         '    <div class=\"fjcontrols-panel-controls\"> ' +
         '        <div class=\"hprogressbar\" id=\"<%= progressDivId %>\"> ' +
         '            <input id=\"<%= progressBarId %>\" type=\"range\" /> ' +
@@ -66,7 +69,6 @@ function playerTemplate() {
         '    <span class=\"fjcontrols-control-text\" id=\"<%= thumbstimerId %>\"></span> ' +
         '</div> ' +
         '<div id=\"<%= audMenuContainerDivId %>\"></div> ' +
-        '<div id=\"<%= subsdMenuContainerDivId %>\"></div> ' +
         '<div id=\"<%= overlaysContainerDivId %>\"></div> ' +
         '<div id=\"<%= adsContainerDivId %>\"></div> ' +
         '</figure>';
