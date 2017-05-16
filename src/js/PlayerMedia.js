@@ -13,13 +13,14 @@ import * as Langs from './isoLangs';
 function PlayerMedia() {
     var video = null,
         self = this,
+        initialized = false,
         videoFigure = null,
         startingCount = 0,
         thumbsTrackUrl = null,
         thumbsTrackIndex = -1,
         getEndedEvent = false,
         CurrentStreamType = PlayerMedia.UNKNOWN,
-        DashPlayer = MediaPlayer().create(),
+        DashPlayer = null,
         logger = new Logger(this),
         events = new Eventing(),
         StreamTypes = {
@@ -39,9 +40,12 @@ function PlayerMedia() {
      */
     function initialize(playerUiVideo, playerUiVideoFigure) {
         video = playerUiVideo;
+        DashPlayer = MediaPlayer().create();
+        DashPlayer.initialize();
         if (!video) {
             throw new Error('Please call initialize with a valid Player UI having a video html 5 element ');
         }
+        initialized = true;
         videoFigure = playerUiVideoFigure;
         logger.debug(' Media player juste initilized with playerUiVideo');
     };
@@ -397,15 +401,22 @@ function PlayerMedia() {
     function Unload() {
         var el = video;
         var elClone = null;
+        if (initialized !== true) {
+            logger.warn('not yet initialized !');
+            return;
+        }
+        // remove all video child
         elClone = el.cloneNode(true);
         el.parentNode.replaceChild(elClone, el);
         video = elClone;
+
         // hide the overlay , empty the div
         while (video.hasChildNodes()) {
             video.removeChild(video.firstChild);
         }
         // unset attr
         video.removeAttribute('poster');
+
         if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
             video.removeEventListener('loadedmetadata', onStreamInitialized);
             video.removeEventListener('play', onPlayStart);
@@ -487,8 +498,11 @@ function PlayerMedia() {
         video.autoplay = autoplay;
         if (DashPlayer === null) {
             DashPlayer = MediaPlayer().create();
+            DashPlayer.initialize();
         }
-        DashPlayer.initialize(video, null, autoplay);
+        DashPlayer.attachView(video);
+        DashPlayer.attachSource(url);
+        DashPlayer.setAutoPlay(autoplay);
         DashPlayer.setFastSwitchEnabled(true);
         DashPlayer.attachVideoContainer(videoFigure);
         // Add HTML-rendered TTML subtitles except for Firefox < v49 (issue #1164)
@@ -539,8 +553,11 @@ function PlayerMedia() {
         video.autoplay = autoplay;
         if (DashPlayer === null) {
             DashPlayer = MediaPlayer().create();
+            DashPlayer.initialize();
         }
-        DashPlayer.initialize(video, null, autoplay);
+        DashPlayer.attachView(video);
+        DashPlayer.attachSource(url);
+        DashPlayer.setAutoPlay(autoplay);
         DashPlayer.setFastSwitchEnabled(true);
         DashPlayer.attachVideoContainer(videoFigure);
         // Add HTML-rendered TTML subtitles except for Firefox < v49 (issue #1164)

@@ -32,6 +32,7 @@
 
         function loadfromList() {
             var key = select.options[select.selectedIndex].value;
+            player.reset();
             playMe(data[key]);
         }
 
@@ -107,8 +108,7 @@
 
     <div class="container containerma  ">
         <div class="panel panel-default">
-            <div class="panel-body">
-
+            <div class="panel-body ">
                 <div class="form-group row">
                     <div class="col-md-10">
                         <form>

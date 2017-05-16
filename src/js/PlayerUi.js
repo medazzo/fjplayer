@@ -25,6 +25,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         AudiosMenu = null,
         SubMenu = null,
         timeout = null,
+        initialized = false,
         HideControlsTimeout = 1500,
         id = Date.now().toString().substr(6),
         timerId = 'trd' + id,
@@ -514,6 +515,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             'color-stop(1, #FF0000), ' +
             'color-stop(1, #8F9B9E)' +
             ')';
+        initialized = true;
     }
 
     function hideVideo() {
@@ -536,7 +538,9 @@ function PlayerUi(videoContId, VWidth, WHeight) {
     }
 
     function HideSpinner() {
-        spinner.classList.add('fj-hide');
+        if (spinner.classList.contains('fj-hide') === false) {
+            spinner.classList.add('fj-hide');
+        }
     }
 
     function disable() {
@@ -553,6 +557,10 @@ function PlayerUi(videoContId, VWidth, WHeight) {
     }
 
     function reset() {
+        if (initialized !== true) {
+            console.warn('not yet initialized');
+            return;
+        }
         console.warn(" >>> Resetting player ui !!");
         /* window.removeEventListener('resize', handleMenuPositionOnResize);
         destroyBitrateMenu();

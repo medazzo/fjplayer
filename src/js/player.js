@@ -220,14 +220,14 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
             if (e === Const.PlayerEvents.PLAYBACK_STARTED) {
                 // first starting  only
                 if (args === 1) {
-                    playerUi.HideSpinner();
                     if (AdsMgr.CheckPreAds() === false) {
                         playerMedia.play();
                     } else {
                         playerMedia.pause();
                     }
-                    playerUi.toggleplaypauseBtn();
                 }
+                playerUi.HideSpinner();
+                playerUi.toggleplaypauseBtn();
                 playerUi.setDuration(playerMedia.getDuration());
             }
             if (e === Const.PlayerEvents.TRACKS_ADDED) {
