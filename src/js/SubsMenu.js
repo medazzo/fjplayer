@@ -69,6 +69,7 @@ function SubsMenu(mainVideo, subsBtnId, subsdMenuContDivId) {
      */
     function Setup(playerMedia) {
         var i = 0;
+        var activated = false;
         var item = null;
         SubsExist = false;
         mediaPlayer = playerMedia;
@@ -119,6 +120,7 @@ function SubsMenu(mainVideo, subsBtnId, subsdMenuContDivId) {
                 item = document.createElement('li');
                 if (video.textTracks[i].mode === 'showing') {
                     item.className = 'subtitles-menu-item-actif';
+                    activated = true;
                 } else {
                     item.className = 'subtitles-menu-item';
                 }
@@ -131,6 +133,22 @@ function SubsMenu(mainVideo, subsBtnId, subsdMenuContDivId) {
                 logger.log('Setting Subs List @ ', i, ' item is ', item);
             }
         }
+
+        // off item
+        item = document.createElement('li');
+        if (activated === false) {
+            item.className = 'subtitles-menu-item-actif';
+        } else {
+            item.className = 'subtitles-menu-item';
+        }
+        item.setAttribute('index', -1);
+        item.innerHTML = 'off';
+        menuListSubs.appendChild(item);
+        item.addEventListener('click', function(ev) {
+            activateSubs(this);
+        });
+        logger.log('Setting Subs List @ ', -1, ' item is ', item);
+
         logger.log(' Subs Menu  created !! ', menuListSubs);
         return SubsExist;
     };
