@@ -1,0 +1,152 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <!--
+fjplayer:div 
+└── fjfigure:figure 
+    ├── fjvideo:video
+    ├── fjinfotop:div
+    │   ├── fjbackarrowLeft:iconspan             [clickable Icon][optional][back arrow] 
+    │   ├── fjTextLeft:p                         [readonly text][optional][title of stream]
+    │   ├── fjbackshareRight:iconspan            [clickable Icon][optional][share button]
+    │   └── fjbackdownRight:iconspan             [clickable Icon][optional][download button]
+    ├── fjinfocenter:div
+    │   ├── fjspinner:div
+    │   └── fjBigButton:div
+    ├── fjcontrolmenus:div
+    │   ├── fjsubsmenu:div                [contains ul > li that will be js created ] [fjlist:ul ,fjitemlist:li]
+	│   ├── fjaudsmenu:div                [contains ul > li that will be js created ] [fjlist:ul ,fjitemlist:li]
+	│   ├── fjthumbscontainer:div
+	│   ├── fjvideocaption:div
+	│   ├── fjoverlayscontainer:div
+    │   └── fjadscontainer:div
+	└── fjcontrolpanel:div
+        └── fjcontrolpanelUpper:div
+	    │   └── fjcontrolvideoprogress:input     [progress bar]
+        └── fjcontrolpanelLower:div
+	        ├── fjcontrolplaypause:span          [clickable Icon] 
+	        ├── fjcontrolmute:span               [clickable Icon]
+	        ├── fjcontrolvolumeprogress:input    [progress bar]
+	        ├── fjcontroltimeprogress:span       [readonly text]
+	        ├── fjcontroltimeduration:span       [readonly text]
+	        ├── fjcontrolaudio:span              [clickable Icon][can not exist][depend on stream] 
+	        ├── fjcontrolsubtitles:span	         [clickable Icon][can not exist][depend on stream] 
+	        └── fjcontrolfullscreen:span         [clickable Icon]
+    
+
+-->
+    <style type="text/css">
+        .fj-video {}
+        
+        .fj-text {}
+        
+        .fj-btn {}
+        
+        .fj-progress {}
+        
+        .fj-progress001 {}
+        /* ... */
+        
+        .fj-progress010 {}
+        /* ... */
+        
+        .fj-progress100 {}
+        /*---------- icons -----------*/
+        
+        .fj-icon-left-arrow {}
+        
+        .fj-icon-download {}
+        
+        .fj-icon-share {}
+        
+        .fj-icon-play {}
+        
+        .fj-icon-pause {}
+        
+        .fj-icon-vol-up {}
+        
+        .fj-icon-vol-down {}
+        
+        .fj-icon-mute {}
+        
+        .fj-icon-audios {}
+        
+        .fj-icon-subs {}
+        
+        .fj-icon-full-screen {}
+        
+        .fj-icon-compress-screen {}
+    </style>
+    <script type="text/javascript">
+    </script>
+</head>
+
+<body>
+    <div id="playercontainer" class="fjPlayer">
+        <figure id="videoFigureId" class="fjfigure" data-fullscreen="fullScreenOnStart">
+            <video id="videoId" class="divofVideo" width="100%" controls="false" autoplay="true"> 
+                                <source src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4" type="video/mp4">
+                            </video>
+            <div id="videoCaptionId"></div>
+            <div class="divInfoTop" id="videoInfoId">
+                <span class=" divIconBtn divconeontrolLeft fjcontrol-background fa  fa-arrow-left"> </span>
+                <p class=" divTspanitleSeparator divconeontrolLeft "> </p>
+                <div id="titleId" class="fjcontrols-control-text  fjcontrol-background divIconBtn divconeontrolLeft"> sdfsdfsdfsdf</div>
+                <span class=" divIconBtn divconeontrolRight  fjcontrol-background fa  fa-share-alt "> </span>
+                <p class=" divTspanitleSeparator divconeontrolRight "> </p>
+                <span class=" divIconBtn divconeontrolRight fjcontrol-background  fa fa-download "> </span>
+            </div>
+            <div class="divInfoCenter">
+                <div id="spinnerId" class="fj-hide spinner"> </div>
+                <div class="fjcontrol-background divBigPlayBtn" id="BigPlayBtnId">
+                    <span class=" divIconBtn  divconeontrolLeft fa  fa-play "> </span>
+                </div>
+            </div>
+            <div class="fjcontrols-panel" id="videoControlsId">
+                <div class="fjcontrols-panel-controls  ">
+                    <div id="subsdMenuContainerDivId"></div>
+                </div>
+                <div class="fjcontrols-panel-controls">
+                    <div class="hprogressbar" id="progressDivId">
+                        <input id="progressBarId" type="range" />
+                    </div>
+                </div>
+                <div class="fjcontrols-control divIconBtn divconeontrolIcon divconeontrolLeft clickable ">
+                    <span id="playpauseBtnId" class="fa fa-play" title="Play"></span>
+                </div>
+                <div class="fjcontrols-control divconeontrolIcon divIconBtn divconeontrolLeft clickable">
+                    <span id="muteBtnId" title="volume-full" class="fa fa-volume-up"></span>
+                </div>
+                <div class="fjcontrols-control fjcontrols-control-left">
+                    <div class="volumebar" id="volumeDivId">
+                        <input class="clickable" id="volumeBarId" type="range" />
+                    </div>
+                </div>
+                <div class="fjcontrols-control  fjcontrols-control-left ">
+                    <div class="fjcontrols-control fjcontrols-control-text">
+                        <span id="timerId">0:00:00</span><span>/</span><span id="durationId">0:00:00</span>
+                    </div>
+                </div>
+                <div class="fjcontrols-control divIconBtn divconeontrolIcon fjcontrols-control-right clickable">
+                    <span id="fullScreenBtnId" title="Fullscreen" class="fa fa-arrows-alt"></span>
+                </div>
+                <div id="expandDivId" class="fjcontrols-control divIconBtn divconeontrolIcon fjcontrols-control-right clickable">
+                    <span id="expandBtnId" class="fa fa-expand" title="Double player size"></span>
+                </div>
+                <div id="subtitlesDivId" class="fjcontrols-control divIconBtn divconeontrolIcon fjcontrols-control-right clickable">
+                    <span id="subtitlesBtnId" class="fa fa-cc" title="subtitles"></span>
+                </div>
+            </div>
+            <div class="thumbsBlockDiv" id="thumbsDivId">
+                <span class="thumbsBlock" id="thumbsImgId"></span>
+                <span class="fjcontrols-control-text" id="thumbstimerId"></span>
+            </div>
+            <div id="audMenuContainerDivId"></div>
+            <div id="overlaysContainerDivId"></div>
+            <div id="adsContainerDivId"></div>
+        </figure>
+    </div>
+</body>
+
+</html>

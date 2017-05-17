@@ -1,0 +1,313 @@
+a {
+  -webkit-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+}
+a:hover {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+.food, .beer, .sleep, .javascript {
+  font-weight: bold;
+}
+.progress100 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(100, #FF0000), color-stop(100, #8F9B9E));
+}
+.progress99 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(99, #FF0000), color-stop(99, #8F9B9E));
+}
+.progress98 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(98, #FF0000), color-stop(98, #8F9B9E));
+}
+.progress97 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(97, #FF0000), color-stop(97, #8F9B9E));
+}
+.progress96 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(96, #FF0000), color-stop(96, #8F9B9E));
+}
+.progress95 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(95, #FF0000), color-stop(95, #8F9B9E));
+}
+.progress94 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(94, #FF0000), color-stop(94, #8F9B9E));
+}
+.progress93 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(93, #FF0000), color-stop(93, #8F9B9E));
+}
+.progress92 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(92, #FF0000), color-stop(92, #8F9B9E));
+}
+.progress91 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(91, #FF0000), color-stop(91, #8F9B9E));
+}
+.progress90 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(90, #FF0000), color-stop(90, #8F9B9E));
+}
+.progress89 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(89, #FF0000), color-stop(89, #8F9B9E));
+}
+.progress88 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(88, #FF0000), color-stop(88, #8F9B9E));
+}
+.progress87 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(87, #FF0000), color-stop(87, #8F9B9E));
+}
+.progress86 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(86, #FF0000), color-stop(86, #8F9B9E));
+}
+.progress85 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(85, #FF0000), color-stop(85, #8F9B9E));
+}
+.progress84 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(84, #FF0000), color-stop(84, #8F9B9E));
+}
+.progress83 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(83, #FF0000), color-stop(83, #8F9B9E));
+}
+.progress82 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(82, #FF0000), color-stop(82, #8F9B9E));
+}
+.progress81 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(81, #FF0000), color-stop(81, #8F9B9E));
+}
+.progress80 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(80, #FF0000), color-stop(80, #8F9B9E));
+}
+.progress79 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(79, #FF0000), color-stop(79, #8F9B9E));
+}
+.progress78 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(78, #FF0000), color-stop(78, #8F9B9E));
+}
+.progress77 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(77, #FF0000), color-stop(77, #8F9B9E));
+}
+.progress76 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(76, #FF0000), color-stop(76, #8F9B9E));
+}
+.progress75 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(75, #FF0000), color-stop(75, #8F9B9E));
+}
+.progress74 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(74, #FF0000), color-stop(74, #8F9B9E));
+}
+.progress73 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(73, #FF0000), color-stop(73, #8F9B9E));
+}
+.progress72 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(72, #FF0000), color-stop(72, #8F9B9E));
+}
+.progress71 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(71, #FF0000), color-stop(71, #8F9B9E));
+}
+.progress70 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(70, #FF0000), color-stop(70, #8F9B9E));
+}
+.progress69 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(69, #FF0000), color-stop(69, #8F9B9E));
+}
+.progress68 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(68, #FF0000), color-stop(68, #8F9B9E));
+}
+.progress67 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(67, #FF0000), color-stop(67, #8F9B9E));
+}
+.progress66 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(66, #FF0000), color-stop(66, #8F9B9E));
+}
+.progress65 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(65, #FF0000), color-stop(65, #8F9B9E));
+}
+.progress64 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(64, #FF0000), color-stop(64, #8F9B9E));
+}
+.progress63 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(63, #FF0000), color-stop(63, #8F9B9E));
+}
+.progress62 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(62, #FF0000), color-stop(62, #8F9B9E));
+}
+.progress61 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(61, #FF0000), color-stop(61, #8F9B9E));
+}
+.progress60 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(60, #FF0000), color-stop(60, #8F9B9E));
+}
+.progress59 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(59, #FF0000), color-stop(59, #8F9B9E));
+}
+.progress58 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(58, #FF0000), color-stop(58, #8F9B9E));
+}
+.progress57 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(57, #FF0000), color-stop(57, #8F9B9E));
+}
+.progress56 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(56, #FF0000), color-stop(56, #8F9B9E));
+}
+.progress55 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(55, #FF0000), color-stop(55, #8F9B9E));
+}
+.progress54 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(54, #FF0000), color-stop(54, #8F9B9E));
+}
+.progress53 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(53, #FF0000), color-stop(53, #8F9B9E));
+}
+.progress52 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(52, #FF0000), color-stop(52, #8F9B9E));
+}
+.progress51 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(51, #FF0000), color-stop(51, #8F9B9E));
+}
+.progress50 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(50, #FF0000), color-stop(50, #8F9B9E));
+}
+.progress49 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(49, #FF0000), color-stop(49, #8F9B9E));
+}
+.progress48 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(48, #FF0000), color-stop(48, #8F9B9E));
+}
+.progress47 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(47, #FF0000), color-stop(47, #8F9B9E));
+}
+.progress46 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(46, #FF0000), color-stop(46, #8F9B9E));
+}
+.progress45 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(45, #FF0000), color-stop(45, #8F9B9E));
+}
+.progress44 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(44, #FF0000), color-stop(44, #8F9B9E));
+}
+.progress43 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(43, #FF0000), color-stop(43, #8F9B9E));
+}
+.progress42 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(42, #FF0000), color-stop(42, #8F9B9E));
+}
+.progress41 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(41, #FF0000), color-stop(41, #8F9B9E));
+}
+.progress40 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(40, #FF0000), color-stop(40, #8F9B9E));
+}
+.progress39 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(39, #FF0000), color-stop(39, #8F9B9E));
+}
+.progress38 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(38, #FF0000), color-stop(38, #8F9B9E));
+}
+.progress37 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(37, #FF0000), color-stop(37, #8F9B9E));
+}
+.progress36 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(36, #FF0000), color-stop(36, #8F9B9E));
+}
+.progress35 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(35, #FF0000), color-stop(35, #8F9B9E));
+}
+.progress34 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(34, #FF0000), color-stop(34, #8F9B9E));
+}
+.progress33 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(33, #FF0000), color-stop(33, #8F9B9E));
+}
+.progress32 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(32, #FF0000), color-stop(32, #8F9B9E));
+}
+.progress31 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(31, #FF0000), color-stop(31, #8F9B9E));
+}
+.progress30 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(30, #FF0000), color-stop(30, #8F9B9E));
+}
+.progress29 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(29, #FF0000), color-stop(29, #8F9B9E));
+}
+.progress28 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(28, #FF0000), color-stop(28, #8F9B9E));
+}
+.progress27 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(27, #FF0000), color-stop(27, #8F9B9E));
+}
+.progress26 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(26, #FF0000), color-stop(26, #8F9B9E));
+}
+.progress25 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(25, #FF0000), color-stop(25, #8F9B9E));
+}
+.progress24 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(24, #FF0000), color-stop(24, #8F9B9E));
+}
+.progress23 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(23, #FF0000), color-stop(23, #8F9B9E));
+}
+.progress22 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(22, #FF0000), color-stop(22, #8F9B9E));
+}
+.progress21 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(21, #FF0000), color-stop(21, #8F9B9E));
+}
+.progress20 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(20, #FF0000), color-stop(20, #8F9B9E));
+}
+.progress19 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(19, #FF0000), color-stop(19, #8F9B9E));
+}
+.progress18 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(18, #FF0000), color-stop(18, #8F9B9E));
+}
+.progress17 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(17, #FF0000), color-stop(17, #8F9B9E));
+}
+.progress16 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(16, #FF0000), color-stop(16, #8F9B9E));
+}
+.progress15 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(15, #FF0000), color-stop(15, #8F9B9E));
+}
+.progress14 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(14, #FF0000), color-stop(14, #8F9B9E));
+}
+.progress13 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(13, #FF0000), color-stop(13, #8F9B9E));
+}
+.progress12 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(12, #FF0000), color-stop(12, #8F9B9E));
+}
+.progress11 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(11, #FF0000), color-stop(11, #8F9B9E));
+}
+.progress10 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(10, #FF0000), color-stop(10, #8F9B9E));
+}
+.progress9 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(9, #FF0000), color-stop(9, #8F9B9E));
+}
+.progress8 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(8, #FF0000), color-stop(8, #8F9B9E));
+}
+.progress7 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(7, #FF0000), color-stop(7, #8F9B9E));
+}
+.progress6 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(6, #FF0000), color-stop(6, #8F9B9E));
+}
+.progress5 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(5, #FF0000), color-stop(5, #8F9B9E));
+}
+.progress4 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(4, #FF0000), color-stop(4, #8F9B9E));
+}
+.progress3 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(3, #FF0000), color-stop(3, #8F9B9E));
+}
+.progress2 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(2, #FF0000), color-stop(2, #8F9B9E));
+}
+.progress1 {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(1, #FF0000), color-stop(1, #8F9B9E));
+}
