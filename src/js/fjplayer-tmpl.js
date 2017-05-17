@@ -12,7 +12,7 @@ function playerTemplate() {
         regExpChars = /[|\\{}()[\]^$+*?.]/g,
         template =
         '<figure id=\"<%= videoFigureId %>\" class=\"fjfigure\" data-fullscreen=\"<%= fullScreenOnStart %>\"> ' +
-        '<video id=\"<%= videoId %>\" class=\"divofVideo\" width=\"<%= vwidth %>\" height=\"<%= vheight %>\"> ' +
+        '<video id=\"<%= videoId %>\" class=\"divofVideo\" width=\"<%= vwidth %>\"> ' +
         '    </video> ' +
         '<div id=\"<%= videoCaptionId %>\"></div>' +
         '<div class=\"divInfoTop\" id=\"<%= videoInfoId %>\"> ' +
@@ -133,6 +133,7 @@ function playerTemplate() {
                     key = key.replace(/ +/g, "");
                     if (dataObj.hasOwnProperty(key)) {
                         newArr[k] = dataObj[key];
+                        console.warn(' replacing key ', key, ' with his value ', dataObj[key]);
                     } else {
                         throw new Error(" Needed Key is Not found key for html player template ", key);
                     }
@@ -143,6 +144,7 @@ function playerTemplate() {
             }
         }
         done = newArr.join("");
+        console.warn(done);
         return done;
     }
     /**

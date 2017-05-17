@@ -76,6 +76,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         videoControls,
         videoInfo,
         fullScreenEnabled = true;
+    logger.error(' >>>> Width and Height ', vwidth, vheight);
 
     function create() {
         var data = {
@@ -83,7 +84,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             'fullScreenOnStart': fullScreenOnStart,
             'videoId': videoId,
             'vwidth': vwidth,
-            'vheight': vheight,
             'videoCaptionId': videoCaptionId,
             'videoInfoId': videoInfoId,
             'titleId': titleId,

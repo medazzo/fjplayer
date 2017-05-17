@@ -14,12 +14,12 @@
             console.info('Hash HEAD', ver.getShortHash());
             var playlist = new fjplayer.Playlist();
             // playlist.addItem(data.itemDashThumbs);
-            playlist.addItem(data.itemDashNoThumbs);
+            // playlist.addItem(data.itemDashNoThumbs);
             // playlist.addItem(data.itemDashSubsNoThumbs);
             // playlist.addItem(data.itemMp4Thumbs);
             // playlist.addItem(data.itemMp4NoThumbs);
             // playlist.addItem(data.itemMp4SubsNoThumbs);
-            // playlist.addItem(data.itemMp4Full);
+            playlist.addItem(data.itemMp4Full);
             var player = new fjplayer.Player('fjserverID1', 'playercontainer');
             player.on(fjplayer.PlayerEvents.STREAM_LOADED, fjplayerEvent);
             player.loadPlaylist(playlist);

@@ -9,7 +9,7 @@ import AdsManager from './AdsManager';
 /**
  *  Class player in whinch the player is implemented
  */
-function Player(fjID, vidContainerId, vwidth, vheight) {
+function Player(fjID, vidContainerId, ) {
     var logger = new Logger(this),
         playerPlaylist = null,
         playingList = false,
@@ -18,8 +18,9 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         currentIsDash = false,
         playlistLoaded = false,
         playingAds = false,
-        videoWidth = vwidth,
-        videoHeight = vheight,
+        // default values
+        videoWidth = '100%',
+        videoHeight = '',
         events = new Eventing(),
         videoContainerId = vidContainerId,
         OverlaysMgr = new Overlays(),
@@ -28,12 +29,6 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
         // create ads Manager
         AdsMgr = new AdsManager(),
         supportsVideo = !!document.createElement('video').canPlayType;
-    if (videoHeight === null || videoHeight === undefined) {
-        videoHeight = 480;
-    }
-    if (videoWidth === null || videoWidth === undefined) {
-        videoWidth = 720;
-    }
     playerUi = new PlayerUi(videoContainerId, videoWidth, videoHeight);
     /**
      * function  to return a human redeable duration of secondes
@@ -252,12 +247,9 @@ function Player(fjID, vidContainerId, vwidth, vheight) {
                 OverlaysMgr.Setup(item[Const.FJCONFIG_OVERLAYS]);
                 // Set ads
                 vid = playerUi.getVideo();
-                vid.width = videoWidth;
-                vid.height = videoHeight;
-                logger.warn('Video  dimensions ', vid.videoWidth, 'X', vid.videoHeight,
-                    ' while asked are ', videoWidth, 'X', videoHeight);
-                AdsMgr.Setup(item[Const.FJCONFIG_ADS], videoWidth, videoHeight);
-                //  vid.videoWidth, vid.videoHeight);
+
+                logger.warn('Video  dimensions ', vid.videoWidth, 'X', vid.videoHeight);
+                AdsMgr.Setup(item[Const.FJCONFIG_ADS], vid.videoWidth, vid.videoHeight);
 
             }
             if (e === Const.PlayerEvents.PLAYBACK_SEEKING) {
