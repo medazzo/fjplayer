@@ -133,7 +133,6 @@ function playerTemplate() {
                     key = key.replace(/ +/g, "");
                     if (dataObj.hasOwnProperty(key)) {
                         newArr[k] = dataObj[key];
-                        console.warn(' replacing key ', key, ' with his value ', dataObj[key]);
                     } else {
                         throw new Error(" Needed Key is Not found key for html player template ", key);
                     }
@@ -144,7 +143,6 @@ function playerTemplate() {
             }
         }
         done = newArr.join("");
-        console.warn(done);
         return done;
     }
     /**
