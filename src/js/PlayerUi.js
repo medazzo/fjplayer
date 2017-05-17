@@ -76,7 +76,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         videoControls,
         videoInfo,
         fullScreenEnabled = true;
-    logger.error(' >>>> Width and Height ', vwidth, vheight);
 
     function create() {
         var data = {
@@ -245,16 +244,15 @@ function PlayerUi(videoContId, VWidth, WHeight) {
 
     function SetupSubsAudsManager(mediaplayer) {
         var done = false;
-        logger.warn(' Will setup Audio and subs menus !!!!!!!');
-        done = AudiosMenu.Setup(mediaplayer) !== true;
-        logger.warn(' Will setup Audio >>>>>  ', done);
+        done = AudiosMenu.Setup(mediaplayer);
+        logger.debug(' Will setup Audio menu  ', done);
         if (done === true) {
             document.getElementById(subtitlesBtnId).style.display = 'none';
         } else {
             document.getElementById(subtitlesBtnId).style.display = 'block';
         }
         done = SubMenu.Setup(mediaplayer);
-        logger.warn(' Will setup Subs >>>>>  ', done);
+        logger.debug(' Will setup Subs menu  ', done);
         if (done !== true) {
             document.getElementById(subtitlesBtnId).style.display = 'none';
         } else {
@@ -558,7 +556,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
 
     function reset() {
         if (initialized !== true) {
-            console.warn('not yet initialized');
+            logger.warn('not yet initialized');
             return;
         }
         console.warn(" >>> Resetting player ui !!");

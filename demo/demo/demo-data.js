@@ -1,6 +1,12 @@
  'use strict';
 
  var data = {
+     'itemDashSubsonVttmpd': {
+         'FJType': 'dash',
+         'FJTitle': ' title of movie itemDash 2',
+         'FJClass': 'vod',
+         'FJSrc': 'http://dash.edgesuite.net/akamai/test/caption_test/ElephantsDream/elephants_dream_480p_heaac5_1.mpd'
+     },
      'itemDashThumbs': {
          'FJType': 'dash',
          'FJPoster': '../img/sintel.jpg',

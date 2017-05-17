@@ -228,7 +228,6 @@ function Player(fjID, vidContainerId, ) {
                 playerUi.setDuration(playerMedia.getDuration());
             }
             if (e === Const.PlayerEvents.TRACKS_ADDED) {
-                logger.warn(' Eventing TRACKS _ADDED !! ');
                 // this a specific dahs event so pass playerMedia
                 playerUi.SetupSubsAudsManager(playerMedia);
             }
@@ -238,9 +237,9 @@ function Player(fjID, vidContainerId, ) {
                 // checks thumbs
                 playerUi.SetupThumbsManager(playerMedia.getDuration(), args);
                 // needed for mp4
-                if (currentIsDash === false) {
-                    playerUi.SetupSubsAudsManager(playerMedia);
-                }
+                // if (currentIsDash === false) {
+                playerUi.SetupSubsAudsManager(playerMedia);
+                // }
                 playerUi.setDuration(playerMedia.getDuration());
                 item = playerPlaylist.getItem(currentPlaying);
                 // Set Overlays
@@ -248,7 +247,6 @@ function Player(fjID, vidContainerId, ) {
                 // Set ads
                 vid = playerUi.getVideo();
 
-                logger.warn('Video  dimensions ', vid.videoWidth, 'X', vid.videoHeight);
                 AdsMgr.Setup(item[Const.FJCONFIG_ADS], vid.videoWidth, vid.videoHeight);
 
             }
@@ -261,7 +259,7 @@ function Player(fjID, vidContainerId, ) {
 
 
             // send Event to listener
-            logger.warn('Sending Event >>>>>>>>>>>>>>>>>   ', e);
+            logger.info('[Event] [trigger] > ', e);
             events.fireEvent(e);
         }
 

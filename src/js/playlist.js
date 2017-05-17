@@ -179,7 +179,6 @@ function Playlist() {
             logger.error(' Item is NULL !', item);
             return false;
         }
-        logger.log(' Item is ', item);
         // check item
         logger.log('  class of item  : ', item[Const.FJCONFIG_CLASS]);
         if (Const.FJCONFIG_CLASSES.indexOf(item[Const.FJCONFIG_CLASS]) === -1) {
@@ -252,7 +251,6 @@ function Playlist() {
      */
     function addItem(item) {
         if (checkItem(item) === true) {
-            logger.info('Item is ok ', item);
             items.push(item);
             logger.info('Item added ok ', items.length);
             return true;

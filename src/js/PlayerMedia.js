@@ -289,7 +289,7 @@ function PlayerMedia() {
     };
 
     function onTracksAdded(e) {
-        logger.warn('########################################## Adding new  track :', e);
+        logger.debug('Eventing ## Adding new  track :', e);
         events.fireEvent(Const.PlayerEvents.TRACKS_ADDED);
         // USED To inform ui and add entry on subtitles menu list
         /* if (!captionMenu) {
@@ -329,14 +329,14 @@ function PlayerMedia() {
                 }
             }
         }
-
+        /*
         if ((CurrentStreamType === StreamTypes.DASH_CLEAR) ||
             (CurrentStreamType === StreamTypes.DASH_ENCRYPTED)) {
             // add dash subtitles to menu
             availableTracks = DashPlayer.getTracksFor('captions');
+            availableTracks.concat(DashPlayer.getTracksFor('subtitles'));
             logger.warn(' Find subtitles track on dash Stream !! : ', availableTracks);
-
-        }
+        } */
 
         logger.info(' stream is completly loaded  ');
         if ((thumbsTrackIndex !== -1) && (thumbsTrackUrl !== -1)) {
@@ -376,7 +376,7 @@ function PlayerMedia() {
                 video.appendChild(track);
             }
         } else {
-            logger.warn(' Subs was not found .');
+            logger.debug('no vtt Subs are found in config.');
         }
     };
 
@@ -442,6 +442,7 @@ function PlayerMedia() {
             DashPlayer.off(MediaPlayer.events.PLAYBACK_SEEKED, onSeeked, this);
             DashPlayer.off(MediaPlayer.events.PLAYBACK_SEEKING, onSeeking, this);
             DashPlayer.off(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, this);
+            DashPlayer.off(MediaPlayer.events.TEXT_TRACK_ADDED, onTracksAdded, this);
             DashPlayer.off(MediaPlayer.events.ERROR, onError, this);
         }
         CurrentStreamType = PlayerMedia.UNKNOWN;
@@ -521,7 +522,7 @@ function PlayerMedia() {
             logger.log(' Appending source thumbs to video', track);
             video.appendChild(track);
         } else {
-            logger.warn(' Thumbs was not found .');
+            logger.debug('No Thumbs vtt file is found on config.');
         }
         // set subs
         SetManuallysubs(subs, video);

@@ -73,12 +73,12 @@ function SubsMenu(mainVideo, subsBtnId, subsdMenuContDivId) {
         var item = null;
         SubsExist = false;
         mediaPlayer = playerMedia;
-        logger.warn(' Trying to setup menu subs !!! ');
+        logger.debug(' Trying to setup menu subs , text tracks length : ', video.textTracks.length);
         subsMenuDiv = document.getElementById(subsdMenuContainerDivId);
         subsMenuDiv.style.display = 'none';
         // check if exist
         for (i = 0; i < video.textTracks.length; i++) {
-            logger.warn(' @ text track number  ', i, ' and it type is ',
+            logger.debug(' @ text track number  ', i, ' and it type is ',
                 video.textTracks[i].kind);
             if ((video.textTracks[i].kind === 'captions') ||
                 (video.textTracks[i].kind === 'subtitles')) {
@@ -87,12 +87,12 @@ function SubsMenu(mainVideo, subsBtnId, subsdMenuContDivId) {
             }
         }
         if (SubsExist === false) {
-            logger.warn(' Subs Menu Not created !! ');
+            logger.debug(' Subs Menu Not created !! ');
             return SubsExist;
         }
         // Setting btn
         subtitlesBtn = document.getElementById(subtitlesBtnId);
-        logger.log('Setting the btn ', subtitlesBtn, ' from id ', subtitlesBtnId);
+        logger.debug('Setting the btn ', subtitlesBtn, ' from id ', subtitlesBtnId);
         // video array
         menuListSubs = document.getElementById(subsMenuListId);
         // clear old
@@ -130,7 +130,7 @@ function SubsMenu(mainVideo, subsBtnId, subsdMenuContDivId) {
                 item.addEventListener('click', function(ev) {
                     activateSubs(this);
                 });
-                logger.log('Setting Subs List @ ', i, ' item is ', item);
+                logger.debug('Setting Subs List @ ', i, ' item is ', item);
             }
         }
 

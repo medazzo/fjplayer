@@ -82,7 +82,7 @@ function AudsMenu(Playervideo, playerId, MenuContainerDivId) {
         if ((!video.audioTracks) || (video.audioTracks.length <= 1)) {
             // hide audio button
             logger.log(' Audio Menu not created !');
-            return;
+            return false;
         }
         // Setting inner of btn div
         audsbuttonDivID = buttonDivID;
@@ -126,7 +126,8 @@ function AudsMenu(Playervideo, playerId, MenuContainerDivId) {
             });
         }
 
-        logger.log(' Audio Menu created !', video.audioTracks.length, '! ', menuListAud);
+        logger.debug(' Audio Menu created !', video.audioTracks.length, '! ', menuListAud);
+        return true;
     };
     // ************************************************************************************
     // PUBLIC API

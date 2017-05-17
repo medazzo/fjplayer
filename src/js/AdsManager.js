@@ -170,7 +170,7 @@ function AdsManager() {
         var item = null;
         logger.info(' Checking Pre Ads Now .. ');
         if (settled !== true) {
-            logger.warn(' AdsMgr is not yet Settled !');
+            logger.warn('not yet Settled !');
             return false;
         }
         for (i = 0; i < preAds.length; i++) {

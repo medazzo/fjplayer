@@ -16,16 +16,16 @@ function playerTemplate() {
         '    </video> ' +
         '<div id=\"<%= videoCaptionId %>\"></div>' +
         '<div class=\"divInfoTop\" id=\"<%= videoInfoId %>\"> ' +
-        '    <span class=\" divIconBtn divconeontrolLeft fa  fa-arrow-left\"> </span> ' +
+        '    <span class=\" divIconBtn divconeontrolLeft fjcontrol-background fa  fa-arrow-left\"> </span> ' +
         '    <p class=\" divTspanitleSeparator divconeontrolLeft \"> </p> ' +
-        '    <div id=\"<%= titleId %>\" class=\"fjcontrols-control-text divIconBtn divconeontrolLeft\"> </div> ' +
-        '    <span class=\" divIconBtn divconeontrolRight fa  fa-share-alt \"> </span> ' +
+        '    <div id=\"<%= titleId %>\" class=\"fjcontrols-control-text  fjcontrol-background divIconBtn divconeontrolLeft\"> </div> ' +
+        '    <span class=\" divIconBtn divconeontrolRight  fjcontrol-background fa  fa-share-alt \"> </span> ' +
         '    <p class=\" divTspanitleSeparator divconeontrolRight \"> </p> ' +
-        '    <span class=\" divIconBtn divconeontrolRight  fa fa-download \"> </span> ' +
+        '    <span class=\" divIconBtn divconeontrolRight fjcontrol-background  fa fa-download \"> </span> ' +
         '</div> ' +
         '<div class=\"divInfoCenter\" > ' +
         '    <div id=\"<%= spinnerId %>\" class=\"fj-hide spinner\"> </div> ' +
-        '    <div class=\"divBigPlayBtn\"  id=\"<%= BigPlayBtnId %>\" > ' +
+        '    <div class=\"fjcontrol-background divBigPlayBtn\"  id=\"<%= BigPlayBtnId %>\" > ' +
         '        <span class=\" divIconBtn  divconeontrolLeft fa  fa-play \"> </span> ' +
         '    </div> ' +
         '</div> ' +
