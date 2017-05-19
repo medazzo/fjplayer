@@ -21,7 +21,7 @@ fjplayer:div
 	│   ├── fjvideocaption:div
 	│   ├── fjoverlayscontainer:div
     │   └── fjadscontainer:div
-	└── fjcontrolpanel:div
+	└── fjcontrolpanelbottom:div
         └── fjcontrolpanelUpper:div
 	    │   └── fjcontrolvideoprogress:input     [progress bar]
         └── fjcontrolpanelLower:div
@@ -37,46 +37,176 @@ fjplayer:div
 
 -->
     <style type="text/css">
-        .fj-video {}
+        .fj-player {}
         
-        .fj-text {}
+        .fj-figure {}
         
-        .fj-btn {}
+        .fjcontrol-background {
+            z-index: 2147483647;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            border-bottom-left-radius: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            background: rgba(10, 10, 10, 0.8);
+        }
         
-        .fj-progress {}
+        .divTspanitleSeparator {
+            position: relative;
+            visibility: visible;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            margin: 0px;
+            white-space: nowrap;
+            display: inline-block;
+            max-width: 766px;
+            font-size: 12px;
+            padding: 10px;
+        }
         
-        .fj-progress001 {}
-        /* ... */
+        .fjcontrols-panel {
+            z-index: 2147483647;
+            position: absolute;
+            border-radius: 5px;
+            bottom: 3%;
+            opacity: 0.8;
+            background: rgba(10, 10, 10, 0.8);
+            width: 90%;
+            margin-left: 5%;
+            display: relative;
+            float: left;
+        }
+        /*---------- position Horizental -----------*/
         
-        .fj-progress010 {}
-        /* ... */
+        .fj-horizental-top {
+            z-index: 2147483647;
+            border-radius: 5px;
+            top: 10%;
+            width: 80%;
+            position: absolute;
+            left: 10%;
+        }
         
-        .fj-progress100 {}
-        /*---------- icons -----------*/
+        .fj-horizental-center {
+            top: 45%;
+            position: absolute;
+        }
         
-        .fj-icon-left-arrow {}
+        .fj-horizental-bottomMenus {
+            z-index: 2147483647;
+            position: absolute;
+            border-radius: 5px;
+            bottom: 22%;
+            opacity: 0.8;
+            background: rgba(10, 10, 10, 0.8);
+            width: 90%;
+            margin-left: 5%;
+            display: relative;
+        }
         
-        .fj-icon-download {}
+        .fj-horizental-bottomUpper {
+            z-index: 2147483647;
+            position: absolute;
+            border-radius: 5px;
+            bottom: 12%;
+            opacity: 0.8;
+            background: rgba(10, 10, 10, 0.8);
+            width: 90%;
+            margin-left: 5%;
+            display: relative;
+        }
         
-        .fj-icon-share {}
+        .fj-horizental-bottomLower {
+            z-index: 2147483647;
+            position: absolute;
+            border-radius: 5px;
+            bottom: 2%;
+            opacity: 0.8;
+            background: rgba(10, 10, 10, 0.8);
+            width: 90%;
+            margin-left: 5%;
+            display: relative;
+        }
+        /*---------- position Vertical -----------*/
         
-        .fj-icon-play {}
+        .fj-vertical-left {
+            float: left;
+        }
         
-        .fj-icon-pause {}
+        .fj-vertical-center {
+            left: 50%;
+        }
         
-        .fj-icon-vol-up {}
+        .fj-vertical-right {
+            float: right;
+        }
+        /*---------- types -----------*/
         
-        .fj-icon-vol-down {}
+        .fj-video {
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
         
-        .fj-icon-mute {}
+        .fj-text {
+            font-size: 1em;
+            line-height: 2;
+        }
         
-        .fj-icon-audios {}
+        .fj-smallText {
+            font-size: 1em;
+            line-height: 2;
+        }
         
-        .fj-icon-subs {}
+        .fj-btn {
+            z-index: 2147483647;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            border-bottom-left-radius: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            position: relative;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            display: inline-block;
+            cursor: pointer;
+        }
         
-        .fj-icon-full-screen {}
+        .fj-btn:hover {
+            opacity: 1.0;
+            background: #333;
+        }
         
-        .fj-icon-compress-screen {}
+        .fj-overlayContainer {
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+            padding: 0px;
+            position: absolute;
+        }
+        
+        .fj-overlay {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.5);
+            float: left;
+            font-size: 12px;
+            padding: 5px;
+            border-radius: 5px;
+            z-index: 2147483647;
+            top: 20%;
+            left: 20%;
+            height: auto;
+        }
+        
+        .fj-adsinfo {}
     </style>
     <script type="text/javascript">
     </script>

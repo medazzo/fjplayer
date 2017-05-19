@@ -6,8 +6,34 @@
 //global for Conrols
 @fjBackgroundControlColor : rgba(0, 0, 0, 0.5);
 @fjBackgroundControlColorOnHover :#6c6c6c;
-
-
+////////////////////////////////////////////////////// -------------------  ICONS ------------------- /////////////////////////////////////////////
+@fjIconsFont: "FontAwesome";
+@fjIconsNames:leftarrow,download,share,play,playNext,playPrevious,pause,volUp,volDown,mute,audios,subs,fullScrenn,compressScreen,close;
+@fjIconsContents: "\f060","\f019","\f1e0","\f04b", "\f051","\f048", "\f04c","\f028","\f027","\f026", "\f04c", "\f20a", "\f0b2","\f066","\f2d3";
+.make-icons-classes(@i: length(@fjIconsNames)) when (@i > 0) {
+    .make-icons-classes(@i - 1);
+    @name: extract(@fjIconsNames, @i); 
+    @code: extract(@fjIconsContents, @i); 
+      .fj-icon-@{name} {
+         font-family: @fjIconsFont;
+       content:@code;
+    }
+}
+.make-icons-classes(); 
+////////////////////////////////////////////////////// -------------------  PROGRESS ------------------- //////////////////////////////////////////
+@progressBackgroud: #FF0000;
+@progressForeground: #8F9B9E;
+@iterations: 1000;
+.loopingClass (@index) when (@index > 0) {
+    .progress@{index} {  
+      background-image: -webkit-gradient(linear, left top, right top,
+        color-stop(@index, @progressBackgroud), color-stop(@index, @progressForeground));        
+    }
+    .loopingClass(@index - 1);
+}
+.loopingClass (0) {}
+.loopingClass (@iterations );
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 .transition(@transition) {
   -webkit-transition: @transition;
 -moz-transition: @transition;
@@ -33,21 +59,3 @@ a {
   font-weight: bold;
 }
 
-
-@progressBackgroud: #FF0000;
-@progressForeground: #8F9B9E;
-
-@iterations: 100;
-.loopingClass (@index) when (@index > 0) {
-    .progress@{index} {  
-      background-image: -webkit-gradient(linear, left top, right top,
-        color-stop(@index, @progressBackgroud), color-stop(@index, @progressForeground));        
-    }
-    .loopingClass(@index - 1);
-}
-
-// end the loop when index is 0
-.loopingClass (0) {}
-
-// "call" the loopingClass the first time with highest value
-.loopingClass (@iterations );
