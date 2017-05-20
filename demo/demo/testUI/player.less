@@ -1,8 +1,8 @@
 // global definitions 
-@fjThemeColor:#FF0000 ;
-@progressForeground: #8F9B9E;
-@progressHeight:12px;
-@progressBorder: #3C4447;
+@fjThemeColor:#00FF00 ;
+@fjProgressForeground: #8F9B9E;
+@fjProgressHeight:10px;
+@fjProgressBorder: #3C4447;
 @fjThemeFontFamily: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 @fjThemeFontSize: 12px;
 @fjThemeTextColor: #FFFFFF;
@@ -12,6 +12,8 @@
 @fjItemsOpacityOnHover:100;
 @fjZindex:2147483647;
 @fjBorderRadius:5px;
+@fjOverlayAnnonceColor:rgb(119, 255, 119);
+@fjOverlayLinkColor:rgb(255, 255, 0);
 ////////////////////////////////////////////////////// -------------------  ICONS ------------------- /////////////////////////////////////////////
 @fjIconsFont: "FontAwesome";
 @fjIconsNames:leftarrow,download,share,play,playNext,playPrevious,pause,volUp,volDown,mute,audios,subs,fullScrenn,compressScreen,close;
@@ -78,18 +80,6 @@ a {
      .opacity(@fjItemsOpacityOnHover);
      background: @fjBackgroundControlColorOnHover;
  }
-.fjcontrols-panel {
-    z-index: @fjZindex;
-    position: absolute;
-    border-radius: @fjBorderRadius;
-    bottom: 3%;
-    .opacity(@fjItemsOpacity);
-    background: rgba(10, 10, 10, 0.8);
-    width: 90%;
-    margin-left: 5%;
-    display: relative;
-    float: left;
-}
 .fj-video-progress {
     margin-bottom: 0.5%;
     margin-top: 0.5%;
@@ -109,7 +99,6 @@ a {
      font-size: 12px;
      padding: 10px;
  }
-
  .fj-horizental-top {
      z-index:  @fjZindex;
      border-radius: @fjBorderRadius;
@@ -118,7 +107,6 @@ a {
      position: absolute;
      left: 10%;
  }
- 
  .fj-horizental-center {
      z-index:  @fjZindex;
      border-radius: @fjBorderRadius;
@@ -127,7 +115,6 @@ a {
      position: absolute;
      left: 10%;
  }
- 
  .fj-horizental-bottomMenus {
      z-index:  @fjZindex;
      position: absolute;
@@ -139,7 +126,6 @@ a {
      margin-left: 5%;
      display: relative;
  }
- 
  .fj-horizental-bottomUpper {
      z-index:  @fjZindex;
      position: absolute;
@@ -151,7 +137,6 @@ a {
      margin-left: 5%;
      display: relative;
  }
- 
  .fj-horizental-bottomLower {
      z-index:  @fjZindex;
      position: absolute;
@@ -163,22 +148,19 @@ a {
      margin-left: 5%;
      display: relative;
  }
- 
  .fj-timers {
-     color: rgb(255, 255, 255);
+     color: @fjThemeTextColor ;
      cursor: default;
      padding-right: 10px !important;
      padding-top: 0.5% !important;
  }
- 
  .fj-desc {
-     color: rgb(255, 255, 255);
+     color: @fjThemeTextColor;
      cursor: default;
      padding-left: 10px !important;
      padding-top: 0.5% !important;
  }
  /*---------- position Vertical -----------*/
- 
  .fj-vertical-separator {
      position: relative;
      visibility: visible;
@@ -191,39 +173,32 @@ a {
      font-size: 12px;
      padding: 10px;
  }
- 
  .fj-vertical-left {
      position: relative;
      float: left;
  }
- 
  .fj-vertical-center {
      position: relative;
  }
- 
  .fj-vertical-right {
      position: relative;
      float: right;
  }
  /*---------- types -----------*/
- 
  .fj-video {
      -webkit-background-size: cover;
      -moz-background-size: cover;
      -o-background-size: cover;
      background-size: cover;
  }
- 
  .fj-text {
      font-size: 1em;
      line-height: 2;
  }
- 
  .fj-smallText {
      font-size: 1em;
      line-height: 2;
  }
- 
  .fj-btn {
      border-top-left-radius: 5px;
      border-top-right-radius: 5px;
@@ -238,7 +213,6 @@ a {
      white-space: nowrap;
      display: inline-block;
  }
- 
  .fj-big-btn {
      border-top-left-radius: 5px;
      border-top-right-radius: 5px;
@@ -256,11 +230,9 @@ a {
      margin-top: -15px;
      margin-left: -15px;
  }
- 
  .fj-hide {
      visibility: hidden;
  }
- 
  .fj-overlayContainer {
      width: 100%;
      height: 100%;
@@ -268,7 +240,6 @@ a {
      padding: 0px;
      position: absolute;
  }
- 
  .fj-overlay {
      position: absolute;
      background: rgba(0, 0, 0, 0.5);
@@ -281,9 +252,7 @@ a {
      left: 20%;
      height: auto;
  }
- 
  .fj-adsinfo {}
- 
  .fj-fa-icon {
      font-family: FontAwesome;
      font-size: 1.3em;
@@ -328,7 +297,7 @@ a {
     -moz-appearance: none;
     position: relative;
     overflow: hidden;
-    height: 12px ;
+    height: @fjProgressHeight ;
     width: 98% !important;    
     border-radius:  @fjBorderRadius;     
     cursor: pointer;
@@ -340,28 +309,28 @@ a {
  }
 // WEBKIT ======================================================
  input[type='range']::-webkit-slider-runnable-track {
-    background: @progressForeground;
+    background: @fjProgressForeground;
     border-radius:  @fjBorderRadius;     
 }
 input[type='range']::-webkit-slider-thumb,
 input[type='range']::-webkit-media-slider-thumb {
-    background:@progressForeground;
+    background:@fjProgressForeground;
     box-shadow: -100vw 0 0 100vw @fjThemeColor;
-    border: 2px solid @progressBorder ;
+    border: 2px solid @fjProgressBorder ;
     color: @fjThemeColor;
-    height: @progressHeight;
+    height: @fjProgressHeight;
     border-radius: 100%;
 }
  // Mozilla ====================================================
 input[type='range']::-moz-range-track {
-    background: @progressForeground;
-    height: @progressHeight ;
+    background: @fjProgressForeground;
+    height: @fjProgressHeight ;
     border-radius:  @fjBorderRadius;     
 }
 input[type='range']::-moz-range-thumb {    
     color: @fjThemeColor;
-    height: @progressHeight;
-    border: 2px solid  @progressBorder;
+    height: @fjProgressHeight;
+    border: 2px solid  @fjProgressBorder;
     border-radius:  @fjBorderRadius;    
     box-shadow: -100vw 0 0 100vw @fjThemeColor;
 }
@@ -371,19 +340,17 @@ input[type="range"]::-moz-range-progress {
      background-color: #FF0000;
 }
 input[type='range']::-ms-fill-upper {
-    background-color: @progressForeground;
+    background-color: @fjProgressForeground;
 }
 input[type='range']::-ms-fill-lower {
     background-color: @fjThemeColor;
 }*/
  /* ---------------------- Menu style --------------------- */
- 
  .fj-list-title {
      cursor: default;
      font-weight: bold;
      padding: 5px;
  }
- 
  .settingMenuDiv {
      position: absolute;
      background: rgba(10, 10, 10, 0.8);
@@ -394,18 +361,15 @@ input[type='range']::-ms-fill-lower {
      padding-right: 5px;
      list-style-type: none;
  }
- 
  .settingMenuDivnt div,
  .settingMenuDivnt ul {
      display: inline;
      list-style-type: none;
  }
- 
  .fj-list {
      list-style-type: none;
      padding-left: 25px;
  }
- 
  .settingMenuSubMenuRight {
      float: left;
      width: 100%;
@@ -413,14 +377,12 @@ input[type='range']::-ms-fill-lower {
      padding-left: 5px;
      padding-right: 5px;
  }
- 
  .subtitles-menu-item-actif {
      cursor: pointer;
      text-align: left;
      border-radius: @fjBorderRadius;
      opacity: 1;
  }
- 
  .subtitles-menu-item-actif:before {
      content: "\f00c";
      /* FontAwesome Unicode */
@@ -431,16 +393,13 @@ input[type='range']::-ms-fill-lower {
      width: 1.3em;
      /* same as padding-left set on li */
  }
- 
  .subtitles-menu-item {
      cursor: pointer;
      text-align: left;
      list-style-type: none;
      opacity: 0.9;
- }
- 
+ } 
  /*------------------ OVERLAYS -------------*/
- 
  .fj-overlays-container {
      width: 100%;
      height: 100%;
@@ -449,7 +408,6 @@ input[type='range']::-ms-fill-lower {
      /*position: relative;*/
      position: absolute;
  }
- 
  .over-HL {
      position: absolute;
      background: rgba(0, 0, 0, 0.5);
@@ -462,7 +420,6 @@ input[type='range']::-ms-fill-lower {
      left: 20%;
      height: auto;
  }
- 
  .over-HR {
      position: absolute;
      background: rgba(0, 0, 0, 0.5);
@@ -475,29 +432,25 @@ input[type='range']::-ms-fill-lower {
      left: 80%;
      height: auto;
  }
- 
  .fj-overlay-closing {
      float: right;
      text-decoration: none;
      display: inline-block;
  }
- 
  .fj-overlay-annonce {
-     color: rgb(119, 255, 119);
+     color: @fjOverlayAnnonceColor;
      font-size: 1em;
      float: left;
      text-decoration: none;
      display: inline-block;
  }
- 
  .fj-overlay-link {
-     color: rgb(255, 255, 0);
+     color: @fjOverlayLinkColor;
      font-size: 0.8em;
      float: left;
      text-decoration: none;
      display: inline-block;
  }
- 
  .fj-overlay-description {
      font-size: 1.2em;
      float: right;
@@ -505,7 +458,6 @@ input[type='range']::-ms-fill-lower {
      display: inline-block;
  }
  /* ---------------------- Thumbs style --------------------- */
- 
  .thumbsBlockDiv {
      position: absolute;
      margin-bottom: 15px;
@@ -513,11 +465,11 @@ input[type='range']::-ms-fill-lower {
      border-radius: @fjBorderRadius;
      bottom: 8%;
      background: rgba(10, 10, 10, 0.8);
- }
- 
+ } 
  .thumbsBlock {
      display: table-cell;
      border-radius: @fjBorderRadius;
      vertical-align: top;
      display: inline-block;
  }
+/*=====================================================================================================*/
