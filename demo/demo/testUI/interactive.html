@@ -3,7 +3,7 @@
 
 <head>
     <title>fjplayer testing ui</title>
-    <link rel="stylesheet" href="./playerNew.css">
+    <link rel="stylesheet" href="./tmp-toto.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
@@ -25,25 +25,27 @@
             var video = document.getElementById('videoId');
             video.currentTime = 50;
             video.pause();
-            var progressBar = document.getElementById('progressBarId');
-            progressBar.value = 50;
-            progressBar.min = 0;
-            progressBar.max = 100;
-            val = (progressBar.value - progressBar.min) / (progressBar.max - progressBar.min);
-            progressBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
-                'color-stop(' + val + ', #FF0000), ' +
-                'color-stop(' + val + ', #8F9B9E)' +
-                ')';
-
-            var volumeBar = document.getElementById('volumeBarId');
-            volumeBar.value = 5;
-            volumeBar.min = 0;
-            volumeBar.max = 10;
-            val = (volumeBar.value - volumeBar.min) / (volumeBar.max - volumeBar.min);
-            volumeBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
-                'color-stop(' + val + ', #FF0000), ' +
-                'color-stop(' + val + ', #8F9B9E)' +
-                ')';
+            /*  var progressBar = document.getElementById('progressBarId');
+             progressBar.value = 50;
+             progressBar.min = 0;
+             progressBar.max = 100;
+             val = (progressBar.value - progressBar.min) / (progressBar.max - progressBar.min);
+            progressBar.classlist.add("progress70");
+             progressBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
+                 'color-stop(' + val + ', #FF0000), ' +
+                 'color-stop(' + val + ', #8F9B9E)' +
+                 ')';
+             
+             var volumeBar = document.getElementById('volumeBarId');
+             volumeBar.value = 5;
+             volumeBar.min = 0;
+             volumeBar.max = 10;
+             val = (volumeBar.value - volumeBar.min) / (volumeBar.max - volumeBar.min);
+             volumeBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
+                 'color-stop(' + val + ', #FF0000), ' +
+                 'color-stop(' + val + ', #8F9B9E)' +
+                 ')';
+                 */
         }
     </script>
 </head>
@@ -118,7 +120,7 @@
                                 <div class="fj-horizental-bottomLower">
                                     <!--  the video progress Bar -->
                                     <div class="fj-vertical-center">
-                                        <input class=" fj-control-embd fj-video-progress" id="progressBarId" type="range" />
+                                        <input class=" fj-control-embd fj-video-progress" id="progressBarId" type="range" min="0" max="1000" step="1" value="500" />
                                     </div>
                                     <!--  play,previous and next controls  -->
                                     <span class=" fj-vertical-left fj-control-embd fj-btn fj-fa-icon fa-step-backward" aria-hidden="true" id="playpauseBtnId" title="previous"> </span>
@@ -127,7 +129,7 @@
                                     <!--  mute and volume bar controls  -->
                                     <span class=" fj-vertical-left fj-control-embd fj-btn fj-fa-icon fa-volume-up" aria-hidden="true" id="muteBtnId" title="mute"> </span>
                                     <div class="fj-vertical-left  volumebar" id="volumeDivId">
-                                        <input id="volumeBarId" class="fj-control-embd" type="range" />
+                                        <input id="volumeBarId" class="fj-control-embd" type="range" min="0" max="1000" step="1" value="500" />
                                     </div>
                                     <!--  more description of the stream   -->
                                     <div class=" fj-vertical-left fj-desc " title="times">

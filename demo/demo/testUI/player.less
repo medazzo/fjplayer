@@ -1,11 +1,17 @@
 // global definitions 
 @fjThemeColor:#FF0000 ;
+@progressForeground: #8F9B9E;
+@progressHeight:12px;
+@progressBorder: #3C4447;
 @fjThemeFontFamily: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 @fjThemeFontSize: 12px;
 @fjThemeTextColor: #FFFFFF;
-//global for Conrols
 @fjBackgroundControlColor : rgba(0, 0, 0, 0.5);
-@fjBackgroundControlColorOnHover :#6c6c6c;
+@fjBackgroundControlColorOnHover :#6c6c6c; // 545353
+@fjItemsOpacity:75;
+@fjItemsOpacityOnHover:100;
+@fjZindex:2147483647;
+@fjBorderRadius:5px;
 ////////////////////////////////////////////////////// -------------------  ICONS ------------------- /////////////////////////////////////////////
 @fjIconsFont: "FontAwesome";
 @fjIconsNames:leftarrow,download,share,play,playNext,playPrevious,pause,volUp,volDown,mute,audios,subs,fullScrenn,compressScreen,close;
@@ -20,29 +26,18 @@
     }
 }
 .make-icons-classes(); 
-////////////////////////////////////////////////////// -------------------  PROGRESS ------------------- //////////////////////////////////////////
-@progressBackgroud: #FF0000;
-@progressForeground: #8F9B9E;
-@iterations: 1000;
-.loopingClass (@index) when (@index > 0) {
-    .progress@{index} {  
-      background-image: -webkit-gradient(linear, left top, right top,
-        color-stop(@index, @progressBackgroud), color-stop(@index, @progressForeground));        
-    }
-    .loopingClass(@index - 1);
+////////////////////////////////////////////////////// -------------------  OPACITY ------------------- //////////////////////////////////////////
+.opacity(@opacity) {
+  opacity: @opacity / 100;
+  filter: ~"alpha(opacity=@{opacity})";
 }
-.loopingClass (0) {}
-.loopingClass (@iterations );
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 .transition(@transition) {
   -webkit-transition: @transition;
 -moz-transition: @transition;
 -o-transition: @transition;
 transition: @transition;
-}
-.opacity(@opacity) {
-  opacity: @opacity / 100;
-  filter: ~"alpha(opacity=@{opacity})";
 }
 
 a {
@@ -51,11 +46,478 @@ a {
   .opacity(70);
   }
 }
-
-// Selector interpolation only works in 1.3.1+. Try it!
-@theGoodThings: ~".food, .beer, .sleep, .javascript";
-
-@{theGoodThings} {
-  font-weight: bold;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*---------- general & component -----------*/
+.fj-player {
+     margin: 0 auto;
+ } 
+ .fj-figure {
+     background-color:@fjBackgroundControlColor;
+     color:@fjThemeTextColor;
+     text-align: center;
+     position: relative;
+     margin: 0px auto 0px auto;
+     display: inline-block;
+     font-family: @fjThemeFontFamily;
+     font-size:@fjThemeFontSize;     
+     width: 100%;
+ }
+ .fj-control {
+     background-color:@fjBackgroundControlColor;
+     color:@fjThemeTextColor;     
+     .opacity(@fjItemsOpacity);
+     cursor: pointer;
+ }
+ .fj-control-embd {     
+     color:@fjThemeTextColor;     
+     .opacity(@fjItemsOpacity);
+     cursor: pointer;
+ }
+ .fj-control-embd:hover,
+ .fj-control:hover {
+     .opacity(@fjItemsOpacityOnHover);
+     background: @fjBackgroundControlColorOnHover;
+ }
+.fjcontrols-panel {
+    z-index: @fjZindex;
+    position: absolute;
+    border-radius: @fjBorderRadius;
+    bottom: 3%;
+    .opacity(@fjItemsOpacity);
+    background: rgba(10, 10, 10, 0.8);
+    width: 90%;
+    margin-left: 5%;
+    display: relative;
+    float: left;
 }
+.fj-video-progress {
+    margin-bottom: 0.5%;
+    margin-top: 0.5%;
+    padding-left: 1px;
+    padding-right: 1px;
+}
+/*---------- position Horizental -----------*/
+ .divTspanitleSeparator {
+     position: relative;
+     visibility: visible;
+     text-overflow: ellipsis;
+     overflow: hidden;
+     margin: 0px;
+     white-space: nowrap;
+     display: inline-block;
+     max-width: 766px;
+     font-size: 12px;
+     padding: 10px;
+ }
 
+ .fj-horizental-top {
+     z-index:  @fjZindex;
+     border-radius: @fjBorderRadius;
+     top: 5%;
+     width: 80%;
+     position: absolute;
+     left: 10%;
+ }
+ 
+ .fj-horizental-center {
+     z-index:  @fjZindex;
+     border-radius: @fjBorderRadius;
+     top: 45%;
+     width: 80%;
+     position: absolute;
+     left: 10%;
+ }
+ 
+ .fj-horizental-bottomMenus {
+     z-index:  @fjZindex;
+     position: absolute;
+     border-radius: @fjBorderRadius;
+     bottom: 22%;
+     opacity: 0.8;
+     background: rgba(10, 10, 10, 0.8);
+     width: 90%;
+     margin-left: 5%;
+     display: relative;
+ }
+ 
+ .fj-horizental-bottomUpper {
+     z-index:  @fjZindex;
+     position: absolute;
+     border-radius: @fjBorderRadius;
+     bottom: 12%;
+     opacity: 0.8;
+     background: rgba(10, 10, 10, 0.8);
+     width: 90%;
+     margin-left: 5%;
+     display: relative;
+ }
+ 
+ .fj-horizental-bottomLower {
+     z-index:  @fjZindex;
+     position: absolute;
+     border-radius: @fjBorderRadius;
+     bottom: 2%;
+     opacity: 0.8;
+     background: rgba(10, 10, 10, 0.8);
+     width: 90%;
+     margin-left: 5%;
+     display: relative;
+ }
+ 
+ .fj-timers {
+     color: rgb(255, 255, 255);
+     cursor: default;
+     padding-right: 10px !important;
+     padding-top: 0.5% !important;
+ }
+ 
+ .fj-desc {
+     color: rgb(255, 255, 255);
+     cursor: default;
+     padding-left: 10px !important;
+     padding-top: 0.5% !important;
+ }
+ /*---------- position Vertical -----------*/
+ 
+ .fj-vertical-separator {
+     position: relative;
+     visibility: visible;
+     text-overflow: ellipsis;
+     overflow: hidden;
+     margin: 0px;
+     white-space: nowrap;
+     display: inline-block;
+     max-width: 766px;
+     font-size: 12px;
+     padding: 10px;
+ }
+ 
+ .fj-vertical-left {
+     position: relative;
+     float: left;
+ }
+ 
+ .fj-vertical-center {
+     position: relative;
+ }
+ 
+ .fj-vertical-right {
+     position: relative;
+     float: right;
+ }
+ /*---------- types -----------*/
+ 
+ .fj-video {
+     -webkit-background-size: cover;
+     -moz-background-size: cover;
+     -o-background-size: cover;
+     background-size: cover;
+ }
+ 
+ .fj-text {
+     font-size: 1em;
+     line-height: 2;
+ }
+ 
+ .fj-smallText {
+     font-size: 1em;
+     line-height: 2;
+ }
+ 
+ .fj-btn {
+     border-top-left-radius: 5px;
+     border-top-right-radius: 5px;
+     border-bottom-right-radius: 5px;
+     border-bottom-left-radius: 5px;
+     padding-left: 10px;
+     padding-right: 10px;
+     padding-top: 5px;
+     padding-bottom: 5px;
+     text-overflow: ellipsis;
+     overflow: hidden;
+     white-space: nowrap;
+     display: inline-block;
+ }
+ 
+ .fj-big-btn {
+     border-top-left-radius: 5px;
+     border-top-right-radius: 5px;
+     border-bottom-right-radius: 5px;
+     border-bottom-left-radius: 5px;
+     padding-left: 10px;
+     padding-right: 10px;
+     padding-top: 5px;
+     padding-bottom: 5px;
+     text-overflow: ellipsis;
+     overflow: hidden;
+     white-space: nowrap;
+     display: inline-block;
+     font-size: 3.6em !important;
+     margin-top: -15px;
+     margin-left: -15px;
+ }
+ 
+ .fj-hide {
+     visibility: hidden;
+ }
+ 
+ .fj-overlayContainer {
+     width: 100%;
+     height: 100%;
+     margin: 0 auto;
+     padding: 0px;
+     position: absolute;
+ }
+ 
+ .fj-overlay {
+     position: absolute;
+     background: rgba(0, 0, 0, 0.5);
+     float: left;
+     font-size: 12px;
+     padding: 5px;
+     border-radius: @fjBorderRadius;
+     z-index:  @fjZindex;
+     top: 20%;
+     left: 20%;
+     height: auto;
+ }
+ 
+ .fj-adsinfo {}
+ 
+ .fj-fa-icon {
+     font-family: FontAwesome;
+     font-size: 1.3em;
+ }
+ /* ----------------------- spinner  ------------------------ */
+ 
+ @keyframes spinner {
+     to {
+         transform: rotate(360deg);
+     }
+ }
+ 
+ .spinner:before {
+     content: '';
+     box-sizing: border-box;
+     z-index:  @fjZindex;
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     width: 30px;
+     height: 30px;
+     margin-top: -15px;
+     margin-left: -15px;
+     border-radius: 50%;
+     border: 3px solid #ccc;
+     border-top-color: #FF0000;
+     animation: spinner .6s linear infinite;
+ }
+ /*_________________________ RANGE ________________________*/
+ 
+ .volumebar {
+     margin-top: 1%;
+     padding-left: 1%;
+     padding-right: 3%;
+     border-left: none;
+     border-right: none;
+ }
+ // Generic ======================================================
+ input[type="range"] {   
+     margin: auto;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+    overflow: hidden;
+    height: 12px ;
+    width: 98% !important;    
+    border-radius:  @fjBorderRadius;     
+    cursor: pointer;
+    margin-top: 2px;
+    margin-bottom: 2px;
+ } 
+ input[type=range]:focus {
+     outline: none;
+ }
+// WEBKIT ======================================================
+ input[type='range']::-webkit-slider-runnable-track {
+    background: @progressForeground;
+    border-radius:  @fjBorderRadius;     
+}
+input[type='range']::-webkit-slider-thumb,
+input[type='range']::-webkit-media-slider-thumb {
+    background:@progressForeground;
+    box-shadow: -100vw 0 0 100vw @fjThemeColor;
+    border: 2px solid @progressBorder ;
+    color: @fjThemeColor;
+    height: @progressHeight;
+    border-radius: 100%;
+}
+ // Mozilla ====================================================
+input[type='range']::-moz-range-track {
+    background: @progressForeground;
+    height: @progressHeight ;
+    border-radius:  @fjBorderRadius;     
+}
+input[type='range']::-moz-range-thumb {    
+    color: @fjThemeColor;
+    height: @progressHeight;
+    border: 2px solid  @progressBorder;
+    border-radius:  @fjBorderRadius;    
+    box-shadow: -100vw 0 0 100vw @fjThemeColor;
+}
+// IE ==========================================================
+/* todo 
+input[type="range"]::-moz-range-progress {
+     background-color: #FF0000;
+}
+input[type='range']::-ms-fill-upper {
+    background-color: @progressForeground;
+}
+input[type='range']::-ms-fill-lower {
+    background-color: @fjThemeColor;
+}*/
+ /* ---------------------- Menu style --------------------- */
+ 
+ .fj-list-title {
+     cursor: default;
+     font-weight: bold;
+     padding: 5px;
+ }
+ 
+ .settingMenuDiv {
+     position: absolute;
+     background: rgba(10, 10, 10, 0.8);
+     bottom: 10%;
+     left: 85%;
+     margin-bottom: 15px;
+     border-radius: @fjBorderRadius;
+     padding-right: 5px;
+     list-style-type: none;
+ }
+ 
+ .settingMenuDivnt div,
+ .settingMenuDivnt ul {
+     display: inline;
+     list-style-type: none;
+ }
+ 
+ .fj-list {
+     list-style-type: none;
+     padding-left: 25px;
+ }
+ 
+ .settingMenuSubMenuRight {
+     float: left;
+     width: 100%;
+     border-left: 1px solid #2A2A2A;
+     padding-left: 5px;
+     padding-right: 5px;
+ }
+ 
+ .subtitles-menu-item-actif {
+     cursor: pointer;
+     text-align: left;
+     border-radius: @fjBorderRadius;
+     opacity: 1;
+ }
+ 
+ .subtitles-menu-item-actif:before {
+     content: "\f00c";
+     /* FontAwesome Unicode */
+     font-family: FontAwesome;
+     display: inline-block;
+     margin-left: -1.3em;
+     /* same as padding-left set on li */
+     width: 1.3em;
+     /* same as padding-left set on li */
+ }
+ 
+ .subtitles-menu-item {
+     cursor: pointer;
+     text-align: left;
+     list-style-type: none;
+     opacity: 0.9;
+ }
+ 
+ /*------------------ OVERLAYS -------------*/
+ 
+ .fj-overlays-container {
+     width: 100%;
+     height: 100%;
+     margin: 0 auto;
+     padding: 0px;
+     /*position: relative;*/
+     position: absolute;
+ }
+ 
+ .over-HL {
+     position: absolute;
+     background: rgba(0, 0, 0, 0.5);
+     float: left;
+     padding: 5px;
+     border-radius: @fjBorderRadius;
+     z-index:  @fjZindex;
+     /****/
+     top: 25%;
+     left: 20%;
+     height: auto;
+ }
+ 
+ .over-HR {
+     position: absolute;
+     background: rgba(0, 0, 0, 0.5);
+     float: left;
+     padding: 5px;
+     border-radius: @fjBorderRadius;
+     z-index:  @fjZindex;
+     /****/
+     top: 25%;
+     left: 80%;
+     height: auto;
+ }
+ 
+ .fj-overlay-closing {
+     float: right;
+     text-decoration: none;
+     display: inline-block;
+ }
+ 
+ .fj-overlay-annonce {
+     color: rgb(119, 255, 119);
+     font-size: 1em;
+     float: left;
+     text-decoration: none;
+     display: inline-block;
+ }
+ 
+ .fj-overlay-link {
+     color: rgb(255, 255, 0);
+     font-size: 0.8em;
+     float: left;
+     text-decoration: none;
+     display: inline-block;
+ }
+ 
+ .fj-overlay-description {
+     font-size: 1.2em;
+     float: right;
+     text-decoration: none;
+     display: inline-block;
+ }
+ /* ---------------------- Thumbs style --------------------- */
+ 
+ .thumbsBlockDiv {
+     position: absolute;
+     margin-bottom: 15px;
+     padding-top: 5px;
+     border-radius: @fjBorderRadius;
+     bottom: 8%;
+     background: rgba(10, 10, 10, 0.8);
+ }
+ 
+ .thumbsBlock {
+     display: table-cell;
+     border-radius: @fjBorderRadius;
+     vertical-align: top;
+     display: inline-block;
+ }

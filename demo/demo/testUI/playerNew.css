@@ -33,19 +33,6 @@
      background: #545353;
  }
  
- .divTspanitleSeparator {
-     position: relative;
-     visibility: visible;
-     text-overflow: ellipsis;
-     overflow: hidden;
-     margin: 0px;
-     white-space: nowrap;
-     display: inline-block;
-     max-width: 766px;
-     font-size: 12px;
-     padding: 10px;
- }
- 
  .fjcontrols-panel {
      z-index: 2147483647;
      position: absolute;
@@ -66,6 +53,19 @@
      padding-right: 1px;
  }
  /*---------- position Horizental -----------*/
+ 
+ .divTspanitleSeparator {
+     position: relative;
+     visibility: visible;
+     text-overflow: ellipsis;
+     overflow: hidden;
+     margin: 0px;
+     white-space: nowrap;
+     display: inline-block;
+     max-width: 766px;
+     font-size: 12px;
+     padding: 10px;
+ }
  
  .fj-horizental-top {
      z-index: 2147483647;
@@ -318,6 +318,7 @@
  /* ---------------------- Menu style --------------------- */
  
  .fj-list-title {
+     cursor: default;
      font-weight: bold;
      padding: 5px;
  }
