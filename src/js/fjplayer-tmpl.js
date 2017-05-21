@@ -11,67 +11,72 @@ function playerTemplate() {
         _DEFAULT_DELIMITER = '%',
         regExpChars = /[|\\{}()[\]^$+*?.]/g,
         template =
-        '<figure id=\"<%= videoFigureId %>\" class=\"fjfigure\" data-fullscreen=\"<%= fullScreenOnStart %>\"> ' +
-        '<video id=\"<%= videoId %>\" class=\"divofVideo\" width=\"<%= vwidth %>\"> ' +
-        '    </video> ' +
-        '<div id=\"<%= videoCaptionId %>\"></div>' +
-        '<div class=\"divInfoTop\" id=\"<%= videoInfoId %>\"> ' +
-        '    <span class=\" divIconBtn divconeontrolLeft fjcontrol-background fa  fa-arrow-left\"> </span> ' +
-        '    <p class=\" divTspanitleSeparator divconeontrolLeft \"> </p> ' +
-        '    <div id=\"<%= titleId %>\" class=\"fjcontrols-control-text  fjcontrol-background divIconBtn divconeontrolLeft\"> </div> ' +
-        '    <span class=\" divIconBtn divconeontrolRight  fjcontrol-background fa  fa-share-alt \"> </span> ' +
-        '    <p class=\" divTspanitleSeparator divconeontrolRight \"> </p> ' +
-        '    <span class=\" divIconBtn divconeontrolRight fjcontrol-background  fa fa-download \"> </span> ' +
-        '</div> ' +
-        '<div class=\"divInfoCenter\" > ' +
-        '    <div id=\"<%= spinnerId %>\" class=\"fj-hide spinner\"> </div> ' +
-        '    <div class=\"fjcontrol-background divBigPlayBtn\"  id=\"<%= BigPlayBtnId %>\" > ' +
-        '        <span class=\" divIconBtn  divconeontrolLeft fa  fa-play \"> </span> ' +
+        '<figure id=\"<%= videoFigureId %>\" class="fj-figure" data-fullscreen=\"<%= fullScreenOnStart %>\"> ' +
+        '    <!-- video element -->  ' +
+        '    <video id=\"<%= videoId %>\" class="fj-video" width=\ "<%= vwidth %>\"> </video> ' +
+        '    <!-- Horizental Tpp --> ' +
+        '    <div class="fj-horizental-top" id=\"<%= videoInfoId %>\"> ' +
+        '        <span class=" fj-vertical-left  fj-control  fj-btn  fj-icon-leftarrow" aria-hidden="true"> </span> ' +
+        '        <div class=" fj-vertical-left  fj-vertical-separator "></div> ' +
+        '        <div class=" fj-vertical-left  fj-control  fj-btn " id=\"<%= titleId %>\"> </div> ' +
+        '        <span class=" fj-vertical-right fj-control  fj-btn  fj-icon-share  " aria-hidden="true"> </span> ' +
+        '        <div class=" fj-vertical-right  fj-vertical-separator "></div> ' +
+        '        <span class=" fj-vertical-right fj-control  fj-btn  fj-icon-download " aria-hidden="true"> </span> ' +
         '    </div> ' +
-        '</div> ' +
-        '<div class=\"fjcontrols-panel\" id=\"<%= videoControlsId %>\"> ' +
-        '    <div class=\"fjcontrols-panel-controls  \"> ' +
-        '       <div id=\"<%= subsdMenuContainerDivId %>\"></div> ' +
+        '    <!-- Horizental Center --> ' +
+        '    <div class="fj-horizental-center"> ' +
+        '       <div class="fj-vertical-center">' +
+        '           <div id=\"<%= spinnerId %>\" class=" fj-hide spinner"> </div> ' +
+        '           <span class=" fj-control fj-big-btn  fj-icon-play"  aria-hidden="true" id=\"<%= BigPlayBtnId %>\"></span> ' +
         '    </div> ' +
-        '    <div class=\"fjcontrols-panel-controls\"> ' +
-        '        <div class=\"hprogressbar\" id=\"<%= progressDivId %>\"> ' +
-        '            <input id=\"<%= progressBarId %>\" type=\"range\" /> ' +
+        '    </div> ' +
+        '    <!-- Horizental Bottom Up used for menu  --> ' +
+        '    <div class="fj-horizental-bottomUpper"> ' +
+        '        <!-- video caption ued by dash player for caption --> ' +
+        '        <div id=\"<%=videoCaptionId %>\"></div> ' +
+        '        <!-- this present the thumbs image if exist--> ' +
+        '        <div class="thumbsBlockDiv" id=\"<%= thumbsDivId %>\" style="left: 349px; width: 160px;"> ' +
+        '            <span class="thumbsBlock" id=\"<%= thumbsImgId %>\"></span> ' +
+        '            <span class="fjcontrols-control-text" id=\"<%= thumbstimerId %>\"></span> ' +
+        '        </div> ' +
+        '        <!-- this present the subtitles or audios menu if exist  and when clicked--> ' +
+        '        <div class="fj-vertical-left" id=\"<%=menuContainerDivId %>\"> ' +
+        '            <!-- this will contains ads video or ads overlays --> ' +
+        '            <div id=\"<%=adsContainerDivId%>\"></div> ' +
         '        </div> ' +
         '    </div> ' +
-        '    <div class=\"fjcontrols-control divIconBtn divconeontrolIcon divconeontrolLeft clickable \"> ' +
-        '        <span id=\"<%= playpauseBtnId %>\" class=\"fa fa-play\" title=\"Play\"></span> ' +
-        '    </div> ' +
-        '    <div class=\"fjcontrols-control divconeontrolIcon divIconBtn divconeontrolLeft clickable\"> ' +
-        '        <span id=\"<%= muteBtnId %>\" title=\"volume-full\" class=\"fa fa-volume-up\"></span> ' +
-        '    </div> ' +
-        '    <div class=\"fjcontrols-control fjcontrols-control-left\"> ' +
-        '        <div class=\"volumebar\" id=\"<%= volumeDivId %>\"> ' +
-        '            <input class=\"clickable\" id=\"<%= volumeBarId %>\" type=\"range\" /> ' +
+        '    <!-- Horizental Bottom down used for fj controls  --> ' +
+        '    <div class="fj-horizental-bottomLower"  id=\"<%=videoControlsId%>\"> ' +
+        '        <!--  the video progress Bar --> ' +
+        '        <div class="fj-vertical-center"> ' +
+        '            <input class=" fj-control-embd fj-video-progress" id=\"<%=progressBarId%>\" type="range" min="0" /> ' +
+        '        </div> ' +
+        '        <!--  play,previous and next controls  --> ' +
+        '        <span class=" fj-vertical-left fj-control-embd fj-btn  fj-icon-playPrevious" aria-hidden="true" id=\"<%=playpreviousBtnId%>\" title="previous"> </span> ' +
+        '        <span class=" fj-vertical-left fj-control-embd fj-btn  fj-icon-play" aria-hidden="true" id=\"<%=playpauseBtnId%>\" title="Play"> </span> ' +
+        '        <span class=" fj-vertical-left fj-control-embd fj-btn  fj-icon-playNext" aria-hidden="true" id=\"<%=playforwardBtnId%>\" title="next"> </span> ' +
+        '        <!--  mute and volume bar controls  --> ' +
+        '        <span class=" fj-vertical-left fj-control-embd fj-btn  fj-icon-volUp" aria-hidden="true" id=\"<%=muteBtnId%>\" title="mute"> </span> ' +
+        '        <div class="fj-vertical-left  volumebar" id=\"<%=volumeDivId%>\"> ' +
+        '            <input id=\"<%=volumeBarId%>\" class="fj-control-embd" type="range" min="0"  /> ' +
+        '        </div> ' +
+        '        <!--  more description of the stream   --> ' +
+        '        <div class=" fj-vertical-left fj-desc " title="Description" id=\"<%=descriptionId%>\"> ' +
+        '            <span></span> ' +
+        '        </div> ' +
+        '        <!--  full screen, audio and subtitles controls  --> ' +
+        '        <span class=" fj-vertical-right fj-control-embd fj-btn  fj-icon-fullScrenn " aria-hidden="true" id=\"<%=fullScreenBtnId%>\" title="Fullscreen"> </span> ' +
+        '        <span class=" fj-vertical-right fj-control-embd fj-btn  fj-icon-subs" aria-hidden="true" id=\"<%=subtitlesBtnId%>\" title="Subtitles"> </span> ' +
+        '        <span class=" fj-vertical-right fj-control-embd fj-btn  fj-icon-audios" aria-hidden="true" id=\"<%=audiosBtnId%>\" title="Audios"> </span> ' +
+        '        <!--  timers   --> ' +
+        '        <div class=" fj-vertical-right fj-timers " title="times"> ' +
+        '            <span id=\"<%= timerId %>\">0:00:00</span><span>/</span><span id=\"<%= durationId %>\">0:00:00</span> ' +
         '        </div> ' +
         '    </div> ' +
-        '    <div class=\"fjcontrols-control  fjcontrols-control-left \"> ' +
-        '        <div  class=\"fjcontrols-control fjcontrols-control-text\"> ' +
-        '            <span id=\"<%= timerId %>\" >0:00:00</span><span>/</span><span id=\"<%= durationId %>\" >0:00:00</span> ' +
-        '        </div> ' +
+        '    <!--  this will contains overlays   --> ' +
+        '    <div id=\"<%= overlaysContainerDivId %>\" class="fjOvcontainer"> ' +
         '    </div> ' +
-        '    <div class=\"fjcontrols-control divIconBtn divconeontrolIcon fjcontrols-control-right clickable\"> ' +
-        '        <span id=\"<%= fullScreenBtnId %>\" title=\"Fullscreen\" class=\"fa fa-arrows-alt\"></span> ' +
-        '    </div> ' +
-        '    <div id=\"<%= expandDivId %>\" class=\"fjcontrols-control divIconBtn divconeontrolIcon fjcontrols-control-right clickable\"> ' +
-        '        <span id=\"<%= expandBtnId %>\" class=\"fa fa-expand\" title=\"Double player size\"></span> ' +
-        '    </div> ' +
-        '    <div id=\"<%= subtitlesDivId %>\" class=\"fjcontrols-control divIconBtn divconeontrolIcon fjcontrols-control-right clickable\"> ' +
-        '        <span id=\"<%= subtitlesBtnId %>\" class=\"fa fa-cc\" title=\"subtitles\"></span> ' +
-        '    </div> ' +
-        '</div> ' +
-        '<div class=\"thumbsBlockDiv\" id=\"<%= thumbsDivId %>\"> ' +
-        '    <span class=\"thumbsBlock\" id=\"<%= thumbsImgId %>\"></span> ' +
-        '    <span class=\"fjcontrols-control-text\" id=\"<%= thumbstimerId %>\"></span> ' +
-        '</div> ' +
-        '<div id=\"<%= audMenuContainerDivId %>\"></div> ' +
-        '<div id=\"<%= overlaysContainerDivId %>\"></div> ' +
-        '<div id=\"<%= adsContainerDivId %>\"></div> ' +
-        '</figure>';
+        '</figure> ';
     /**
      *
      */
@@ -131,10 +136,11 @@ function playerTemplate() {
                 if (opening === true && closed === false) { // wr'in key
                     key = matchedArr[i];
                     key = key.replace(/ +/g, "");
+                    // console.error(" W>>>>>>>><>  ", key);
                     if (dataObj.hasOwnProperty(key)) {
                         newArr[k] = dataObj[key];
                     } else {
-                        throw new Error(" Needed Key is Not found key for html player template ", key);
+                        throw new Error(" Needed Key is Not found key for html player template :", matchedArr[i]);
                     }
                 } else {
                     newArr[k] = matchedArr[i];

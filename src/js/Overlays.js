@@ -1,5 +1,5 @@
 import Logger from './Logger';
-require('../css/player.css');
+require('../css/player.less');
 import * as Const from './constants';
 import Eventing from './Eventing';
 /**

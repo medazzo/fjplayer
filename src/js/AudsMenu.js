@@ -1,5 +1,5 @@
 import Logger from './Logger';
-require('../css/player.css');
+require('../css/player.less');
 /**
  *  Class player in whinch the player is implemented
  */

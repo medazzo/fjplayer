@@ -4,8 +4,8 @@ import SubsMenu from './SubsMenu';
 import AudsMenu from './AudsMenu';
 import * as Utils from './Utils';
 import tmpl from './fjplayer-tmpl';
-require('../css/player.css');
-require('../css/fjfa.css');
+require('../css/player.less');
+// require('../css/fjfa.css');
 
 
 /**
@@ -39,34 +39,34 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         videoId = 'voi' + id,
         videoControlsId = 'vct' + id,
         playpauseBtnId = 'ppb' + id,
+        playpreviousBtnId = 'pprb' + id,
+        playforwardBtnId = 'ppfb' + id,
         muteBtnId = 'mbt' + id,
         volumeBarId = 'vbr' + id,
         volumeDivId = 'vvd' + id,
-        progressDivId = 'pgd' + id,
+        subtitlesBtnId = 'subd' + id,
+        audiosBtnId = 'audb' + id,
         progressBarId = 'pgb' + id,
         fullScreenBtnId = 'fsb' + id,
-        subtitlesDivId = 'sbd' + id,
-        subtitlesBtnId = 'sbb' + id,
         thumbsDivId = 'tbd' + id,
         thumbsImgId = 'tbi' + id,
         thumbstimerId = 'tbt' + id,
-        expandDivId = 'exd' + id,
-        expandBtnId = 'exb' + id,
         adsContainerDivId = 'adscd' + id,
         overlaysContainerDivId = 'ovscd' + id,
-        subsdMenuContainerDivId = 'smcd' + id,
-        audMenuContainerDivId = 'amcd' + id,
+        menuContainerDivId = 'mncd' + id,
+        descriptionId = 'desc' + id,
         videoContainer,
         video = null,
         videoController,
         spinner = null,
         videoControllerFigure,
         playpauseBtn,
+        playpreviousBtn,
+        playforwardBtn,
         muteBtn,
         volumeBar,
         progressBar,
         fullScreenBtn,
-        expandBtn,
         timer,
         durationDisplay,
         videoFigure,
@@ -83,32 +83,31 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             'fullScreenOnStart': fullScreenOnStart,
             'videoId': videoId,
             'vwidth': vwidth,
-            'videoCaptionId': videoCaptionId,
             'videoInfoId': videoInfoId,
             'titleId': titleId,
             'spinnerId': spinnerId,
             'BigPlayBtnId': BigPlayBtnId,
-            'videoControlsId': videoControlsId,
-            'progressDivId': progressDivId,
-            'progressBarId': progressBarId,
-            'playpauseBtnId': playpauseBtnId,
-            'muteBtnId': muteBtnId,
-            'volumeDivId': volumeDivId,
-            'volumeBarId': volumeBarId,
-            'timerId': timerId,
-            'durationId': durationId,
-            'fullScreenBtnId': fullScreenBtnId,
-            'expandDivId': expandDivId,
-            'expandBtnId': expandBtnId,
-            'subtitlesDivId': subtitlesDivId,
-            'subtitlesBtnId': subtitlesBtnId,
+            'videoCaptionId': videoCaptionId,
             'thumbsDivId': thumbsDivId,
             'thumbsImgId': thumbsImgId,
             'thumbstimerId': thumbstimerId,
-            'audMenuContainerDivId': audMenuContainerDivId,
-            'subsdMenuContainerDivId': subsdMenuContainerDivId,
-            'overlaysContainerDivId': overlaysContainerDivId,
-            'adsContainerDivId': adsContainerDivId
+            'menuContainerDivId': menuContainerDivId,
+            'adsContainerDivId': adsContainerDivId,
+            'videoControlsId': videoControlsId,
+            'progressBarId': progressBarId,
+            'playpreviousBtnId': playpreviousBtnId,
+            'playpauseBtnId': playpauseBtnId,
+            'playforwardBtnId': playforwardBtnId,
+            'muteBtnId': muteBtnId,
+            'volumeDivId': volumeDivId,
+            'volumeBarId': volumeBarId,
+            'descriptionId': descriptionId,
+            'fullScreenBtnId': fullScreenBtnId,
+            'subtitlesBtnId': subtitlesBtnId,
+            'audiosBtnId': audiosBtnId,
+            'timerId': timerId,
+            'durationId': durationId,
+            'overlaysContainerDivId': overlaysContainerDivId
         };
 
         logger.info(' container if of the player ', videoContainerId);
@@ -128,11 +127,13 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             throw new Error('The video element still null');
         }
         playpauseBtn = document.getElementById(playpauseBtnId);
+        playpreviousBtn = document.getElementById(playpreviousBtnId);
+        playforwardBtn = document.getElementById(playforwardBtnId);
+
         muteBtn = document.getElementById(muteBtnId);
         volumeBar = document.getElementById(volumeBarId);
         progressBar = document.getElementById(progressBarId);
         fullScreenBtn = document.getElementById(fullScreenBtnId);
-        expandBtn = document.getElementById(expandBtnId);
         timer = document.getElementById(timerId);
         durationDisplay = document.getElementById(durationId);
 
@@ -144,8 +145,8 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         // Hide the default controls
         video.controls = false;
         // Display the user defined video controls
-        videoControls.style.display = 'none';
-        videoInfo.style.display = 'block';
+        videoControls.classList.add('fj-hide');
+        videoInfo.classList.remove('fj-hide');
         // Create Thumbs Object
         ThumbsMgr = new Thumbs(document.getElementById(thumbstimerId),
             document.getElementById(thumbsImgId), document.getElementById(thumbsDivId), progressBar);
@@ -172,27 +173,29 @@ function PlayerUi(videoContId, VWidth, WHeight) {
     function toggleplaypauseBtn() {
         if (fjMainPlayer.isPlayingAds()) {
             // hide big play button
-            BigPlayBtn.style.display = 'none';
+            BigPlayBtn.classList.add('fj-hide');
             // hide video controls
-            videoControls.style.display = 'none';
+            videoControls.classList.add('fj-hide');
             SubMenu.HideMenu();
             AudiosMenu.HideMenu();
         } else {
             if (fjMainPlayer.isPaused() || fjMainPlayer.isEnded()) {
-                playpauseBtn.className = 'fa  fa-play';
+                playpauseBtn.classList.add('fj-icon-play');
+                playpauseBtn.classList.remove('fj-icon-pause');
                 // show big play button
-                BigPlayBtn.style.display = 'block';
+                BigPlayBtn.classList.remove('fj-hide');
                 // hide video controls
-                videoControls.style.display = 'none';
+                videoControls.classList.add('fj-hide');
                 SubMenu.HideMenu();
                 AudiosMenu.HideMenu();
                 logger.log('UI is pausing !');
             } else {
-                playpauseBtn.className = 'fa  fa-pause';
+                playpauseBtn.classList.remove('fj-icon-play');
+                playpauseBtn.classList.add('fj-icon-pause');
                 // hide big play button
-                BigPlayBtn.style.display = 'none';
+                BigPlayBtn.classList.add('fj-hide');
                 // show video controls
-                videoControls.style.display = 'block';
+                videoControls.classList.remove('fj-hide');
                 logger.log('UI is playing !');
             }
         }
@@ -264,44 +267,43 @@ function PlayerUi(videoContId, VWidth, WHeight) {
     // ************************************************************************************
 
     function OnvbClick(e) {
-        var val = 0;
         var pos = volumeBar.value / 100;
         logger.log(' volume from ', video.volume, ' to ', pos);
         if (pos > 0.6) {
-            muteBtn.className = 'fa fa-volume-up';
+            muteBtn.classList.remove('fj-icon-mute');
+            muteBtn.classList.remove('fj-icon-volDown');
+            muteBtn.classList.add('fj-icon-volUp');
         } else if (pos > 0) {
-            muteBtn.className = 'fa fa-volume-down';
+            muteBtn.classList.remove('fj-icon-mute');
+            muteBtn.classList.remove('fj-icon-volUp');
+            muteBtn.classList.add('fj-icon-volDown');
         } else {
-            muteBtn.className = 'fa fa-volume-off';
+            muteBtn.classList.remove('fj-icon-volDown');
+            muteBtn.classList.remove('fj-icon-volUp');
+            muteBtn.classList.add('fj-icon-mute');
         }
         video.volume = pos;
-        val = (volumeBar.value - volumeBar.min) / (volumeBar.max - volumeBar.min);
-        volumeBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
-            'color-stop(' + val + ', #FF0000), ' +
-            'color-stop(' + val + ', #8F9B9E)' +
-            ')';
         logger.log(' new volume is ', pos);
     };
 
     function onmuteClick(e) {
-        var val = 0;
         video.muted = !video.muted;
         if (video.muted) {
-            muteBtn.className = 'fa fa-volume-off';
             volumeBar.value = 0;
+            muteBtn.classList.remove('fj-icon-volDown');
+            muteBtn.classList.remove('fj-icon-volUp');
+            muteBtn.classList.add('fj-icon-mute');
         } else if (video.volume > 0.6) {
             volumeBar.value = video.volume * 100;
-            muteBtn.className = 'fa fa-volume-up';
+            muteBtn.classList.remove('fj-icon-mute');
+            muteBtn.classList.remove('fj-icon-volDown');
+            muteBtn.classList.add('fj-icon-volUp');
         } else {
             volumeBar.value = video.volume * 100;
-            muteBtn.className = 'fa fa-volume-down';
+            muteBtn.classList.remove('fj-icon-mute');
+            muteBtn.classList.remove('fj-icon-volUp');
+            muteBtn.classList.add('fj-icon-volDown');
         }
-
-        val = (volumeBar.value - volumeBar.min) / (volumeBar.max - volumeBar.min);
-        volumeBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
-            'color-stop(' + val + ', #FF0000), ' +
-            'color-stop(' + val + ', #8F9B9E)' +
-            ')';
     }
 
     // ************************************************************************************
@@ -315,11 +317,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         logger.log(' Seeking from ', Utils.duration(p), '/',
             Utils.duration(mediaDuration), 'to', Utils.duration(p), ' sec');
         fjMainPlayer.seek(p);
-        val = (progressBar.value - progressBar.min) / (progressBar.max - progressBar.min);
-        progressBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
-            'color-stop(' + val + ', #FF0000), ' +
-            'color-stop(' + val + ', #8F9B9E)' +
-            ')';
     }
     // ************************************************************************************
     // FULLSCREEN
@@ -370,15 +367,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         if (isFullScreen()) {
             handleFullscreen();
         }
-        if (expandScreen === true) {
-            videoContainer.classList.remove('fjPlayerExpand');
-            expandBtn.className = 'fa fa-expand';
-            expandScreen = false;
-        } else {
-            videoContainer.classList.add('fjPlayerExpand');
-            expandBtn.className = 'fa fa-compress';
-            expandScreen = true;
-        }
     }
 
     function onFullScreenChange(e) {
@@ -414,11 +402,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             muteBtn.className = 'fa fa-volume-off';
         }
         video.volume = pos;
-        val = (volumeBar.value - volumeBar.min) / (volumeBar.max - volumeBar.min);
-        volumeBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
-            'color-stop(' + val + ', #FF0000), ' +
-            'color-stop(' + val + ', #8F9B9E)' +
-            ')';
         logger.log(' new volume is ', pos);
     };
 
@@ -431,15 +414,9 @@ function PlayerUi(videoContId, VWidth, WHeight) {
     }
 
     function UpdateProgress(value) {
-        var val = 0.0;
         if (!isNaN(value)) {
             timer.textContent = Utils.duration(value);
             progressBar.value = value;
-            val = (progressBar.value - progressBar.min) / (progressBar.max - progressBar.min);
-            progressBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
-                'color-stop(' + val + ', #FF0000), ' +
-                'color-stop(' + val + ', #8F9B9E)' +
-                ')';
         }
     }
 
@@ -478,8 +455,8 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             throw new Error('Please pass an instance of player when instantiating');
         }
 
-        AudiosMenu = new AudsMenu(video, id, audMenuContainerDivId);
-        SubMenu = new SubsMenu(video, subtitlesBtnId, subsdMenuContainerDivId);
+        AudiosMenu = new AudsMenu(video, id, menuContainerDivId);
+        SubMenu = new SubsMenu(video, subtitlesBtnId, menuContainerDivId);
 
         // OverlaysMgr = new Overlays(this.video, document.getElementById(this.overlaysContainerDivId));
         videoControllerFigure.addEventListener('mouseleave', magicMouseLeave);
@@ -492,7 +469,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         playpauseBtn.addEventListener('click', onplaypauseClick);
         muteBtn.addEventListener('click', onmuteClick);
         fullScreenBtn.addEventListener('click', handleFullscreen);
-        expandBtn.addEventListener('click', handleExpand);
         progressBar.addEventListener('click', onprogressClick);
 
         document.addEventListener('fullscreenchange', onFullScreenChange);
@@ -509,10 +485,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         volumeBar.step = 1;
         volumeBar.max = 100;
         volumeBar.value = 100;
-        volumeBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
-            'color-stop(1, #FF0000), ' +
-            'color-stop(1, #8F9B9E)' +
-            ')';
         initialized = true;
     }
 
@@ -592,7 +564,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         playpauseBtn.removeEventListener('click', onplaypauseClick);
         muteBtn.removeEventListener('click', onmuteClick);
         fullScreenBtn.removeEventListener('click', handleFullscreen);
-        expandBtn.removeEventListener('click', handleExpand);
         progressBar.removeEventListener('click', onprogressClick);
 
         document.removeEventListener('fullscreenchange', onFullScreenChange);

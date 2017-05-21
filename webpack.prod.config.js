@@ -31,6 +31,7 @@
                     ]
                 },
                 { test: /\.png$/, loader: "file-loader?name=img/[name].png" },
+                { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
                 {
                     test: /\.css$/,
                     use: [{
