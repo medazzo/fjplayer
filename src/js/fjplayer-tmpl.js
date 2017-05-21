@@ -18,7 +18,7 @@ function playerTemplate() {
         '    <div class="fj-horizental-top" id=\"<%= videoInfoId %>\"> ' +
         '        <span class=" fj-vertical-left  fj-control  fj-btn  fj-icon-leftarrow" aria-hidden="true"> </span> ' +
         '        <div class=" fj-vertical-left  fj-vertical-separator "></div> ' +
-        '        <div class=" fj-vertical-left  fj-control  fj-btn " id=\"<%= titleId %>\"> </div> ' +
+        '        <div class=" fj-vertical-left  fj-control  fj-btn fj-title " id=\"<%= titleId %>\"> </div> ' +
         '        <span class=" fj-vertical-right fj-control  fj-btn  fj-icon-share  " aria-hidden="true"> </span> ' +
         '        <div class=" fj-vertical-right  fj-vertical-separator "></div> ' +
         '        <span class=" fj-vertical-right fj-control  fj-btn  fj-icon-download " aria-hidden="true"> </span> ' +
@@ -35,15 +35,15 @@ function playerTemplate() {
         '        <!-- video caption ued by dash player for caption --> ' +
         '        <div id=\"<%=videoCaptionId %>\"></div> ' +
         '        <!-- this present the thumbs image if exist--> ' +
-        '        <div class="thumbsBlockDiv" id=\"<%= thumbsDivId %>\" style="left: 349px; width: 160px;"> ' +
+        '        <div class="thumbsBlockDiv  fj-hide" id=\"<%= thumbsDivId %>\" > ' +
         '            <span class="thumbsBlock" id=\"<%= thumbsImgId %>\"></span> ' +
         '            <span class="fjcontrols-control-text" id=\"<%= thumbstimerId %>\"></span> ' +
         '        </div> ' +
         '        <!-- this present the subtitles or audios menu if exist  and when clicked--> ' +
         '        <div class="fj-vertical-left" id=\"<%=menuContainerDivId %>\"> ' +
-        '            <!-- this will contains ads video or ads overlays --> ' +
-        '            <div id=\"<%=adsContainerDivId%>\"></div> ' +
         '        </div> ' +
+        '        <!-- this will contains ads video or ads overlays --> ' +
+        '        <div id=\"<%=adsContainerDivId%>\" class=" fj-hide"></div> ' +
         '    </div> ' +
         '    <!-- Horizental Bottom down used for fj controls  --> ' +
         '    <div class="fj-horizental-bottomLower"  id=\"<%=videoControlsId%>\"> ' +
@@ -65,7 +65,7 @@ function playerTemplate() {
         '            <span></span> ' +
         '        </div> ' +
         '        <!--  full screen, audio and subtitles controls  --> ' +
-        '        <span class=" fj-vertical-right fj-control-embd fj-btn  fj-icon-fullScrenn " aria-hidden="true" id=\"<%=fullScreenBtnId%>\" title="Fullscreen"> </span> ' +
+        '        <span class=" fj-vertical-right fj-control-embd fj-btn  fj-icon-fullScreen " aria-hidden="true" id=\"<%=fullScreenBtnId%>\" title="Fullscreen"> </span> ' +
         '        <span class=" fj-vertical-right fj-control-embd fj-btn  fj-icon-subs" aria-hidden="true" id=\"<%=subtitlesBtnId%>\" title="Subtitles"> </span> ' +
         '        <span class=" fj-vertical-right fj-control-embd fj-btn  fj-icon-audios" aria-hidden="true" id=\"<%=audiosBtnId%>\" title="Audios"> </span> ' +
         '        <!--  timers   --> ' +
@@ -74,7 +74,7 @@ function playerTemplate() {
         '        </div> ' +
         '    </div> ' +
         '    <!--  this will contains overlays   --> ' +
-        '    <div id=\"<%= overlaysContainerDivId %>\" class="fjOvcontainer"> ' +
+        '    <div id=\"<%= overlaysContainerDivId %>\" class="fjOvcontainer  fj-hide"> ' +
         '    </div> ' +
         '</figure> ';
     /**

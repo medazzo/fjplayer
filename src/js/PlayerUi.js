@@ -1,7 +1,6 @@
 import Logger from './Logger';
 import Thumbs from './Thumbs';
-import SubsMenu from './SubsMenu';
-import AudsMenu from './AudsMenu';
+import Menus from './Menus';
 import * as Utils from './Utils';
 import tmpl from './fjplayer-tmpl';
 require('../css/player.less');
@@ -22,8 +21,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         vwidth = VWidth,
         vheight = WHeight,
         expandScreen = false,
-        AudiosMenu = null,
-        SubMenu = null,
+        playerMenus = null,
         timeout = null,
         initialized = false,
         HideControlsTimeout = 1500,
@@ -176,8 +174,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             BigPlayBtn.classList.add('fj-hide');
             // hide video controls
             videoControls.classList.add('fj-hide');
-            SubMenu.HideMenu();
-            AudiosMenu.HideMenu();
+            playerMenus.HideMenus();
         } else {
             if (fjMainPlayer.isPaused() || fjMainPlayer.isEnded()) {
                 playpauseBtn.classList.add('fj-icon-play');
@@ -186,8 +183,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
                 BigPlayBtn.classList.remove('fj-hide');
                 // hide video controls
                 videoControls.classList.add('fj-hide');
-                SubMenu.HideMenu();
-                AudiosMenu.HideMenu();
+                playerMenus.HideMenus();
                 logger.log('UI is pausing !');
             } else {
                 playpauseBtn.classList.remove('fj-icon-play');
@@ -211,8 +207,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             videoInfo.classList.add('m-fadeOut');
             // other
             video.style.cursor = 'none';
-            SubMenu.HideMenu();
-            AudiosMenu.HideMenu();
+            playerMenus.HideMenus();
             ThumbsMgr.hideThumbs(ThumbsMgr);
         }
     }
@@ -247,19 +242,19 @@ function PlayerUi(videoContId, VWidth, WHeight) {
 
     function SetupSubsAudsManager(mediaplayer) {
         var done = false;
-        done = AudiosMenu.Setup(mediaplayer);
-        logger.debug(' Will setup Audio menu  ', done);
-        if (done === true) {
-            document.getElementById(subtitlesBtnId).style.display = 'none';
-        } else {
-            document.getElementById(subtitlesBtnId).style.display = 'block';
-        }
-        done = SubMenu.Setup(mediaplayer);
-        logger.debug(' Will setup Subs menu  ', done);
+        done = playerMenus.SetupAuds(mediaplayer);
+        logger.warn(' Will setup Audio menu  ', done);
         if (done !== true) {
-            document.getElementById(subtitlesBtnId).style.display = 'none';
+            document.getElementById(audiosBtnId).classList.add('fj-hide');
         } else {
-            document.getElementById(subtitlesBtnId).style.display = 'block';
+            document.getElementById(audiosBtnId).classList.remove('fj-hide');
+        }
+        done = playerMenus.SetupSubs(mediaplayer);
+        logger.warn(' Will setup Subs menu  ', done);
+        if (done !== true) {
+            document.getElementById(subtitlesBtnId).classList.add('fj-hide');
+        } else {
+            document.getElementById(subtitlesBtnId).classList.remove('fj-hide');
         }
     };
     // ************************************************************************************
@@ -340,9 +335,11 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             else if (document.webkitCancelFullScreen) document.webkitCancelFullScreen();
             else if (document.msExitFullscreen) document.msExitFullscreen();
             setFullscreenData(false);
-            fullScreenBtn.className = 'fa fa-arrows-alt';
+            fullScreenBtn.classList.remove('fj-icon-compressScreen');
+            fullScreenBtn.classList.add('fj-icon-fullScreen');
         } else {
-            fullScreenBtn.className = 'fa  fa-compress';
+            fullScreenBtn.classList.add('fj-icon-compressScreen');
+            fullScreenBtn.classList.remove('fj-icon-fullScreen');
             // ...otherwise enter fullscreen mode
             // (Note: can be called on document, but here the specific element is used as
             // it will also ensure that the element's children, e.g. the custom controls, go fullscreen also)
@@ -394,13 +391,21 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         }
         pos = volumeBar.value / 100;
         logger.log(' volume from ', video.volume, ' to ', pos);
+
         if (pos > 0.6) {
-            muteBtn.className = 'fa fa-volume-up';
+            muteBtn.classList.remove('fj-icon-mute');
+            muteBtn.classList.remove('fj-icon-volDown');
+            muteBtn.classList.add('fj-icon-volUp');
         } else if (pos > 0) {
-            muteBtn.className = 'fa fa-volume-down';
+            muteBtn.classList.remove('fj-icon-mute');
+            muteBtn.classList.remove('fj-icon-volUp');
+            muteBtn.classList.add('fj-icon-volDown');
         } else {
-            muteBtn.className = 'fa fa-volume-off';
+            muteBtn.classList.remove('fj-icon-volDown');
+            muteBtn.classList.remove('fj-icon-volUp');
+            muteBtn.classList.add('fj-icon-mute');
         }
+
         video.volume = pos;
         logger.log(' new volume is ', pos);
     };
@@ -455,8 +460,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             throw new Error('Please pass an instance of player when instantiating');
         }
 
-        AudiosMenu = new AudsMenu(video, id, menuContainerDivId);
-        SubMenu = new SubsMenu(video, subtitlesBtnId, menuContainerDivId);
+        playerMenus = new Menus(video, subtitlesBtnId, audiosBtnId, menuContainerDivId);
 
         // OverlaysMgr = new Overlays(this.video, document.getElementById(this.overlaysContainerDivId));
         videoControllerFigure.addEventListener('mouseleave', magicMouseLeave);
