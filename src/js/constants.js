@@ -53,10 +53,10 @@ export const FJCONFIG_ADS_CLASSES = [FJCONFIG_ADS_CLASS_PRE_ROLL,
     FJCONFIG_ADS_CLASS_MID_ROLL, FJCONFIG_ADS_CLASS_POST_ROLL
 ];
 
-export const FJCONFIG_DRM_SCHEME_FORJA = 'forja';
-export const FJCONFIG_DRM_SCHEME_CLEARKEY = 'clearKey';
-export const FJCONFIG_DRM_SCHEME_WIDEVINE = 'widevine';
-export const FJCONFIG_DRM_SCHEME_PLAYREADY = 'playReady';
+export const FJCONFIG_DRM_SCHEME_FORJA = 'com.fjse.forja';
+export const FJCONFIG_DRM_SCHEME_CLEARKEY = 'org.w3.clearkey';
+export const FJCONFIG_DRM_SCHEME_WIDEVINE = 'com.widevine.alpha';
+export const FJCONFIG_DRM_SCHEME_PLAYREADY = 'com.microsoft.playready';
 export const FJCONFIG_DRM_SCHEMES = [
     FJCONFIG_DRM_SCHEME_FORJA,
     FJCONFIG_DRM_SCHEME_CLEARKEY,

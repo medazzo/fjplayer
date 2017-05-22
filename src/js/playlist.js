@@ -122,9 +122,9 @@ function Playlist() {
             logger.error('Empty Server License for  DRM Scheme  ! ');
             return false;
         }
-        logger.log(' playlist Drm Herders on Request License  of item  ',
+        logger.log(' playlist Drm Headers on Request License  of item  ',
             drm[Const.FJCONFIG_DRM_HEADER_LICENSE_REQUEST]);
-        logger.log(' playlist Drm Herders on Request Segments  of item  ',
+        logger.log(' playlist Drm Headers on Request Segments  of item  ',
             drm[Const.FJCONFIG_DRM_HEADER_SEGMENTS_REQUEST]);
         return true;
     };

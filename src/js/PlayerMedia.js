@@ -19,8 +19,11 @@ function PlayerMedia() {
         thumbsTrackUrl = null,
         thumbsTrackIndex = -1,
         getEndedEvent = false,
+        CurrentUrl = null,
+        CurrentProtection = null,
         CurrentStreamType = PlayerMedia.UNKNOWN,
         DashPlayer = null,
+        drmData = [],
         logger = new Logger(this),
         events = new Eventing(),
         StreamTypes = {
@@ -41,6 +44,7 @@ function PlayerMedia() {
     function initialize(playerUiVideo, playerUiVideoFigure) {
         video = playerUiVideo;
         DashPlayer = MediaPlayer().create();
+        DashPlayer.getDebug().setLogToBrowserConsole(false);
         DashPlayer.initialize();
         if (!video) {
             throw new Error('Please call initialize with a valid Player UI having a video html 5 element ');
@@ -507,9 +511,23 @@ function PlayerMedia() {
         video.autoplay = autoplay;
         if (DashPlayer === null) {
             DashPlayer = MediaPlayer().create();
+            DashPlayer.getDebug().setLogToBrowserConsole(false);
             DashPlayer.initialize();
         }
         DashPlayer.attachView(video);
+        CurrentUrl = url;
+        CurrentProtection = null;
+        // just for testing 
+        CurrentProtection = {
+            "com.widevine.alpha": {
+                "serverURL": "https://html5.cablelabs.com:8025"
+            },
+            "org.w3.clearkey": {
+                "clearkeys": {
+                    "H3JbV93QV3mPNBKQON2UtQ": "ClKhDPHMtCouEx1vLGsJsA"
+                }
+            }
+        };
         DashPlayer.attachSource(url);
         DashPlayer.setAutoPlay(autoplay);
         DashPlayer.setFastSwitchEnabled(true);
@@ -549,6 +567,7 @@ function PlayerMedia() {
         DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, this);
         DashPlayer.on(MediaPlayer.events.ERROR, onError, self);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_ERROR, onError, this);
+
         // attach to play url
         DashPlayer.attachSource(url);
         logger.info(' Clear DASH stream is loaded @ ', url);
@@ -566,9 +585,12 @@ function PlayerMedia() {
         video.autoplay = autoplay;
         if (DashPlayer === null) {
             DashPlayer = MediaPlayer().create();
+            DashPlayer.getDebug().setLogToBrowserConsole(false);
             DashPlayer.initialize();
         }
         DashPlayer.attachView(video);
+        CurrentUrl = url;
+        CurrentProtection = drm;
         DashPlayer.attachSource(url);
         DashPlayer.setAutoPlay(autoplay);
         DashPlayer.setFastSwitchEnabled(true);
@@ -604,10 +626,215 @@ function PlayerMedia() {
         DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKING, onSeeking, self);
         DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, this);
         DashPlayer.on(MediaPlayer.events.ERROR, onError, self);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_ERROR, onError, this);
+        //DashPlayer.on(MediaPlayer.events.PROTECTION_CREATED, onProtectionCreated, self);
+        //DashPlayer.on(MediaPlayer.events.PROTECTION_DESTROYED, onProtectionDestroyed, self);
+
+        DashPlayer.on(MediaPlayer.events.ERROR, onError, self);
+
         // attach to play url
         DashPlayer.attachSource(url);
         logger.info(' Clear ENC DASH stream is loaded @ ', url);
     };
+    //*************************************************************************************
+    // PROTECTION MANAGMENT
+    //*************************************************************************************
+
+    // Listen for protection system creation/destruction by the Dashplayer itself.  This will
+    // only happen in the case where we do not not provide a ProtectionController
+    // to the Dashplayer via dashjs.MediaPlayer.attachSource()
+    /*
+        function onProtectionCreated(e) {
+            var data = addDRMData(e.manifest, e.controller);
+            data.isPlaying = true;
+            for (var i = 0; i < drmData.length; i++) {
+                if (drmData[i] !== data) {
+                    drmData[i].isPlaying = false;
+                }
+            }
+        };
+
+        function onProtectionDestroyed(e) {
+            for (var i = 0; i < drmData.length; i++) {
+                if (drmData[i].manifest.url === e.data) {
+                    drmData.splice(i, 1);
+                    break;
+                }
+            }
+        };
+
+
+        function addDRMData(manifest, protCtrl) {
+
+            // Assign the session type to be used for this controller
+            protCtrl.setSessionType($("#session-type").find(".active").children().attr("id"));
+
+            var data = {
+                manifest: manifest,
+                protCtrl: protCtrl,
+                licenseReceived: false,
+                sessions: []
+            };
+            var findSession = function(sessionID) {
+                for (var i = 0; i < data.sessions.length; i++) {
+                    if (data.sessions[i].sessionID === sessionID)
+                        return data.sessions[i];
+                }
+                return null;
+            };
+            drmData.push(data);
+
+            DashPlayer.on(MediaPlayer.events.KEY_SYSTEM_SELECTED, function(e) {
+                if (!e.error) {
+                    data.ksconfig = e.data.ksConfiguration;
+                } else {
+                    data.error = e.error;
+                }
+            });
+
+            DashPlayer.on(MediaPlayer.events.KEY_SESSION_CREATED, function(e) {
+                if (!e.error) {
+                    var persistedSession = findSession(e.data.getSessionID());
+                    if (persistedSession) {
+                        persistedSession.isLoaded = true;
+                        persistedSession.sessionToken = e.data;
+                    } else {
+                        var sessionToken = e.data;
+                        data.sessions.push({
+                            sessionToken: sessionToken,
+                            sessionID: e.data.getSessionID(),
+                            isLoaded: true
+                        });
+                    }
+                } else {
+                    data.error = e.error;
+                }
+
+            });
+
+
+            DashPlayer.on(MediaPlayer.events.KEY_SESSION_REMOVED, function(e) {
+                if (!e.error) {
+                    var session = findSession(e.data);
+                    if (session) {
+                        session.isLoaded = false;
+                        session.sessionToken = null;
+                    }
+                } else {
+                    data.error = e.error;
+                }
+            });
+
+
+            DashPlayer.on(MediaPlayer.events.KEY_SESSION_CLOSED, function(e) {
+                if (!e.error) {
+                    for (var i = 0; i < data.sessions.length; i++) {
+                        if (data.sessions[i].sessionID === e.data) {
+                            data.sessions.splice(i, 1);
+                            break;
+                        }
+                    }
+                } else {
+                    data.error = e.error;
+                }
+            });
+
+            DashPlayer.on(MediaPlayer.events.KEY_STATUSES_CHANGED, function(e) {
+                var session = findSession(e.data.getSessionID());
+                if (session) {
+                    var toGUID = function(uakey) {
+                        var keyIdx = 0,
+                            retVal = "",
+                            i, zeroPad = function(str) {
+                                return (str.length === 1) ? "0" + str : str;
+                            };
+                        for (i = 0; i < 4; i++, keyIdx++)
+                            retVal += zeroPad(uakey[keyIdx].toString(16));
+                        retVal += "-";
+                        for (i = 0; i < 2; i++, keyIdx++)
+                            retVal += zeroPad(uakey[keyIdx].toString(16));
+                        retVal += "-";
+                        for (i = 0; i < 2; i++, keyIdx++)
+                            retVal += zeroPad(uakey[keyIdx].toString(16));
+                        retVal += "-";
+                        for (i = 0; i < 2; i++, keyIdx++)
+                            retVal += zeroPad(uakey[keyIdx].toString(16));
+                        retVal += "-";
+                        for (i = 0; i < 6; i++, keyIdx++)
+                            retVal += zeroPad(uakey[keyIdx].toString(16));
+                        return retVal;
+                    };
+                    session.keystatus = [];
+                    e.data.getKeyStatuses().forEach(function(status, key) {
+                        session.keystatus.push({
+                            key: toGUID(new Uint8Array(key)),
+                            status: status
+                        });
+                    });
+                }
+            });
+
+            DashPlayer.on(MediaPlayer.events.KEY_MESSAGE, function(e) {
+                var session = findSession(e.data.sessionToken.getSessionID());
+                if (session) {
+                    session.lastMessage = "Last Message: " + e.data.message.byteLength + " bytes";
+                    if (e.data.messageType) {
+                        session.lastMessage += " (" + e.data.messageType + "). ";
+                    } else {
+                        session.lastMessage += ". ";
+                    }
+                    session.lastMessage += "Waiting for response from license server...";
+                }
+            });
+
+            DashPlayer.on(MediaPlayer.events.LICENSE_REQUEST_COMPLETE, function(e) {
+                if (!e.error) {
+                    var session = findSession(e.data.sessionToken.getSessionID());
+                    if (session) {
+                        session.lastMessage = "Successful response received from license server for message type '" + e.data.messageType + "'!";
+                        data.licenseReceived = true;
+                    }
+                } else {
+                    data.error = "License request failed for message type '" + e.data.messageType + "'! " + e.error;
+                }
+            });
+
+            return data;
+        };
+
+        function deleteDrmdata(data) {
+            for (var i = 0; i < drmData.length; i++) {
+                if (drmData[i] === data) {
+                    drmData.splice(i, 1);
+                    data.protCtrl.reset();
+                }
+            }
+        };
+
+        function doLicenseFetch() {
+            DashPlayer.retrieveManifest(CurrentUrl, function(manifest) {
+                if (manifest) {
+                    var found = false;
+                    for (var i = 0; i < drmData.length; i++) {
+                        if (manifest.url === drmData[i].manifest.url) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        var protCtrl = DashPlayer.getProtectionController();
+                        if (CurrentProtection !== null) {
+                            protCtrl.setProtectionData(CurrentProtection);
+                        }
+                        addDRMData(manifest, protCtrl);
+                        protCtrl.initialize(manifest);
+                    }
+                } else {
+                    // Log error here
+                }
+            });
+        };
+        */
     // ************************************************************************************
     // PUBLIC API
     // ************************************************************************************
