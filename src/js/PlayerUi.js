@@ -15,6 +15,7 @@ require('../css/player.less');
 function PlayerUi(videoContId, VWidth, WHeight) {
     var logger = new Logger(this),
         mediaDuration = 0,
+        holdWidth = 0,
         fjMainPlayer = null,
         videoContainerId = videoContId,
         fullScreenOnStart = false,
@@ -316,7 +317,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
     // ************************************************************************************
     // FULLSCREEN
     // ************************************************************************************
-    function isFullScreen(g) {
+    function isFullScreen() {
         return document.fullscreenElement || document.msFullscreenElement ||
             document.mozFullScreen || document.webkitIsFullScreen;
     }
@@ -360,23 +361,21 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         }
     }
 
-    function handleExpand() {
-        if (isFullScreen()) {
-            handleFullscreen();
-        }
-    }
-
     function onFullScreenChange(e) {
-        if (e.event === 'fullscreenchange') {
+        if (e.type === 'fullscreenchange') {
+            logger.log(" fullscreenchange >>> Full Scren changed Status ", !!(document.fullScreen || document.fullscreenElement));
             setFullscreenData(!!(document.fullScreen || document.fullscreenElement));
         }
-        if (e.event === 'webkitfullscreenchange') {
+        if (e.type === 'webkitfullscreenchange') {
+            logger.log(" webkitfullscreenchange >>> Full Scren changed Status ", !!document.webkitIsFullScreen);
             setFullscreenData(!!document.webkitIsFullScreen);
         }
-        if (e.event === 'mozfullscreenchange') {
+        if (e.type === 'mozfullscreenchange') {
+            logger.log(" mozfullscreenchange >>> Full Scren changed Status ", !!document.mozFullScreen);
             setFullscreenData(!!document.mozFullScreen);
         }
-        if (e.event === 'msfullscreenchange') {
+        if (e.type === 'msfullscreenchange') {
+            logger.log(" msfullscreenchange >>> Full Scren changed Status ", !!document.msFullscreenElement);
             setFullscreenData(!!document.msFullscreenElement);
         }
 
@@ -454,6 +453,20 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         return videoControllerFigure;
     }
 
+    function onResizeWindow() {
+        var intViewportWidth = window.innerWidth;
+        var intViewportHeight = window.innerHeight;
+        var newPercentage = ((intViewportWidth / holdWidth) * 100) + "%";
+        var fjplayer = document.getElementById('playercontainer');
+        fjplayer.style.fontSize = newPercentage;
+        console.error(holdWidth, " RESIED !!!!!!!!!!!!! ", intViewportWidth, '/', holdWidth, '>>>>>', newPercentage);
+    }
+
+    function onLoadWindow() {
+        console.error(holdWidth, " LOADED ##########################");
+        holdWidth = window.innerWidth;
+    }
+
     function initialize(mainPlayer) {
         create(videoContainerId);
         fjMainPlayer = mainPlayer;
@@ -475,6 +488,9 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         muteBtn.addEventListener('click', onmuteClick);
         fullScreenBtn.addEventListener('click', handleFullscreen);
         progressBar.addEventListener('click', onprogressClick);
+
+        // window.addEventListener('resize', onResizeWindow);
+        // window.addEventListener('load', onResizeWindow); // too late to catch event
 
         document.addEventListener('fullscreenchange', onFullScreenChange);
         document.addEventListener('MSFullscreenChange', onFullScreenChange);
@@ -537,25 +553,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             return;
         }
         console.warn(" >>> Resetting player ui !!");
-        /* window.removeEventListener('resize', handleMenuPositionOnResize);
-        destroyBitrateMenu();
-        menuHandlersList.forEach(function(item) {
-            if (trackSwitchBtn) trackSwitchBtn.removeEventListener('click', item);
-            if (captionBtn) captionBtn.removeEventListener('click', item);
-        });
-        if (captionMenu) {
-            videoController.removeChild(captionMenu);
-            captionMenu = null;
-            captionBtn.classList.add('hide');
-        }
-        if (trackSwitchMenu) {
-            videoController.removeChild(trackSwitchMenu);
-            trackSwitchMenu = null;
-            trackSwitchBtn.classList.add('hide');
-        }
-        menuHandlersList = [];
-        seeking = false;*/
-
         ThumbsMgr.reset();
         // OverlaysMgr = new Overlays(this.video, document.getElementById(this.overlaysContainerDivId));
         videoControllerFigure.removeEventListener('mouseleave', magicMouseLeave);
@@ -570,6 +567,11 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         muteBtn.removeEventListener('click', onmuteClick);
         fullScreenBtn.removeEventListener('click', handleFullscreen);
         progressBar.removeEventListener('click', onprogressClick);
+
+        /*
+        window.removeEventListener('resize', onResizeWindow);
+        window.removeEventListener('load', onResizeWindow);
+        */
 
         document.removeEventListener('fullscreenchange', onFullScreenChange);
         document.removeEventListener('MSFullscreenChange', onFullScreenChange);
