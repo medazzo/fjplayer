@@ -61,7 +61,7 @@ function playerTemplate() {
         '            <input id=\"<%=volumeBarId%>\" class="fj-control-embd" type="range" min="0"  /> ' +
         '        </div> ' +
         '        <!--  more description of the stream   --> ' +
-        '        <div class=" fj-vertical-left fj-desc " title="Description" id=\"<%=descriptionId%>\"> ' +
+        '        <div class=" fj-vertical-left fj-text " title="Description" id=\"<%=descriptionId%>\"> ' +
         '            <span></span> ' +
         '        </div> ' +
         '        <!--  full screen, audio and subtitles controls  --> ' +
@@ -69,7 +69,7 @@ function playerTemplate() {
         '        <span class=" fj-vertical-right fj-control-embd fj-btn  fj-icon-subs" aria-hidden="true" id=\"<%=subtitlesBtnId%>\" title="Subtitles"> </span> ' +
         '        <span class=" fj-vertical-right fj-control-embd fj-btn  fj-icon-audios" aria-hidden="true" id=\"<%=audiosBtnId%>\" title="Audios"> </span> ' +
         '        <!--  timers   --> ' +
-        '        <div class=" fj-vertical-right fj-timers " title="times"> ' +
+        '        <div class=" fj-vertical-right fj-text " title="times"> ' +
         '            <span id=\"<%= timerId %>\">0:00:00</span><span>/</span><span id=\"<%= durationId %>\">0:00:00</span> ' +
         '        </div> ' +
         '    </div> ' +

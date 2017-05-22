@@ -427,6 +427,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
 
     function setTitle(ltitle) {
         document.getElementById(titleId).innerHTML = ltitle;
+        document.getElementById(descriptionId).innerHTML = ltitle;
     }
 
     function getVideo() {

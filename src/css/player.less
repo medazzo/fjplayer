@@ -8,6 +8,7 @@
 @fjThemeFontFamily: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 @fjThemeFontSize: 12px;
 @fjThemeTextColor: #FFFFFF;
+@fjBackgroundPlayerColor : #000000;
 @fjBackgroundControlColor : rgba(0, 0, 0, 0.6);
 @fjBackgroundControlColorOnHover :#6c6c6c; // 545353
 @fjItemsOpacity:75;
@@ -36,22 +37,6 @@
 ////////////////////////////////////////////////////// -------------------  OPACITY ------------------- //////////////////////////////////////////
 .opacity(@opacity) {
   opacity: @opacity / 100;
-  filter: ~"alpha(opacity=@{opacity})";
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-.transition(@transition) {
-  -webkit-transition: @transition;
--moz-transition: @transition;
--o-transition: @transition;
-transition: @transition;
-}
-
-a {
-.transition(all 0.4s);
-&:hover {
-  .opacity(70);
-  }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*---------- general & component -----------*/
@@ -59,7 +44,7 @@ a {
      margin: 0 auto;
  } 
  .fj-figure {
-     background-color:@fjBackgroundControlColor;
+     background-color:@fjBackgroundPlayerColor;
      color:@fjThemeTextColor;
      text-align: center;
      position: relative;
@@ -150,20 +135,16 @@ a {
      opacity: 0.8;
      background: rgba(10, 10, 10, 0.8);
      width: 90%;
-     margin-left: 5%;
+     left: 5%;
      display: relative;
  }
- .fj-timers {
+ .fj-text {
      color: @fjThemeTextColor ;
      cursor: default;
-     padding-right: 10px !important;
-     padding-top: 0.5% !important;
- }
- .fj-desc {
-     color: @fjThemeTextColor;
-     cursor: default;
-     padding-left: 10px !important;
-     padding-top: 0.5% !important;
+     padding-right: 5px ;
+     padding-top: 1% ;
+     white-space: nowrap;
+    display: inline-block;
  }
  /*---------- position Vertical -----------*/
  .fj-vertical-separator {
@@ -197,14 +178,6 @@ a {
      -o-background-size: cover;
      background-size: cover;
  }
- .fj-text {
-     font-size: 1em;
-     line-height: 2;
- }
- .fj-smallText {
-     font-size: 1em;
-     line-height: 2;
- }
  .fj-btn {
      border-top-left-radius: 5px;
      border-top-right-radius: 5px;
@@ -230,7 +203,7 @@ a {
      overflow: hidden;
      white-space: nowrap;
      display: inline-block;
-     font-size: 3.6em !important;
+     font-size: 4em ;
      margin-top: -15px;
      margin-left: -15px;
  }
@@ -282,8 +255,8 @@ background-color:@fjBackgroundControlColor;
      margin-top: -15px;
      margin-left: -15px;
      border-radius: 50%;
-     border: 3px solid #ccc;
-     border-top-color: #FF0000;
+     border: 3px solid @fjProgressForeground;
+     border-top-color: @fjThemeColor;
      animation: spinner .6s linear infinite;
  }
  /*_________________________ RANGE ________________________*/
@@ -350,6 +323,18 @@ input[type='range']::-ms-fill-upper {
 input[type='range']::-ms-fill-lower {
     background-color: @fjThemeColor;
 }*/
+/* animation */
+
+.m-fadeOut {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 200ms, opacity 200ms;
+}
+
+.m-fadeIn {
+    visibility: visible;
+    opacity: 1;
+}
  /* ---------------------- Menu style --------------------- */
  .fj-list-title {
      cursor: default;
@@ -507,45 +492,28 @@ figure[data-fullscreen=true] {
     margin: 0;
     padding: 0;
 }
-
 figure[data-fullscreen=true] video {
     height: 100%;
 }
-
-figure[data-fullscreen=true] .fj-control {
-    width: 5%;
-}
-
 figure[data-fullscreen=true] .volumebar {
-    width: 35%;
+   width: 35%;
 }
-
-
 figure[data-fullscreen=true] .fj-title {
-    font-size: 1.4em;
+    font-size: 3em;
 }
-
-
-figure[data-fullscreen=true] .fj-desc {
-    font-size: 1.4em;
-}
-
-figure[data-fullscreen=true] .fj-timers {
-    font-size: 1.4em;
-}
-
-figure[data-fullscreen=true] span.fj-big-btn  {
-    font-size: 5em;
-}
-
-figure[data-fullscreen=true] span.fj-btn {
+figure[data-fullscreen=true] .fj-text {
     font-size: 2em;
+}
+figure[data-fullscreen=true] .fj-big-btn  {
+    font-size: 8em;
+}
+figure[data-fullscreen=true] .fj-btn {
+    font-size: 3em;
     margin-bottom: 5px;
 }
-
 figure[data-fullscreen=true] .spinner::before {
     width: 55px;
     height: 55px;
-    border: 5px solid #ccc;
-    border-top-color: #FF0000;
+    border: 5px solid @fjProgressForeground;
+    border-top-color: @fjThemeColor;
 }
