@@ -39,9 +39,10 @@ function Thumbs(thtimer, thumbImgElement, thumbDivElement, progressBarElement) {
         var dur = Utils.duration(parseFloat(p));
         if ((p > (vidDuration + 2)) || (p < 0)) {
             // some error ?
-            logger.error(' Position is bigger than duration >>', p, vidDuration);
+            logger.warn(' Position is bigger than duration >>', p, vidDuration);
             return;
         }
+        logger.log(' current clicked  ', dur);
         // update ui ..then we find the matching cue..
         c = video.textTracks[thumbsTrackIndex].cues;
         if (c == null) {
@@ -57,8 +58,8 @@ function Thumbs(thtimer, thumbImgElement, thumbDivElement, progressBarElement) {
         }
         // ..next we unravel the JPG url and fragment query..
         xywh = c[i].text.substr(c[i].text.indexOf('=') + 1).split(',');
-        left = (event.pageX - xywh[2] / 2) + 'px';
-        // logger.log(' Render Thumbs  @ ', p, '/', dur, 'pgX', event.pageX, 'Rec', xywh, 'seconds, displayed on left: ', left);
+        left = -(rect.left - event.pageX + (xywh[2] / 2));
+        // logger.log(' Render Thumbs  @ ', p, '#', dur, '  where pgX', event.pageX, ', displayed on left: ', left);
         // ..and last we style the thumbnail overlay
         url = 'url(' + c[i].text.split('#')[0] + ')';
         // logger.log(' fetching thum from ', url);
