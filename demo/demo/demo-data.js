@@ -130,9 +130,21 @@
              'FJDuration': 11,
              'FJShowAt': 33
          }, {
-             'FJData': '<div  style="cursor:pointer;"> <img src="img/2000px-Smiley.svg.png" alt="Smiley face" width="20" height="30"> Your ADS is Here; clikc to go to google !</div> ',
+             'FJData': '<div  style="cursor:pointer;"> <img src="../img/2000px-Smiley.svg.png" alt="Smiley face" width="20" height="30"> Your ADS is Here; clikc to go to google !</div> ',
              'FJShowAt': 45,
              'FJDuration': 10,
+             'FJUrl': 'http://www.google.com'
+         }]
+     },
+     'itemMp4OnlyOverlay': {
+         'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
+         'FJTitle': ' title of movie itemOnly 1',
+         'FJClass': 'vod',
+         'FJType': 'video/mp4',
+         'FJOverlays': [{
+             'FJData': '<div  style="cursor:pointer;"> <img src="../img/2000px-Smiley.svg.png" alt="Smiley face" width="20" height="30"> Your ADS is Here; clikc to go to google !</div> ',
+             'FJShowAt': 3,
+             'FJDuration': 600,
              'FJUrl': 'http://www.google.com'
          }]
      },

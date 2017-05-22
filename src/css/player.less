@@ -20,8 +20,8 @@
 @fjIconSize: 1.3em;
 ////////////////////////////////////////////////////// -------------------  ICONS ------------------- /////////////////////////////////////////////
 @fjIconsFont: "FontAwesome";
-@fjIconsNames:leftarrow,download,share,play,playNext,playPrevious,pause,volUp,volDown,mute,audios,subs,fullScreen,compressScreen,close;
-@fjIconsContents: "\f060","\f019","\f1e0","\f04b", "\f051","\f048", "\f04c","\f028","\f027","\f026", "\f130", "\f20a", "\f0b2","\f066","\f2d3";
+@fjIconsNames:leftarrow,download,share,play,playNext,playPrevious,pause,volUp,volDown,mute,audios,subs,fullScreen,compressScreen,windowClose;
+@fjIconsContents: "\f060","\f019","\f1e0","\f04b", "\f051","\f048", "\f04c","\f028","\f027","\f026", "\f130", "\f20a", "\f0b2","\f066","\f00d";
 .make-icons-classes(@i: length(@fjIconsNames)) when (@i > 0) {
     .make-icons-classes(@i - 1);
     @name: extract(@fjIconsNames, @i); 
@@ -214,12 +214,9 @@ background-color:@fjBackgroundControlColor;
      visibility: hidden;
      display : none;
  }
- .fj-overlayContainer {
-     width: 100%;
+ .fj-overlayContainer {     
      height: 100%;
-     margin: 0 auto;
-     padding: 0px;
-     position: absolute;
+     margin: 0 auto;     
  }
  .fj-overlay {
      position: absolute;

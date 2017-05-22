@@ -65,13 +65,15 @@ function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
                 if (isItSubs === false) {
                     video.audioTracks[i].enabled = true;
                 }
-                litem.className = 'subtitles-menu-item-actif';
+                litem.classList.remove('subtitles-menu-item');
+                litem.classList.add('subtitles-menu-item-actif');
                 logger.log('Setting item @  ', i);
             } else {
                 if (isItSubs === false) {
                     video.audioTracks[i].enabled = false;
                 }
-                litem.className = 'subtitles-menu-item';
+                litem.classList.remove('subtitles-menu-item-actif');
+                litem.classList.add('subtitles-menu-item');
                 logger.log('Unsetting item @  ', i);
             }
         }
@@ -167,10 +169,10 @@ function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
                 (video.textTracks[i].kind === 'subtitles')) {
                 item = document.createElement('li');
                 if (video.textTracks[i].mode === 'showing') {
-                    item.className = 'subtitles-menu-item-actif';
+                    item.classList.add('subtitles-menu-item-actif');
                     activated = true;
                 } else {
-                    item.className = 'subtitles-menu-item';
+                    item.classList.add('subtitles-menu-item');
                 }
                 item.setAttribute('index', i);
                 item.innerHTML = video.textTracks[i].label;
@@ -185,9 +187,9 @@ function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
         // off item
         item = document.createElement('li');
         if (activated === false) {
-            item.className = 'subtitles-menu-item-actif';
+            item.classList.add('subtitles-menu-item-actif');
         } else {
-            item.className = 'subtitles-menu-item';
+            item.classList.add('subtitles-menu-item');
         }
         item.setAttribute('index', -1);
         item.innerHTML = 'off';
@@ -249,9 +251,9 @@ function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
         for (i = 0; i < video.audioTracks.length; i++) {
             item = document.createElement('li');
             if (video.audioTracks[i].enabled) {
-                item.className = 'subtitles-menu-item-actif';
+                item.classList.add('subtitles-menu-item-actif');
             } else {
-                item.className = 'subtitles-menu-item';
+                item.classList.add('subtitles-menu-item');
             }
 
             item.setAttribute('index', i);

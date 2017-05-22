@@ -27,9 +27,11 @@ function playerTemplate() {
         '    <div class="fj-horizental-center"> ' +
         '       <div class="fj-vertical-center">' +
         '           <div id=\"<%= spinnerId %>\" class=" fj-hide spinner"> </div> ' +
-        '           <span class=" fj-control fj-big-btn  fj-icon-play"  aria-hidden="true" id=\"<%= BigPlayBtnId %>\"></span> ' +
+        '               <span class=" fj-control fj-big-btn  fj-icon-play"  aria-hidden="true" id=\"<%= BigPlayBtnId %>\"></span> ' +
+        '       </div> ' +
         '    </div> ' +
-        '    </div> ' +
+        '    <!-- this will contains ads video or ads overlays --> ' +
+        '    <div id=\"<%=adsContainerDivId%>\" class=""></div> ' +
         '    <!-- Horizental Bottom Up used for menu  --> ' +
         '    <div class="fj-horizental-bottomUpper"> ' +
         '        <!-- video caption ued by dash player for caption --> ' +
@@ -42,8 +44,6 @@ function playerTemplate() {
         '        <!-- this present the subtitles or audios menu if exist  and when clicked--> ' +
         '        <div class="fj-vertical-left" id=\"<%=menuContainerDivId %>\"> ' +
         '        </div> ' +
-        '        <!-- this will contains ads video or ads overlays --> ' +
-        '        <div id=\"<%=adsContainerDivId%>\" class=" fj-hide"></div> ' +
         '    </div> ' +
         '    <!-- Horizental Bottom down used for fj controls  --> ' +
         '    <div class="fj-horizental-bottomLower"  id=\"<%=videoControlsId%>\"> ' +
@@ -74,7 +74,7 @@ function playerTemplate() {
         '        </div> ' +
         '    </div> ' +
         '    <!--  this will contains overlays   --> ' +
-        '    <div id=\"<%= overlaysContainerDivId %>\" class="fjOvcontainer  fj-hide"> ' +
+        '    <div id=\"<%= overlaysContainerDivId %>\" class="fj-overlayContainer fj-hide"> ' +
         '    </div> ' +
         '</figure> ';
     /**

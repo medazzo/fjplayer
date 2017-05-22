@@ -53,7 +53,7 @@ function Overlays() {
             OverlayDiv.removeChild(OverlayDiv.firstChild);
         }
         OverlayDiv.innerHTML = '';
-        OverlayDiv.style.display = 'none';
+        OverlayDiv.classList.add('fj-hide');
         events.fireEvent(Const.OverlayEvents.OVERLAY_ENDED);
     };
 
@@ -72,18 +72,21 @@ function Overlays() {
         }
         OverlayInnerDiv = document.createElement('div');
         OverlayClosingDiv = document.createElement('div');
-        OverlayInnerDiv.innerHTML = '<p>' + item[Const.FJCONFIG_DATA] + '</p>';
+        OverlayInnerDiv.innerHTML = '' +
+            '<div class="fj-overlay-description">' +
+            '   <p>' + item[Const.FJCONFIG_DATA] + '</p> ' +
+            '</div> ' +
+            '<div class="fj-overlay-link">' + item[Const.FJCONFIG_URL] + '</div>';
         OverlayInnerDiv.style.cursor = 'pointer';
-
-        OverlayClosingDiv.innerHTML = '<i onmouseover=\"style.opacity = 1;\" ' +
-            'onmouseout=\"style.opacity = 0.5\" style=\"padding-left: -5px;cursor: pointer; opacity: 0.5;' +
-            ' float: right; margin: -5px -10px 10px 10px;\" class="fa fa-2x fa-times" ' +
-            'aria-hidden="true"></i><div style=\"color: rgb(119, 255, 119); font-size: ' +
-            '0.95em; float: right; text-decoration: none;\">Annonce</div>';
+        OverlayClosingDiv.innerHTML = '' +
+            '<div>' +
+            '    <span class=" fj-overlay-closing  fj-control-embd fj-btn fj-icon-windowClose" aria-hidden="true"></span>' +
+            '    <div class="fj-overlay-annonce">Annonce</div>' +
+            '</div>';
         OverlayClosingDiv.addEventListener('click', function() { StopOverlay(index); });
         OverlayDiv.appendChild(OverlayClosingDiv);
         OverlayDiv.appendChild(OverlayInnerDiv);
-        OverlayDiv.style.display = 'block';
+        OverlayDiv.classList.remove('fj-hide');
         OverlayDiv.classList.add('over-HL');
         events.fireEvent(Const.OverlayEvents.OVERLAY_STARTED);
         // add click

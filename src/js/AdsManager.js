@@ -110,7 +110,7 @@ function AdsManager() {
             if (item[Const.FJCONFIG_CAN_ESCAPE] === 'true' || item[Const.FJCONFIG_CAN_ESCAPE] === true) {
                 if (adsvideo.currentTime > 5) {
                     if (!done) {
-                        infoDiv2.innerHTML = ', Can be escapped <i class="fa fa-step-forward" ></i>';
+                        infoDiv2.innerHTML = ', Can be escapped <span class="fj-icon-playNext" ></span>';
                         infoDiv2.addEventListener('click', function() {
                             StopAds(index, adsType);
                         });
