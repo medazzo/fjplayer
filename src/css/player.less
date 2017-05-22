@@ -461,7 +461,19 @@ input[type='range']::-ms-fill-lower {
      display: inline-block;
  }
 /*=====================================================================================================*/
-
+figure[controls-hidden=false] video::-webkit-media-text-track-display {
+    position: relative !important ; /*absolute*/
+    top:  80%  !important; /* 0 */     
+}
+/*
+video::cue {
+  // add style here
+}
+*/
+figure[controls-hidden=false] video::-moz-media-text-track-display {
+    position: relative !important ; /*absolute*/
+    top:  80%  !important; /* 0 */     
+}
 /*_________________________________ FULL SCREEN __________________________*/
 
 

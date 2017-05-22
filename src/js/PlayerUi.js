@@ -144,6 +144,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         // Hide the default controls
         video.controls = false;
         // Display the user defined video controls
+        videoFigure.setAttribute('controls-hidden', true);
         videoControls.classList.add('fj-hide');
         videoInfo.classList.remove('fj-hide');
         // Create Thumbs Object
@@ -174,6 +175,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             // hide big play button
             BigPlayBtn.classList.add('fj-hide');
             // hide video controls
+            videoFigure.setAttribute('controls-hidden', true);
             videoControls.classList.add('fj-hide');
             playerMenus.HideMenus();
         } else {
@@ -183,6 +185,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
                 // show big play button
                 BigPlayBtn.classList.remove('fj-hide');
                 // hide video controls
+                videoFigure.setAttribute('controls-hidden', true);
                 videoControls.classList.add('fj-hide');
                 playerMenus.HideMenus();
                 logger.log('UI is pausing !');
@@ -192,6 +195,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
                 // hide big play button
                 BigPlayBtn.classList.add('fj-hide');
                 // show video controls
+                videoFigure.setAttribute('controls-hidden', false);
                 videoControls.classList.remove('fj-hide');
                 logger.log('UI is playing !');
             }
@@ -200,6 +204,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
 
     function magicMouseLeave() {
         if (!fjMainPlayer.isPaused() && !fjMainPlayer.isEnded() && !fjMainPlayer.isPlayingAds()) {
+            videoFigure.setAttribute('controls-hidden', true);
             // delete fadeIn
             videoControls.classList.remove('m-fadeIn');
             videoInfo.classList.remove('m-fadeIn');
@@ -215,6 +220,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
 
     function magicMouseEnter() {
         if (!fjMainPlayer.isPaused() && !fjMainPlayer.isEnded() && !fjMainPlayer.isPlayingAds()) {
+            videoFigure.setAttribute('controls-hidden', false);
             // delete fadeOut
             videoControls.classList.remove('m-fadeOut');
             videoInfo.classList.remove('m-fadeOut');

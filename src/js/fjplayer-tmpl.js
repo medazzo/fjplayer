@@ -11,7 +11,7 @@ function playerTemplate() {
         _DEFAULT_DELIMITER = '%',
         regExpChars = /[|\\{}()[\]^$+*?.]/g,
         template =
-        '<figure id=\"<%= videoFigureId %>\" class="fj-figure" data-fullscreen=\"<%= fullScreenOnStart %>\"> ' +
+        '<figure id=\"<%= videoFigureId %>\" class="fj-figure" controls-hidden="true" data-fullscreen=\"<%= fullScreenOnStart %>\"> ' +
         '    <!-- video element -->  ' +
         '    <video id=\"<%= videoId %>\" class="fj-video" width=\ "<%= vwidth %>\"> </video> ' +
         '    <!-- Horizental Tpp --> ' +
