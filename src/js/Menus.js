@@ -87,11 +87,13 @@ function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
     /**
      * Event CALLBACK ; called on menu Click
      */
-    function onshowHideMenu(menuContainer, ev) {
+    function onshowHideMenu(menuContainer, element, ev) {
+        var rectV = video.getBoundingClientRect();
+        var rect = element.getBoundingClientRect();
         if (menuContainer.classList.contains('fj-hide')) {
-            // menuContainer.style.position = 'absolute';
-            // menuContainer.style.left = (ev.pageX - 20) + 'px';
-            // menuContainer.style.top = (ev.pageY - 90) + 'px';
+            logger.warn('setting left @', (rect.right - ev.pageX));
+            logger.warn('setting left @', (rect.left - ev.pageX));
+            menuContainer.style.left = ev.pageX - rectV.left - rect.width;
             menuContainer.classList.remove('fj-hide');
         } else {
             menuContainer.classList.add('fj-hide');
@@ -158,7 +160,7 @@ function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
             menusDiv.appendChild(subsMenuDiv);
             // Add events for subtitles button
             subtitlesBtn.addEventListener('click', function(ev) {
-                onshowHideMenu(subsMenuDiv, ev);
+                onshowHideMenu(subsMenuDiv, this, ev);
             });
             //  subs list
             subsList = document.getElementById(subsMenuListId);
@@ -241,7 +243,7 @@ function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
             menusDiv.appendChild(audsMenuDiv);
             // Add events for audios button
             audsBtn.addEventListener('click', function(ev) {
-                onshowHideMenu(audsMenuDiv, ev);
+                onshowHideMenu(audsMenuDiv, this, ev);
             });
             //  audios list
             audsList = document.getElementById(audsMenuListId);

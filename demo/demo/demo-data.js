@@ -22,6 +22,14 @@
          'FJClass': 'vod',
          'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
      },
+     'itemDashSubsAndThumbs': {
+         'FJType': 'dash',
+         'FJPoster': '../img/sintel.jpg',
+         'FJTitle': ' title of movie itemDashNoThumbs 3',
+         'FJClass': 'vod',
+         'FJThumbs': '../vtt/thumbs.vtt',
+         'FJSrc': 'http://vm2.dashif.org/dash/vod/testpic_2s/multi_subs.mpd'
+     },
      'itemDashSubsNoThumbs': {
          'FJType': 'dash',
          'FJPoster': '../img/sintel.jpg',

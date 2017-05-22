@@ -32,6 +32,7 @@ function Thumbs(thtimer, thumbImgElement, thumbDivElement, progressBarElement) {
     };
 
     function renderThumbs(event) {
+        logger.warn('eventing Thumbs is', event);
         // first we convert from mouse to time position ..
         var c, i, url, xywh, left;
         var rect = progressBar.getBoundingClientRect();
