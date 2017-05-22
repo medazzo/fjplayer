@@ -7,6 +7,12 @@
          'FJClass': 'vod',
          'FJSrc': 'http://dash.edgesuite.net/akamai/test/caption_test/ElephantsDream/elephants_dream_480p_heaac5_1.mpd'
      },
+     'itemDashCencClearKey': {
+         'FJType': 'dash',
+         'FJTitle': ' title of movie itemDash 2',
+         'FJClass': 'vod',
+         'FJSrc': 'http://media.axprod.net/TestVectors/v7-MultiDRM-SingleKey/Manifest_1080p_ClearKey.mpd'
+     },
      'itemDashThumbs': {
          'FJType': 'dash',
          'FJPoster': '../img/sintel.jpg',

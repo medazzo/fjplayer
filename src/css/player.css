@@ -475,6 +475,18 @@ input[type='range']::-ms-fill-lower {
   left: 20%;
   height: auto;
 }
+.over-HL-error {
+  position: absolute;
+  background: rgba(255, 0, 0, 0.5);
+  float: left;
+  padding: 5px;
+  border-radius: 5px;
+  z-index: 2147483647;
+  /****/
+  top: 25%;
+  left: 20%;
+  height: auto;
+}
 .over-HR {
   position: absolute;
   background: rgba(0, 0, 0, 0.5);
@@ -494,6 +506,13 @@ input[type='range']::-ms-fill-lower {
 }
 .fj-overlay-annonce {
   color: #77ff77;
+  font-size: 1em;
+  float: left;
+  text-decoration: none;
+  display: inline-block;
+}
+.fj-overlay-error {
+  color: #ff0000;
   font-size: 1em;
   float: left;
   text-decoration: none;

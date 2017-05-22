@@ -16,6 +16,7 @@
 @fjZindex:2147483647;
 @fjBorderRadius:5px;
 @fjOverlayAnnonceColor:rgb(119, 255, 119);
+@fjOverlayErrorColor:rgb(255, 0, 0);
 @fjOverlayLinkColor:rgb(255, 255, 0);
 @fjIconSize: 1.3em;
 ////////////////////////////////////////////////////// -------------------  ICONS ------------------- /////////////////////////////////////////////
@@ -408,6 +409,20 @@ input[type='range']::-ms-fill-lower {
      left: 20%;
      height: auto;
  }
+
+ .over-HL-error {
+     position: absolute;
+    background:rgba(255, 0, 0, 0.5);
+     float: left;
+     padding: 5px;
+     border-radius: @fjBorderRadius;
+     z-index:  @fjZindex;
+     /****/
+     top: 25%;
+     left: 20%;
+     height: auto;
+ }
+ 
  .over-HR {
      position: absolute;
      background: rgba(0, 0, 0, 0.5);
@@ -427,6 +442,13 @@ input[type='range']::-ms-fill-lower {
  }
  .fj-overlay-annonce {
      color: @fjOverlayAnnonceColor;
+     font-size: 1em;
+     float: left;
+     text-decoration: none;
+     display: inline-block;
+ }
+ .fj-overlay-error{
+     color: @fjOverlayErrorColor;
      font-size: 1em;
      float: left;
      text-decoration: none;

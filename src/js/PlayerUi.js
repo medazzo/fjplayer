@@ -30,6 +30,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         timerId = 'trd' + id,
         durationId = 'drd' + id,
         titleId = 'tld' + id,
+        errorDivId = 'errd' + id,
         spinnerId = 'spin' + id,
         BigPlayBtnId = 'bp' + id,
         videoCaptionId = 'vcp' + id,
@@ -84,6 +85,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             'vwidth': vwidth,
             'videoInfoId': videoInfoId,
             'titleId': titleId,
+            'errorDivId': errorDivId,
             'spinnerId': spinnerId,
             'BigPlayBtnId': BigPlayBtnId,
             'videoCaptionId': videoCaptionId,
@@ -389,6 +391,13 @@ function PlayerUi(videoContId, VWidth, WHeight) {
     // ************************************************************************************
     // PUBLIC API
     // ************************************************************************************
+    function goForError() {
+        // used to prepare to show error
+        magicMouseLeave();
+        BigPlayBtn.classList.add('fj-hide');
+
+    }
+
     function setVolume(value) {
         var pos, val;
         if (typeof value === 'number') {
@@ -437,6 +446,10 @@ function PlayerUi(videoContId, VWidth, WHeight) {
 
     function getVideo() {
         return video;
+    }
+
+    function getErrorDivId() {
+        return errorDivId;
     }
 
     function getAdsContainerDivId() {
@@ -596,6 +609,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         setTitle: setTitle,
         getVideo: getVideo,
         getAdsContainerDivId: getAdsContainerDivId,
+        getErrorDivId: getErrorDivId,
         getOverlaysContainerDivId: getOverlaysContainerDivId,
         SetupThumbsManager: SetupThumbsManager,
         SetupSubsAudsManager: SetupSubsAudsManager,
@@ -611,6 +625,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         ShowSpinner: ShowSpinner,
         HideSpinner: HideSpinner,
         onplaypauseClick: onplaypauseClick,
+        goForError: goForError,
         constructor: PlayerUi
     };
 };

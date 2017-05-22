@@ -285,7 +285,13 @@ function PlayerMedia() {
     }
 
     function onError(e) {
-        throw new Error('error : ', e);
+        var args = {
+            'type': e.type,
+            'code': e.error,
+            'message': e.event.message
+        };
+        logger.error('>>>>>>>>>>>>>>> ERROR !!:', e);
+        events.fireEvent(Const.PlayerEvents.PLAYBACK_ERROR, args);
     };
 
     function onTracksAdded(e) {

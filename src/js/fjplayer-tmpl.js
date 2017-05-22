@@ -26,6 +26,7 @@ function playerTemplate() {
         '    <!-- Horizental Center --> ' +
         '    <div class="fj-horizental-center"> ' +
         '       <div class="fj-vertical-center">' +
+        '           <div id=\"<%= errorDivId %>\" class=" fj-hide"> </div> ' +
         '           <div id=\"<%= spinnerId %>\" class=" fj-hide spinner"> </div> ' +
         '               <span class=" fj-control fj-big-btn  fj-icon-play"  aria-hidden="true" id=\"<%= BigPlayBtnId %>\"></span> ' +
         '       </div> ' +

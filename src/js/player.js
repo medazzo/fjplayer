@@ -6,6 +6,7 @@ import * as Const from './constants';
 import PlayerMedia from './PlayerMedia';
 import PlayerUi from './PlayerUi';
 import AdsManager from './AdsManager';
+import FjError from './FjError';
 /**
  *  Class player in whinch the player is implemented
  */
@@ -261,6 +262,12 @@ function Player(fjID, vidContainerId, ) {
             // send Event to listener
             logger.info('[Event] [trigger] > ', e);
             events.fireEvent(e);
+
+            if (e === Const.PlayerEvents.PLAYBACK_ERROR) {
+                playerUi.goForError();
+                throw new FjError(args.code, args.type, args.message,
+                    document.getElementById(playerUi.getErrorDivId()));
+            }
         }
 
     }
@@ -280,6 +287,7 @@ function Player(fjID, vidContainerId, ) {
             playerMedia.on(Const.PlayerEvents.TRACKS_ADDED, MplayerEventing);
             playerMedia.on(Const.PlayerEvents.STREAM_LOADED, MplayerEventing);
             playerMedia.on(Const.PlayerEvents.PLAYBACK_STARTED, MplayerEventing);
+            playerMedia.on(Const.PlayerEvents.PLAYBACK_ERROR, MplayerEventing);
             playerMedia.on(Const.PlayerEvents.PLAYBACK_PAUSED, MplayerEventing);
             playerMedia.on(Const.PlayerEvents.PLAYBACK_ENDED, MplayerEventing);
             playerMedia.on(Const.PlayerEvents.PLAYBACK_SEEKED, MplayerEventing);
