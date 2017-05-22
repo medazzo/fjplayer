@@ -8,13 +8,19 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <style type="text/css">
-        .containerma {}
+        .pictt {
+            background-image: url("thumbs.jpg");
+            background-size: auto;
+            background-position: -320px -612px;
+            width: 160px;
+            height: 68px;
+        }
     </style>
     <script type="text/javascript">
-        window.onkeyup= function(e){
-          console.warn(" some key is up : ",e);
-          if (e.keyCode == 27) { // escape key maps to keycode `27`
-              console.warn(" some key is up : !!!! ",e);
+        window.onkeyup = function(e) {
+            console.warn(" some key is up : ", e);
+            if (e.keyCode == 27) { // escape key maps to keycode `27`
+                console.warn(" some key is up : !!!! ", e);
             }
         }
         window.onload = function() {
@@ -91,7 +97,7 @@
                                     <div id="videoCaptionId"></div>
                                     <!-- this present the thuùbs image if exist-->
                                     <div class="thumbsBlockDiv" id="tbd7710648" style="left: 349px; width: 160px;">
-                                        <span class="thumbsBlock" id="tbi7710648" style="background-image: url(&quot;thumbs.jpg&quot;); background-position: -320px -612px; width: 160px; height: 68px;">
+                                        <span class="thumbsBlock pictt" id="tbi7710648">
                                     	</span>
                                         <span class="fjcontrols-control-text" id="tbt7710648">
                                             07:04
