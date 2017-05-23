@@ -1,6 +1,6 @@
-import Logger from './Logger';
-import * as Utils from './Utils';
-require('../css/player.less');
+import Logger from '../utils/Logger';
+import * as Utils from '../utils/Utils';
+require('../../css/player.less');
 /**
  * @module Thumbs
  * @description The Thumbs module is responsible for rendering

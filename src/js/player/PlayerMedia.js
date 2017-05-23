@@ -1,10 +1,10 @@
 'use strict';
-import Logger from './Logger';
-import Eventing from './Eventing';
+import Logger from '../utils/Logger';
+import Eventing from '../utils/Eventing';
 import { MediaPlayer } from 'dashjs';
-import * as Const from './constants';
-import * as Langs from './isoLangs';
-// import * as Const from './constants';
+import * as Const from '../defs/constants';
+import * as Langs from '../defs/isoLangs';
+// import * as Const from '../defs/constants';
 /**
  * @module PlayerMedia
  * @description The PlayerMedia is the html video/dash/drm Media player

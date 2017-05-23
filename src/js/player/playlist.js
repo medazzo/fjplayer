@@ -1,6 +1,6 @@
-import Logger from './Logger';
-import * as Const from './constants';
-import * as Langs from './isoLangs';
+import Logger from '../utils/Logger';
+import * as Const from '../defs/constants';
+import * as Langs from '../defs/isoLangs';
 /**
  *  Class playlist in whixh all the playliost will be checked and saved
  */

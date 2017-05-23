@@ -1,9 +1,9 @@
-import Logger from './Logger';
-import Thumbs from './Thumbs';
-import Menus from './Menus';
-import * as Utils from './Utils';
-import tmpl from './fjplayer-tmpl';
-require('../css/player.less');
+import Logger from '../utils/Logger';
+import Thumbs from '../ui//Thumbs';
+import Menus from '../ui/Menus';
+import * as Utils from '../utils/Utils';
+import tmpl from '../ui/fjplayer-tmpl';
+require('../../css/player.less');
 // require('../css/fjfa.css');
 
 

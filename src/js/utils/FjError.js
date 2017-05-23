@@ -1,6 +1,6 @@
-import Logger from './Logger';
-require('../css/player.less');
-import * as Const from './constants';
+import Logger from '../utils/Logger';
+require('../../css/player.less');
+import * as Const from '../defs/constants';
 /**
  * @module Overlay
  * @description The Overlays is that manage overlays of a video :

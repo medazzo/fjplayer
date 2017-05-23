@@ -1,12 +1,12 @@
 'use strict';
-import Logger from './Logger';
-import Overlays from './Overlays';
-import Eventing from './Eventing';
-import * as Const from './constants';
-import PlayerMedia from './PlayerMedia';
-import PlayerUi from './PlayerUi';
-import AdsManager from './AdsManager';
-import FjError from './FjError';
+import Logger from '../utils/Logger';
+import Overlays from '../ui/Overlays';
+import Eventing from '../utils/Eventing';
+import * as Const from '../defs/constants';
+import PlayerMedia from '../player/PlayerMedia';
+import PlayerUi from '../ui/PlayerUi';
+import AdsManager from '../ui/AdsManager';
+import FjError from '../utils/FjError';
 /**
  *  Class player in whinch the player is implemented
  */

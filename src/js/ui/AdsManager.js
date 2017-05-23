@@ -1,7 +1,7 @@
-import Logger from './Logger';
-import * as Const from './constants';
-import * as Utils from './Utils';
-import Eventing from './Eventing';
+import Logger from '../utils/Logger';
+import * as Const from '../defs/constants';
+import * as Utils from '../utils/Utils';
+import Eventing from '../utils/Eventing';
 /**
  * @module AdsManager
  * @description The AdsManager is the class whinch will manage Ads
