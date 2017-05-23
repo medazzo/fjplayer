@@ -21,10 +21,9 @@ export const FJCONFIG_URL = 'FJUrl';
 export const FJCONFIG_DURATION = 'FJDuration';
 export const FJCONFIG_SHOW_AT = 'FJShowAt';
 
-export const FJCONFIG_DRM_SCHEME = 'FJDrmScheme';
-export const FJCONFIG_DRM_LICENSE_SERVER = 'FJLicenceServer';
-export const FJCONFIG_DRM_HEADER_LICENSE_REQUEST = 'FJHeadersOnLicenseRequest';
-export const FJCONFIG_DRM_HEADER_SEGMENTS_REQUEST = 'FJHeadersOnSegmentsRequest';
+export const FJCONFIG_DRM_LICENSE_SERVER = 'serverURL';
+export const FJCONFIG_DRM_HEADER_LICENSE_REQUEST = 'httpRequestHeaders';
+export const FJCONFIG_DRM_HEADER_SEGMENTS_REQUEST = 'httpRequestHeadersSegments';
 
 export const FJCONFIG_TRUE = 'true';
 export const FJCONFIG_FALSE = 'false';

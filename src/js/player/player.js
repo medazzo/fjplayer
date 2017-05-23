@@ -85,7 +85,7 @@ function Player(fjID, vidContainerId, ) {
                 currentIsDash = true;
                 logger.warn(' will play a clear dash on caption obect ', playerUi.getVideoCaption());
                 playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER],
-                    item[Const.FJCONFIG_SUBTITLES], playerUi.getVideoCaption(), start);
+                    item[Const.FJCONFIG_SUBTITLES], playerUi.getVideoCaption(), start, item[Const.FJCONFIG_DRM]);
             } else {
                 playerMedia.load(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_TYPE],
                     item[Const.FJCONFIG_POSTER], item[Const.FJCONFIG_SUBTITLES], start);
@@ -348,7 +348,7 @@ function Player(fjID, vidContainerId, ) {
                 // clear dash
                 currentIsDash = true;
                 playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER],
-                    item[Const.FJCONFIG_SUBTITLES], playerUi.getVideoCaption(), start);
+                    item[Const.FJCONFIG_SUBTITLES], playerUi.getVideoCaption(), start, item[Const.FJCONFIG_DRM]);
             } else {
                 playerMedia.load(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_TYPE],
                     item[Const.FJCONFIG_POSTER], item[Const.FJCONFIG_SUBTITLES], start);

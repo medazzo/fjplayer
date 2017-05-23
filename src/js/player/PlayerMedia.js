@@ -498,10 +498,11 @@ function PlayerMedia() {
 
         logger.info(' Clear MP4 stream is loaded @ ', url);
     };
+
     /**
-     * Used for clear mpeg Dash
+     * Used for loading mpeg Dash
      */
-    function loadDash(url, poster, subs, videoCaption, autoplay) {
+    function loadDash(url, poster, subs, videoCaption, autoplay, drm) {
         var track = null;
         if (poster !== null && poster !== undefined && poster !== '') {
             video.setAttribute('poster', poster);
@@ -516,81 +517,17 @@ function PlayerMedia() {
         }
         DashPlayer.attachView(video);
         CurrentUrl = url;
-        CurrentProtection = null;
-        // just for testing 
-        CurrentProtection = {
-            "com.widevine.alpha": {
-                "serverURL": "https://html5.cablelabs.com:8025"
-            },
-            "org.w3.clearkey": {
-                "clearkeys": {
-                    "H3JbV93QV3mPNBKQON2UtQ": "ClKhDPHMtCouEx1vLGsJsA"
-                }
-            }
-        };
-        DashPlayer.attachSource(url);
-        DashPlayer.setAutoPlay(autoplay);
-        DashPlayer.setFastSwitchEnabled(true);
-        DashPlayer.attachVideoContainer(videoFigure);
-        // Add HTML-rendered TTML subtitles except for Firefox < v49 (issue #1164)
-        if (doesTimeMarchesOn()) {
-            DashPlayer.attachTTMLRenderingDiv(videoCaption);
-        }
-
-        CurrentStreamType = StreamTypes.DASH_CLEAR;
-        // set thumbs
-        if (thumbsTrackUrl !== null && thumbsTrackUrl !== undefined) {
-            track = document.createElement('track');
-            track.kind = 'metadata';
-            track.src = thumbsTrackUrl;
-            logger.log(' Appending source thumbs to video', track);
-            video.appendChild(track);
+        logger.warn(' Loading Dash with USED protection DRM :', drm);
+        if ((drm === undefined) || (drm === null)) {
+            CurrentStreamType = StreamTypes.DASH_CLEAR;
+            CurrentProtection = null;
+            logger.warn(' Loading CLEAR Dash !! ');
         } else {
-            logger.debug('No Thumbs vtt file is found on config.');
+            CurrentStreamType = StreamTypes.DASH_ENCRYPTED;
+            CurrentProtection = drm;
+            logger.warn(' Loading ENCRYPTED Dash !! ');
         }
-        // set subs
-        SetManuallysubs(subs, video);
-        // Setting Callbacks
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_METADATA_LOADED, onStreamInitialized, this);
-        // next is commented because it trigger spinner on change text track !
-        // DashPlayer.on(MediaPlayer.events.STREAM_INITIALIZED, onStreamInitialized, self);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_STARTED, onPlayStart, self);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_PLAYING, onPlayStart, self);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_PAUSED, onPlaybackPaused, self);
-        DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_REQUESTED, onQualityChangeRequested, self);
-        DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_RENDERED, onQualityChangeRendered, self);
-        DashPlayer.on(MediaPlayer.events.PERIOD_SWITCH_COMPLETED, onSwitchCompleted, self);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_ENDED, onPlaybackEnded, self);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_TIME_UPDATED, onPlayTimeUpdate, self);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKED, onSeeked, self);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_SEEKING, onSeeking, self);
-        DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, this);
-        DashPlayer.on(MediaPlayer.events.ERROR, onError, self);
-        DashPlayer.on(MediaPlayer.events.PLAYBACK_ERROR, onError, this);
 
-        // attach to play url
-        DashPlayer.attachSource(url);
-        logger.info(' Clear DASH stream is loaded @ ', url);
-    };
-    /**
-     * Used for Encrypted mpeg Dash
-     */
-    function loadDashDrm(url, poster, subs, videoCaption, autoplay, drm) {
-        var track = null;
-        if (poster !== null && poster !== undefined && poster !== '') {
-            video.setAttribute('poster', poster);
-        }
-        video.preload = true;
-        video.controls = false;
-        video.autoplay = autoplay;
-        if (DashPlayer === null) {
-            DashPlayer = MediaPlayer().create();
-            DashPlayer.getDebug().setLogToBrowserConsole(false);
-            DashPlayer.initialize();
-        }
-        DashPlayer.attachView(video);
-        CurrentUrl = url;
-        CurrentProtection = drm;
         DashPlayer.attachSource(url);
         DashPlayer.setAutoPlay(autoplay);
         DashPlayer.setFastSwitchEnabled(true);
@@ -599,8 +536,6 @@ function PlayerMedia() {
         if (doesTimeMarchesOn()) {
             DashPlayer.attachTTMLRenderingDiv(videoCaption);
         }
-        // TODO : set Drm
-        CurrentStreamType = StreamTypes.DASH_ENCRYPTED;
         // set thumbs
         if (thumbsTrackUrl !== null && thumbsTrackUrl !== undefined) {
             track = document.createElement('track');
@@ -614,7 +549,9 @@ function PlayerMedia() {
         // set subs
         SetManuallysubs(subs, video);
         // Setting Callbacks
-        DashPlayer.on(MediaPlayer.events.STREAM_INITIALIZED, onStreamInitialized, self);
+        DashPlayer.on(MediaPlayer.events.PLAYBACK_METADATA_LOADED, onStreamInitialized, this);
+        // next is commented because it trigger spinner on change text track !
+        // DashPlayer.on(MediaPlayer.events.STREAM_INITIALIZED, onStreamInitialized, self);        
         DashPlayer.on(MediaPlayer.events.PLAYBACK_STARTED, onPlayStart, self);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_PAUSED, onPlaybackPaused, self);
         DashPlayer.on(MediaPlayer.events.QUALITY_CHANGE_REQUESTED, onQualityChangeRequested, self);
@@ -861,7 +798,6 @@ function PlayerMedia() {
         Unload: Unload,
         load: load,
         loadDash: loadDash,
-        loadDashDrm: loadDashDrm,
         constructor: PlayerMedia
     };
 };

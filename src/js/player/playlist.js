@@ -112,20 +112,27 @@ function Playlist() {
         if (drm === null || drm === undefined) {
             return false;
         }
-        if (Const.FJCONFIG_DRM_SCHEMES.indexOf(drm[Const.FJCONFIG_DRM_SCHEME]) === -1) {
-            logger.error('BAD DRM Scheme Value ! ', drm[Const.FJCONFIG_DRM_SCHEME]);
-            return false;
+        logger.debug('Cheking DRM > ', drm);
+        for (var k in drm) {
+            var item = drm[k];
+            logger.info('Cheking DRM  > ', k);
+            if (Const.FJCONFIG_DRM_SCHEMES.indexOf(k) === -1) {
+                logger.error('BAD DRM Scheme Value ! ', k);
+                return false;
+            }
+            logger.info('Cheking DRM Server > ', item[Const.FJCONFIG_DRM_LICENSE_SERVER]);
+            if ((item[Const.FJCONFIG_DRM_LICENSE_SERVER] !== undefined) &&
+                (item[Const.FJCONFIG_DRM_LICENSE_SERVER] !== null)) {
+                logger.log(' playlist Server License of item  ', item[Const.FJCONFIG_DRM_LICENSE_SERVER]);
+            } else {
+                logger.error('Empty Server License for  DRM Scheme  ! ');
+                return false;
+            }
+            logger.info(' playlist Drm Headers on Request License  of item  ',
+                item[Const.FJCONFIG_DRM_HEADER_LICENSE_REQUEST]);
+            logger.info(' playlist Drm Headers on Request Segments  of item  ',
+                item[Const.FJCONFIG_DRM_HEADER_SEGMENTS_REQUEST]);
         }
-        if (drm[Const.FJCONFIG_DRM_LICENSE_SERVER]) {
-            logger.log(' playlist Server License of item  ', drm[Const.FJCONFIG_DRM_LICENSE_SERVER]);
-        } else {
-            logger.error('Empty Server License for  DRM Scheme  ! ');
-            return false;
-        }
-        logger.log(' playlist Drm Headers on Request License  of item  ',
-            drm[Const.FJCONFIG_DRM_HEADER_LICENSE_REQUEST]);
-        logger.log(' playlist Drm Headers on Request Segments  of item  ',
-            drm[Const.FJCONFIG_DRM_HEADER_SEGMENTS_REQUEST]);
         return true;
     };
     /**

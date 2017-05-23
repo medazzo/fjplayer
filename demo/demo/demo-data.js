@@ -11,7 +11,29 @@
          'FJType': 'dash',
          'FJTitle': ' title of movie itemDash 2',
          'FJClass': 'vod',
-         'FJSrc': 'http://media.axprod.net/TestVectors/v7-MultiDRM-SingleKey/Manifest_1080p_ClearKey.mpd'
+         'FJSrc': 'http://media.axprod.net/TestVectors/v7-MultiDRM-SingleKey/Manifest_1080p_ClearKey.mpd',
+         'FJDrm': {
+             'com.widevine.alpha': {
+                 'drmtoday': true,
+                 'serverURL': 'https://lic.staging.drmtoday.com/license-proxy-widevine/cenc/',
+                 'httpRequestHeaders': {
+                     'dt-custom-data': 'eyJ1c2VySWQiOiIxMjM0NSIsInNlc3Npb25JZCI6ImV3b2dJQ0p3Y205bWFXeGxJaUE2SUhzS0lDQWdJQ0p3ZFhKamFHRnpaU0lnT2lCN0lIMEtJQ0I5TEFvZ0lDSnZkWFJ3ZFhSUWNtOTBaV04wYVc5dUlpQTZJSHNLSUNBZ0lDSmthV2RwZEdGc0lpQTZJR1poYkhObExBb2dJQ0FnSW1GdVlXeHZaM1ZsSWlBNklHWmhiSE5sTEFvZ0lDQWdJbVZ1Wm05eVkyVWlJRG9nWm1Gc2MyVUtJQ0I5TEFvZ0lDSnpkRzl5WlV4cFkyVnVjMlVpSURvZ1ptRnNjMlVLZlFvSyIsIm1lcmNoYW50IjoiY2FibGVsYWJzIn0K'
+                 }
+             },
+             'com.microsoft.playready': {
+                 'drmtoday': true,
+                 'serverURL': 'https://lic.staging.drmtoday.com/license-proxy-headerauth/drmtoday/RightsManager.asmx',
+                 'httpRequestHeaders': {
+                     'http-header-CustomData': 'eyJ1c2VySWQiOiIxMjM0NSIsInNlc3Npb25JZCI6ImV3b2dJQ0p3Y205bWFXeGxJaUE2SUhzS0lDQWdJQ0p3ZFhKamFHRnpaU0lnT2lCN0lIMEtJQ0I5TEFvZ0lDSnZkWFJ3ZFhSUWNtOTBaV04wYVc5dUlpQTZJSHNLSUNBZ0lDSmthV2RwZEdGc0lpQTZJR1poYkhObExBb2dJQ0FnSW1GdVlXeHZaM1ZsSWlBNklHWmhiSE5sTEFvZ0lDQWdJbVZ1Wm05eVkyVWlJRG9nWm1Gc2MyVUtJQ0I5TEFvZ0lDSnpkRzl5WlV4cFkyVnVjMlVpSURvZ1ptRnNjMlVLZlFvSyIsIm1lcmNoYW50IjoiY2FibGVsYWJzIn0K'
+                 }
+             },
+             'com.fjse.forja': {
+                 'serverURL': 'https://html5.cablelabs.com:8025',
+                 'httpRequestHeaders': {
+                     'http-header-CustomData': 'Y2FibGVsYWJzIn0K'
+                 }
+             }
+         }
      },
      'itemDashThumbs': {
          'FJType': 'dash',
