@@ -1,6 +1,26 @@
  'use strict';
 
  var data = {
+     'forjaItemDashEncrypted': {
+         'FJType': 'dash',
+         'FJTitle': 'clear Forja movie itemDash ',
+         'FJClass': 'vod',
+         'FJSrc': 'http://127.0.0.1:8500/dashedCrypted/stream.mpd',
+         'FJDrm': {
+             'com.fjse.forja': {
+                 'serverURL': 'http://127.0.0.1:3000',
+                 'httpRequestHeaders': {
+                     'http-header-CustomData': 'blabla'
+                 }
+             }
+         }
+     },
+     'forjaItemDashClear': {
+         'FJType': 'dash',
+         'FJTitle': 'clear Forja movie itemDash ',
+         'FJClass': 'vod',
+         'FJSrc': 'http://127.0.0.1:8500/dashedClear/stream.mpd'
+     },
      'itemDashSubsonVttmpd': {
          'FJType': 'dash',
          'FJTitle': ' title of movie itemDash 2',

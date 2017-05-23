@@ -5,7 +5,7 @@
 0. define forja protectionmodel (https://github.com/Dash-Industry-Forum/dash.js/blob/development/src/streaming/protection/controllers/ProtectionKeyController.js)
     to be used with forja keySystem  (https://github.com/Dash-Industry-Forum/dash.js/blob/development/src/streaming/protection/drm/KeySystem.js) 
     and with  forjaServer (https://github.com/Dash-Industry-Forum/dash.js/blob/development/src/streaming/protection/servers/LicenseServer.js)
-
+ then call attachProtectionController(value) ;
 
      "protData": {
             "com.widevine.alpha": {
