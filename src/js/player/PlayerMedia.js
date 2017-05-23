@@ -1,7 +1,7 @@
 'use strict';
 import Logger from '../utils/Logger';
 import Eventing from '../utils/Eventing';
-import FjProtectionKeyController from '../protection/FjProtectionKeyController';
+import FjProtectionController from '../protection/FjProtectionController';
 import { MediaPlayer } from 'dashjs';
 import * as Const from '../defs/constants';
 import * as Langs from '../defs/isoLangs';
@@ -15,6 +15,7 @@ import * as Langs from '../defs/isoLangs';
 function PlayerMedia() {
     var video = null,
         initialized = false,
+        activateDashLog = true,
         videoFigure = null,
         startingCount = 0,
         thumbsTrackUrl = null,
@@ -45,7 +46,7 @@ function PlayerMedia() {
     function initialize(playerUiVideo, playerUiVideoFigure) {
         video = playerUiVideo;
         DashPlayer = MediaPlayer().create();
-        DashPlayer.getDebug().setLogToBrowserConsole(false);
+        DashPlayer.getDebug().setLogToBrowserConsole(activateDashLog);
         DashPlayer.initialize();
         if (!video) {
             throw new Error('Please call initialize with a valid Player UI having a video html 5 element ');
@@ -521,10 +522,9 @@ function PlayerMedia() {
         video.autoplay = autoplay;
         if (DashPlayer === null) {
             DashPlayer = MediaPlayer().create();
-            DashPlayer.getDebug().setLogToBrowserConsole(false);
+            DashPlayer.getDebug().setLogToBrowserConsole(activateDashLog);
             DashPlayer.initialize();
         }
-        DashPlayer.attachView(video);
         CurrentUrl = url;
         if ((drm === undefined) || (drm === null)) {
             CurrentStreamType = StreamTypes.DASH_CLEAR;
@@ -543,18 +543,24 @@ function PlayerMedia() {
                     break;
                 }
             }
+
+
+
             if (forjaDrmKeySystemFound === true) {
-                // Using Forja System Key
-                DashPlayer.attachProtectionController(new FjProtectionKeyController());
+                let protectionKeyController = new FjProtectionController();
+                protectionKeyController.setConfig({ log: logger.warn });
+                protectionKeyController.initialize();
+                DashPlayer.setProtectionData(drm);
+                DashPlayer.attachProtectionController(protectionKeyController);
                 logger.debug(' To Encrypt : using Forja System Key !.');
             } else {
                 logger.debug(' To Encrypt : using Default System Key .');
             }
         }
 
-        DashPlayer.attachSource(url);
         DashPlayer.setAutoPlay(autoplay);
         DashPlayer.setFastSwitchEnabled(true);
+        DashPlayer.attachView(video);
         DashPlayer.attachVideoContainer(videoFigure);
         // Add HTML-rendered TTML subtitles except for Firefox < v49 (issue #1164)
         if (doesTimeMarchesOn()) {
@@ -626,7 +632,7 @@ function PlayerMedia() {
     function addDRMData(manifest, protCtrl) {
 
         // Assign the session type to be used for this controller
-        protCtrl.setSessionType($("#session-type").find(".active").children().attr("id"));
+        logger.warn(' Used protection controller >> ', protCtrl);
 
         var data = {
             manifest: manifest,
@@ -734,6 +740,7 @@ function PlayerMedia() {
         });
 
         DashPlayer.on(MediaPlayer.events.KEY_MESSAGE, function(e) {
+            logger.warn(' Received message key from server ', e)
             var session = findSession(e.data.sessionToken.getSessionID());
             if (session) {
                 session.lastMessage = "Last Message: " + e.data.message.byteLength + " bytes";
@@ -747,6 +754,7 @@ function PlayerMedia() {
         });
 
         DashPlayer.on(MediaPlayer.events.LICENSE_REQUEST_COMPLETE, function(e) {
+            logger.warn(' The license request is complete event : ', e)
             if (!e.error) {
                 var session = findSession(e.data.sessionToken.getSessionID());
                 if (session) {

@@ -1,0 +1,40 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <title>fjplayer demo</title>
+    <script type="text/javascript" src="demo-data.js"></script>
+    <script type="text/javascript">
+        function fjplayerEvent(e, args) {
+            console.warn(" We are having an event : ", e, args);
+        };
+        window.onload = function() {
+            var ver = new fjplayer.Version();
+            console.info('VERSION', ver.getVersion());
+            console.info('Hash HEAD', ver.getShortHash());
+            var playlist = new fjplayer.Playlist();
+            // playlist.addItem(data.itemDashThumbs);
+            // playlist.addItem(data.itemDashNoThumbs);
+            // playlist.addItem(data.itemDashSubsNoThumbs);
+            // playlist.addItem(data.itemMp4Thumbs);
+            // playlist.addItem(data.itemMp4NoThumbs);
+            // playlist.addItem(data.itemMp4SubsNoThumbs);
+            playlist.addItem(data.itemMp4Full);
+            var player = new fjplayer.Player('fjserverID1', 'playercontainer');
+            player.on(fjplayer.PlayerEvents.STREAM_LOADED, fjplayerEvent);
+            player.loadPlaylist(playlist);
+            //player.playAt(0);
+            player.startPlaylist(0, true, false, true);
+        }
+    </script>
+    <script type="text/javascript" src="/dist/fjplayer.js"></script>
+</head>
+
+<div id="playercontainer">
+</div>
+
+<body>
+
+</body>
+
+</html>

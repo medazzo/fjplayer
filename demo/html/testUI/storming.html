@@ -1,0 +1,282 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <!--
+fjplayer:div 
+└── fjfigure:figure 
+    ├── fjvideo:video
+    ├── fjinfotop:div
+    │   ├── fjbackarrowLeft:iconspan             [clickable Icon][optional][back arrow] 
+    │   ├── fjTextLeft:p                         [readonly text][optional][title of stream]
+    │   ├── fjbackshareRight:iconspan            [clickable Icon][optional][share button]
+    │   └── fjbackdownRight:iconspan             [clickable Icon][optional][download button]
+    ├── fjinfocenter:div
+    │   ├── fjspinner:div
+    │   └── fjBigButton:div
+    ├── fjcontrolmenus:div
+    │   ├── fjsubsmenu:div                [contains ul > li that will be js created ] [fjlist:ul ,fjitemlist:li]
+	│   ├── fjaudsmenu:div                [contains ul > li that will be js created ] [fjlist:ul ,fjitemlist:li]
+	│   ├── fjthumbscontainer:div
+	│   ├── fjvideocaption:div
+	│   ├── fjoverlayscontainer:div
+    │   └── fjadscontainer:div
+	└── fjcontrolpanelbottom:div
+        └── fjcontrolpanelUpper:div
+	    │   └── fjcontrolvideoprogress:input     [progress bar]
+        └── fjcontrolpanelLower:div
+	        ├── fjcontrolplaypause:span          [clickable Icon] 
+	        ├── fjcontrolmute:span               [clickable Icon]
+	        ├── fjcontrolvolumeprogress:input    [progress bar]
+	        ├── fjcontroltimeprogress:span       [readonly text]
+	        ├── fjcontroltimeduration:span       [readonly text]
+	        ├── fjcontrolaudio:span              [clickable Icon][can not exist][depend on stream] 
+	        ├── fjcontrolsubtitles:span	         [clickable Icon][can not exist][depend on stream] 
+	        └── fjcontrolfullscreen:span         [clickable Icon]
+    
+
+-->
+    <style type="text/css">
+        .fj-player {}
+        
+        .fj-figure {}
+        
+        .fjcontrol-background {
+            z-index: 2147483647;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            border-bottom-left-radius: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            background: rgba(10, 10, 10, 0.8);
+        }
+        
+        .divTspanitleSeparator {
+            position: relative;
+            visibility: visible;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            margin: 0px;
+            white-space: nowrap;
+            display: inline-block;
+            max-width: 766px;
+            font-size: 12px;
+            padding: 10px;
+        }
+        
+        .fjcontrols-panel {
+            z-index: 2147483647;
+            position: absolute;
+            border-radius: 5px;
+            bottom: 3%;
+            opacity: 0.8;
+            background: rgba(10, 10, 10, 0.8);
+            width: 90%;
+            margin-left: 5%;
+            display: relative;
+            float: left;
+        }
+        /*---------- position Horizental -----------*/
+        
+        .fj-horizental-top {
+            z-index: 2147483647;
+            border-radius: 5px;
+            top: 10%;
+            width: 80%;
+            position: absolute;
+            left: 10%;
+        }
+        
+        .fj-horizental-center {
+            top: 45%;
+            position: absolute;
+        }
+        
+        .fj-horizental-bottomMenus {
+            z-index: 2147483647;
+            position: absolute;
+            border-radius: 5px;
+            bottom: 22%;
+            opacity: 0.8;
+            background: rgba(10, 10, 10, 0.8);
+            width: 90%;
+            margin-left: 5%;
+            display: relative;
+        }
+        
+        .fj-horizental-bottomUpper {
+            z-index: 2147483647;
+            position: absolute;
+            border-radius: 5px;
+            bottom: 12%;
+            opacity: 0.8;
+            background: rgba(10, 10, 10, 0.8);
+            width: 90%;
+            margin-left: 5%;
+            display: relative;
+        }
+        
+        .fj-horizental-bottomLower {
+            z-index: 2147483647;
+            position: absolute;
+            border-radius: 5px;
+            bottom: 2%;
+            opacity: 0.8;
+            background: rgba(10, 10, 10, 0.8);
+            width: 90%;
+            margin-left: 5%;
+            display: relative;
+        }
+        /*---------- position Vertical -----------*/
+        
+        .fj-vertical-left {
+            float: left;
+        }
+        
+        .fj-vertical-center {
+            left: 50%;
+        }
+        
+        .fj-vertical-right {
+            float: right;
+        }
+        /*---------- types -----------*/
+        
+        .fj-video {
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        
+        .fj-text {
+            font-size: 1em;
+            line-height: 2;
+        }
+        
+        .fj-smallText {
+            font-size: 1em;
+            line-height: 2;
+        }
+        
+        .fj-btn {
+            z-index: 2147483647;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            border-bottom-left-radius: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            position: relative;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            display: inline-block;
+            cursor: pointer;
+        }
+        
+        .fj-btn:hover {
+            opacity: 1.0;
+            background: #333;
+        }
+        
+        .fj-overlayContainer {
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+            padding: 0px;
+            position: absolute;
+        }
+        
+        .fj-overlay {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.5);
+            float: left;
+            font-size: 12px;
+            padding: 5px;
+            border-radius: 5px;
+            z-index: 2147483647;
+            top: 20%;
+            left: 20%;
+            height: auto;
+        }
+        
+        .fj-adsinfo {}
+    </style>
+    <script type="text/javascript">
+    </script>
+</head>
+
+<body>
+    <div id="playercontainer" class="fjPlayer">
+        <figure id="videoFigureId" class="fjfigure" data-fullscreen="fullScreenOnStart">
+            <video id="videoId" class="divofVideo" width="100%" controls="false" autoplay="true"> 
+                                <source src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4" type="video/mp4">
+                            </video>
+            <div id="videoCaptionId"></div>
+            <div class="divInfoTop" id="videoInfoId">
+                <span class=" divIconBtn divconeontrolLeft fjcontrol-background fa  fa-arrow-left"> </span>
+                <p class=" divTspanitleSeparator divconeontrolLeft "> </p>
+                <div id="titleId" class="fjcontrols-control-text  fjcontrol-background divIconBtn divconeontrolLeft"> sdfsdfsdfsdf</div>
+                <span class=" divIconBtn divconeontrolRight  fjcontrol-background fa  fa-share-alt "> </span>
+                <p class=" divTspanitleSeparator divconeontrolRight "> </p>
+                <span class=" divIconBtn divconeontrolRight fjcontrol-background  fa fa-download "> </span>
+            </div>
+            <div class="divInfoCenter">
+                <div id="spinnerId" class="fj-hide spinner"> </div>
+                <div class="fjcontrol-background divBigPlayBtn" id="BigPlayBtnId">
+                    <span class=" divIconBtn  divconeontrolLeft fa  fa-play "> </span>
+                </div>
+            </div>
+            <div class="fjcontrols-panel" id="videoControlsId">
+                <div class="fjcontrols-panel-controls  ">
+                    <div id="subsdMenuContainerDivId"></div>
+                </div>
+                <div class="fjcontrols-panel-controls">
+                    <div class="hprogressbar" id="progressDivId">
+                        <input id="progressBarId" type="range" />
+                    </div>
+                </div>
+                <div class="fjcontrols-control divIconBtn divconeontrolIcon divconeontrolLeft clickable ">
+                    <span id="playpauseBtnId" class="fa fa-play" title="Play"></span>
+                </div>
+                <div class="fjcontrols-control divconeontrolIcon divIconBtn divconeontrolLeft clickable">
+                    <span id="muteBtnId" title="volume-full" class="fa fa-volume-up"></span>
+                </div>
+                <div class="fjcontrols-control fjcontrols-control-left">
+                    <div class="volumebar" id="volumeDivId">
+                        <input class="clickable" id="volumeBarId" type="range" />
+                    </div>
+                </div>
+                <div class="fjcontrols-control  fjcontrols-control-left ">
+                    <div class="fjcontrols-control fjcontrols-control-text">
+                        <span id="timerId">0:00:00</span><span>/</span><span id="durationId">0:00:00</span>
+                    </div>
+                </div>
+                <div class="fjcontrols-control divIconBtn divconeontrolIcon fjcontrols-control-right clickable">
+                    <span id="fullScreenBtnId" title="Fullscreen" class="fa fa-arrows-alt"></span>
+                </div>
+                <div id="expandDivId" class="fjcontrols-control divIconBtn divconeontrolIcon fjcontrols-control-right clickable">
+                    <span id="expandBtnId" class="fa fa-expand" title="Double player size"></span>
+                </div>
+                <div id="subtitlesDivId" class="fjcontrols-control divIconBtn divconeontrolIcon fjcontrols-control-right clickable">
+                    <span id="subtitlesBtnId" class="fa fa-cc" title="subtitles"></span>
+                </div>
+            </div>
+            <div class="thumbsBlockDiv" id="thumbsDivId">
+                <span class="thumbsBlock" id="thumbsImgId"></span>
+                <span class="fjcontrols-control-text" id="thumbstimerId"></span>
+            </div>
+            <div id="audMenuContainerDivId"></div>
+            <div id="overlaysContainerDivId"></div>
+            <div id="adsContainerDivId"></div>
+        </figure>
+    </div>
+</body>
+
+</html>

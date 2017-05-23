@@ -1,0 +1,183 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <title>fjplayer testing ui</title>
+    <link rel="stylesheet" href="./tmp-toto.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <style type="text/css">
+        .pictt {
+            background-image: url("thumbs.jpg");
+            background-size: auto;
+            background-position: -320px -612px;
+            width: 160px;
+            height: 68px;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onkeyup = function(e) {
+            console.warn(" some key is up : ", e);
+            if (e.keyCode == 27) { // escape key maps to keycode `27`
+                console.warn(" some key is up : !!!! ", e);
+            }
+        }
+        window.onload = function() {
+            var holdWidth = window.innerWidth;
+            window.onresize = function() {
+                var intViewportWidth = window.innerWidth;
+                var intViewportHeight = window.innerHeight;
+                newPercentage = ((intViewportWidth / holdWidth) * 100) + "%";
+                var fjplayer = document.getElementById('playercontainer');
+                fjplayer.style.fontSize = newPercentage;
+                console.error(holdWidth, " RESIED !!!!!!!!!!!!! ", intViewportWidth, '>>>>>', newPercentage);
+            }
+
+            var video = document.getElementById('videoId');
+            video.currentTime = 50;
+            video.pause();
+            /*  var progressBar = document.getElementById('progressBarId');
+             progressBar.value = 50;
+             progressBar.min = 0;
+             progressBar.max = 100;
+             val = (progressBar.value - progressBar.min) / (progressBar.max - progressBar.min);
+            progressBar.classlist.add("progress70");
+             progressBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
+                 'color-stop(' + val + ', #FF0000), ' +
+                 'color-stop(' + val + ', #8F9B9E)' +
+                 ')';
+
+             var volumeBar = document.getElementById('volumeBarId');
+             volumeBar.value = 5;
+             volumeBar.min = 0;
+             volumeBar.max = 10;
+             val = (volumeBar.value - volumeBar.min) / (volumeBar.max - volumeBar.min);
+             volumeBar.style.backgroundImage = '-webkit-gradient(linear, left top, right top, ' +
+                 'color-stop(' + val + ', #FF0000), ' +
+                 'color-stop(' + val + ', #8F9B9E)' +
+                 ')';
+                 */
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="container  ">
+        <div class="panel panel-default">
+            <div class="panel-body ">
+                <div class=" row">
+                    <div class="col-md-12">
+                        <div id="playercontainer" class="fj-Player">
+                            <figure id="videoFigureId" class="fj-figure" data-fullscreen="fullScreenOnStart">
+
+                                <!-- video element -->
+                                <video id="videoId" class="fj-video" width="100%" autoplay="autoplay">
+                                    <source src="https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4" type="video/mp4">
+                                </video>
+                                <!-- Horizental Tpp -->
+                                <div class="fj-horizental-top" id="videoInfoId">
+                                    <span class=" fj-vertical-left  fj-control  fj-btn fj-fa-icon fa-arrow-left" aria-hidden="true"> </span>
+                                    <div class=" fj-vertical-left  fj-vertical-separator   "></div>
+                                    <div class=" fj-vertical-left  fj-control  fj-btn   " id="titleId"> sdfsdfsdfsdf</div>
+                                    <span class=" fj-vertical-right fj-control  fj-btn fj-fa-icon fa-share-alt  " aria-hidden="true"> </span>
+                                    <div class=" fj-vertical-right  fj-vertical-separator   "></div>
+                                    <span class=" fj-vertical-right fj-control  fj-btn fj-fa-icon fa-download " aria-hidden="true"> </span>
+                                </div>
+                                <!-- Horizental Center -->
+                                <div class="fj-horizental-center">
+                                    <div id="spinnerId" class="fj-vertical-center  fj-hide spinner"> </div>
+                                    <span class="fj-vertical-center fj-control fj-big-btn fj-fa-icon fa-play" id="BigPlayBtnId"></span>
+                                </div>
+
+                                <!-- Horizental Bottom Up used for menu  -->
+                                <div class="fj-horizental-bottomUpper">
+                                    <!-- video caption ued by dash player for caption -->
+                                    <div id="videoCaptionId"></div>
+                                    <!-- this present the thuùbs image if exist-->
+                                    <div class="thumbsBlockDiv" id="tbd7710648" style="left: 349px; width: 160px;">
+                                        <span class="thumbsBlock pictt" id="tbi7710648">
+                                    	</span>
+                                        <span class="fjcontrols-control-text" id="tbt7710648">
+                                            07:04
+                                        </span>
+                                    </div>
+                                    <!-- this present the subtitles or audios menu if exist  and when clicked-->
+                                    <div id="fj-vertical-left">
+                                        <div class="settingMenuDiv fj-hide">
+                                            <div class="fj-list-title"> Audios </div>
+                                            <ul class="fj-list" id="smmlsbb1570681">
+                                                <li class="subtitles-menu-item-actif" index="0">en</li>
+                                                <li class="subtitles-menu-item" index="1">francais</li>
+                                                <li class="subtitles-menu-item" index="2">allemand</li>
+                                                <li class="subtitles-menu-item" index="-1">off</li>
+                                            </ul>
+                                        </div>
+                                        <div class="settingMenuDiv">
+                                            <div class="fj-list-title"> Soutitres </div>
+                                            <ul class="fj-list" id="smmlsbb157d681">
+                                                <li class="subtitles-menu-item-actif" index="0">en</li>
+                                                <li class="subtitles-menu-item" index="1">frs</li>
+                                                <li class="subtitles-menu-item" index="2">alnd</li>
+                                                <li class="subtitles-menu-item" index="-1">off</li>
+                                            </ul>
+                                        </div>
+                                        <!-- this will contains ads vifdeo or ads overlays -->
+                                        <div id="adsContainerDivId"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Horizental Bottom down used for fj controls  -->
+                                <div class="fj-horizental-bottomLower">
+                                    <!--  the video progress Bar -->
+                                    <div class="fj-vertical-center">
+                                        <input class=" fj-control-embd fj-video-progress" id="progressBarId" type="range" min="0" max="1000" step="1" value="500" />
+                                    </div>
+                                    <!--  play,previous and next controls  -->
+                                    <span class=" fj-vertical-left fj-control-embd fj-btn fj-fa-icon fa-step-backward" aria-hidden="true" id="playpauseBtnId" title="previous"> </span>
+                                    <span class=" fj-vertical-left fj-control-embd fj-btn fj-fa-icon fa-play" aria-hidden="true" id="playpauseBtnId" title="Play"> </span>
+                                    <span class=" fj-vertical-left fj-control-embd fj-btn fj-fa-icon fa-step-forward" aria-hidden="true" id="playpauseBtnId" title="next"> </span>
+                                    <!--  mute and volume bar controls  -->
+                                    <span class=" fj-vertical-left fj-control-embd fj-btn fj-fa-icon fa-volume-up" aria-hidden="true" id="muteBtnId" title="mute"> </span>
+                                    <div class="fj-vertical-left  volumebar" id="volumeDivId">
+                                        <input id="volumeBarId" class="fj-control-embd" type="range" min="0" max="1000" step="1" value="500" />
+                                    </div>
+                                    <!--  more description of the stream   -->
+                                    <div class=" fj-vertical-left fj-desc " title="times">
+                                        <span>Saison 1 : episode 13 : comment tu vas faire </span>
+                                    </div>
+                                    <!--  full screen, audio and subtitles controls  -->
+                                    <span class=" fj-vertical-right fj-control-embd fj-btn fj-fa-icon fa-arrows-alt" aria-hidden="true" id="fullScreenBtnId" title="Fullscreen"> </span>
+                                    <span class=" fj-vertical-right fj-control-embd fj-btn fj-fa-icon fa-commenting-o" aria-hidden="true" id="subtitlesBtnId" title="Subtitles"> </span>
+                                    <span class=" fj-vertical-right fj-control-embd fj-btn fj-fa-icon fa-microphone" aria-hidden="true" id="audiosBtnId" title="Audios"> </span>
+                                    <!--  timers   -->
+                                    <div class=" fj-vertical-right fj-timers " title="times">
+                                        <span id="timerId">0:00:00</span><span>/</span><span id="durationId">0:00:00</span>
+                                    </div>
+                                </div>
+
+                                <!--  this will contains overlays   -->
+                                <div id="overlaysContainerDivId" class="fjOvcontainer">
+                                    <div id="ovscd1642234" class="over-HR fj-control">
+                                        <div>
+                                            <span class="fj-control-embd  fj-overlay-closing fj-btn fj-fa-icon  fa-window-close" aria-hidden="true"></span>
+                                            <div class="fj-overlay-annonce">Annonce</div>
+                                        </div>
+                                        <div class="fj-overlay-description">
+                                            <p>Hello there Overlay 1</p>
+                                        </div>
+                                        <div class="fj-overlay-link">www.google.fr</div>
+                                    </div>
+                                </div>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /container -->
+</body>
+
+</html>

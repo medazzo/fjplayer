@@ -121,13 +121,14 @@ function Playlist() {
                 return false;
             }
             logger.info('Cheking DRM Server > ', item[Const.FJCONFIG_DRM_LICENSE_SERVER]);
-            if ((item[Const.FJCONFIG_DRM_LICENSE_SERVER] !== undefined) &&
+            /*if ((item[Const.FJCONFIG_DRM_LICENSE_SERVER] !== undefined) &&
                 (item[Const.FJCONFIG_DRM_LICENSE_SERVER] !== null)) {
                 logger.log(' playlist Server License of item  ', item[Const.FJCONFIG_DRM_LICENSE_SERVER]);
             } else {
                 logger.error('Empty Server License for  DRM Scheme  ! ');
                 return false;
             }
+            */
             logger.info(' playlist Drm Headers on Request License  of item  ',
                 item[Const.FJCONFIG_DRM_HEADER_LICENSE_REQUEST]);
             logger.info(' playlist Drm Headers on Request Segments  of item  ',
