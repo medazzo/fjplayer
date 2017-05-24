@@ -57,3 +57,6 @@ There is two simple ways to doit (simple means : no creating of our own key syst
             });
 
 
+both are evolutive we can decide to support any other drm ..            
+
+
