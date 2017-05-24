@@ -1,46 +1,59 @@
 #############################################################
                    TODO List
-#############################################################
-
-0. define forja protectionmodel (https://github.com/Dash-Industry-Forum/dash.js/blob/development/src/streaming/protection/controllers/ProtectionKeyController.js)
-    to be used with forja keySystem  (https://github.com/Dash-Industry-Forum/dash.js/blob/development/src/streaming/protection/drm/KeySystem.js) 
-    and with  forjaServer (https://github.com/Dash-Industry-Forum/dash.js/blob/development/src/streaming/protection/servers/LicenseServer.js)
- then call attachProtectionController(value) ;
-
-     "protData": {
-            "com.widevine.alpha": {
-              "drmtoday": true,
-              "serverURL": "https://lic.staging.drmtoday.com/license-proxy-widevine/cenc/",
-              "httpRequestHeaders": {
-                "dt-custom-data": "eyJ1c2VySWQiOiIxMjM0NSIsInNlc3Npb25JZCI6ImV3b2dJQ0p3Y205bWFXeGxJaUE2SUhzS0lDQWdJQ0p3ZFhKamFHRnpaU0lnT2lCN0lIMEtJQ0I5TEFvZ0lDSnZkWFJ3ZFhSUWNtOTBaV04wYVc5dUlpQTZJSHNLSUNBZ0lDSmthV2RwZEdGc0lpQTZJR1poYkhObExBb2dJQ0FnSW1GdVlXeHZaM1ZsSWlBNklHWmhiSE5sTEFvZ0lDQWdJbVZ1Wm05eVkyVWlJRG9nWm1Gc2MyVUtJQ0I5TEFvZ0lDSnpkRzl5WlV4cFkyVnVjMlVpSURvZ1ptRnNjMlVLZlFvSyIsIm1lcmNoYW50IjoiY2FibGVsYWJzIn0K"
-              }
-            },
-            "com.microsoft.playready": {
-              "drmtoday": true,
-              "serverURL": "https://lic.staging.drmtoday.com/license-proxy-headerauth/drmtoday/RightsManager.asmx",
-              "httpRequestHeaders": {
-                "http-header-CustomData": "eyJ1c2VySWQiOiIxMjM0NSIsInNlc3Npb25JZCI6ImV3b2dJQ0p3Y205bWFXeGxJaUE2SUhzS0lDQWdJQ0p3ZFhKamFHRnpaU0lnT2lCN0lIMEtJQ0I5TEFvZ0lDSnZkWFJ3ZFhSUWNtOTBaV04wYVc5dUlpQTZJSHNLSUNBZ0lDSmthV2RwZEdGc0lpQTZJR1poYkhObExBb2dJQ0FnSW1GdVlXeHZaM1ZsSWlBNklHWmhiSE5sTEFvZ0lDQWdJbVZ1Wm05eVkyVWlJRG9nWm1Gc2MyVUtJQ0I5TEFvZ0lDSnpkRzl5WlV4cFkyVnVjMlVpSURvZ1ptRnNjMlVLZlFvSyIsIm1lcmNoYW50IjoiY2FibGVsYWJzIn0K"
-              }
-            }
-          }
-
-
- "protData": {
-            "com.widevine.alpha": {
-              "serverURL": "https://html5.cablelabs.com:8025"
-            },
-            "org.w3.clearkey": {
-              "clearkeys": {
-                "H3JbV93QV3mPNBKQON2UtQ": "ClKhDPHMtCouEx1vLGsJsA"
-              }
-            }
-          }
-
-
-
-          
+#############################################################        
 1. add internalisation , on player construct choose iso country code
 2. remove label from subtitle, use only iso lan code 
      to deduct label reagarding player UI Language
+
+/api/authorization/{streamID,appID}:
+- chck if app is authorized to play stream then encapsulate steam licensing data in a token
+
+return 
+Authrization Token  : Ecnrypted Toekn to be sent to License Server 
+
+then if ok 
+    var player = dashjs.MediaPlayer().create();
+                    player.initialize();
+                    player.attachView($videoPlayer[0]);
+                    player.attachVideoContainer($videoPlayerPanel[0]);
+                    player.setAutoPlay(true);
+
+                    // This passes the main DRM configuration information to dash.js. Specifically, what happens is:
+                    // * The Widevine and PlayReady DRM technologies are configured here, as these two are
+                    //   supported by dash.js (Axinom DRM itself supports more).
+                    // * The license server URLs here are hardcoded to Axinom DRM testing environment.
+                    // * The license token obtained from the authorization service is passed to dash.js.
+                    // * The rest of the DRM configuration is present in the video manifest file and loaded automatically.
+                    player.setProtectionData({
+                        "org.w3.clearkey": {
+                            "serverURL": "https://fjse-drm-licensing.axtest.net/AcquireLicense",
+                            "httpRequestHeaders": {
+                                "X-FjSeDRM-Message": licenseToken
+                            }
+                        }
+                    });
+
+                    player.attachSource(video.url);
+
+
+=======================================================================================================
+There is two simple ways to doit (simple means : no creating of our own key system , simple means using cleakey key system)                    
+1. Ask the authorization server then the license server by fjplayer then parse the license response and put the key directly like
+            player.setProtectionData({
+              "org.w3.clearkey": {
+                          "clearkeys": {
+                            "H3JbV93QV3mPNBKQON2UtQ": "ClKhDPHMtCouEx1vLGsJsA"
+                          }
+            });
+
+2. Ask the authorization server and get the token then pass it protection data as header and let dashjs ask the license and do the rest like             
+            player.setProtectionData({
+                "org.w3.clearkey": {
+                    "serverURL": "https://fjse-drm-licensing.axtest.net/AcquireLicense",
+                    "httpRequestHeaders": {
+                        "X-FjSeDRM-Message": licenseToken
+                    }
+                }
+            });
 
 
