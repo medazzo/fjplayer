@@ -1,6 +1,39 @@
  'use strict';
 
  var data = {
+     'forjaItemDashEncryptedWithPreAds': {
+         'FJType': 'dash',
+         'FJTitle': 'clear Forja movie itemDash ',
+         'FJClass': 'vod',
+         'FJSrc': 'http://127.0.0.1:8500/dashedCrypted/stream.mpd',
+         'FJDrm': {
+             "FjLicenseServer": "http://127.0.0.1:3000"
+         },
+         'FJAds': [{
+             'FJType': 'video/mp4',
+             'FJSrc': '../videos/berber_pub.mp4',
+             'FJClass': 'pre-roll',
+             'FJCanEscape': true,
+             'FJUrl': 'http://www.google.com'
+         }]
+     },
+     'forjaItemDashEncryptedWithMidAds': {
+         'FJType': 'dash',
+         'FJTitle': 'clear Forja movie itemDash ',
+         'FJClass': 'vod',
+         'FJSrc': 'http://127.0.0.1:8500/dashedCrypted/stream.mpd',
+         'FJDrm': {
+             "FjLicenseServer": "http://127.0.0.1:3000"
+         },
+         'FJAds': [{
+             'FJType': 'video/mp4',
+             'FJSrc': '../videos/berber_pub.mp4',
+             'FJClass': 'mid-roll',
+             'FJCanEscape': true,
+             'FJShowAt': 5,
+             'FJUrl': 'http://www.google.com'
+         }]
+     },
      'forjaItemDashEncrypted': {
          'FJType': 'dash',
          'FJTitle': 'clear Forja movie itemDash ',
@@ -66,7 +99,14 @@
          'FJTitle': ' title of movie itemOnly 1',
          'FJClass': 'vod',
          'FJThumbs': '../vtt/thumbs.vtt',
-         'FJType': 'video/mp4'
+         'FJType': 'video/mp4',
+         'FJAds': [{
+             'FJType': 'video/mp4',
+             'FJSrc': '../videos/berber_pub.mp4',
+             'FJClass': 'pre-roll',
+             'FJCanEscape': true,
+             'FJUrl': 'http://www.google.com'
+         }]
      },
      'itemMp4NoThumbs': {
          'FJSrc': 'https://content.jwplatform.com/videos/q1fx20VZ-kNspJqnJ.mp4',
