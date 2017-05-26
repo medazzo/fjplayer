@@ -1,7 +1,6 @@
 'use strict';
 import Logger from '../utils/Logger';
 import Eventing from '../utils/Eventing';
-import FjseAuthz from '../protection/FjseAuthz';
 import { MediaPlayer } from 'dashjs';
 import * as Const from '../defs/constants';
 import * as Langs from '../defs/isoLangs';
@@ -12,7 +11,7 @@ import * as Langs from '../defs/isoLangs';
  * @description The PlayerMedia is the html video/dash/drm Media player
  *
  */
-function PlayerMedia() {
+function PlayerMedia(FjAuthZmgr) {
     var video = null,
         initialized = false,
         activateDashLog = true,
@@ -26,6 +25,7 @@ function PlayerMedia() {
         CurrentStreamType = PlayerMedia.UNKNOWN,
         DashPlayer = null,
         drmData = [],
+        authZmgr = FjAuthZmgr,
         logger = new Logger(this),
         events = new Eventing(),
         StreamTypes = {
@@ -304,6 +304,10 @@ function PlayerMedia() {
         events.fireEvent(Const.PlayerEvents.PLAYBACK_ERROR, args);
     };
 
+    function onProtectionUpdate(e) {
+        logger.warn('PROTECTION EVENT :', e);
+    }
+
     function onTracksAdded(e) {
         logger.debug('Eventing ## Adding new  track :', e);
         events.fireEvent(Const.PlayerEvents.TRACKS_ADDED);
@@ -513,7 +517,6 @@ function PlayerMedia() {
     function loadDash(url, poster, subs, videoCaption, autoplay, drm) {
         var track = null,
             k = null;
-        var forjaDrmKeySystemFound = false;
         if (poster !== null && poster !== undefined && poster !== '') {
             video.setAttribute('poster', poster);
         }
@@ -542,17 +545,17 @@ function PlayerMedia() {
         } else {
             CurrentStreamType = StreamTypes.DASH_ENCRYPTED;
             CurrentProtection = drm;
+            logger.info(' drm are ::: ', drm);
+            DashPlayer.setProtectionData({
+                "org.w3.clearkey": {
+                    "clearkeys": {
+                        "SDBkUE9hQ25DdHJINFE5cQ": "b0JWNmhTczZxRkQ0MHJ1RQ"
+                    }
+                }
+            });
+            logger.debug(' To Encrypt : using Forja System Key !.');
             logger.info(' Loading ENCRYPTED Dash @', CurrentUrl);
         }
-
-        if (forjaDrmKeySystemFound === true) {
-            // let protectionKeyController = new FjProtectionController();
-            DashPlayer.setProtectionData(drm);
-            logger.debug(' To Encrypt : using Forja System Key !.');
-        } else {
-            logger.debug(' To Encrypt : using Default System Key .');
-        }
-
 
         // set thumbs
         if (thumbsTrackUrl !== null && thumbsTrackUrl !== undefined) {
@@ -582,9 +585,19 @@ function PlayerMedia() {
         DashPlayer.on(MediaPlayer.events.TEXT_TRACKS_ADDED, onTracksAdded, this);
         DashPlayer.on(MediaPlayer.events.ERROR, onError, this);
         DashPlayer.on(MediaPlayer.events.PLAYBACK_ERROR, onError, this);
-        DashPlayer.on(MediaPlayer.events.PROTECTION_CREATED, onProtectionCreated, this);
-        DashPlayer.on(MediaPlayer.events.PROTECTION_DESTROYED, onProtectionDestroyed, this);
 
+
+        DashPlayer.on(MediaPlayer.events.KEY_ADDED, onProtectionUpdate, this);
+        DashPlayer.on(MediaPlayer.events.KEY_ERROR, onProtectionUpdate, this);
+        DashPlayer.on(MediaPlayer.events.KEY_MESSAGE, onProtectionUpdate, this);
+        DashPlayer.on(MediaPlayer.events.KEY_SESSION_CLOSED, onProtectionUpdate, this);
+        DashPlayer.on(MediaPlayer.events.KEY_SESSION_CREATED, onProtectionUpdate, this);
+        DashPlayer.on(MediaPlayer.events.KEY_SESSION_REMOVED, onProtectionUpdate, this);
+        DashPlayer.on(MediaPlayer.events.KEY_STATUSES_CHANGED, onProtectionUpdate, this);
+        DashPlayer.on(MediaPlayer.events.KEY_SYSTEM_SELECTED, onProtectionUpdate, this);
+        DashPlayer.on(MediaPlayer.events.LICENSE_REQUEST_COMPLETE, onProtectionUpdate, this);
+        DashPlayer.on(MediaPlayer.events.PROTECTION_CREATED, onProtectionUpdate, this);
+        DashPlayer.on(MediaPlayer.events.PROTECTION_DESTROYED, onProtectionUpdate, this);
         // attach to play url
         DashPlayer.attachSource(url);
         logger.info('  DASH stream is loaded @ ', url);
@@ -596,208 +609,208 @@ function PlayerMedia() {
     // Listen for protection system creation/destruction by the Dashplayer itthis.  This will
     // only happen in the case where we do not not provide a ProtectionController
     // to the Dashplayer via dashjs.MediaPlayer.attachSource()
-
-    function onProtectionCreated(e) {
-        logger.warn(' Event  onProtectionCreated >> ', e);
-        var data = addDRMData(e.manifest, e.controller);
-        data.isPlaying = true;
-        for (var i = 0; i < drmData.length; i++) {
-            if (drmData[i] !== data) {
-                drmData[i].isPlaying = false;
-            }
-        }
-    };
-
-    function onProtectionDestroyed(e) {
-        for (var i = 0; i < drmData.length; i++) {
-            if (drmData[i].manifest.url === e.data) {
-                drmData.splice(i, 1);
-                break;
-            }
-        }
-    };
-
-
-    function addDRMData(manifest, protCtrl) {
-
-        // Assign the session type to be used for this controller
-        logger.warn(' Used protection controller >> ', protCtrl);
-
-        var data = {
-            manifest: manifest,
-            protCtrl: protCtrl,
-            licenseReceived: false,
-            sessions: []
-        };
-        var findSession = function(sessionID) {
-            for (var i = 0; i < data.sessions.length; i++) {
-                if (data.sessions[i].sessionID === sessionID)
-                    return data.sessions[i];
-            }
-            return null;
-        };
-        drmData.push(data);
-
-        DashPlayer.on(MediaPlayer.events.KEY_SYSTEM_SELECTED, function(e) {
-            logger.warn(' Event  KEY_SYSTEM_SELECTED >> ', e);
-            if (!e.error) {
-                data.ksconfig = e.data.ksConfiguration;
-            } else {
-                data.error = e.error;
-            }
-        });
-
-        DashPlayer.on(MediaPlayer.events.KEY_SESSION_CREATED, function(e) {
-            logger.warn(' Event  KEY_SESSION_CREATED >> ', e);
-            if (!e.error) {
-                var persistedSession = findSession(e.data.getSessionID());
-                if (persistedSession) {
-                    persistedSession.isLoaded = true;
-                    persistedSession.sessionToken = e.data;
-                } else {
-                    var sessionToken = e.data;
-                    data.sessions.push({
-                        sessionToken: sessionToken,
-                        sessionID: e.data.getSessionID(),
-                        isLoaded: true
-                    });
+    /*
+        function onProtectionCreated(e) {
+            logger.warn(' Event  onProtectionCreated >> ', e);
+            var data = addDRMData(e.manifest, e.controller);
+            data.isPlaying = true;
+            for (var i = 0; i < drmData.length; i++) {
+                if (drmData[i] !== data) {
+                    drmData[i].isPlaying = false;
                 }
-            } else {
-                data.error = e.error;
             }
+        };
 
-        });
-
-
-        DashPlayer.on(MediaPlayer.events.KEY_SESSION_REMOVED, function(e) {
-            logger.warn(' Event  KEY_SESSION_REMOVED >> ', e);
-            if (!e.error) {
-                var session = findSession(e.data);
-                if (session) {
-                    session.isLoaded = false;
-                    session.sessionToken = null;
+        function onProtectionDestroyed(e) {
+            for (var i = 0; i < drmData.length; i++) {
+                if (drmData[i].manifest.url === e.data) {
+                    drmData.splice(i, 1);
+                    break;
                 }
-            } else {
-                data.error = e.error;
             }
-        });
+        };
 
 
-        DashPlayer.on(MediaPlayer.events.KEY_SESSION_CLOSED, function(e) {
-            logger.warn(' Event  KEY_SESSION_CLOSED >> ', e);
-            if (!e.error) {
+        function addDRMData(manifest, protCtrl) {
+
+            // Assign the session type to be used for this controller
+            logger.warn(' Used protection controller >> ', protCtrl);
+
+            var data = {
+                manifest: manifest,
+                protCtrl: protCtrl,
+                licenseReceived: false,
+                sessions: []
+            };
+            var findSession = function(sessionID) {
                 for (var i = 0; i < data.sessions.length; i++) {
-                    if (data.sessions[i].sessionID === e.data) {
-                        data.sessions.splice(i, 1);
-                        break;
-                    }
+                    if (data.sessions[i].sessionID === sessionID)
+                        return data.sessions[i];
                 }
-            } else {
-                data.error = e.error;
-            }
-        });
+                return null;
+            };
+            drmData.push(data);
 
-        DashPlayer.on(MediaPlayer.events.KEY_STATUSES_CHANGED, function(e) {
-            logger.warn(' Event  KEY_STATUSES_CHANGED >> ', e);
-            var session = findSession(e.data.getSessionID());
-            if (session) {
-                var toGUID = function(uakey) {
-                    var keyIdx = 0,
-                        retVal = "",
-                        i, zeroPad = function(str) {
-                            return (str.length === 1) ? "0" + str : str;
-                        };
-                    for (i = 0; i < 4; i++, keyIdx++)
-                        retVal += zeroPad(uakey[keyIdx].toString(16));
-                    retVal += "-";
-                    for (i = 0; i < 2; i++, keyIdx++)
-                        retVal += zeroPad(uakey[keyIdx].toString(16));
-                    retVal += "-";
-                    for (i = 0; i < 2; i++, keyIdx++)
-                        retVal += zeroPad(uakey[keyIdx].toString(16));
-                    retVal += "-";
-                    for (i = 0; i < 2; i++, keyIdx++)
-                        retVal += zeroPad(uakey[keyIdx].toString(16));
-                    retVal += "-";
-                    for (i = 0; i < 6; i++, keyIdx++)
-                        retVal += zeroPad(uakey[keyIdx].toString(16));
-                    return retVal;
-                };
-                session.keystatus = [];
-                e.data.getKeyStatuses().forEach(function(status, key) {
-                    session.keystatus.push({
-                        key: toGUID(new Uint8Array(key)),
-                        status: status
-                    });
-                });
-            }
-        });
-
-        DashPlayer.on(MediaPlayer.events.KEY_MESSAGE, function(e) {
-            logger.warn(' Event  KEY_MESSAGE >> ', e);
-            logger.warn(' Received message key from server ', e.data.message);
-            var session = findSession(e.data.sessionToken.getSessionID());
-            if (session) {
-                session.lastMessage = "Last Message: " + e.data.message.byteLength + " bytes";
-                if (e.data.messageType) {
-                    session.lastMessage += " (" + e.data.messageType + "). ";
+            DashPlayer.on(MediaPlayer.events.KEY_SYSTEM_SELECTED, function(e) {
+                logger.warn(' Event  KEY_SYSTEM_SELECTED >> ', e);
+                if (!e.error) {
+                    data.ksconfig = e.data.ksConfiguration;
                 } else {
-                    session.lastMessage += ". ";
+                    data.error = e.error;
                 }
-                session.lastMessage += "Waiting for response from license server...";
-            }
-        });
+            });
 
-        DashPlayer.on(MediaPlayer.events.LICENSE_REQUEST_COMPLETE, function(e) {
-            logger.warn(' Event  LICENSE_REQUEST_COMPLETE >> ', e);
-            logger.warn(' The license request is complete event : ', e)
-            if (!e.error) {
+            DashPlayer.on(MediaPlayer.events.KEY_SESSION_CREATED, function(e) {
+                logger.warn(' Event  KEY_SESSION_CREATED >> ', e);
+                if (!e.error) {
+                    var persistedSession = findSession(e.data.getSessionID());
+                    if (persistedSession) {
+                        persistedSession.isLoaded = true;
+                        persistedSession.sessionToken = e.data;
+                    } else {
+                        var sessionToken = e.data;
+                        data.sessions.push({
+                            sessionToken: sessionToken,
+                            sessionID: e.data.getSessionID(),
+                            isLoaded: true
+                        });
+                    }
+                } else {
+                    data.error = e.error;
+                }
+
+            });
+
+
+            DashPlayer.on(MediaPlayer.events.KEY_SESSION_REMOVED, function(e) {
+                logger.warn(' Event  KEY_SESSION_REMOVED >> ', e);
+                if (!e.error) {
+                    var session = findSession(e.data);
+                    if (session) {
+                        session.isLoaded = false;
+                        session.sessionToken = null;
+                    }
+                } else {
+                    data.error = e.error;
+                }
+            });
+
+
+            DashPlayer.on(MediaPlayer.events.KEY_SESSION_CLOSED, function(e) {
+                logger.warn(' Event  KEY_SESSION_CLOSED >> ', e);
+                if (!e.error) {
+                    for (var i = 0; i < data.sessions.length; i++) {
+                        if (data.sessions[i].sessionID === e.data) {
+                            data.sessions.splice(i, 1);
+                            break;
+                        }
+                    }
+                } else {
+                    data.error = e.error;
+                }
+            });
+
+            DashPlayer.on(MediaPlayer.events.KEY_STATUSES_CHANGED, function(e) {
+                logger.warn(' Event  KEY_STATUSES_CHANGED >> ', e);
+                var session = findSession(e.data.getSessionID());
+                if (session) {
+                    var toGUID = function(uakey) {
+                        var keyIdx = 0,
+                            retVal = "",
+                            i, zeroPad = function(str) {
+                                return (str.length === 1) ? "0" + str : str;
+                            };
+                        for (i = 0; i < 4; i++, keyIdx++)
+                            retVal += zeroPad(uakey[keyIdx].toString(16));
+                        retVal += "-";
+                        for (i = 0; i < 2; i++, keyIdx++)
+                            retVal += zeroPad(uakey[keyIdx].toString(16));
+                        retVal += "-";
+                        for (i = 0; i < 2; i++, keyIdx++)
+                            retVal += zeroPad(uakey[keyIdx].toString(16));
+                        retVal += "-";
+                        for (i = 0; i < 2; i++, keyIdx++)
+                            retVal += zeroPad(uakey[keyIdx].toString(16));
+                        retVal += "-";
+                        for (i = 0; i < 6; i++, keyIdx++)
+                            retVal += zeroPad(uakey[keyIdx].toString(16));
+                        return retVal;
+                    };
+                    session.keystatus = [];
+                    e.data.getKeyStatuses().forEach(function(status, key) {
+                        session.keystatus.push({
+                            key: toGUID(new Uint8Array(key)),
+                            status: status
+                        });
+                    });
+                }
+            });
+
+            DashPlayer.on(MediaPlayer.events.KEY_MESSAGE, function(e) {
+                logger.warn(' Event  KEY_MESSAGE >> ', e);
+                logger.warn(' Received message key from server ', e.data.message);
                 var session = findSession(e.data.sessionToken.getSessionID());
                 if (session) {
-                    session.lastMessage = "Successful response received from license server for message type '" + e.data.messageType + "'!";
-                    data.licenseReceived = true;
-                }
-            } else {
-                data.error = "License request failed for message type '" + e.data.messageType + "'! " + e.error;
-            }
-        });
-
-        return data;
-    };
-
-    function deleteDrmdata(data) {
-        for (var i = 0; i < drmData.length; i++) {
-            if (drmData[i] === data) {
-                drmData.splice(i, 1);
-                data.protCtrl.reset();
-            }
-        }
-    };
-
-    function doLicenseFetch() {
-        DashPlayer.retrieveManifest(CurrentUrl, function(manifest) {
-            if (manifest) {
-                var found = false;
-                for (var i = 0; i < drmData.length; i++) {
-                    if (manifest.url === drmData[i].manifest.url) {
-                        found = true;
-                        break;
+                    session.lastMessage = "Last Message: " + e.data.message.byteLength + " bytes";
+                    if (e.data.messageType) {
+                        session.lastMessage += " (" + e.data.messageType + "). ";
+                    } else {
+                        session.lastMessage += ". ";
                     }
+                    session.lastMessage += "Waiting for response from license server...";
                 }
-                if (!found) {
-                    var protCtrl = DashPlayer.getProtectionController();
-                    if (CurrentProtection !== null) {
-                        protCtrl.setProtectionData(CurrentProtection);
-                    }
-                    addDRMData(manifest, protCtrl);
-                    protCtrl.initialize(manifest);
-                }
-            } else {
-                // Log error here
-            }
-        });
-    };
+            });
 
+            DashPlayer.on(MediaPlayer.events.LICENSE_REQUEST_COMPLETE, function(e) {
+                logger.warn(' Event  LICENSE_REQUEST_COMPLETE >> ', e);
+                logger.warn(' The license request is complete event : ', e)
+                if (!e.error) {
+                    var session = findSession(e.data.sessionToken.getSessionID());
+                    if (session) {
+                        session.lastMessage = "Successful response received from license server for message type '" + e.data.messageType + "'!";
+                        data.licenseReceived = true;
+                    }
+                } else {
+                    data.error = "License request failed for message type '" + e.data.messageType + "'! " + e.error;
+                }
+            });
+
+            return data;
+        };
+
+        function deleteDrmdata(data) {
+            for (var i = 0; i < drmData.length; i++) {
+                if (drmData[i] === data) {
+                    drmData.splice(i, 1);
+                    data.protCtrl.reset();
+                }
+            }
+        };
+
+        function doLicenseFetch() {
+            DashPlayer.retrieveManifest(CurrentUrl, function(manifest) {
+                if (manifest) {
+                    var found = false;
+                    for (var i = 0; i < drmData.length; i++) {
+                        if (manifest.url === drmData[i].manifest.url) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        var protCtrl = DashPlayer.getProtectionController();
+                        if (CurrentProtection !== nul"b0JWNmhTczZxRkQ0MHJ1RQ==",l) {
+                            protCtrl.setProtectionData(CurrentProtection);
+                        }
+                        addDRMData(manifest, protCtrl);
+                        protCtrl.initialize(manifest);
+                    }
+                } else {
+                    // Log error here
+                }
+            });
+        };
+    */
     // ************************************************************************************
     // PUBLIC API
     // ************************************************************************************

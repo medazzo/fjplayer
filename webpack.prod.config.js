@@ -78,8 +78,12 @@
                 exclude: [/\.min\.js$/gi] // skip pre-minified libs
             }),
             new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
-            new webpack.NoEmitOnErrorsPlugin()
+            new webpack.NoEmitOnErrorsPlugin(),
+            new webpack.DefinePlugin({ "global.GENTLY": false })
         ],
+        node: {
+            __dirname: true,
+        },
         devtool: 'cheap-module-source-map',
         stats: 'minimal',
         context: __dirname,

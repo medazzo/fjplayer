@@ -63,13 +63,14 @@ var config = {
         ],
         extensions: [".js", ".json", ".jsx", ".css"],
     },
-    plugins: [new webpack.LoaderOptionsPlugin({
-            debug: true
-        }),
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': '"developpment"'
-        })
+    plugins: [
+        new webpack.LoaderOptionsPlugin({ debug: true }),
+        new webpack.DefinePlugin({ "global.GENTLY": false }),
+        new webpack.DefinePlugin({ 'process.env.NODE_ENV': '"developpment"' })
     ],
+    node: {
+        __dirname: true,
+    },
     devtool: 'inline-source-map',
     stats: 'verbose',
     context: __dirname,

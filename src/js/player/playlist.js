@@ -109,30 +109,19 @@ function Playlist() {
      * used to check if an item of drm is correct
      */
     function checkDrm(drm) {
+        var tmp = null;
         if (drm === null || drm === undefined) {
             return false;
         }
         logger.debug('Cheking DRM > ', drm);
-        for (var k in drm) {
-            var item = drm[k];
-            logger.info('Cheking DRM  > ', k);
-            if (Const.FJCONFIG_DRM_SCHEMES.indexOf(k) === -1) {
-                logger.error('BAD DRM Scheme Value ! ', k);
-                return false;
-            }
-            logger.info('Cheking DRM Server > ', item[Const.FJCONFIG_DRM_LICENSE_SERVER]);
-            /*if ((item[Const.FJCONFIG_DRM_LICENSE_SERVER] !== undefined) &&
-                (item[Const.FJCONFIG_DRM_LICENSE_SERVER] !== null)) {
-                logger.log(' playlist Server License of item  ', item[Const.FJCONFIG_DRM_LICENSE_SERVER]);
-            } else {
-                logger.error('Empty Server License for  DRM Scheme  ! ');
-                return false;
-            }
-            */
-            logger.info(' playlist Drm Headers on Request License  of item  ',
-                item[Const.FJCONFIG_DRM_HEADER_LICENSE_REQUEST]);
-            logger.info(' playlist Drm Headers on Request Segments  of item  ',
-                item[Const.FJCONFIG_DRM_HEADER_SEGMENTS_REQUEST]);
+
+        tmp = drm[Const.FJCONFIG_DRM_LICENSE_SERVER];
+        logger.info('Cheking DRM LA Server > ', tmp);
+        if ((tmp !== undefined) && (tmp !== null)) {
+            logger.log(' playlist LA Server is  ', tmp);
+        } else {
+            logger.error('Empty LA Server  ! ');
+            return false;
         }
         return true;
     };
@@ -225,7 +214,7 @@ function Playlist() {
         }
         // check drm
         drm = item[Const.FJCONFIG_DRM];
-        if (drm !== undefined) {
+        if ((drm !== null) && (drm !== undefined)) {
             if (checkDrm(drm) === false) {
                 return false;
             }

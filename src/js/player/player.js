@@ -25,12 +25,10 @@ function Player(fjID, vidContainerId, ) {
         events = new Eventing(),
         videoContainerId = vidContainerId,
         OverlaysMgr = new Overlays(),
-        playerMedia = new PlayerMedia(),
-        playerUi = null,
-        // create ads Manager
         AdsMgr = new AdsManager(),
-        supportsVideo = !!document.createElement('video').canPlayType;
-    playerUi = new PlayerUi(videoContainerId, videoWidth, videoHeight);
+        supportsVideo = !!document.createElement('video').canPlayType,
+        playerUi = new PlayerUi(videoContainerId, videoWidth, videoHeight),
+        playerMedia = new PlayerMedia();
     /**
      * function  to return a human redeable duration of secondes
      */
