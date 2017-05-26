@@ -8,13 +8,7 @@
          'FJSrc': 'http://127.0.0.1:8500/dashedCrypted/stream.mpd',
          'FJDrm': {
              "org.w3.clearkey": {
-                 'serverURL': 'http://127.0.0.1:3000',
-                 'httpRequestHeaders': {
-                     'http-header-CustomData': 'blabla'
-                 },
-                 "clearkeys": {
-                     "eHk3RWZ6WjVoSGpOM2FtWA==": "cEdWOWl0Y1F5Znp6RW51UA"
-                 }
+                 "serverURL": "http://127.0.0.1:3000"
              }
          }
      },
@@ -24,10 +18,9 @@
          'FJClass': 'vod',
          'FJSrc': 'http://127.0.0.1:8500/dashedCrypted/stream.mpd',
          'FJDrm': {
-             'com.fjse.forja': {
-                 'serverURL': 'http://127.0.0.1:3000',
-                 'httpRequestHeaders': {
-                     'http-header-CustomData': 'blabla'
+             "org.w3.clearkey": {
+                 "clearkeys": {
+                     "SERzYVdWNkdkc2pMQ2lLQg==": "dXhQTzZvZVVzRnczbnJjNw=="
                  }
              }
          }

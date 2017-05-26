@@ -1,7 +1,7 @@
 'use strict';
 import Logger from '../utils/Logger';
 import Eventing from '../utils/Eventing';
-import FjProtectionController from '../protection/FjProtectionController';
+import FjseAuthz from '../protection/FjseAuthz';
 import { MediaPlayer } from 'dashjs';
 import * as Const from '../defs/constants';
 import * as Langs from '../defs/isoLangs';
@@ -525,6 +525,15 @@ function PlayerMedia() {
             DashPlayer.getDebug().setLogToBrowserConsole(activateDashLog);
             DashPlayer.initialize();
         }
+        DashPlayer.attachView(video);
+        DashPlayer.attachVideoContainer(videoFigure);
+        DashPlayer.setAutoPlay(autoplay);
+        DashPlayer.setFastSwitchEnabled(true);
+        // Add HTML-rendered TTML subtitles except for Firefox < v49 (issue #1164)
+        if (doesTimeMarchesOn()) {
+            DashPlayer.attachTTMLRenderingDiv(videoCaption);
+        }
+
         CurrentUrl = url;
         if ((drm === undefined) || (drm === null)) {
             CurrentStreamType = StreamTypes.DASH_CLEAR;
@@ -534,38 +543,17 @@ function PlayerMedia() {
             CurrentStreamType = StreamTypes.DASH_ENCRYPTED;
             CurrentProtection = drm;
             logger.info(' Loading ENCRYPTED Dash @', CurrentUrl);
-            // check if drm object contains  forja drm system , then to add forja  attachProtectionController(value)
-            for (k in drm) {
-                logger.info('Cheking DRM  > ', k);
-                if (Const.FJCONFIG_DRM_SCHEME_FORJA === k) {
-                    logger.log(Const.FJCONFIG_DRM_SCHEME_FORJA, ' is found !! ');
-                    forjaDrmKeySystemFound = true;
-                    break;
-                }
-            }
-
-
-
-            if (forjaDrmKeySystemFound === true) {
-                let protectionKeyController = new FjProtectionController();
-                protectionKeyController.setConfig({ log: logger.warn });
-                protectionKeyController.initialize();
-                DashPlayer.setProtectionData(drm);
-                DashPlayer.attachProtectionController(protectionKeyController);
-                logger.debug(' To Encrypt : using Forja System Key !.');
-            } else {
-                logger.debug(' To Encrypt : using Default System Key .');
-            }
         }
 
-        DashPlayer.setAutoPlay(autoplay);
-        DashPlayer.setFastSwitchEnabled(true);
-        DashPlayer.attachView(video);
-        DashPlayer.attachVideoContainer(videoFigure);
-        // Add HTML-rendered TTML subtitles except for Firefox < v49 (issue #1164)
-        if (doesTimeMarchesOn()) {
-            DashPlayer.attachTTMLRenderingDiv(videoCaption);
+        if (forjaDrmKeySystemFound === true) {
+            // let protectionKeyController = new FjProtectionController();
+            DashPlayer.setProtectionData(drm);
+            logger.debug(' To Encrypt : using Forja System Key !.');
+        } else {
+            logger.debug(' To Encrypt : using Default System Key .');
         }
+
+
         // set thumbs
         if (thumbsTrackUrl !== null && thumbsTrackUrl !== undefined) {
             track = document.createElement('track');
@@ -610,6 +598,7 @@ function PlayerMedia() {
     // to the Dashplayer via dashjs.MediaPlayer.attachSource()
 
     function onProtectionCreated(e) {
+        logger.warn(' Event  onProtectionCreated >> ', e);
         var data = addDRMData(e.manifest, e.controller);
         data.isPlaying = true;
         for (var i = 0; i < drmData.length; i++) {
@@ -650,6 +639,7 @@ function PlayerMedia() {
         drmData.push(data);
 
         DashPlayer.on(MediaPlayer.events.KEY_SYSTEM_SELECTED, function(e) {
+            logger.warn(' Event  KEY_SYSTEM_SELECTED >> ', e);
             if (!e.error) {
                 data.ksconfig = e.data.ksConfiguration;
             } else {
@@ -658,6 +648,7 @@ function PlayerMedia() {
         });
 
         DashPlayer.on(MediaPlayer.events.KEY_SESSION_CREATED, function(e) {
+            logger.warn(' Event  KEY_SESSION_CREATED >> ', e);
             if (!e.error) {
                 var persistedSession = findSession(e.data.getSessionID());
                 if (persistedSession) {
@@ -679,6 +670,7 @@ function PlayerMedia() {
 
 
         DashPlayer.on(MediaPlayer.events.KEY_SESSION_REMOVED, function(e) {
+            logger.warn(' Event  KEY_SESSION_REMOVED >> ', e);
             if (!e.error) {
                 var session = findSession(e.data);
                 if (session) {
@@ -692,6 +684,7 @@ function PlayerMedia() {
 
 
         DashPlayer.on(MediaPlayer.events.KEY_SESSION_CLOSED, function(e) {
+            logger.warn(' Event  KEY_SESSION_CLOSED >> ', e);
             if (!e.error) {
                 for (var i = 0; i < data.sessions.length; i++) {
                     if (data.sessions[i].sessionID === e.data) {
@@ -705,6 +698,7 @@ function PlayerMedia() {
         });
 
         DashPlayer.on(MediaPlayer.events.KEY_STATUSES_CHANGED, function(e) {
+            logger.warn(' Event  KEY_STATUSES_CHANGED >> ', e);
             var session = findSession(e.data.getSessionID());
             if (session) {
                 var toGUID = function(uakey) {
@@ -740,7 +734,8 @@ function PlayerMedia() {
         });
 
         DashPlayer.on(MediaPlayer.events.KEY_MESSAGE, function(e) {
-            logger.warn(' Received message key from server ', e)
+            logger.warn(' Event  KEY_MESSAGE >> ', e);
+            logger.warn(' Received message key from server ', e.data.message);
             var session = findSession(e.data.sessionToken.getSessionID());
             if (session) {
                 session.lastMessage = "Last Message: " + e.data.message.byteLength + " bytes";
@@ -754,6 +749,7 @@ function PlayerMedia() {
         });
 
         DashPlayer.on(MediaPlayer.events.LICENSE_REQUEST_COMPLETE, function(e) {
+            logger.warn(' Event  LICENSE_REQUEST_COMPLETE >> ', e);
             logger.warn(' The license request is complete event : ', e)
             if (!e.error) {
                 var session = findSession(e.data.sessionToken.getSessionID());
