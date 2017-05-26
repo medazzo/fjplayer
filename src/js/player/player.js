@@ -10,7 +10,7 @@ import FjError from '../utils/FjError';
 /**
  *  Class player in whinch the player is implemented
  */
-function Player(fjID, vidContainerId, ) {
+function Player(fjID, vidContainerId) {
     var logger = new Logger(this),
         playerPlaylist = null,
         playingList = false,
@@ -296,7 +296,7 @@ function Player(fjID, vidContainerId, ) {
             AdsMgr.on(Const.AdsEvents.ADS_PLAYBACK_ERROR, AdsEventing);
             AdsMgr.on(Const.AdsEvents.ADS_PLAYBACK_ENDED, AdsEventing);
 
-            playerMedia.initialize(playerUi.getVideo(), playerUi.getVideoFigure());
+            playerMedia.initialize(playerUi.getVideo());
             OverlaysMgr.initialize(document.getElementById(playerUi.getOverlaysContainerDivId()));
             AdsMgr.initialize(document.getElementById(playerUi.getAdsContainerDivId()));
             return true;
@@ -304,7 +304,7 @@ function Player(fjID, vidContainerId, ) {
         logger.error(' playlist is empty: ', playlist.getSize());
         playlistLoaded = false;
         return false;
-    }
+    };
     /**
      *
      */
@@ -355,7 +355,7 @@ function Player(fjID, vidContainerId, ) {
         }
         logger.error('src of item is not valid , at index ', currentPlaying);
         return false;
-    }
+    };
 
     function seek(time) {
         playerMedia.seek(time);

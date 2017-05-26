@@ -26,15 +26,17 @@
 
         function playMe(item) {
             playlist.addItem(item);
+            console.warn("!!!!!!!   Jyst before error !", player)
             player.on(fjplayer.PlayerEvents.STREAM_LOADED, fjplayerEvent);
+            console.warn("!!!!!!!   Jyst before error !", player)
             player.loadPlaylist(playlist);
+            console.warn("!!!!!!!   Jyst before error !", player)
             player.startPlaylist(0, true, false, true);
-
+            console.warn("!!!!!!!   Jyst before error !", player)
         }
 
         function loadfromList() {
             var key = select.options[select.selectedIndex].value;
-            player.reset();
             playMe(data[key]);
         }
 
@@ -43,38 +45,17 @@
         }
 
         function ClearPlayer() {
-            player.reset();
+            //player.reset();
         }
 
         function SetItem(key) {
             console.log(" Title : ", data[key].FJTitle);
-            document.getElementById('title').value = data[key].FJTitle;
-            console.log(" Type : ", data[key].FJType);
-            if (data[key].FJType === 'dash') {
-                document.getElementById('dashType').checked = true;
-            } else {
-                document.getElementById('mp4Type').checked = true;
-            }
             console.log(" Class : ", data[key].FJClass);
-            if (data[key].FJClass === 'vod') {
-                document.getElementById('vodClass').checked = true;
-            } else {
-                document.getElementById('liveClass').checked = true;
-            }
+            console.log(" Type : ", data[key].FJType);
             console.log(" Src : ", data[key].FJSrc);
-            document.getElementById('src').value = data[key].FJSrc;
             console.log(" Thumbs : ", data[key].FJThumbs);
-            if (data[key].FJThumbs === undefined) {
-                document.getElementById('thumbs').value = '';
-            } else {
-                document.getElementById('thumbs').value = data[key].FJThumbs;
-            }
             console.log(" Poster : ", data[key].FJPoster);
-            if (data[key].FJPoster === undefined) {
-                document.getElementById('poster').value = '';
-            } else {
-                document.getElementById('poster').value = data[key].FJPoster;
-            }
+            document.getElementById('title').value = JSON.stringify(data[key], null, 4);
         };
 
         function updateChoice() {
@@ -89,7 +70,6 @@
             console.info('Hash HEAD', ver.getShortHash());
             playlist = new fjplayer.Playlist();
             player = new fjplayer.Player('fjserverID1', 'playercontainer');
-
             for (key in data) {
                 if (data.hasOwnProperty(key)) {
                     if (first === true) {
@@ -102,6 +82,7 @@
                     select.appendChild(opt);
                 }
             }
+            console.warn("#############  Jyst before error !", player)
         };
     </script>
 </head>
@@ -123,54 +104,9 @@
                         <button type="button" class="btn btn-info" onclick="loadfromList();"> load</button>
                     </div>
                 </div>
-                <div class="row">
-                    <label class="col-md-4 col-form-label">types</label>
-                    <div class="form-group col-md-4">
-                        <form>
-                            <label class="radio-inline">
-                                <input id="vodClass" type="radio" name="class">vod
-                            </label>
-                            <label class="radio-inline">
-                                <input id="liveClass" type="radio" name="class">live
-                            </label>
-                        </form>
-                    </div>
-                    <div class="form-group  col-md-4">
-                        <form>
-                            <label class="radio-inline">
-                                <input id="dashType" type="radio" name="type">dash
-                            </label>
-                            <label class="radio-inline">
-                                <input id="mp4Type" type="radio" name="type">video/mp4
-                            </label>
-                        </form>
-                    </div>
-                </div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label">Title</label>
-                    <div class="col-md-8">
-                        <input id="title" class="form-control" type="text">
-                    </div>
-                    <div class=" col-md-2 ">
-                        <button type="button" class="btn btn-danger" onclick="ClearPlayer();"> Clear</button>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-2 col-form-label">Poster</label>
-                    <div class="col-md-10">
-                        <input id="poster" class="form-control" type="text">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-2 col-form-label">URL</label>
-                    <div class="col-md-10">
-                        <input id="src" class="form-control" type="url">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-2 col-form-label">Thumbs</label>
-                    <div class="col-md-8">
-                        <input id="thumbs" class="form-control" type="url">
+                    <div class="col-md-12">
+                        <textarea id="title" rows="10" class="form-control"></textarea>
                     </div>
                 </div>
             </div>

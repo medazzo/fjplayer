@@ -11,10 +11,9 @@ import * as Langs from '../defs/isoLangs';
  * @description The PlayerMedia is the html video/dash/drm Media player
  *
  */
-function PlayerMedia(FjAuthZmgr) {
+function PlayerMedia() {
     var video = null,
         initialized = false,
-        activateDashLog = true,
         startingCount = 0,
         thumbsTrackUrl = null,
         thumbsTrackIndex = -1,
@@ -55,9 +54,7 @@ function PlayerMedia(FjAuthZmgr) {
         if (!video) {
             throw new Error('Please call initialize with a valid Player UI having a video html 5 element ');
         }
-        DashPlayer = new shaka.Player(video);
-        // Attach player to the window to make it easy to access in the JS console.
-        window.player = DashPlayer;
+        //DashPlayer = new shaka.Player(video);
         // done
         initialized = true;
         logger.debug(' Media player just initialized with playerUiVideo');
@@ -461,8 +458,6 @@ function PlayerMedia(FjAuthZmgr) {
         video.autoplay = autoplay;
         if (DashPlayer === null) {
             DashPlayer = new shaka.Player(video);
-            // Attach player to the window to make it easy to access in the JS console.
-            window.player = DashPlayer;
         }
 
         // Setting Callbacks
