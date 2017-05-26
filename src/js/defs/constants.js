@@ -32,14 +32,6 @@ export const FJCONFIG_CLASS_VOD = 'vod';
 export const FJCONFIG_CLASS_LIVE = 'live';
 export const FJCONFIG_CLASSES = [FJCONFIG_CLASS_LIVE, FJCONFIG_CLASS_VOD];
 
-export const FJCONFIG_SCREEN_MODE_MINIMAL = 'minimal';
-export const FJCONFIG_SCREEN_MODE_CINEMA = 'cinema';
-export const FJCONFIG_SCREEN_MODE_MAXIMAL = 'maximal';
-export const FJCONFIG_SCREEN_MODES = [FJCONFIG_SCREEN_MODE_MINIMAL,
-    FJCONFIG_SCREEN_MODE_CINEMA,
-    FJCONFIG_SCREEN_MODE_MAXIMAL
-];
-
 export const FJCONFIG_TYPE_MP4 = 'video/mp4';
 export const FJCONFIG_TYPE_DASH = 'dash';
 export const FJCONFIG_TYPES = [FJCONFIG_TYPE_MP4, FJCONFIG_TYPE_DASH];
@@ -49,17 +41,6 @@ export const FJCONFIG_ADS_CLASS_MID_ROLL = 'mid-roll';
 export const FJCONFIG_ADS_CLASS_POST_ROLL = 'post-roll';
 export const FJCONFIG_ADS_CLASSES = [FJCONFIG_ADS_CLASS_PRE_ROLL,
     FJCONFIG_ADS_CLASS_MID_ROLL, FJCONFIG_ADS_CLASS_POST_ROLL
-];
-
-export const FJCONFIG_DRM_SCHEME_FORJA = 'com.fjse.forja';
-export const FJCONFIG_DRM_SCHEME_CLEARKEY = 'org.w3.clearkey';
-export const FJCONFIG_DRM_SCHEME_WIDEVINE = 'com.widevine.alpha';
-export const FJCONFIG_DRM_SCHEME_PLAYREADY = 'com.microsoft.playready';
-export const FJCONFIG_DRM_SCHEMES = [
-    FJCONFIG_DRM_SCHEME_FORJA,
-    FJCONFIG_DRM_SCHEME_CLEARKEY,
-    FJCONFIG_DRM_SCHEME_WIDEVINE,
-    FJCONFIG_DRM_SCHEME_PLAYREADY
 ];
 
 export const AdsEnum = {

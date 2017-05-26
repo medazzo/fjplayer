@@ -7,8 +7,7 @@
          'FJClass': 'vod',
          'FJSrc': 'http://127.0.0.1:8500/dashedCrypted/stream.mpd',
          'FJDrm': {
-             "FjLServer": "http://127.0.0.1:3000",
-             "FjAuthzServer": "http://127.0.0.1:3000"
+             "FjLicenseServer": "http://127.0.0.1:3000"
          }
      },
      'forjaItemDashKeyEncrypted': {
@@ -17,7 +16,7 @@
          'FJClass': 'vod',
          'FJSrc': 'http://127.0.0.1:8500/dashedCrypted/stream.mpd',
          'FJDrm': {
-             "FjAuthzServer": "http://127.0.0.1:3000"
+             "FjLicenseServer": "http://127.0.0.1:3000"
          }
      },
      'forjaItemDashClear': {

@@ -25,6 +25,28 @@ function initPlayer() {
 
     // Listen for error events.
     player.addEventListener('error', onErrorEvent);
+    player.addEventListener('adaptation', onEvent);
+    player.addEventListener('buffering', onEvent);
+    player.addEventListener('emsg', onEvent);
+    player.addEventListener('expirationupdated', onEvent);
+    player.addEventListener('largegap', onEvent);
+    player.addEventListener('loading', onEvent);
+    player.addEventListener('texttrackvisibility', onEvent);
+    player.addEventListener('timelineregionadded', onEvent);
+    player.addEventListener('timelineregionenter', onEvent);
+    player.addEventListener('timelineregionexit', onEvent);
+    player.addEventListener('trackschanged', onEvent);
+    player.addEventListener('unloading', onEvent);
+
+    video.addEventListener('loadedmetadata', onVideoEvent, false);
+    video.addEventListener('play', onVideoEvent, false);
+    video.addEventListener('pause', onVideoEvent, false);
+    video.addEventListener('ended', onVideoEvent, false);
+    video.addEventListener('timeupdate', onVideoEvent, false);
+    video.addEventListener('seeked', onVideoEvent, false);
+    video.addEventListener('seeking', onVideoEvent, false);
+    video.addEventListener('error', onVideoError, false);
+
     player.configure({
         drm: {
             servers: {
@@ -60,9 +82,24 @@ function initPlayer() {
     }).catch(onError); // onError is executed if the asynchronous load fails.
 }
 
+function onEvent(event) {
+    // Extract the shaka.util.Error object from the event.
+    console.warn('Eventing  [', event.type, ']:', event);
+}
+
 function onErrorEvent(event) {
     // Extract the shaka.util.Error object from the event.
     onError(event.detail);
+}
+
+function onVideoEvent(event) {
+    // Extract the shaka.util.Error object from the event.
+    console.warn('VIDEO Eventing  [', event.type, ']:', event);
+}
+
+function onVideoError(event) {
+    // Extract the shaka.util.Error object from the event.
+    console.error('Video Error code', error.code, 'object', error);
 }
 
 function onError(error) {
