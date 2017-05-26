@@ -228,7 +228,6 @@ function Player(fjID, vidContainerId) {
                         playerMedia.pause();
                     }
                 }
-                logger.error(' Player has received event SARTED ! : Will Hide the spinner ');
                 playerUi.HideSpinner();
                 playerUi.toggleplaypauseBtn();
                 playerUi.setDuration(playerMedia.getDuration());
