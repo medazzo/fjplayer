@@ -16,6 +16,7 @@ function Player(fjID, vidContainerId) {
         playingList = false,
         loopingList = false,
         currentPlaying = -1,
+        isPlaying = false,
         currentIsDash = false,
         playlistLoaded = false,
         playingAds = false,
@@ -204,6 +205,7 @@ function Player(fjID, vidContainerId) {
             midPlayingChecks(Math.round(playerMedia.time()));
         } else {
             if (e === Const.PlayerEvents.PLAYBACK_ENDED) {
+                isPlaying = false;
                 if (AdsMgr.CheckPostAds() === true) {
                     logger.debug('starting  post ads !!');
                 } else {
@@ -213,15 +215,20 @@ function Player(fjID, vidContainerId) {
                     }
                 }
             }
+            if (e === Const.PlayerEvents.PLAYBACK_PAUSED) {
+                isPlaying = false;
+            }
             if (e === Const.PlayerEvents.PLAYBACK_STARTED) {
-                // first starting  only
+                // first starting  only                
                 if (args === 1) {
+                    isPlaying = true;
                     if (AdsMgr.CheckPreAds() === false) {
                         playerMedia.play();
                     } else {
                         playerMedia.pause();
                     }
                 }
+                logger.error(' Player has received event SARTED ! : Will Hide the spinner ');
                 playerUi.HideSpinner();
                 playerUi.toggleplaypauseBtn();
                 playerUi.setDuration(playerMedia.getDuration());
@@ -232,7 +239,10 @@ function Player(fjID, vidContainerId) {
             }
 
             if (e === Const.PlayerEvents.STREAM_LOADED) {
-                playerUi.ShowSpinner();
+                if (isPlaying === false) {
+                    logger.warn(' Already Playing ...............');
+                    playerUi.ShowSpinner();
+                }
                 // checks thumbs
                 playerUi.SetupThumbsManager(playerMedia.getDuration(), args);
                 // needed for mp4
@@ -250,9 +260,11 @@ function Player(fjID, vidContainerId) {
 
             }
             if (e === Const.PlayerEvents.PLAYBACK_SEEKING) {
+                isPlaying = false;
                 playerUi.ShowSpinner();
             }
             if (e === Const.PlayerEvents.PLAYBACK_SEEKED) {
+                isPlaying = true;
                 playerUi.HideSpinner();
             }
 

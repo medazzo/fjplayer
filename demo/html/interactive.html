@@ -26,13 +26,9 @@
 
         function playMe(item) {
             playlist.addItem(item);
-            console.warn("!!!!!!!   Jyst before error !", player)
             player.on(fjplayer.PlayerEvents.STREAM_LOADED, fjplayerEvent);
-            console.warn("!!!!!!!   Jyst before error !", player)
             player.loadPlaylist(playlist);
-            console.warn("!!!!!!!   Jyst before error !", player)
             player.startPlaylist(0, true, false, true);
-            console.warn("!!!!!!!   Jyst before error !", player)
         }
 
         function loadfromList() {
@@ -82,7 +78,6 @@
                     select.appendChild(opt);
                 }
             }
-            console.warn("#############  Jyst before error !", player)
         };
     </script>
 </head>

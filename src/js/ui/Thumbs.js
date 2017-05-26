@@ -46,7 +46,7 @@ function Thumbs(thtimer, thumbImgElement, thumbDivElement, progressBarElement) {
         logger.log(' current clicked  ', dur);
         // update ui ..then we find the matching cue..
         c = video.textTracks[thumbsTrackIndex].cues;
-        if (c == null) {
+        if (c === null) {
             // track eleme,t is not supprted : Firefox
             logger.error(' cues is null @ ', thumbsTrackIndex, ' not supported , Firefox ?');
             return;
