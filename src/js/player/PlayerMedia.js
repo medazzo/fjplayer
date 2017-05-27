@@ -392,8 +392,8 @@ function PlayerMedia() {
                 }
             }
         }
-        logger.warn(' stream is completly loaded  text tracks are !! ', DashPlayer.getTextTracks());
-        logger.warn(' stream is completly loaded  all tracks are !! ', DashPlayer.getVariantTracks());
+        logger.warn(' stream is completly loaded  text tracks are !! ', getTextTracks());
+
         if ((thumbsTrackIndex !== -1) && (thumbsTrackUrl !== -1)) {
             events.fireEvent(Const.PlayerEvents.STREAM_LOADED, thumbsTrackIndex);
         } else {
