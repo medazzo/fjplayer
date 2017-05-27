@@ -159,25 +159,124 @@ function PlayerMedia() {
             logger.debug(' No Setting url for thumbs ');
         }
     };
-
+    /* ********************************************************************** */
+    /*                               TXT TRACKS                               */
+    /* ********************************************************************** */
     function setTextTrack(textTrackIndex) {
         var index = parseInt(textTrackIndex);
         var i = 0;
         logger.warn(" Setting text track to index : ", index);
         if (initialized === true) {
-            for (i = 0; i < video.textTracks.length; i++) {
-                if ((video.textTracks[i].kind === 'captions') ||
-                    (video.textTracks[i].kind === 'subtitles')) {
-                    if (index === i) {
-                        video.textTracks[i].mode = 'showing';
-                    } else {
-                        video.textTracks[i].mode = 'hidden';
+            if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
+                for (i = 0; i < video.textTracks.length; i++) {
+                    if ((video.textTracks[i].kind === 'captions') ||
+                        (video.textTracks[i].kind === 'subtitles') ||
+                        (video.textTracks[i].kind === 'subtitle')) {
+                        if (index === i) {
+                            video.textTracks[i].mode = 'showing';
+                        } else {
+                            video.textTracks[i].mode = 'hidden';
+                        }
                     }
                 }
+            } else {
+                DashPlayer.selectTextTrack(DashPlayer.getTextTracks()[index]);
             }
         }
     };
 
+    function getTextTracks() {
+        if (initialized === true) {
+            if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
+                return video.textTracks;
+            }
+            return DashPlayer.getTextTracks();
+
+        }
+        logger.warn(' No Media Loaded ! ');
+        return [];
+    };
+
+    function isTextTrackEnabled(textTrackIndex) {
+        if (initialized === true) {
+            if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
+                return (video.textTracks[textTrackIndex].enabled === true);
+            }
+            return (DashPlayer.getTextTracks()[textTrackIndex].active === true);
+
+        }
+        logger.warn(' No Media Loaded ! ');
+        return false;
+    };
+
+    function getTextTrackLabel(textTrackIndex) {
+        if (initialized === true) {
+            if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
+                return (video.textTracks[textTrackIndex].label);
+            }
+            return (DashPlayer.getTextTracks()[textTrackIndex].language);
+        }
+        logger.warn(' No Media Loaded ! ');
+        return 'NaN';
+    };
+    /* ********************************************************************** */
+    /*                               AUD LANGS                               */
+    /* ********************************************************************** */
+    function setAudioLang(AudLangIndex) {
+        var index = parseInt(AudLangIndex);
+        var i = 0;
+        logger.warn(" Setting text track to index : ", index);
+        if (initialized === true) {
+            if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
+                for (i = 0; i < video.textTracks.length; i++) {
+                    if (index === i) {
+                        video.audioTracks[i].enabled = true;
+                    } else {
+                        video.audioTracks[i].enabled = false;
+                    }
+                }
+            } else {
+                DashPlayer.selectAudioLanguage(DashPlayer.getAudioLanguages()[index]);
+            }
+        }
+    };
+
+    function getAudioLanguages() {
+        if (initialized === true) {
+            if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
+                return video.audioTracks;
+            }
+            return DashPlayer.getAudioLanguages();
+
+        }
+        logger.warn(' No Media Loaded ! ');
+        return [];
+    };
+
+    function isAudioLangEnabled(AudLangIndex) {
+        var index = parseInt(AudLangIndex);
+        if (initialized === true) {
+            if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
+                return (video.audioTracks[index].enabled === true);
+            }
+            return (DashPlayer.getAudioLanguages()[index].enabled === true);
+
+        }
+        logger.warn(' No Media Loaded ! ');
+        return false;
+    };
+
+    function getAudioLangLabel(AudLangIndex) {
+        var index = parseInt(AudLangIndex);
+        if (initialized === true) {
+            if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
+                return (video.audioTracks[index].label);
+            }
+            return (DashPlayer.getAudioLanguages()[index].label);
+        }
+        logger.warn(' No Media Loaded ! ');
+        return 'NaN';
+    };
     /**
      *
      */
@@ -293,7 +392,8 @@ function PlayerMedia() {
                 }
             }
         }
-        logger.info(' stream is completly loaded  ');
+        logger.warn(' stream is completly loaded  text tracks are !! ', DashPlayer.getTextTracks());
+        logger.warn(' stream is completly loaded  all tracks are !! ', DashPlayer.getVariantTracks());
         if ((thumbsTrackIndex !== -1) && (thumbsTrackUrl !== -1)) {
             events.fireEvent(Const.PlayerEvents.STREAM_LOADED, thumbsTrackIndex);
         } else {
@@ -549,14 +649,16 @@ function PlayerMedia() {
     // ************************************************************************************
     return {
         initialize: initialize,
+
         on: on,
         off: off,
+
         StreamTypes: StreamTypes,
         CurrentStreamType: CurrentStreamType,
+
         play: play,
         stop: stop,
         pause: pause,
-        setTextTrack: setTextTrack,
         isPaused: isPaused,
         isEnded: isEnded,
         isMuted: isMuted,
@@ -567,9 +669,21 @@ function PlayerMedia() {
         getDuration: getDuration,
         time: time,
         seek: seek,
+
         Unload: Unload,
         load: load,
         loadDash: loadDash,
+
+        setAudioLang: setAudioLang,
+        getAudioLanguages: getAudioLanguages,
+        isAudioLangEnabled: isAudioLangEnabled,
+        getAudioLangLabel: getAudioLangLabel,
+
+        setTextTrack: setTextTrack,
+        getTextTracks: getTextTracks,
+        isTextTrackEnabled: isTextTrackEnabled,
+        getTextTrackLabel: getTextTrackLabel,
+
         constructor: PlayerMedia
     };
 };

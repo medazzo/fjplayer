@@ -232,10 +232,6 @@ function Player(fjID, vidContainerId) {
                 playerUi.toggleplaypauseBtn();
                 playerUi.setDuration(playerMedia.getDuration());
             }
-            if (e === Const.PlayerEvents.TRACKS_ADDED) {
-                // this a specific dahs event so pass playerMedia
-                playerUi.SetupSubsAudsManager(playerMedia);
-            }
 
             if (e === Const.PlayerEvents.STREAM_LOADED) {
                 if (isPlaying === false) {
@@ -244,10 +240,9 @@ function Player(fjID, vidContainerId) {
                 }
                 // checks thumbs
                 playerUi.SetupThumbsManager(playerMedia.getDuration(), args);
-                // needed for mp4
-                // if (currentIsDash === false) {
+                // set subsgetTextTracks()
                 playerUi.SetupSubsAudsManager(playerMedia);
-                // }
+
                 playerUi.setDuration(playerMedia.getDuration());
                 item = playerPlaylist.getItem(currentPlaying);
                 // Set Overlays

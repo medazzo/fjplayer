@@ -56,22 +56,18 @@ function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
 
         if (isItSubs === true) {
             mediaPlayer.setTextTrack(tindex);
+        } else {
+            mediaPlayer.setAudioLang(tindex);
         }
 
         for (i = 0; i < list.children.length; i++) {
             litem = list.children[i];
             k = litem.getAttribute('index');
             if (tindex === k) {
-                if (isItSubs === false) {
-                    video.audioTracks[i].enabled = true;
-                }
                 litem.classList.remove('subtitles-menu-item');
                 litem.classList.add('subtitles-menu-item-actif');
                 logger.log('Setting item @  ', i);
             } else {
-                if (isItSubs === false) {
-                    video.audioTracks[i].enabled = false;
-                }
                 litem.classList.remove('subtitles-menu-item-actif');
                 litem.classList.add('subtitles-menu-item');
                 logger.log('Unsetting item @  ', i);
@@ -116,21 +112,25 @@ function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
         var i = 0;
         var activated = false;
         var item = null;
-        SubsExist = false;
         mediaPlayer = playerMedia;
-        logger.info(' Trying to setup menu subs , text tracks length : ', video.textTracks);
+        var textTracks = mediaPlayer.getTextTracks();
+        SubsExist = false;
+
+
+        logger.info(' Trying to setup menu subs , text tracks length : ', textTracks);
         // check if exist
-        if ((!video.textTracks) || (video.textTracks.length <= 0)) {
+        if ((!textTracks) || (textTracks.length <= 0)) {
             SubsExist = false;
             logger.log(' Subs Menu not created !');
             return false;
         }
         // check if video contains subs  exist
-        for (i = 0; i < video.textTracks.length; i++) {
+        for (i = 0; i < textTracks.length; i++) {
             logger.debug(' @ text track number  ', i, ' and it type is ',
-                video.textTracks[i].kind);
-            if ((video.textTracks[i].kind === 'captions') ||
-                (video.textTracks[i].kind === 'subtitles')) {
+                textTracks[i].kind);
+            if ((textTracks[i].kind === 'captions') ||
+                (textTracks[i].kind === 'subtitle') ||
+                (textTracks[i].kind === 'subtitles')) {
                 SubsExist = true;
                 break;
             }
@@ -166,18 +166,19 @@ function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
             subsList = document.getElementById(subsMenuListId);
         }
         // loop
-        for (i = 0; i < video.textTracks.length; i++) {
-            if ((video.textTracks[i].kind === 'captions') ||
-                (video.textTracks[i].kind === 'subtitles')) {
+        for (i = 0; i < textTracks.length; i++) {
+            if ((textTracks[i].kind === 'captions') ||
+                (textTracks[i].kind === 'subtitle') ||
+                (textTracks[i].kind === 'subtitles')) {
                 item = document.createElement('li');
-                if (video.textTracks[i].mode === 'showing') {
+                if (mediaPlayer.isTextTrackEnabled(i) === true) {
                     item.classList.add('subtitles-menu-item-actif');
                     activated = true;
                 } else {
                     item.classList.add('subtitles-menu-item');
                 }
                 item.setAttribute('index', i);
-                item.innerHTML = video.textTracks[i].label;
+                item.innerHTML = mediaPlayer.getTextTrackLabel(i);
                 subsList.appendChild(item);
                 item.addEventListener('click', function(ev) {
                     activate(this, true);
@@ -213,11 +214,13 @@ function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
         var audsBtn = null;
         var i = 0;
         var item = null;
+        mediaPlayer = playerMedia;
+        var audioTracks = mediaPlayer.getAudioLanguages();
         audsExist = false;
-        logger.info(' Trying to setup menu Auds , text tracks length : ', video.audioTracks);
+        logger.info(' Trying to setup menu Auds , text tracks length : ', audioTracks);
 
         // check if exist
-        if ((!video.audioTracks) || (video.audioTracks.length <= 1)) {
+        if ((!audioTracks) || (audioTracks.length <= 1)) {
             audsExist = false;
             logger.log(' Audio Menu not created !');
             return false;
@@ -250,23 +253,23 @@ function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
         }
 
 
-        for (i = 0; i < video.audioTracks.length; i++) {
+        for (i = 0; i < audioTracks.length; i++) {
             item = document.createElement('li');
-            if (video.audioTracks[i].enabled) {
+            if (mediaPlayer.isAudioLangEnabled(i) === true) {
                 item.classList.add('subtitles-menu-item-actif');
             } else {
                 item.classList.add('subtitles-menu-item');
             }
 
             item.setAttribute('index', i);
-            item.innerHTML = video.audioTracks[i].label;
+            item.innerHTML = mediaPlayer.getAudioLangLabel(i);
             audsList.appendChild(item);
             item.addEventListener('click', function(ev) {
                 activate(this, false);
             });
         }
 
-        logger.debug(' Audio Menu created !', video.audioTracks.length, '! ', audsList);
+        logger.debug(' Audio Menu created !', audioTracks.length, '! ', audsList);
         return audsExist;
     };
     // ************************************************************************************
