@@ -1,6 +1,36 @@
  'use strict';
 
  var data = {
+     'forjabClear': {
+         'FJType': 'dash',
+         'FJTitle': 'clear Forja movie itemDash ',
+         'FJClass': 'vod',
+         'FJSrc': 'http://127.0.0.1:8500/bclear/stream.mpd'
+     },
+     'forjasClear': {
+         'FJType': 'dash',
+         'FJTitle': 'clear Forja movie itemDash ',
+         'FJClass': 'vod',
+         'FJSrc': 'http://127.0.0.1:8500/sclear/stream.mpd'
+     },
+     'forjabEncrypted': {
+         'FJType': 'dash',
+         'FJTitle': 'clear Forja movie itemDash ',
+         'FJClass': 'vod',
+         'FJSrc': 'http://127.0.0.1:8500/bencrypted/stream.mpd',
+         'FJDrm': {
+             "FjLicenseServer": "http://127.0.0.1:8120/api/fjse"
+         }
+     },
+     'forjasEncrypted': {
+         'FJType': 'dash',
+         'FJTitle': 'clear Forja movie itemDash ',
+         'FJClass': 'vod',
+         'FJSrc': 'http://127.0.0.1:8500/sencrypted/stream.mpd',
+         'FJDrm': {
+             "FjLicenseServer": "http://127.0.0.1:8120/api/fjse"
+         }
+     },
      'forjaItemDashEncryptedWithPreAds': {
          'FJType': 'dash',
          'FJTitle': 'clear Forja movie itemDash ',
