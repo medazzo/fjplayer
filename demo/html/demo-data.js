@@ -19,7 +19,7 @@
          'FJClass': 'vod',
          'FJSrc': 'http://127.0.0.1:8500/bencrypted/stream.mpd',
          'FJDrm': {
-             "FjLicenseServer": "http://127.0.0.1:8120/api/fjse"
+             "FjLicenseServer": "http://127.0.0.1:8120/api/fjse/license"
          }
      },
      'forjasEncrypted': {
@@ -28,7 +28,7 @@
          'FJClass': 'vod',
          'FJSrc': 'http://127.0.0.1:8500/sencrypted/stream.mpd',
          'FJDrm': {
-             "FjLicenseServer": "http://127.0.0.1:8120/api/fjse"
+             "FjLicenseServer": "http://127.0.0.1:8120/api/fjse/license"
          }
      },
      'forjaItemDashEncryptedWithPreAds': {

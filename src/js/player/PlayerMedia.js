@@ -616,7 +616,7 @@ function PlayerMedia() {
                 // Note that all network requests can have multiple URIs (for fallback),
                 // and therefore this is an array. But there should only be one license
                 // server URI in this tutorial.
-                request.uris[0] += '/01234';
+                // request.uris[0] += '/01234';
             }
         });
 
