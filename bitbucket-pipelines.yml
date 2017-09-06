@@ -12,5 +12,5 @@ pipelines:
           - node
         script: # Modify the commands below to build your repository.
           - npm install
-          - npm dist
-          - npm testAll
+          - npm run dist
+          - npm run testAll
