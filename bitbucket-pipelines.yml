@@ -7,13 +7,11 @@
 pipelines:
   default:
   - step:
-        script:
-         - perl version.pl
-  - step:
         caches:
           - node
         script: # Modify the commands below to build your repository.
           - npm install
+          - perl version.pl
           - npm run build
           - npm run dev
           - npm run testAll
