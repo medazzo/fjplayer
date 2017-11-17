@@ -1,22 +1,13 @@
 /* Version.js File */
+'use strict';
 
-function Version() {
-};
+var pjson = require('../package.json');
 
-const GIT_VERSION = '0.2.10';
-const GIT_COMMIT_SINCE_TAG = '13';
-const GIT_HEAD_SHORT_HASH = 'g2894e9b';
+function Version() {};
 
 Version.prototype.getVersion = function() {
-    return GIT_VERSION;
+    return pjson.version;
 };
 
-Version.prototype.getCommits = function() {
-    return GIT_COMMIT_SINCE_TAG;
-};
-
-Version.prototype.getShortHash = function() {
-    return GIT_HEAD_SHORT_HASH;
-};
 
 export default Version;

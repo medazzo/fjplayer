@@ -10,8 +10,6 @@ pipelines:
         caches:
           - node
         script: # Modify the commands below to build your repository.
-          - sudo cpan JSON
-          - perl version.pl
           - npm install
           - npm run build
           - npm run dev
