@@ -11,8 +11,10 @@ import * as Langs from '../defs/isoLangs';
  * @description The PlayerMedia is the html video/dash/drm Media player
  *
  */
-function PlayerMedia() {
+function PlayerMedia(fjPlayerId) {
     var video = null,
+        FjPlayerId = fjPlayerId,
+        FjSessionToken = null,
         initialized = false,
         startingCount = 0,
         thumbsTrackUrl = null,
@@ -605,20 +607,22 @@ function PlayerMedia() {
         }
 
         DashPlayer.getNetworkingEngine().registerRequestFilter(function(type, request) {
-            // Only add headers to license requests:
-            if (type === shaka.net.NetworkingEngine.RequestType.LICENSE) {
-                // This is the specific header name and value the server wants:
-                request.headers['x-api-app'] = '56789';
+            if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST) ||
+                (type === shaka.net.NetworkingEngine.RequestType.LICENSE)) {
+                request.headers['player-key'] = FjPlayerId;
             }
-            // Only add headers to license requests:
-            if (type === shaka.net.NetworkingEngine.RequestType.LICENSE) {
-                // This is the specific parameter name and value the server wants:
-                // Note that all network requests can have multiple URIs (for fallback),
-                // and therefore this is an array. But there should only be one license
-                // server URI in this tutorial.
-                // request.uris[0] += '/01234';
+            if (type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
+                request.headers['player-key'] = FjPlayerId;
+                request.headers['session-token'] = '1234';
             }
         });
+
+        DashPlayer.getNetworkingEngine().registerResponseFilter(function(type, response) {
+            if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST)) {
+                FjSessionToken = response.headers['session-token'];
+            }
+        });
+
 
         // set thumbs
         if (thumbsTrackUrl !== null && thumbsTrackUrl !== undefined) {

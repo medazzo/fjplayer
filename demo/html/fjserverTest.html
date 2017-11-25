@@ -1,6 +1,7 @@
 <!DOCTYPE>
 <html>
 
+
 <head>
     <title>fjplayer demo</title>
     <script type="text/javascript" src="demo-data.js"></script>
@@ -9,29 +10,23 @@
             console.warn(" We are having an event : ", e, args);
         };
         window.onload = function() {
+            var streamid = '5a18a2fcbc059f156c2e504f';
+            var fjuiAppPlayerId = '5a176360bc059f59048dcb4d-3350547959f59048dcb4d-5a1766d4bc059f59048dcb51';
             var ver = new fjplayer.Version();
             console.info('VERSION', ver.getVersion());
             var playlist = new fjplayer.Playlist();
-            // playlist.addItem(data.itemDashThumbs);
-            // playlist.addItem(data.itemDashNoThumbs);
-            // playlist.addItem(data.itemDashSubsNoThumbs);
-            // playlist.addItem(data.itemMp4Thumbs);
-            // playlist.addItem(data.itemMp4NoThumbs);
-            // playlist.addItem(data.itemMp4SubsNoThumbs);
-            //playlist.addItem(data.itemMp4Full);
-
 
             var forjaItemDashEncrypted = {
                 'FJType': 'dash',
                 'FJTitle': 'clear Forja movie itemDash ',
                 'FJClass': 'vod',
-                'FJSrc': 'http://127.0.0.1:8500/dashedCrypted/stream.mpd',
+                'FJSrc': 'http://127.0.0.1:8080/fjse/rest/streamer/' + streamid + '/stream.mpd',
                 'FJDrm': {
-                    "FjLicenseServer": "http://127.0.0.1:3000"
+                    'FjLicenseServer': 'http://127.0.0.1:8080/fjse/rest/drm/' + streamid + '/license'
                 }
             };
             playlist.addItem(forjaItemDashEncrypted);
-            var player = new fjplayer.Player('fjserverID1', 'playercontainer');
+            var player = new fjplayer.Player(fjuiAppPlayerId, 'playercontainer');
             player.on(fjplayer.PlayerEvents.STREAM_LOADED, fjplayerEvent);
             player.loadPlaylist(playlist);
             //player.playAt(0);
