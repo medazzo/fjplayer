@@ -44,7 +44,8 @@ function PlayerMedia(fjPlayerId) {
     function initialize(playerUiVideo) {
         // Install built-in polyfills to patch browser incompatibilities.
         shaka.polyfill.installAll();
-
+        // Debug logs, when the default of INFO isn't enough:
+        // shaka.log.setLevel(shaka.log.Level.DEBUG);
         // Check to see if the browser supports the basic APIs Shaka needs.
         if (!shaka.Player.isBrowserSupported()) {
             // This browser does not have the minimum set of APIs we need.
@@ -56,7 +57,7 @@ function PlayerMedia(fjPlayerId) {
         if (!video) {
             throw new Error('Please call initialize with a valid Player UI having a video html 5 element ');
         }
-        //DashPlayer = new shaka.Player(video);
+        // DashPlayer = new shaka.Player(video);
         // done
         initialized = true;
         logger.debug(' Media player just initialized with playerUiVideo');
