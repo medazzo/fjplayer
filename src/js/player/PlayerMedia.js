@@ -614,13 +614,14 @@ function PlayerMedia(fjPlayerId) {
             }
             if (type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
                 request.headers['player-key'] = FjPlayerId;
-                request.headers['session-token'] = '1234';
+                request.headers['session-token'] = FjSessionToken;
             }
         });
 
         DashPlayer.getNetworkingEngine().registerResponseFilter(function(type, response) {
             if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST)) {
                 FjSessionToken = response.headers['session-token'];
+                request.headers['player-key'] = FjPlayerId;
             }
         });
 
