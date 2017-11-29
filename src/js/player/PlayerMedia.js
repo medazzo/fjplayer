@@ -14,7 +14,7 @@ import * as Langs from '../defs/isoLangs';
 function PlayerMedia(fjPlayerId) {
     var video = null,
         FjPlayerId = fjPlayerId,
-        FjSessionToken = null,
+        FjSessionToken = "notSettled",
         initialized = false,
         startingCount = 0,
         thumbsTrackUrl = null,
@@ -615,13 +615,12 @@ function PlayerMedia(fjPlayerId) {
             if (type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
                 request.headers['player-key'] = FjPlayerId;
                 request.headers['session-token'] = FjSessionToken;
-            }
+            }            
         });
 
         DashPlayer.getNetworkingEngine().registerResponseFilter(function(type, response) {
             if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST)) {
-                FjSessionToken = response.headers['session-token'];
-                request.headers['player-key'] = FjPlayerId;
+                FjSessionToken = response.headers['session-token'];             
             }
         });
 
