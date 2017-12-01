@@ -16,12 +16,12 @@ function playerTemplate() {
         '    <video id=\"<%= videoId %>\" class="fj-video" width=\ "<%= vwidth %>\"> </video> ' +
         '    <!-- Horizental Tpp --> ' +
         '    <div class="fj-horizental-top" id=\"<%= videoInfoId %>\"> ' +
-        '        <span class=" fj-vertical-left  fj-control  fj-btn  fj-icon-leftarrow" aria-hidden="true"> </span> ' +
+        '        <span class=" fj-vertical-left  fj-control  fj-btn  fj-icon-leftarrow" aria-hidden="true" id=\"<%= backId %>\"> </span> ' +
         '        <div class=" fj-vertical-left  fj-vertical-separator "></div> ' +
         '        <div class=" fj-vertical-left  fj-control  fj-btn fj-title " id=\"<%= titleId %>\"> </div> ' +
-        '        <span class=" fj-vertical-right fj-control  fj-btn  fj-icon-share  " aria-hidden="true"> </span> ' +
+        '        <span class=" fj-vertical-right fj-control  fj-btn  fj-icon-share  " aria-hidden="true" id=\"<%= shareId %>\"> </span> ' +
         '        <div class=" fj-vertical-right  fj-vertical-separator "></div> ' +
-        '        <span class=" fj-vertical-right fj-control  fj-btn  fj-icon-download " aria-hidden="true"> </span> ' +
+        '        <span class=" fj-vertical-right fj-control  fj-btn  fj-icon-download " aria-hidden="true" id=\"<%= downloadId %>\"> </span> ' +
         '    </div> ' +
         '    <!-- Horizental Center --> ' +
         '    <div class="fj-horizental-center"> ' +

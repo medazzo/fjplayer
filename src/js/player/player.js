@@ -58,6 +58,7 @@ function Player(fjID, vidContainerId) {
     function playItem(itemPosition, autostart) {
         var item;
         var start = true;
+        logger.info('Start Playling Item  itemPosition : ' + itemPosition);
         if (autostart !== true) {
             start = false;
         }
@@ -73,7 +74,13 @@ function Player(fjID, vidContainerId) {
             return false;
         }
         // set title
-        playerUi.setTitle(item[Const.FJCONFIG_TITLE]);
+        playerUi.setTitle(item[Const.FJCONFIG_TITLE], item[Const.FJCONFIG_SHOW_UP_TITLE]);
+        // set share
+        playerUi.setShareIcon(item[Const.FJCONFIG_SHARE]);
+        // set down
+        playerUi.setDownloadIcon(item[Const.FJCONFIG_DOWNLOAD]);
+        // set back
+        playerUi.setBackIcon(item[Const.FJCONFIG_BACK]);
         // set thumbs
         playerMedia.setThumbsUrl(item[Const.FJCONFIG_THUMBS]);
         // unload old
@@ -343,8 +350,14 @@ function Player(fjID, vidContainerId) {
         }
         playingList = true;
         loopingList = loop;
-        // settitle
-        playerUi.setTitle(item[Const.FJCONFIG_TITLE]);
+        // set title
+        playerUi.setTitle(item[Const.FJCONFIG_TITLE], item[Const.FJCONFIG_SHOW_UP_TITLE]);
+        // set share
+        playerUi.setShareIcon(item[Const.FJCONFIG_SHARE]);
+        // set down
+        playerUi.setDownloadIcon(item[Const.FJCONFIG_DOWNLOAD]);
+        // set back
+        playerUi.setBackIcon(item[Const.FJCONFIG_BACK]);
         // set thumbs
         playerMedia.setThumbsUrl(item[Const.FJCONFIG_THUMBS]);
         // play item

@@ -116,9 +116,14 @@ A Playlist item will contains theses  elements :
 | FJType            |  YES      | 'video/mp4' or 'dash'         | the type of the stream|
 | FJTitle           |  YES      | non empty string              | the title to be shown when playing|
 | FJSrc             |  YES      | non empty url string          | the url of the stream to be played|
-| FJDrm             |  NO         | integer                | it's an object containing drm security information|
-| FJPoster          |  NO       | url to image poster           |  url to poster to be showing wen loading |
-| FJThumbs          |  NO       | url to image thumbs           |   url to file containing tooltip thumbnail images for video associated with WebVTT  : to generate this file you can visit  [github video scripts](https://github.com/vlanard/videoscripts) |
+| FJDownload        |  NO       | non empty url string          | activate download icon and open new  widown on url when icon is clicked|
+| FJShare           |  NO       | non empty url string          | activate share icon and open new  widown on url when icon is clicked|
+| FJBack            |  NO       | non empty url string          | activate back arow icon and locate current window to url when icon is clicked|
+| FJUpTitle         |  NO       | boolean                       | show of not the title in player up|
+| FJSrc             |  YES      | non empty url string          | the url of the stream to be played|
+| FJDrm             |  NO       | integer                       | it's an object containing drm security information|
+| FJPoster          |  NO       | url to image poster           | url to poster to be showing wen loading |
+| FJThumbs          |  NO       | url to image thumbs           | url to file containing tooltip thumbnail images for video associated with WebVTT  : to generate this file you can visit  [github video scripts](https://github.com/vlanard/videoscripts) |
 | FJSubtitles       |  NO       | array of subtitles Items      |   
 | FJAds             |  NO       | array of video ads Items      |  
 | FJOverlays        |  NO       | array of overlays Items       |

@@ -55,6 +55,9 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         overlaysContainerDivId = 'ovscd' + id,
         menuContainerDivId = 'mncd' + id,
         descriptionId = 'desc' + id,
+        backId = 'backId' + id,
+        shareId = 'shareId' + id,
+        downloadId = 'downloadId' + id,
         videoContainer,
         video = null,
         videoController,
@@ -84,7 +87,10 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             'videoId': videoId,
             'vwidth': vwidth,
             'videoInfoId': videoInfoId,
+            'backId': backId,
             'titleId': titleId,
+            'shareId': shareId,
+            'downloadId': downloadId,
             'errorDivId': errorDivId,
             'spinnerId': spinnerId,
             'BigPlayBtnId': BigPlayBtnId,
@@ -439,9 +445,58 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         }
     }
 
-    function setTitle(ltitle) {
+    // set Sharing icon
+    function setShareIcon(shareUrl) {
+        if (shareUrl !== null && shareUrl !== undefined && shareUrl !== '') {
+            logger.log('Will show Share icon to ' + shareUrl);
+            document.getElementById(shareId).display = 'block';
+            document.getElementById(shareId).addEventListener('click', function() {
+                window.open(shareUrl);
+            });
+        } else {
+            logger.log('Will NOT show Share icon');
+            document.getElementById(shareId).display = 'none';
+        }
+    }
+
+    // set Downloading icon
+    function setDownloadIcon(DownUrl) {
+        if (DownUrl !== null && DownUrl !== undefined && DownUrl !== '') {
+            logger.log('Will show Download icon to ' + DownUrl);
+            document.getElementById(downloadId).display = 'block';
+            document.getElementById(downloadId).addEventListener('click', function() {
+                window.open(DownUrl);
+            });
+        } else {
+            logger.log('Will NOT show Download icon');
+            document.getElementById(downloadId).display = 'none';
+        }
+    }
+
+    // set back icon
+    function setBackIcon(BackUrl) {
+        if (BackUrl !== null && BackUrl !== undefined && BackUrl !== '') {
+            logger.log('Will show Back icon to ' + BackUrl);
+            document.getElementById(backId).display = 'block';
+            document.getElementById(backId).addEventListener('click', function() {
+                window.location = BackUrl;
+            });
+        } else {
+            logger.log('Will NOT show Back icon');
+            document.getElementById(backId).display = 'none';
+        }
+    }
+
+    function setTitle(ltitle, ShowUpTitle) {
         document.getElementById(titleId).innerHTML = ltitle;
         document.getElementById(descriptionId).innerHTML = ltitle;
+        if (ShowUpTitle) {
+            logger.log('Will  show title Up');
+            document.getElementById(titleId).display = 'block';
+        } else {
+            logger.log('Will NOT show title Up');
+            document.getElementById(titleId).display = 'none';
+        }
     }
 
     function getVideo() {
@@ -607,6 +662,9 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         setDuration: setDuration,
         UpdateProgress: UpdateProgress,
         setTitle: setTitle,
+        setBackIcon: setBackIcon,
+        setDownloadIcon: setDownloadIcon,
+        setShareIcon: setShareIcon,
         getVideo: getVideo,
         getAdsContainerDivId: getAdsContainerDivId,
         getErrorDivId: getErrorDivId,

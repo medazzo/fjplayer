@@ -23,6 +23,10 @@ export const FJCONFIG_SHOW_AT = 'FJShowAt';
 
 export const FJCONFIG_DRM_LICENSE_SERVER = 'FjLicenseServer';
 
+export const FJCONFIG_SHOW_UP_TITLE = 'FJUpTitle';
+export const FJCONFIG_DOWNLOAD = 'FJDownload';
+export const FJCONFIG_SHARE = 'FJShare';
+export const FJCONFIG_BACK = 'FJBack';
 
 export const FJCONFIG_TRUE = 'true';
 export const FJCONFIG_FALSE = 'false';

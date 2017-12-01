@@ -201,6 +201,10 @@ function Playlist() {
         }
         logger.log('  poster of item  ', item[Const.FJCONFIG_POSTER]);
         logger.log('  thumbs of item  ', item[Const.FJCONFIG_THUMBS]);
+        logger.log('  download icon  ', item[Const.FJCONFIG_DOWNLOAD]);
+        logger.log('  share icon  ', item[Const.FJCONFIG_SHARE]);
+        logger.log('  Back icon  ', item[Const.FJCONFIG_BACK]);
+        logger.log('  UP TITLE  ', item[Const.FJCONFIG_SHOW_UP_TITLE]);
 
         // check ads
         list = item[Const.FJCONFIG_ADS];

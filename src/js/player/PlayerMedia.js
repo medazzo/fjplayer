@@ -610,17 +610,18 @@ function PlayerMedia(fjPlayerId) {
         DashPlayer.getNetworkingEngine().registerRequestFilter(function(type, request) {
             if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST) ||
                 (type === shaka.net.NetworkingEngine.RequestType.LICENSE)) {
-                request.headers['player-key'] = FjPlayerId;
+                request.headers['Player-Key'] = FjPlayerId;
             }
             if (type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
-                request.headers['player-key'] = FjPlayerId;
-                request.headers['session-token'] = FjSessionToken;
-            }            
+                request.headers['Player-Key'] = FjPlayerId;
+                request.headers['Session-Token'] = FjSessionToken;
+            }
         });
 
         DashPlayer.getNetworkingEngine().registerResponseFilter(function(type, response) {
             if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST)) {
-                FjSessionToken = response.headers['session-token'];             
+                FjSessionToken = response.headers['session-token'];
+                logger.warn(' UPDATING Session Token  : ', FjSessionToken);
             }
         });
 
