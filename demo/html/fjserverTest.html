@@ -14,7 +14,6 @@
             console.warn(" We are having an event : ", e, args);
         };
         window.onload = function() {
-
             document.getElementById("fjAppPlayerId").value = fjuiAppPlayerId;
             document.getElementById("streamId").value = streamid;
             var ver = new fjplayer.Version();
@@ -24,6 +23,8 @@
             if (player != null) {
                 player.reset()
             }
+            document.getElementById("fjAppPlayerId").value = fjuiAppPlayerId;
+            document.getElementById("streamId").value = streamid;
         }
         play = function() {
             var _streamid = document.getElementById("streamId").value;
@@ -97,7 +98,7 @@ Reference: http://avexdesigns.com/responsive-youtube-embed/
                         <div class="input-group-addon control-label" id="name-desc">
                             PLayer App Key
                         </div>
-                        <input type="text" aria-describedby="name-desc" class="form-control" name="appKey" id="fjAppPlayerId" readonly>
+                        <input type="text" aria-describedby="name-desc" class="form-control" name="appKey" id="fjAppPlayerId">
                     </div>
                 </div>
 
