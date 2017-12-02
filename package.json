@@ -14,7 +14,7 @@
         "dist": " concurrently \"npm run build\" \"npm run dev\"",
         "live": "webpack-dev-server"
     },
-    "version": "0.2.20",
+    "version": "0.2.21",
     "private": true,
     "repository": {
         "type": "git",

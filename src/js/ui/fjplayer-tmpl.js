@@ -18,7 +18,7 @@ function playerTemplate() {
         '    <div class="fj-horizental-top" id=\"<%= videoInfoId %>\"> ' +
         '        <span class=" fj-vertical-left  fj-control  fj-btn  fj-icon-leftarrow" aria-hidden="true" id=\"<%= backId %>\"> </span> ' +
         '        <div class=" fj-vertical-left  fj-vertical-separator "></div> ' +
-        '        <div class=" fj-vertical-left  fj-control  fj-btn fj-title " id=\"<%= titleId %>\"> </div> ' +
+        '        <div class=" fj-vertical-left  fj-control  fj-btn fj-title fj-short-span " id=\"<%= titleId %>\"> </div> ' +
         '        <span class=" fj-vertical-right fj-control  fj-btn  fj-icon-share  " aria-hidden="true" id=\"<%= shareId %>\"> </span> ' +
         '        <div class=" fj-vertical-right  fj-vertical-separator "></div> ' +
         '        <span class=" fj-vertical-right fj-control  fj-btn  fj-icon-download " aria-hidden="true" id=\"<%= downloadId %>\"> </span> ' +
@@ -62,7 +62,7 @@ function playerTemplate() {
         '            <input id=\"<%=volumeBarId%>\" class="fj-control-embd" type="range" min="0"  /> ' +
         '        </div> ' +
         '        <!--  more description of the stream   --> ' +
-        '        <div class=" fj-vertical-left fj-text " title="Description" id=\"<%=descriptionId%>\"> ' +
+        '        <div class=" fj-vertical-left fj-text fj-short-span" title="Description" id=\"<%=descriptionId%>\"> ' +
         '            <span></span> ' +
         '        </div> ' +
         '        <!--  full screen, audio and subtitles controls  --> ' +

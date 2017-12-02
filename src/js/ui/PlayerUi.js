@@ -449,13 +449,13 @@ function PlayerUi(videoContId, VWidth, WHeight) {
     function setShareIcon(shareUrl) {
         if (shareUrl !== null && shareUrl !== undefined && shareUrl !== '') {
             logger.log('Will show Share icon to ' + shareUrl);
-            document.getElementById(shareId).display = 'block';
+            document.getElementById(shareId).style.display = 'block';
             document.getElementById(shareId).addEventListener('click', function() {
                 window.open(shareUrl);
             });
         } else {
             logger.log('Will NOT show Share icon');
-            document.getElementById(shareId).display = 'none';
+            document.getElementById(shareId).style.display = 'none';
         }
     }
 
@@ -463,13 +463,13 @@ function PlayerUi(videoContId, VWidth, WHeight) {
     function setDownloadIcon(DownUrl) {
         if (DownUrl !== null && DownUrl !== undefined && DownUrl !== '') {
             logger.log('Will show Download icon to ' + DownUrl);
-            document.getElementById(downloadId).display = 'block';
+            document.getElementById(downloadId).style.display = 'block';
             document.getElementById(downloadId).addEventListener('click', function() {
                 window.open(DownUrl);
             });
         } else {
             logger.log('Will NOT show Download icon');
-            document.getElementById(downloadId).display = 'none';
+            document.getElementById(downloadId).style.display = 'none';
         }
     }
 
@@ -477,13 +477,13 @@ function PlayerUi(videoContId, VWidth, WHeight) {
     function setBackIcon(BackUrl) {
         if (BackUrl !== null && BackUrl !== undefined && BackUrl !== '') {
             logger.log('Will show Back icon to ' + BackUrl);
-            document.getElementById(backId).display = 'block';
+            document.getElementById(backId).style.display = 'block';
             document.getElementById(backId).addEventListener('click', function() {
                 window.location = BackUrl;
             });
         } else {
             logger.log('Will NOT show Back icon');
-            document.getElementById(backId).display = 'none';
+            document.getElementById(backId).style.display = 'none';
         }
     }
 
@@ -492,10 +492,10 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         document.getElementById(descriptionId).innerHTML = ltitle;
         if (ShowUpTitle) {
             logger.log('Will  show title Up');
-            document.getElementById(titleId).display = 'block';
+            document.getElementById(titleId).style.display = 'block';
         } else {
             logger.log('Will NOT show title Up');
-            document.getElementById(titleId).display = 'none';
+            document.getElementById(titleId).style.display = 'none';
         }
     }
 
@@ -581,6 +581,9 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         volumeBar.max = 100;
         volumeBar.value = 100;
         initialized = true;
+
+        // hide some component
+        document.getElementById(titleId).display = 'none';
     }
 
     function hideVideo() {
