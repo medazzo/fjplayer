@@ -6,12 +6,28 @@
     <title>fjplayer demo</title>
     <script type="text/javascript" src="demo-data.js"></script>
     <script type="text/javascript">
+        var streamid = '5a22840abc059f4e728b69ac';
+        var fjuiAppPlayerId = '5a176360bc059f59048dcb4d-3350547959f59048dcb4d-5a1766d4bc059f59048dcb51';
+        var player = null;
+
         function fjplayerEvent(e, args) {
             console.warn(" We are having an event : ", e, args);
         };
         window.onload = function() {
-            var streamid = '5a18a2fcbc059f156c2e504f';
-            var fjuiAppPlayerId = '5a176360bc059f59048dcb4d-3350547959f59048dcb4d-5a1766d4bc059f59048dcb51';
+
+            document.getElementById("fjAppPlayerId").value = fjuiAppPlayerId;
+            document.getElementById("streamId").value = streamid;
+            var ver = new fjplayer.Version();
+            console.info('VERSION', ver.getVersion());
+        }
+        reset = function() {
+            if (player != null) {
+                player.reset()
+            }
+        }
+        play = function() {
+            var _streamid = document.getElementById("streamId").value;
+            var _fjAppPlayerId = document.getElementById("fjAppPlayerId").value;
             var ver = new fjplayer.Version();
             console.info('VERSION', ver.getVersion());
             var playlist = new fjplayer.Playlist();
@@ -20,13 +36,13 @@
                 'FJType': 'dash',
                 'FJTitle': 'clear Forja movie itemDash ',
                 'FJClass': 'vod',
-                'FJSrc': 'http://127.0.0.1:8080/fjse/rest/streamer/' + streamid + '/stream.mpd',
+                'FJSrc': 'http://127.0.0.1:8080/fjse/rest/streamer/' + _streamid + '/stream.mpd',
                 'FJDrm': {
-                    'FjLicenseServer': 'http://127.0.0.1:8080/fjse/rest/drm/' + streamid + '/license'
+                    'FjLicenseServer': 'http://127.0.0.1:8080/fjse/rest/drm/' + _streamid + '/license'
                 }
             };
             playlist.addItem(forjaItemDashEncrypted);
-            var player = new fjplayer.Player(fjuiAppPlayerId, 'playercontainer');
+            player = new fjplayer.Player(_fjAppPlayerId, 'playercontainer');
             player.on(fjplayer.PlayerEvents.STREAM_LOADED, fjplayerEvent);
             player.loadPlaylist(playlist);
             //player.playAt(0);
@@ -34,10 +50,98 @@
         }
     </script>
     <script type="text/javascript" src="/dist/fjplayer.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script type="text/javascript " src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        /*
+Reference: http://avexdesigns.com/responsive-youtube-embed/
+*/
+        
+        .vid {
+            position: relative;
+            padding-bottom: 56.25%;
+            padding-top: 30px;
+            height: 0;
+            overflow: hidden;
+        }
+        
+        .vidPlayer {
+            width: 560px;
+            height: 315px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 
-<div id="playercontainer">
+
+<div class="container">
+    <div class="row">
+        <hr>
+    </div>
+    <!--.row -->
 </div>
+<!--./container -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Playing FjServer Video</h4>
+            <fieldset>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon control-label" id="name-desc">
+                            PLayer App Key
+                        </div>
+                        <input type="text" aria-describedby="name-desc" class="form-control" name="appKey" id="fjAppPlayerId" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    <div class="input-group ">
+                        <div class="input-group-addon control-label " id="id-desc ">
+                            Stream ID
+                        </div>
+                        <input type="text " aria-describedby="id-desc " class="form-control " name="streamId" id="streamId" placeholder="Stream ID ">
+                    </div>
+                </div>
+
+                <div class="form-inline form-group row ">
+                    <div class="col-xs-1 "></div>
+                    <button type="button " class="btn btn-lg btn-success btn-block " onclick="play() ">
+                        Play
+                    </button>
+                    <div class="col-xs-1 "></div>
+                    <div class="col-xs-1 "></div>
+                    <button type="button " class="btn btn-lg btn-warning btn-block " onclick="reset() ">
+                        Reset
+                    </button>
+                    <div class="col-xs-1 "></div>
+                </div>
+            </fieldset>
+        </div>
+        <!--.col -->
+
+        <div class="col-md-8 ">
+            <div class="vid ">
+                <div class="vidPlayer" id="playercontainer">
+                </div>
+            </div>
+            <!--./vid -->
+
+        </div>
+        <!--.col -->
+
+    </div>
+    <!--./row -->
+
+</div>
+<!--./container -->
+
 
 <body>
 
