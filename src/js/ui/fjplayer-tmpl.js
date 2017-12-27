@@ -13,7 +13,7 @@ function playerTemplate() {
         template =
         '<figure id=\"<%= videoFigureId %>\" class="fj-figure" controls-hidden="true" data-fullscreen=\"<%= fullScreenOnStart %>\"> ' +
         '    <!-- video element -->  ' +
-        '    <video id=\"<%= videoId %>\" class="fj-video" width=\ "<%= vwidth %>\"> </video> ' +
+        '    <video id=\"<%= videoId %>\" class="fj-video" width=\ "<%= vwidth %>\" crossorigin> </video> ' +
         '    <!-- Horizental Tpp --> ' +
         '    <div class="fj-horizental-top" id=\"<%= videoInfoId %>\"> ' +
         '        <span class=" fj-vertical-left  fj-control  fj-btn  fj-icon-leftarrow" aria-hidden="true" id=\"<%= backId %>\"> </span> ' +

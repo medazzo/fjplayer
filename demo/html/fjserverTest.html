@@ -6,7 +6,7 @@
     <title>fjplayer demo</title>
     <script type="text/javascript" src="demo-data.js"></script>
     <script type="text/javascript">
-        var streamid = '5a22840abc059f4e728b69ac';
+        var streamid = '5a42dd2bbc059f4c21e279db';
         var fjuiAppPlayerId = '5a176360bc059f59048dcb4d-3350547959f59048dcb4d-5a1766d4bc059f59048dcb51';
         var player = null;
 
@@ -33,15 +33,18 @@
             console.info('VERSION', ver.getVersion());
             var playlist = new fjplayer.Playlist();
 
-            var forjaItemDashEncrypted = {
-                'FJType': 'dash',
-                'FJTitle': 'clear Forja movie itemDash , here we try  a loong descrtipty in to sfsdkbfjlhbcl,sdbclsdjgh snbsd,bjgb',
-                'FJClass': 'vod',
-                'FJSrc': 'http://127.0.0.1:8080/fjse/rest/streamer/' + _streamid + '/stream.mpd',
-                'FJDrm': {
-                    'FjLicenseServer': 'http://127.0.0.1:8080/fjse/rest/drm/' + _streamid + '/license'
-                }
-            };
+            http: //127.0.0.1:8080/fjse/rest/streamer/5a42dd2bbc059f4c21e279db/5a42dd2bbc059f4c21e279db.vtt
+
+                var forjaItemDashEncrypted = {
+                    'FJType': 'dash',
+                    'FJTitle': 'clear Forja movie itemDash , here we try  a loong descrtipty in to sfsdkbfjlhbcl,sdbclsdjgh snbsd,bjgb',
+                    'FJClass': 'vod',
+                    'FJThumbs': 'http://127.0.0.1:8080/fjse/rest/streamer/' + _streamid + '/' + _streamid + '.vtt',
+                    'FJSrc': 'http://127.0.0.1:8080/fjse/rest/streamer/' + _streamid + '/stream.mpd',
+                    'FJDrm': {
+                        'FjLicenseServer': 'http://127.0.0.1:8080/fjse/rest/drm/' + _streamid + '/license'
+                    }
+                };
             playlist.addItem(forjaItemDashEncrypted);
             player = new fjplayer.Player(_fjAppPlayerId, 'playercontainer');
             player.on(fjplayer.PlayerEvents.STREAM_LOADED, fjplayerEvent);
