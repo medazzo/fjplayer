@@ -26,7 +26,7 @@ var config = {
                 test: /(\.jsx|\.js)$/,
                 loader: 'babel-loader',
                 options: {
-                    presets: ["es2015"]
+                    presets: ["@babel/preset-env"]
                 },
                 exclude: [
                     path.resolve("./node_modules"),
