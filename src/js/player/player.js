@@ -1,452 +1,435 @@
-'use strict';
-import Logger from '../utils/Logger';
-import Overlays from '../ui/Overlays';
-import Eventing from '../utils/Eventing';
-import * as Const from '../defs/constants';
-import PlayerMedia from '../player/PlayerMedia';
-import PlayerUi from '../ui/PlayerUi';
-import AdsManager from '../ui/AdsManager';
-import FjError from '../utils/FjError';
+const Logger = require('../utils/Logger');
+const Overlays = require('../ui/Overlays');
+const Eventing = require('../utils/Eventing');
+const Const = require('../defs/constants');
+const PlayerMedia = require('./PlayerMedia');
+const PlayerUi = require('../ui/PlayerUi');
+const AdsManager = require('../ui/AdsManager');
+const FjError = require('../utils/FjError');
 /**
  *  Class player in whinch the player is implemented
  */
-function Player(fjID, vidContainerId) {
-    var logger = new Logger(this),
-        playerPlaylist = null,
-        playingList = false,
-        loopingList = false,
-        currentPlaying = -1,
-        isPlaying = false,
-        currentIsDash = false,
-        playlistLoaded = false,
-        playingAds = false,
-        // default values
-        videoWidth = '100%',
-        videoHeight = '',
-        events = new Eventing(),
-        videoContainerId = vidContainerId,
-        fjPlayerId = fjID,
-        OverlaysMgr = new Overlays(),
-        AdsMgr = new AdsManager(),
-        supportsVideo = !!document.createElement('video').canPlayType,
-        playerUi = new PlayerUi(videoContainerId, videoWidth, videoHeight),
-        playerMedia = new PlayerMedia(fjPlayerId);
-    /**
+class Player {
+  constructor(fjID, vidContainerId) {
+    this.logger = new Logger(this);
+    this.playerPlaylist = null;
+    this.playingList = false;
+    this.loopingList = false;
+    this.currentPlaying = -1;
+    this.isPlaying = false;
+    this.currentIsDash = false;
+    this.playlistLoaded = false;
+    this.playingAds = false;
+    // default values
+    this.videoWidth = '100%';
+    this.videoHeight = '';
+    this.events = new Eventing();
+    this.videoContainerId = vidContainerId;
+    this.fjPlayerId = fjID;
+    this.OverlaysMgr = new Overlays();
+    this.AdsMgr = new AdsManager();
+    this.supportsVideo = !!document.createElement('video').canPlayType;
+    this.playerUi = new PlayerUi(this.videoContainerId, this.videoWidth, this.videoHeight);
+    this.playerMedia = new PlayerMedia(this.fjPlayerId);
+  }
+
+  /**
      * function  to return a human redeable duration of secondes
      */
-    function duration(secDuration) {
-        var secNum = parseInt(secDuration, 10); // don't forget the second param
-        var hours = Math.floor(secNum / 3600);
-        var minutes = Math.floor((secNum - (hours * 3600)) / 60);
-        var seconds = secNum - (hours * 3600) - (minutes * 60);
-
-        if (minutes < 10) {
-            minutes = '0' + minutes;
-        }
-        if (seconds < 10) {
-            seconds = '0' + seconds;
-        }
-        if (hours === 0) {
-            return (minutes + ':' + seconds);
-        }
-        if (hours < 10) {
-            hours = '0' + hours;
-        }
-        return (hours + ':' + minutes + ':' + seconds);
+  static duration(secDuration) {
+    const secNum = parseInt(secDuration, 10);
+    let hours = Math.floor(secNum / 3600);
+    let minutes = Math.floor((secNum - (hours * 3600)) / 60);
+    let seconds = secNum - (hours * 3600) - (minutes * 60);
+    if (minutes < 10) {
+      minutes = `0${minutes}`;
     }
-
-    function playItem(itemPosition, autostart) {
-        var item;
-        var start = true;
-        logger.info('Start Playling Item  itemPosition : ' + itemPosition);
-        if (autostart !== true) {
-            start = false;
-        }
-        currentPlaying = itemPosition;
-        if (!playlistLoaded) {
-            logger.error(' No playlist is loaded on player ');
-            return false;
-        }
-        item = playerPlaylist.getItem(itemPosition);
-        if (item === null) {
-            logger.error(' No item to play at index ', currentPlaying,
-                ' playlist is sized ', playerPlaylist.getSize());
-            return false;
-        }
-        // set title
-        playerUi.setTitle(item[Const.FJCONFIG_TITLE], item[Const.FJCONFIG_SHOW_UP_TITLE]);
-        // set share
-        playerUi.setShareIcon(item[Const.FJCONFIG_SHARE]);
-        // set down
-        playerUi.setDownloadIcon(item[Const.FJCONFIG_DOWNLOAD]);
-        // set back
-        playerUi.setBackIcon(item[Const.FJCONFIG_BACK]);
-        // set thumbs
-        playerMedia.setThumbsUrl(item[Const.FJCONFIG_THUMBS]);
-        // unload old
-        playerMedia.Unload();
-        // load new item
-        if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
-            if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
-                // clear dash
-                currentIsDash = true;
-                logger.warn(' will play a clear dash on caption obect ', playerUi.getVideoCaption());
-                playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER],
-                    item[Const.FJCONFIG_SUBTITLES], playerUi.getVideoCaption(), start, item[Const.FJCONFIG_DRM]);
-            } else {
-                playerMedia.load(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_TYPE],
-                    item[Const.FJCONFIG_POSTER], item[Const.FJCONFIG_SUBTITLES], start);
-            }
-            return true;
-        }
-        logger.error('src of item is not valid , at index ', currentPlaying);
-        return false;
+    if (seconds < 10) {
+      seconds = `0${seconds}`;
     }
-
-    function playNext() {
-        if (!playlistLoaded) {
-            logger.error(' No playlist is loaded on player ');
-            return false;
-        }
-        // set playlist again
-        playingList = true;
-        currentPlaying++;
-        logger.log(' will play next', currentPlaying, ' in playlist is loaded on player ');
-        if (playerPlaylist.getSize() < currentPlaying) {
-            if (loopingList === true) {
-                currentPlaying = 0;
-            }
-            // playlist if ended
-            return false;
-        }
-        // play next
-        playItem(currentPlaying);
-        // auto play it
-        playerUi.ShowVideo();
-        playerUi.onplaypauseClick();
-        return true;
+    if (hours === 0) {
+      return (`${minutes}:${seconds}`);
     }
-
-    function AdsEventing(e, args) {
-        logger.debug(' just a new event from adsmgr ', e, args);
-        // send Event to listener
-        logger.warn('Sending Ads Event >>>>>>>>>>>>>>>>>   ', e);
-        events.fireEvent(e);
-        if (e === Const.AdsEvents.ADS_PLAYBACK_ENDED) {
-            playingAds = false;
-            if (args === Const.AdsEnum.ADS_PRE_ROLL) {
-                if (AdsMgr.CheckPreAds() === true) {
-                    return;
-                }
-                playerUi.ShowVideo();
-                playerMedia.play();
-                playerUi.toggleplaypauseBtn();
-                return;
-                // freezePlayer(false, true, false);
-            } else if (args === Const.AdsEnum.ADS_POST_ROLL) {
-                if (AdsMgr.CheckPostAds() === true) {
-                    return;
-                }
-                // check if in playlist then play list
-                if (playingList === true) {
-                    playerUi.toggleplaypauseBtn();
-                    playerUi.ShowVideo();
-                    playNext();
-                }
-                // freezePlayer(false, false, true);
-            } else if (args === Const.AdsEnum.ADS_MID_ROLL) {
-                playerUi.ShowVideo();
-                playerMedia.play();
-                playerUi.toggleplaypauseBtn();
-                // freezePlayer(false, false, false);
-            } else {
-                logger.warn(' unknown Ads type !! ', args);
-            }
-        }
-        if (e === Const.AdsEvents.ADS_PLAYBACK_STARTED) {
-            playingAds = true;
-            // hide the player and pause it
-            playerMedia.pause();
-            playerUi.hideVideo();
-        }
+    if (hours < 10) {
+      hours = `0${hours}`;
     }
+    return (`${hours}:${minutes}:${seconds}`);
+  }
 
-    function midPlayingChecks(secondes) {
-        var ok;
-        OverlaysMgr.CheckOverlays(secondes);
-        ok &= AdsMgr.CheckMidAds(secondes);
-        return ok;
+  playItem(itemPosition, autostart) {
+    let start = true;
+    this.logger.info(`Start Playling Item  itemPosition : ${itemPosition}`);
+    if (autostart !== true) {
+      start = false;
     }
-
-
-
-    function playPrev() {
-        if (!playlistLoaded) {
-            logger.error(' No playlist is loaded on player ');
-            return false;
-        }
-        // set playlist again
-        playingList = true;
-        currentPlaying--;
-        logger.log(' will play next', currentPlaying, ' in playlist is loaded on player ');
-        if (currentPlaying < 0) {
-            if (loopingList === true) {
-                currentPlaying = playerPlaylist.getSize() - 1;
-            }
-            // playlist if ended
-            return false;
-        }
-        // play next
-        playItem(currentPlaying);
-        // auto play it
-        playerUi.ShowVideo();
-        playerUi.onplaypauseClick();
-        return true;
+    this.currentPlaying = itemPosition;
+    if (!this.playlistLoaded) {
+      this.logger.error(' No playlist is loaded on player ');
+      return false;
     }
-
-    function MplayerEventing(e, args) {
-        var item, vid;
-        if (e === Const.PlayerEvents.PLAYBACK_TIME_UPDATE) {
-            playerUi.UpdateProgress(playerMedia.time());
-            vid = playerUi.getVideo();
-            playerUi.setDuration(playerMedia.getDuration());
-            midPlayingChecks(Math.round(playerMedia.time()));
-        } else {
-            if (e === Const.PlayerEvents.PLAYBACK_ENDED) {
-                isPlaying = false;
-                if (AdsMgr.CheckPostAds() === true) {
-                    logger.debug('starting  post ads !!');
-                } else {
-                    // check if in playlist then play list
-                    if (playingList === true) {
-                        playNext();
-                    }
-                }
-            }
-            if (e === Const.PlayerEvents.PLAYBACK_PAUSED) {
-                isPlaying = false;
-            }
-            if (e === Const.PlayerEvents.PLAYBACK_STARTED) {
-                // first starting  only                
-                if (args === 1) {
-                    isPlaying = true;
-                    if (AdsMgr.CheckPreAds() === false) {
-                        playerMedia.play();
-                    } else {
-                        playerMedia.pause();
-                    }
-                }
-                playerUi.HideSpinner();
-                playerUi.toggleplaypauseBtn();
-                playerUi.setDuration(playerMedia.getDuration());
-            }
-
-            if (e === Const.PlayerEvents.STREAM_LOADED) {
-                if (isPlaying === false) {
-                    logger.warn(' Already Playing ...............');
-                    playerUi.ShowSpinner();
-                }
-                // checks thumbs
-                playerUi.SetupThumbsManager(playerMedia.getDuration(), args);
-                // set subsgetTextTracks()
-                playerUi.SetupSubsAudsManager(playerMedia);
-
-                playerUi.setDuration(playerMedia.getDuration());
-                item = playerPlaylist.getItem(currentPlaying);
-                // Set Overlays
-                OverlaysMgr.Setup(item[Const.FJCONFIG_OVERLAYS]);
-                // Set ads
-                vid = playerUi.getVideo();
-
-                AdsMgr.Setup(item[Const.FJCONFIG_ADS], vid.videoWidth, vid.videoHeight);
-
-            }
-            if (e === Const.PlayerEvents.PLAYBACK_SEEKING) {
-                isPlaying = false;
-                playerUi.ShowSpinner();
-            }
-            if (e === Const.PlayerEvents.PLAYBACK_SEEKED) {
-                isPlaying = true;
-                playerUi.HideSpinner();
-            }
-
-
-            // send Event to listener
-            logger.info('[Event] [trigger] > ', e);
-            events.fireEvent(e);
-
-            if (e === Const.PlayerEvents.PLAYBACK_ERROR) {
-                playerUi.goForError();
-                throw new FjError(args.code, args.type, args.message,
-                    document.getElementById(playerUi.getErrorDivId()));
-            }
-        }
-
+    const item = this.playerPlaylist.getItem(itemPosition);
+    if (item === null) {
+      this.logger.error(' No item to play at index ', this.currentPlaying,
+        ' playlist is sized ', this.playerPlaylist.getSize());
+      return false;
     }
-    /**
+    // set title
+    this.playerUi.setTitle(item[Const.FJCONFIG_TITLE], item[Const.FJCONFIG_SHOW_UP_TITLE]);
+    // set share
+    this.playerUi.setShareIcon(item[Const.FJCONFIG_SHARE]);
+    // set down
+    this.playerUi.setDownloadIcon(item[Const.FJCONFIG_DOWNLOAD]);
+    // set back
+    this.playerUi.setBackIcon(item[Const.FJCONFIG_BACK]);
+    // set thumbs
+    this.playerMedia.setThumbsUrl(item[Const.FJCONFIG_THUMBS]);
+    // unload old
+    this.playerMedia.Unload();
+    // load new item
+    if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
+      if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
+        // clear dash
+        this.currentIsDash = true;
+        this.logger.warn(' will play a clear dash on caption obect ', this.playerUi.getVideoCaption());
+        this.playerMedia.loadDash(
+          item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER],
+          item[Const.FJCONFIG_SUBTITLES],
+          this.playerUi.getVideoCaption(), start, item[Const.FJCONFIG_DRM],
+        );
+      } else {
+        this.playerMedia.load(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_TYPE],
+          item[Const.FJCONFIG_POSTER], item[Const.FJCONFIG_SUBTITLES], start);
+      }
+      return true;
+    }
+    this.logger.error('src of item is not valid , at index ', this.currentPlaying);
+    return false;
+  }
+
+  playNext() {
+    if (!this.playlistLoaded) {
+      this.logger.error(' No playlist is loaded on player ');
+      return false;
+    }
+    // set playlist again
+    this.playingList = true;
+    this.currentPlaying += 1;
+    this.logger.log(' will play next', this.currentPlaying, ' in playlist is loaded on player ');
+    if (this.playerPlaylist.getSize() < this.currentPlaying) {
+      if (this.loopingList === true) {
+        this.currentPlaying = 0;
+      }
+      // playlist if ended
+      return false;
+    }
+    // play next
+    this.playItem(this.currentPlaying);
+    // auto play it
+    this.playerUi.ShowVideo();
+    this.playerUi.onplaypauseClick();
+    return true;
+  }
+
+  AdsEventing(e, args) {
+    this.logger.debug(' just a new event from this.AdsMgr ', e, args);
+    // send Event to listener
+    this.logger.warn('Sending Ads Event >>>>>>>>>>>>>>>>>   ', e);
+    this.events.fireEvent(e);
+    if (e === Const.AdsEvents.ADS_PLAYBACK_ENDED) {
+      this.playingAds = false;
+      if (args === Const.AdsEnum.ADS_PRE_ROLL) {
+        if (this.AdsMgr.CheckPreAds() === true) {
+          return;
+        }
+        this.playerUi.ShowVideo();
+        this.playerMedia.play();
+        this.playerUi.toggleplaypauseBtn();
+        return;
+        // freezePlayer(false, true, false);
+      } if (args === Const.AdsEnum.ADS_POST_ROLL) {
+        if (this.AdsMgr.CheckPostAds() === true) {
+          return;
+        }
+        // check if in playlist then play list
+        if (this.playingList === true) {
+          this.playerUi.toggleplaypauseBtn();
+          this.playerUi.ShowVideo();
+          this.playNext();
+        }
+        // freezePlayer(false, false, true);
+      } else if (args === Const.AdsEnum.ADS_MID_ROLL) {
+        this.playerUi.ShowVideo();
+        this.playerMedia.play();
+        this.playerUi.toggleplaypauseBtn();
+        // freezePlayer(false, false, false);
+      } else {
+        this.logger.warn(' unknown Ads type !! ', args);
+      }
+    }
+    if (e === Const.AdsEvents.ADS_PLAYBACK_STARTED) {
+      this.playingAds = true;
+      // hide the player and pause it
+      this.playerMedia.pause();
+      this.playerUi.hideVideo();
+    }
+  }
+
+  midPlayingChecks(secondes) {
+    this.OverlaysMgr.CheckOverlays(secondes);
+    return this.AdsMgr.CheckMidAds(secondes);
+  }
+
+  playPrev() {
+    if (!this.playlistLoaded) {
+      this.logger.error(' No playlist is loaded on player ');
+      return false;
+    }
+    // set playlist again
+    this.playingList = true;
+    this.currentPlaying -= 1;
+    this.logger.log(' will play next', this.currentPlaying, ' in playlist is loaded on player ');
+    if (this.currentPlaying < 0) {
+      if (this.loopingList === true) {
+        this.currentPlaying = this.playerPlaylist.getSize() - 1;
+      }
+      // playlist if ended
+      return false;
+    }
+    // play next
+    this.playItem(this.currentPlaying);
+    // auto play it
+    this.playerUi.ShowVideo();
+    this.playerUi.onplaypauseClick();
+    return true;
+  }
+
+  MplayerEventing(e, args) {
+    let item; let
+      vid;
+    if (e === Const.PlayerEvents.PLAYBACK_TIME_UPDATE) {
+      this.playerUi.UpdateProgress(this.playerMedia.time());
+      vid = this.playerUi.getVideo();
+      this.playerUi.setDuration(this.playerMedia.getDuration());
+      this.midPlayingChecks(Math.round(this.playerMedia.time()));
+    } else {
+      if (e === Const.PlayerEvents.PLAYBACK_ENDED) {
+        this.isPlaying = false;
+        if (this.AdsMgr.CheckPostAds() === true) { this.logger.debug('starting  post ads !!'); } else if (this.playingList === true); // check if in playlist then play list
+        this.playNext();
+      }
+      if (e === Const.PlayerEvents.PLAYBACK_PAUSED) {
+        this.isPlaying = false;
+      }
+      if (e === Const.PlayerEvents.PLAYBACK_STARTED) {
+        // first starting  only
+        if (args === 1) {
+          this.isPlaying = true;
+          if (this.AdsMgr.CheckPreAds() === false) {
+            this.playerMedia.play();
+          } else {
+            this.playerMedia.pause();
+          }
+        }
+        this.playerUi.HideSpinner();
+        this.playerUi.toggleplaypauseBtn();
+        this.playerUi.setDuration(this.playerMedia.getDuration());
+      }
+
+      if (e === Const.PlayerEvents.STREAM_LOADED) {
+        if (this.isPlaying === false) {
+          this.logger.warn(' Already Playing ...............');
+          this.playerUi.ShowSpinner();
+        }
+        // checks thumbs
+        this.playerUi.SetupThumbsManager(this.playerMedia.getDuration(), args);
+        // set subsgetTextTracks()
+        this.playerUi.SetupSubsAudsManager(this.playerMedia);
+
+        this.playerUi.setDuration(this.playerMedia.getDuration());
+        item = this.playerPlaylist.getItem(this.currentPlaying);
+        // Set Overlays
+        this.OverlaysMgr.Setup(item[Const.FJCONFIG_OVERLAYS]);
+        // Set ads
+        vid = this.playerUi.getVideo();
+
+        this.AdsMgr.Setup(item[Const.FJCONFIG_ADS], vid.videoWidth, vid.videoHeight);
+      }
+      if (e === Const.PlayerEvents.PLAYBACK_SEEKING) {
+        this.isPlaying = false;
+        this.playerUi.ShowSpinner();
+      }
+      if (e === Const.PlayerEvents.PLAYBACK_SEEKED) {
+        this.isPlaying = true;
+        this.playerUi.HideSpinner();
+      }
+
+      // send Event to listener
+      if (typeof e !== 'undefined') {
+        this.logger.info('[Event] [trigger] > ', e);
+        this.events.fireEvent(e);
+      }
+
+      if (e === Const.PlayerEvents.PLAYBACK_ERROR) {
+        this.playerUi.goForError();
+        throw new FjError(args.code, args.type, args.message,
+          document.getElementById(this.playerUi.getErrorDivId()));
+      }
+    }
+  }
+
+  /**
      *
      */
-    function loadPlaylist(playlist) {
-        logger.log(' start  function ');
-        if (!supportsVideo) {
-            logger.error(' browser did not support video !');
-            return false;
-        }
-        if (playlist.getSize() > 0) {
-            playerPlaylist = playlist;
-            playlistLoaded = true;
-            playerUi.initialize(this);
-            playerMedia.on(Const.PlayerEvents.TRACKS_ADDED, MplayerEventing);
-            playerMedia.on(Const.PlayerEvents.STREAM_LOADED, MplayerEventing);
-            playerMedia.on(Const.PlayerEvents.PLAYBACK_STARTED, MplayerEventing);
-            playerMedia.on(Const.PlayerEvents.PLAYBACK_ERROR, MplayerEventing);
-            playerMedia.on(Const.PlayerEvents.PLAYBACK_PAUSED, MplayerEventing);
-            playerMedia.on(Const.PlayerEvents.PLAYBACK_ENDED, MplayerEventing);
-            playerMedia.on(Const.PlayerEvents.PLAYBACK_SEEKED, MplayerEventing);
-            playerMedia.on(Const.PlayerEvents.PLAYBACK_SEEKING, MplayerEventing);
-            playerMedia.on(Const.PlayerEvents.PLAYBACK_TIME_UPDATE, MplayerEventing);
+  loadPlaylist(playlist) {
+    this.logger.log(' start  function ');
+    if (!this.supportsVideo) {
+      this.logger.error(' browser did not support video !');
+      return false;
+    }
+    if (playlist.getSize() > 0) {
+      this.playerPlaylist = playlist;
+      this.playlistLoaded = true;
+      this.playerUi.initialize(this);
+      this.playerMedia.on(Const.PlayerEvents.TRACKS_ADDED, (e, a) => this.MplayerEventing(e, a));
+      this.playerMedia.on(Const.PlayerEvents.STREAM_LOADED, (e, a) => this.MplayerEventing(e, a));
+      this.playerMedia.on(Const.PlayerEvents.PLAYBACK_STARTED,
+        (e, a) => this.MplayerEventing(e, a));
+      this.playerMedia.on(Const.PlayerEvents.PLAYBACK_ERROR, (e, a) => this.MplayerEventing(e, a));
+      this.playerMedia.on(Const.PlayerEvents.PLAYBACK_PAUSED, (e, a) => this.MplayerEventing(e, a));
+      this.playerMedia.on(Const.PlayerEvents.PLAYBACK_ENDED, (e, a) => this.MplayerEventing(e, a));
+      this.playerMedia.on(Const.PlayerEvents.PLAYBACK_SEEKED, (e, a) => this.MplayerEventing(e, a));
+      this.playerMedia.on(Const.PlayerEvents.PLAYBACK_SEEKING,
+        (e, a) => this.MplayerEventing(e, a));
+      this.playerMedia.on(Const.PlayerEvents.PLAYBACK_TIME_UPDATE,
+        (e, a) => this.MplayerEventing(e, a));
 
-            AdsMgr.on(Const.AdsEvents.ADS_PLAYBACK_STARTED, AdsEventing);
-            AdsMgr.on(Const.AdsEvents.ADS_PLAYBACK_ERROR, AdsEventing);
-            AdsMgr.on(Const.AdsEvents.ADS_PLAYBACK_ENDED, AdsEventing);
+      this.AdsMgr.on(Const.AdsEvents.ADS_PLAYBACK_STARTED, (e, a) => this.AdsEventing(e, a));
+      this.AdsMgr.on(Const.AdsEvents.ADS_PLAYBACK_ERROR, (e, a) => this.AdsEventing(e, a));
+      this.AdsMgr.on(Const.AdsEvents.ADS_PLAYBACK_ENDED, (e, a) => this.AdsEventing(e, a));
 
-            playerMedia.initialize(playerUi.getVideo());
-            OverlaysMgr.initialize(document.getElementById(playerUi.getOverlaysContainerDivId()));
-            AdsMgr.initialize(document.getElementById(playerUi.getAdsContainerDivId()));
-            return true;
-        }
-        logger.error(' playlist is empty: ', playlist.getSize());
-        playlistLoaded = false;
-        return false;
-    };
-    /**
+      this.playerMedia.initialize(this.playerUi.getVideo());
+      this.OverlaysMgr.initialize(
+        document.getElementById(this.playerUi.getOverlaysContainerDivId()),
+      );
+      this.AdsMgr.initialize(document.getElementById(this.playerUi.getAdsContainerDivId()));
+      return true;
+    }
+    this.logger.error(' playlist is empty: ', playlist.getSize());
+    this.playlistLoaded = false;
+    return false;
+  }
+
+  /**
      *
      */
-    function playAt(index, autostart) {
-        var start = true;
-        if (autostart !== true) {
-            start = false;
-        }
-        playingList = false;
-        return playItem(index, start);
-    };
-
-    function startPlaylist(positionToStartFrom, loop, randomPlay, autostart) {
-        var item;
-        var start = true;
-        if (autostart !== true) {
-            start = false;
-        }
-        currentPlaying = positionToStartFrom;
-        if (!playlistLoaded) {
-            logger.error(' No playlist is loaded on player ');
-            return false;
-        }
-        item = playerPlaylist.getItem(currentPlaying);
-        if (item === undefined) {
-            logger.error(' No item to play at index ', currentPlaying,
-                ' playlist is sized ', playerPlaylist.getSize());
-            return false;
-        }
-        playingList = true;
-        loopingList = loop;
-        // set title
-        playerUi.setTitle(item[Const.FJCONFIG_TITLE], item[Const.FJCONFIG_SHOW_UP_TITLE]);
-        // set share
-        playerUi.setShareIcon(item[Const.FJCONFIG_SHARE]);
-        // set down
-        playerUi.setDownloadIcon(item[Const.FJCONFIG_DOWNLOAD]);
-        // set back
-        playerUi.setBackIcon(item[Const.FJCONFIG_BACK]);
-        // set thumbs
-        playerMedia.setThumbsUrl(item[Const.FJCONFIG_THUMBS]);
-        // play item
-        if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
-            if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
-                // clear dash
-                currentIsDash = true;
-                playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER],
-                    item[Const.FJCONFIG_SUBTITLES], playerUi.getVideoCaption(), start, item[Const.FJCONFIG_DRM]);
-            } else {
-                playerMedia.load(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_TYPE],
-                    item[Const.FJCONFIG_POSTER], item[Const.FJCONFIG_SUBTITLES], start);
-            }
-            return true;
-        }
-        logger.error('src of item is not valid , at index ', currentPlaying);
-        return false;
-    };
-
-    function seek(time) {
-        playerMedia.seek(time);
+  playAt(index, autostart) {
+    let start = true;
+    if (autostart !== true) {
+      start = false;
     }
+    this.playingList = false;
+    return this.playItem(index, start);
+  }
 
-    function reset() {
-        playerMedia.Unload();
-        playerUi.reset();
+  startPlaylist(positionToStartFrom, loop, randomPlay, autostart) {
+    let start = true;
+    if (autostart !== true) {
+      start = false;
     }
+    this.currentPlaying = positionToStartFrom;
+    if (!this.playlistLoaded) {
+      this.logger.error(' No playlist is loaded on player ');
+      return false;
+    }
+    const item = this.playerPlaylist.getItem(this.currentPlaying);
+    if (item === undefined) {
+      this.logger.error(' No item to play at index ', this.currentPlaying,
+        ' playlist is sized ', this.playerPlaylist.getSize());
+      return false;
+    }
+    this.playingList = true;
+    this.loopingList = loop;
+    // set title
+    this.playerUi.setTitle(item[Const.FJCONFIG_TITLE], item[Const.FJCONFIG_SHOW_UP_TITLE]);
+    // set share
+    this.playerUi.setShareIcon(item[Const.FJCONFIG_SHARE]);
+    // set down
+    this.playerUi.setDownloadIcon(item[Const.FJCONFIG_DOWNLOAD]);
+    // set back
+    this.playerUi.setBackIcon(item[Const.FJCONFIG_BACK]);
+    // set thumbs
+    this.playerMedia.setThumbsUrl(item[Const.FJCONFIG_THUMBS]);
+    // play item
+    if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
+      if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
+        // clear dash
+        this.currentIsDash = true;
+        this.playerMedia.loadDash(
+          item[Const.FJCONFIG_SRC],
+          item[Const.FJCONFIG_POSTER],
+          item[Const.FJCONFIG_SUBTITLES],
+          this.playerUi.getVideoCaption(), start, item[Const.FJCONFIG_DRM],
+        );
+      } else {
+        this.playerMedia.load(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_TYPE],
+          item[Const.FJCONFIG_POSTER], item[Const.FJCONFIG_SUBTITLES], start);
+      }
+      return true;
+    }
+    this.logger.error('src of item is not valid , at index ', this.currentPlaying);
+    return false;
+  }
 
-    function play() {
-        playerMedia.pause();
-        if (AdsMgr.CheckPreAds() === false) {
-            playerMedia.play();
-        }
-        playerUi.toggleplaypauseBtn();
-    }
+  seek(time) {
+    this.playerMedia.seek(time);
+  }
 
-    function pause() {
-        playerMedia.pause();
-        playerUi.toggleplaypauseBtn();
-    }
+  reset() {
+    this.playerMedia.Unload();
+    this.playerUi.reset();
+  }
 
-    function isPlayingAds() {
-        return playingAds;
+  play() {
+    this.playerMedia.pause();
+    if (this.AdsMgr.CheckPreAds() === false) {
+      this.playerMedia.play();
     }
+    this.playerUi.toggleplaypauseBtn();
+  }
 
-    function isReady() {
-        return playlistLoaded;
-    }
+  pause() {
+    this.playerMedia.pause();
+    this.playerUi.toggleplaypauseBtn();
+  }
 
-    function isPaused() {
-        return playerMedia.isPaused();
-    }
+  isPlayingAds() {
+    return this.playingAds;
+  }
 
-    function isEnded() {
-        return playerMedia.isEnded();
-    }
-    /**
+  isReady() {
+    return this.playlistLoaded;
+  }
+
+  isPaused() {
+    return this.playerMedia.isPaused();
+  }
+
+  isEnded() {
+    return this.playerMedia.isEnded();
+  }
+
+  /**
      *
      */
-    function on(name, handler) {
-        return events.on(name, handler);
-    };
-    /**
+  on(name, handler) {
+    return this.events.on(name, handler);
+  }
+
+  /**
      *
      */
-    function off(name, handler) {
-        return events.off(name, handler);
-    };
-    // ************************************************************************************
-    // PUBLIC API
-    // ************************************************************************************
-    return {
-        duration: duration,
-        loadPlaylist: loadPlaylist,
-        playAt: playAt,
-        startPlaylist: startPlaylist,
-        play: play,
-        reset: reset,
-        seek: seek,
-        playNext: playNext,
-        playPrev: playPrev,
-        pause: pause,
-        isPaused: isPaused,
-        isPlayingAds: isPlayingAds,
-        isReady: isReady,
-        isEnded: isEnded,
-        on: on,
-        off: off,
-        constructor: Player
-    };
-};
-export default Player;
+  off(name, handler) {
+    return this.events.off(name, handler);
+  }
+}
+module.exports = Player;

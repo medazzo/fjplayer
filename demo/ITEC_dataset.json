@@ -1,0 +1,509 @@
+{
+  "_comment": " from url https://dash.itec.aau.at/dash-dataset/ , the flist is obtained using script js/itec_helper.js",
+  "data": {
+    "BigBuckBunny_1s_simple": {
+      "FJTitle": "Big Buck Bunny 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/BigBuckBunny/1sec/BigBuckBunny_1s_simple_2014_05_09.mpd"
+    },
+    "BigBuckBunny_1s_onDemand": {
+      "FJTitle": "Big Buck Bunny 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/BigBuckBunny/1sec/BigBuckBunny_1s_onDemand_2014_05_09.mpd"
+    },
+    "BigBuckBunny_2s_simple": {
+      "FJTitle": "Big Buck Bunny 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/BigBuckBunny/2sec/BigBuckBunny_2s_simple_2014_05_09.mpd"
+    },
+    "BigBuckBunny_2s_onDemand": {
+      "FJTitle": "Big Buck Bunny 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/BigBuckBunny/2sec/BigBuckBunny_2s_onDemand_2014_05_09.mpd"
+    },
+    "BigBuckBunny_4s_simple": {
+      "FJTitle": "Big Buck Bunny 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/BigBuckBunny/4sec/BigBuckBunny_4s_simple_2014_05_09.mpd"
+    },
+    "BigBuckBunny_4s_onDemand": {
+      "FJTitle": "Big Buck Bunny 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/BigBuckBunny/4sec/BigBuckBunny_4s_onDemand_2014_05_09.mpd"
+    },
+    "BigBuckBunny_6s_simple": {
+      "FJTitle": "Big Buck Bunny 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/BigBuckBunny/6sec/BigBuckBunny_6s_simple_2014_05_09.mpd"
+    },
+    "BigBuckBunny_6s_onDemand": {
+      "FJTitle": "Big Buck Bunny 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/BigBuckBunny/6sec/BigBuckBunny_6s_onDemand_2014_05_09.mpd"
+    },
+    "BigBuckBunny_10s_simple": {
+      "FJTitle": "Big Buck Bunny 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/BigBuckBunny/10sec/BigBuckBunny_10s_simple_2014_05_09.mpd"
+    },
+    "BigBuckBunny_10s_onDemand": {
+      "FJTitle": "Big Buck Bunny 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/BigBuckBunny/10sec/BigBuckBunny_10s_onDemand_2014_05_09.mpd"
+    },
+    "BigBuckBunny_15s_simple": {
+      "FJTitle": "Big Buck Bunny 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/BigBuckBunny/15sec/BigBuckBunny_15s_simple_2014_05_09.mpd"
+    },
+    "BigBuckBunny_15s_onDemand": {
+      "FJTitle": "Big Buck Bunny 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/BigBuckBunny/15sec/BigBuckBunny_15s_onDemand_2014_05_09.mpd"
+    },
+    "ElephantsDream_1s_simple": {
+      "FJTitle": "Elephants Dream 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/ElephantsDream/1sec/ElephantsDream_1s_simple_2014_05_09.mpd"
+    },
+    "ElephantsDream_1s_onDemand": {
+      "FJTitle": "Elephants Dream 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/ElephantsDream/1sec/ElephantsDream_1s_onDemand_2014_05_09.mpd"
+    },
+    "ElephantsDream_2s_simple": {
+      "FJTitle": "Elephants Dream 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/ElephantsDream/2sec/ElephantsDream_2s_simple_2014_05_09.mpd"
+    },
+    "ElephantsDream_2s_onDemand": {
+      "FJTitle": "Elephants Dream 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/ElephantsDream/2sec/ElephantsDream_2s_onDemand_2014_05_09.mpd"
+    },
+    "ElephantsDream_4s_simple": {
+      "FJTitle": "Elephants Dream 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/ElephantsDream/4sec/ElephantsDream_4s_simple_2014_05_09.mpd"
+    },
+    "ElephantsDream_4s_onDemand": {
+      "FJTitle": "Elephants Dream 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/ElephantsDream/4sec/ElephantsDream_4s_onDemand_2014_05_09.mpd"
+    },
+    "ElephantsDream_6s_simple": {
+      "FJTitle": "Elephants Dream 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/ElephantsDream/6sec/ElephantsDream_6s_simple_2014_05_09.mpd"
+    },
+    "ElephantsDream_6s_onDemand": {
+      "FJTitle": "Elephants Dream 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/ElephantsDream/6sec/ElephantsDream_6s_onDemand_2014_05_09.mpd"
+    },
+    "ElephantsDream_10s_simple": {
+      "FJTitle": "Elephants Dream 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/ElephantsDream/10sec/ElephantsDream_10s_simple_2014_05_09.mpd"
+    },
+    "ElephantsDream_10s_onDemand": {
+      "FJTitle": "Elephants Dream 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/ElephantsDream/10sec/ElephantsDream_10s_onDemand_2014_05_09.mpd"
+    },
+    "ElephantsDream_15s_simple": {
+      "FJTitle": "Elephants Dream 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/ElephantsDream/15sec/ElephantsDream_15s_simple_2014_05_09.mpd"
+    },
+    "ElephantsDream_15s_onDemand": {
+      "FJTitle": "Elephants Dream 1080p YUV",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/ElephantsDream/15sec/ElephantsDream_15s_onDemand_2014_05_09.mpd"
+    },
+    "OfForestAndMen_1s_simple": {
+      "FJTitle": "Of Forest And Men",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/OfForestAndMen/1sec/OfForestAndMen_1s_simple_2014_05_09.mpd"
+    },
+    "OfForestAndMen_1s_onDemand": {
+      "FJTitle": "Of Forest And Men",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/OfForestAndMen/1sec/OfForestAndMen_1s_onDemand_2014_05_09.mpd"
+    },
+    "OfForestAndMen_2s_simple": {
+      "FJTitle": "Of Forest And Men",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/OfForestAndMen/2sec/OfForestAndMen_2s_simple_2014_05_09.mpd"
+    },
+    "OfForestAndMen_2s_onDemand": {
+      "FJTitle": "Of Forest And Men",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/OfForestAndMen/2sec/OfForestAndMen_2s_onDemand_2014_05_09.mpd"
+    },
+    "OfForestAndMen_4s_simple": {
+      "FJTitle": "Of Forest And Men",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/OfForestAndMen/4sec/OfForestAndMen_4s_simple_2014_05_09.mpd"
+    },
+    "OfForestAndMen_4s_onDemand": {
+      "FJTitle": "Of Forest And Men",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/OfForestAndMen/4sec/OfForestAndMen_4s_onDemand_2014_05_09.mpd"
+    },
+    "OfForestAndMen_6s_simple": {
+      "FJTitle": "Of Forest And Men",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/OfForestAndMen/6sec/OfForestAndMen_6s_simple_2014_05_09.mpd"
+    },
+    "OfForestAndMen_6s_onDemand": {
+      "FJTitle": "Of Forest And Men",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/OfForestAndMen/6sec/OfForestAndMen_6s_onDemand_2014_05_09.mpd"
+    },
+    "OfForestAndMen_10s_simple": {
+      "FJTitle": "Of Forest And Men",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/OfForestAndMen/10sec/OfForestAndMen_10s_simple_2014_05_09.mpd"
+    },
+    "OfForestAndMen_10s_onDemand": {
+      "FJTitle": "Of Forest And Men",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/OfForestAndMen/10sec/OfForestAndMen_10s_onDemand_2014_05_09.mpd"
+    },
+    "OfForestAndMen_15s_simple": {
+      "FJTitle": "Of Forest And Men",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/OfForestAndMen/15sec/OfForestAndMen_15s_simple_2014_05_09.mpd"
+    },
+    "OfForestAndMen_15s_onDemand": {
+      "FJTitle": "Of Forest And Men",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/OfForestAndMen/15sec/OfForestAndMen_15s_onDemand_2014_05_09.mpd"
+    },
+    "RedBullPlayStreets_1s_simple": {
+      "FJTitle": "Red Bull Play Streets 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/RedBullPlayStreets/1sec/RedBullPlayStreets_1s_simple_2014_05_09.mpd"
+    },
+    "RedBullPlayStreets_1s_onDemand": {
+      "FJTitle": "Red Bull Play Streets 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/RedBullPlayStreets/1sec/RedBullPlayStreets_1s_onDemand_2014_05_09.mpd"
+    },
+    "RedBullPlayStreets_2s_simple": {
+      "FJTitle": "Red Bull Play Streets 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/RedBullPlayStreets/2sec/RedBullPlayStreets_2s_simple_2014_05_09.mpd"
+    },
+    "RedBullPlayStreets_2s_onDemand": {
+      "FJTitle": "Red Bull Play Streets 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/RedBullPlayStreets/2sec/RedBullPlayStreets_2s_onDemand_2014_05_09.mpd"
+    },
+    "RedBullPlayStreets_4s_simple": {
+      "FJTitle": "Red Bull Play Streets 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/RedBullPlayStreets/4sec/RedBullPlayStreets_4s_simple_2014_05_09.mpd"
+    },
+    "RedBullPlayStreets_4s_onDemand": {
+      "FJTitle": "Red Bull Play Streets 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/RedBullPlayStreets/4sec/RedBullPlayStreets_4s_onDemand_2014_05_09.mpd"
+    },
+    "RedBullPlayStreets_6s_simple": {
+      "FJTitle": "Red Bull Play Streets 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/RedBullPlayStreets/6sec/RedBullPlayStreets_6s_simple_2014_05_09.mpd"
+    },
+    "RedBullPlayStreets_6s_onDemand": {
+      "FJTitle": "Red Bull Play Streets 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/RedBullPlayStreets/6sec/RedBullPlayStreets_6s_onDemand_2014_05_09.mpd"
+    },
+    "RedBullPlayStreets_10s_simple": {
+      "FJTitle": "Red Bull Play Streets 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/RedBullPlayStreets/10sec/RedBullPlayStreets_10s_simple_2014_05_09.mpd"
+    },
+    "RedBullPlayStreets_10s_onDemand": {
+      "FJTitle": "Red Bull Play Streets 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/RedBullPlayStreets/10sec/RedBullPlayStreets_10s_onDemand_2014_05_09.mpd"
+    },
+    "RedBullPlayStreets_15s_simple": {
+      "FJTitle": "Red Bull Play Streets 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/RedBullPlayStreets/15sec/RedBullPlayStreets_15s_simple_2014_05_09.mpd"
+    },
+    "RedBullPlayStreets_15s_onDemand": {
+      "FJTitle": "Red Bull Play Streets 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/RedBullPlayStreets/15sec/RedBullPlayStreets_15s_onDemand_2014_05_09.mpd"
+    },
+    "TheSwissAccount_1s_simple": {
+      "FJTitle": "The Swiss Account 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TheSwissAccount/1sec/TheSwissAccount_1s_simple_2014_05_09.mpd"
+    },
+    "TheSwissAccount_1s_onDemand": {
+      "FJTitle": "The Swiss Account 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TheSwissAccount/1sec/TheSwissAccount_1s_onDemand_2014_05_09.mpd"
+    },
+    "TheSwissAccount_2s_simple": {
+      "FJTitle": "The Swiss Account 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TheSwissAccount/2sec/TheSwissAccount_2s_simple_2014_05_09.mpd"
+    },
+    "TheSwissAccount_2s_onDemand": {
+      "FJTitle": "The Swiss Account 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TheSwissAccount/2sec/TheSwissAccount_2s_onDemand_2014_05_09.mpd"
+    },
+    "TheSwissAccount_4s_simple": {
+      "FJTitle": "The Swiss Account 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TheSwissAccount/4sec/TheSwissAccount_4s_simple_2014_05_09.mpd"
+    },
+    "TheSwissAccount_4s_onDemand": {
+      "FJTitle": "The Swiss Account 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TheSwissAccount/4sec/TheSwissAccount_4s_onDemand_2014_05_09.mpd"
+    },
+    "TheSwissAccount_6s_simple": {
+      "FJTitle": "The Swiss Account 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TheSwissAccount/6sec/TheSwissAccount_6s_simple_2014_05_09.mpd"
+    },
+    "TheSwissAccount_6s_onDemand": {
+      "FJTitle": "The Swiss Account 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TheSwissAccount/6sec/TheSwissAccount_6s_onDemand_2014_05_09.mpd"
+    },
+    "TheSwissAccount_10s_simple": {
+      "FJTitle": "The Swiss Account 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TheSwissAccount/10sec/TheSwissAccount_10s_simple_2014_05_09.mpd"
+    },
+    "TheSwissAccount_10s_onDemand": {
+      "FJTitle": "The Swiss Account 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TheSwissAccount/10sec/TheSwissAccount_10s_onDemand_2014_05_09.mpd"
+    },
+    "TheSwissAccount_15s_simple": {
+      "FJTitle": "The Swiss Account 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TheSwissAccount/15sec/TheSwissAccount_15s_simple_2014_05_09.mpd"
+    },
+    "TheSwissAccount_15s_onDemand": {
+      "FJTitle": "The Swiss Account 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TheSwissAccount/15sec/TheSwissAccount_15s_onDemand_2014_05_09.mpd"
+    },
+    "Valkaama_1s_simple": {
+      "FJTitle": "Valkaama 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/Valkaama/1sec/Valkaama_1s_simple_2014_05_09.mpd"
+    },
+    "Valkaama_1s_onDemand": {
+      "FJTitle": "Valkaama 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/Valkaama/1sec/Valkaama_1s_onDemand_2014_05_09.mpd"
+    },
+    "Valkaama_2s_simple": {
+      "FJTitle": "Valkaama 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/Valkaama/2sec/Valkaama_2s_simple_2014_05_09.mpd"
+    },
+    "Valkaama_2s_onDemand": {
+      "FJTitle": "Valkaama 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/Valkaama/2sec/Valkaama_2s_onDemand_2014_05_09.mpd"
+    },
+    "Valkaama_4s_simple": {
+      "FJTitle": "Valkaama 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/Valkaama/4sec/Valkaama_4s_simple_2014_05_09.mpd"
+    },
+    "Valkaama_4s_onDemand": {
+      "FJTitle": "Valkaama 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/Valkaama/4sec/Valkaama_4s_onDemand_2014_05_09.mpd"
+    },
+    "Valkaama_6s_simple": {
+      "FJTitle": "Valkaama 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/Valkaama/6sec/Valkaama_6s_simple_2014_05_09.mpd"
+    },
+    "Valkaama_6s_onDemand": {
+      "FJTitle": "Valkaama 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/Valkaama/6sec/Valkaama_6s_onDemand_2014_05_09.mpd"
+    },
+    "Valkaama_10s_simple": {
+      "FJTitle": "Valkaama 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/Valkaama/10sec/Valkaama_10s_simple_2014_05_09.mpd"
+    },
+    "Valkaama_10s_onDemand": {
+      "FJTitle": "Valkaama 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/Valkaama/10sec/Valkaama_10s_onDemand_2014_05_09.mpd"
+    },
+    "Valkaama_15s_simple": {
+      "FJTitle": "Valkaama 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/Valkaama/15sec/Valkaama_15s_simple_2014_05_09.mpd"
+    },
+    "Valkaama_15s_onDemand": {
+      "FJTitle": "Valkaama 1080p, 6 Mbit H.264",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/Valkaama/15sec/Valkaama_15s_onDemand_2014_05_09.mpd"
+    },
+    "TearsOfSteel_1s_simple": {
+      "FJTitle": "Tears Of Steel 720p",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TearsOfSteel/1sec/TearsOfSteel_1s_simple_2014_05_09.mpd"
+    },
+    "TearsOfSteel_1s_onDemand": {
+      "FJTitle": "Tears Of Steel 720p",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TearsOfSteel/1sec/TearsOfSteel_1s_onDemand_2014_05_09.mpd"
+    },
+    "TearsOfSteel_2s_simple": {
+      "FJTitle": "Tears Of Steel 720p",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TearsOfSteel/2sec/TearsOfSteel_2s_simple_2014_05_09.mpd"
+    },
+    "TearsOfSteel_2s_onDemand": {
+      "FJTitle": "Tears Of Steel 720p",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TearsOfSteel/2sec/TearsOfSteel_2s_onDemand_2014_05_09.mpd"
+    },
+    "TearsOfSteel_4s_simple": {
+      "FJTitle": "Tears Of Steel 720p",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TearsOfSteel/4sec/TearsOfSteel_4s_simple_2014_05_09.mpd"
+    },
+    "TearsOfSteel_4s_onDemand": {
+      "FJTitle": "Tears Of Steel 720p",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TearsOfSteel/4sec/TearsOfSteel_4s_onDemand_2014_05_09.mpd"
+    },
+    "TearsOfSteel_6s_simple": {
+      "FJTitle": "Tears Of Steel 720p",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TearsOfSteel/6sec/TearsOfSteel_6s_simple_2014_05_09.mpd"
+    },
+    "TearsOfSteel_6s_onDemand": {
+      "FJTitle": "Tears Of Steel 720p",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TearsOfSteel/6sec/TearsOfSteel_6s_onDemand_2014_05_09.mpd"
+    },
+    "TearsOfSteel_10s_simple": {
+      "FJTitle": "Tears Of Steel 720p",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TearsOfSteel/10sec/TearsOfSteel_10s_simple_2014_05_09.mpd"
+    },
+    "TearsOfSteel_10s_onDemand": {
+      "FJTitle": "Tears Of Steel 720p",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TearsOfSteel/10sec/TearsOfSteel_10s_onDemand_2014_05_09.mpd"
+    },
+    "TearsOfSteel_15s_simple": {
+      "FJTitle": "Tears Of Steel 720p",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TearsOfSteel/15sec/TearsOfSteel_15s_simple_2014_05_09.mpd"
+    },
+    "TearsOfSteel_15s_onDemand": {
+      "FJTitle": "Tears Of Steel 720p",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://ftp.itec.aau.at/datasets/DASHDataset2014/TearsOfSteel/15sec/TearsOfSteel_15s_onDemand_2014_05_09.mpd"
+    }
+  }
+}

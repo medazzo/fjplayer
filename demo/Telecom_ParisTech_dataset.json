@@ -1,0 +1,203 @@
+{
+  "_comment": " from url http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhd/ ",
+  "data": {
+    "720p-30_Hz-8_bit_deps-2_Mbps": {
+      "FJTitle": "UHD HEVC Sequences",
+      "FJClass": "vod",
+      "FJType": "video/mp4",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhd/mux_sources/hevcds_720p30_2M.mp4"
+    },
+    "720p-30_Hz-8_bit_deps-3_Mbps": {
+      "FJTitle": "UHD HEVC Sequences",
+      "FJClass": "vod",
+      "FJType": "video/mp4",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhd/mux_sources/hevcds_720p30_3M.mp4"
+    },
+    "720p-60_Hz-8_bit_deps-3_Mbps": {
+      "FJTitle": "UHD HEVC Sequences",
+      "FJClass": "vod",
+      "FJType": "video/mp4",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhd/mux_sources/hevcds_720p60_3M.mp4"
+    },
+    "720p-60_Hz-8_bit_deps-4_Mbps": {
+      "FJTitle": "UHD HEVC Sequences",
+      "FJClass": "vod",
+      "FJType": "video/mp4",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhd/mux_sources/hevcds_720p60_4M.mp4"
+    },
+    "1080p-30_Hz-8_bit_deps-4_Mbps": {
+      "FJTitle": "UHD HEVC Sequences",
+      "FJClass": "vod",
+      "FJType": "video/mp4",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhd/mux_sources/hevcds_1080p30_4M.mp4"
+    },
+    "1080p-30_Hz-8_bit_deps-6_Mbps": {
+      "FJTitle": "UHD HEVC Sequences",
+      "FJClass": "vod",
+      "FJType": "video/mp4",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhd/mux_sources/hevcds_1080p30_6M.mp4"
+    },
+    "1080p-60_Hz-8_bit_deps-6_Mbps": {
+      "FJTitle": "UHD HEVC Sequences",
+      "FJClass": "vod",
+      "FJType": "video/mp4",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhd/mux_sources/hevcds_1080p60_6M.mp4"
+    },
+    "1080p-60_Hz-8_bit_deps-8_Mbps": {
+      "FJTitle": "UHD HEVC Sequences",
+      "FJClass": "vod",
+      "FJType": "video/mp4",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhd/mux_sources/hevcds_1080p60_8M.mp4"
+    },
+    "1080p-60_Hz-10_bit_deps-8_Mbps": {
+      "FJTitle": "UHD HEVC Sequences",
+      "FJClass": "vod",
+      "FJType": "video/mp4",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhd/mux_sources/hevcds_1080p60_Main10_8M.mp4"
+    },
+    "2160p-60_Hz-8_bit_deps-12_Mbps": {
+      "FJTitle": "UHD HEVC Sequences",
+      "FJClass": "vod",
+      "FJType": "video/mp4",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhd/mux_sources/hevcds_2160p60_12M.mp4"
+    },
+    "2160p-60_Hz-8_bit_deps-15_Mbps": {
+      "FJTitle": "UHD HEVC Sequences",
+      "FJClass": "vod",
+      "FJType": "video/mp4",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhd/mux_sources/hevcds_2160p60_15M.mp4"
+    },
+    "2160p-60_Hz-8_bit_deps-20_Mbps": {
+      "FJTitle": "UHD HEVC Sequences",
+      "FJClass": "vod",
+      "FJType": "video/mp4",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhd/mux_sources/hevcds_2160p60_20M.mp4"
+    },
+    "2160p-60_Hz-10_bit_deps-20_Mbps": {
+      "FJTitle": "UHD HEVC Sequences",
+      "FJClass": "vod",
+      "FJType": "video/mp4",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhd/mux_sources/hevcds_2160p60_Main10_20M.mp4"
+    },
+    "Live without bitstream switching 2s": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-live-2s/dashevc-live-2s.mpd"
+    },
+    "Live with bitstream switching 2s ": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-live-bs-2s/dashevc-live-bs-2s.mpd"
+    },
+    "onDemand 2s": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-ondemand-2s/dashevc-ondemand-2s.mpd"
+    },
+    "Main 2s": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-main-2s/dashevc-main-2s.mpd"
+    },
+    "Live without bitstream switching 4s ": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-live-4s/dashevc-live-4s.mpd"
+    },
+    "Live with bitstream switching 4s ": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-live-bs-4s/dashevc-live-bs-4s.mpd"
+    },
+    "onDemand 4s ": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-ondemand-4s/dashevc-ondemand-4s.mpd"
+    },
+    "Main 4s": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-main-4s/dashevc-main-4s.mpd"
+    },
+    "Live without bitstream switching 6s ": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-live-6s/dashevc-live-6s.mpd"
+    },
+    "Live with bitstream switching 6s ": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-live-bs-6s/dashevc-live-bs-6s.mpd"
+    },
+    "onDemand 6s": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-ondemand-6s/dashevc-ondemand-6s.mpd"
+    },
+    "Main 6s ": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-main-6s/dashevc-main-6s.mpd"
+    },
+    "Live without bitstream switching 10s": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-live-10s/dashevc-live-10s.mpd"
+    },
+    "Live with bitstream switching 10s": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-live-bs-10s/dashevc-live-bs-10s.mpd"
+    },
+    "onDemand 10s": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-ondemand-10s/dashevc-ondemand-10s.mpd"
+    },
+    "Main 10s": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-main-10s/dashevc-main-10s.mpd"
+    },
+    "Live without bitstream switching 20s": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-live-20s/dashevc-live-20s.mpd"
+    },
+    "Live with bitstream switching 20s": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-live-bs-20s/dashevc-live-bs-20s.mpd"
+    },
+    "onDemand 20s": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-ondemand-20s/dashevc-ondemand-20s.mpd"
+    },
+    "Main 20s": {
+      "FJTitle": "UHD DASH Sequences",
+      "FJType": "dash",
+      "FJClass": "vod",
+      "FJSrc": "http://download.tsi.telecom-paristech.fr/gpac/dataset/dash/uhddashevc-main-20s/dashevc-main-20s.mpd"
+    }
+  }
+}
