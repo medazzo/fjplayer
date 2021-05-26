@@ -43,8 +43,10 @@ export const FJCONFIG_TYPES = [FJCONFIG_TYPE_MP4, FJCONFIG_TYPE_DASH];
 export const FJCONFIG_ADS_CLASS_PRE_ROLL = 'pre-roll';
 export const FJCONFIG_ADS_CLASS_MID_ROLL = 'mid-roll';
 export const FJCONFIG_ADS_CLASS_POST_ROLL = 'post-roll';
-export const FJCONFIG_ADS_CLASSES = [FJCONFIG_ADS_CLASS_PRE_ROLL,
-    FJCONFIG_ADS_CLASS_MID_ROLL, FJCONFIG_ADS_CLASS_POST_ROLL
+export const FJCONFIG_ADS_CLASSES = [
+    FJCONFIG_ADS_CLASS_PRE_ROLL,
+    FJCONFIG_ADS_CLASS_MID_ROLL,
+    FJCONFIG_ADS_CLASS_POST_ROLL
 ];
 
 export const AdsEnum = {
@@ -52,7 +54,6 @@ export const AdsEnum = {
     ADS_MID_ROLL: 'ADS_MID_ROLL',
     ADS_POST_ROLL: 'ADS_POST_ROLL'
 };
-
 
 const PlayerEvents = {
     STREAM_LOADED: 'STREAM_LOADED',
@@ -81,5 +82,4 @@ const OverlayEvents = {
     OVERLAY_SKIPPED: 'OVERLAY_SKIPPED'
 };
 
-
-export { PlayerEvents, AdsEvents, OverlayEvents }
+export { PlayerEvents, AdsEvents, OverlayEvents };

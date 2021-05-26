@@ -32,12 +32,10 @@ function Thumbs(thtimer, thumbImgElement, thumbDivElement, progressBarElement) {
     };
 
     function renderThumbs(event) {
-        logger.warn('eventing Thumbs is', event);
-        // first we convert from mouse to time position ..
-        var c, i, url, xywh, left;
-        var rect = progressBar.getBoundingClientRect();
-        var p = (event.pageX - rect.left) * (vidDuration / (rect.right - rect.left));
-        var dur = Utils.duration(parseFloat(p));
+        var c, i, url, xywh, left, rect, p, dur;
+        rect = progressBar.getBoundingClientRect();
+        p = (event.pageX - rect.left) * (vidDuration / (rect.right - rect.left));
+        dur = Utils.duration(parseFloat(p));
         if ((p > (vidDuration + 2)) || (p < 0)) {
             // some error ?
             logger.warn(' Position is bigger than duration >>', p, vidDuration);

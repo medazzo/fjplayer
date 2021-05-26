@@ -1,6 +1,6 @@
 import Logger from '../utils/Logger';
 require('../../css/player.less');
-import * as Const from '../defs/constants';
+
 /**
  * @module Overlay
  * @description The Overlays is that manage overlays of a video :
@@ -14,8 +14,6 @@ function FjError(code, type, message, overlaysDiv) {
         OverlayDiv = overlaysDiv,
         OverlayClosingDiv = null,
         OverlayInnerDiv = null;
-
-    StartOverlay();
 
     function StopOverlay(index) {
         var el = OverlayDiv;
@@ -65,6 +63,7 @@ function FjError(code, type, message, overlaysDiv) {
         OverlayDiv.classList.add('over-HL');
     };
 
+    StartOverlay();
     // ************************************************************************************
     // PUBLIC API
     // ************************************************************************************

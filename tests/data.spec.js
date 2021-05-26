@@ -39,7 +39,7 @@ function DataPlaylist() {
         'FJSrc': ''
     }, {
         'FJLabel': 'English',
-        'FJLang': 'fr',
+        'FJLang': 'fr'
     }];
 
     var overs = [{
@@ -120,97 +120,97 @@ function DataPlaylist() {
         'FJLicenceServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
-            'header2': 'value2',
+            'header2': 'value2'
         },
         'FJHeadersOnSegmentsRequest': {
             'header-1': 'value-1',
-            'header-2': 'value-2',
+            'header-2': 'value-2'
         }
     }, {
         'FJDrmSchem': 'forja',
         'FJLicenceServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
-            'header2': 'value2',
+            'header2': 'value2'
         },
         'FJHeadersOnSegmentsRequest': {
             'header-1': 'value-1',
-            'header-2': 'value-2',
+            'header-2': 'value-2'
         }
     }, {
         'FJDrmScheme': '',
         'FJLicenceServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
-            'header2': 'value2',
+            'header2': 'value2'
         },
         'FJHeadersOnSegmentsRequest': {
             'header-1': 'value-1',
-            'header-2': 'value-2',
+            'header-2': 'value-2'
         }
     }, {
         'FJLicenceServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
-            'header2': 'value2',
+            'header2': 'value2'
         },
         'FJHeadersOnSegmentsRequest': {
             'header-1': 'value-1',
-            'header-2': 'value-2',
+            'header-2': 'value-2'
         }
     }, {
         'FJDrmScheme': 'dvdvv',
         'FJLicenceServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
-            'header2': 'value2',
+            'header2': 'value2'
         },
         'FJHeadersOnSegmentsRequest': {
             'header-1': 'value-1',
-            'header-2': 'value-2',
+            'header-2': 'value-2'
         }
     }, {
         'FJDrmScheme': 'forja',
         'FJLicenceServe': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
-            'header2': 'value2',
+            'header2': 'value2'
         },
         'FJHeadersOnSegmentsRequest': {
             'header-1': 'value-1',
-            'header-2': 'value-2',
+            'header-2': 'value-2'
         }
     }, {
         'FJDrmScheme': 'forja',
         'FJLicenceServer': '',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
-            'header2': 'value2',
+            'header2': 'value2'
         },
         'FJHeadersOnSegmentsRequest': {
             'header-1': 'value-1',
-            'header-2': 'value-2',
+            'header-2': 'value-2'
         }
     }, {
         'FJDrmScheme': 'forja',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
-            'header2': 'value2',
+            'header2': 'value2'
         },
         'FJHeadersOnSegmentsRequest': {
             'header-1': 'value-1',
-            'header-2': 'value-2',
+            'header-2': 'value-2'
         }
     }, {
         'FJDrmScheme': 'forja',
         'FJLicenceServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequestd': {
             'header1': 'value1',
-            'header2': 'value2',
+            'header2': 'value2'
         },
         'FJHeadersOnSegmentsRequest': {
             'header-1': 'value-1',
-            'header-2': 'value-2',
+            'header-2': 'value-2'
         }
     }, {
         'FJDrmScheme': 'forja',
@@ -218,32 +218,32 @@ function DataPlaylist() {
         'FJHeadersOnLicenseRequest': {},
         'FJHeadersOnSegmentsRequest': {
             'header-1': 'value-1',
-            'header-2': 'value-2',
+            'header-2': 'value-2'
         }
     }, {
         'FJDrmScheme': 'forja',
         'FJLicenceServer': 'http://www.facebook.com',
         'FJHeadersOnSegmentsRequest': {
             'header-1': 'value-1',
-            'header-2': 'value-2',
+            'header-2': 'value-2'
         }
     }, {
         'FJDrmScheme': 'forja',
         'FJLicenceServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
-            'header2': 'value2',
+            'header2': 'value2'
         },
         'FJHeadersOnSegmentsRequestd': {
             'header-1': 'value-1',
-            'header-2': 'value-2',
+            'header-2': 'value-2'
         }
     }, {
         'FJDrmScheme': 'forja',
         'FJLicenceServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
-            'header2': 'value2',
+            'header2': 'value2'
         },
         'FJHeadersOnSegmentsRequest': {}
     }, {
@@ -251,289 +251,289 @@ function DataPlaylist() {
         'FJLicenceServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
-            'header2': 'value2',
+            'header2': 'value2'
         }
     }];
 
     var ads = [{
-            'FJSrc': 'demo/videos/ikea-twins.mp4',
-            'FJType': 'video/mp4',
-            'FJClass': 'post-roll',
-            'FJUrl': 'http://www.google.com',
-            'FJCanEscape': true
-        },
+        'FJSrc': 'demo/videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    },
 
-        {
-            'FJSr': 'demo/videos/ikea-twins.mp4',
-            'FJType': 'video/mp4',
-            'FJClass': 'post-roll',
-            'FJUrl': 'http://www.google.com',
-            'FJCanEscape': true
-        }, {
-            'FJSrc': '',
-            'FJType': 'video/mp4',
-            'FJClass': 'post-roll',
-            'FJUrl': 'http://www.google.com',
-            'FJCanEscape': true
-        }, {
-            'FJType': 'video/mp4',
-            'FJClass': 'post-roll',
-            'FJUrl': 'http://www.google.com',
-            'FJCanEscape': true
-        },
+    {
+        'FJSr': 'demo/videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    }, {
+        'FJSrc': '',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    }, {
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    },
 
-        {
-            'FJSrc': 'demo/videos/ikea-twins.mp4',
-            'FJTyp': 'video/mp4',
-            'FJClass': 'post-roll',
-            'FJUrl': 'http://www.google.com',
-            'FJCanEscape': true
-        }, {
-            'FJSrc': 'demo/videos/ikea-twins.mp4',
-            'FJType': 'videomp',
-            'FJClass': 'post-roll',
-            'FJUrl': 'http://www.google.com',
-            'FJCanEscape': true
-        }, {
-            'FJSrc': 'demo/videos/ikea-twins.mp4',
-            'FJType': '',
-            'FJClass': 'post-roll',
-            'FJUrl': 'http://www.google.com',
-            'FJCanEscape': true
-        }, {
-            'FJSrc': 'demo/videos/ikea-twins.mp4',
-            'FJClass': 'post-roll',
-            'FJUrl': 'http://www.google.com',
-            'FJCanEscape': true
-        },
+    {
+        'FJSrc': 'demo/videos/ikea-twins.mp4',
+        'FJTyp': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    }, {
+        'FJSrc': 'demo/videos/ikea-twins.mp4',
+        'FJType': 'videomp',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    }, {
+        'FJSrc': 'demo/videos/ikea-twins.mp4',
+        'FJType': '',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    }, {
+        'FJSrc': 'demo/videos/ikea-twins.mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    },
 
-        {
-            'FJSrc': 'demo/videos/ikea-twins.mp4',
-            'FJType': 'video/mp4',
-            'FJClas': 'post-roll',
-            'FJUrl': 'http://www.google.com',
-            'FJCanEscape': true
-        }, {
-            'FJSrc': 'demo/videos/ikea-twins.mp4',
-            'FJType': 'video/mp4',
-            'FJClass': 'posoll',
-            'FJUrl': 'http://www.google.com',
-            'FJCanEscape': true
-        }, {
-            'FJSrc': 'demo/videos/ikea-twins.mp4',
-            'FJType': 'video/mp4',
-            'FJClass': '',
-            'FJUrl': 'http://www.google.com',
-            'FJCanEscape': true
-        }, {
-            'FJSrc': 'demo/videos/ikea-twins.mp4',
-            'FJType': 'video/mp4',
-            'FJUrl': 'http://www.google.com',
-            'FJCanEscape': true
-        },
+    {
+        'FJSrc': 'demo/videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClas': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    }, {
+        'FJSrc': 'demo/videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'posoll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    }, {
+        'FJSrc': 'demo/videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': '',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    }, {
+        'FJSrc': 'demo/videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': true
+    },
 
-        {
-            'FJSrc': 'demo/videos/ikea-twins.mp4',
-            'FJType': 'video/mp4',
-            'FJClass': 'post-roll',
-            'FJUr': 'http://www.google.com',
-            'FJCanEscape': true
-        }, {
-            'FJSrc': 'demo/videos/ikea-twins.mp4',
-            'FJType': 'video/mp4',
-            'FJClass': 'post-roll',
-            'FJUrl': '',
-            'FJCanEscape': true
-        }, {
-            'FJSrc': 'demo/videos/ikea-twins.mp4',
-            'FJType': 'video/mp4',
-            'FJClass': 'post-roll',
-            'FJCanEscape': true
-        },
+    {
+        'FJSrc': 'demo/videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUr': 'http://www.google.com',
+        'FJCanEscape': true
+    }, {
+        'FJSrc': 'demo/videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': '',
+        'FJCanEscape': true
+    }, {
+        'FJSrc': 'demo/videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJCanEscape': true
+    },
 
-        {
-            'FJSrc': 'demo/videos/ikea-twins.mp4',
-            'FJType': 'video/mp4',
-            'FJClass': 'post-roll',
-            'FJUrl': 'http://www.google.com',
-            'FJCanEscap': true
-        },
-        {
-            'FJSrc': 'demo/videos/ikea-twins.mp4',
-            'FJType': 'video/mp4',
-            'FJClass': 'post-roll',
-            'FJUrl': 'http://www.google.com',
-            'FJCanEscape': 'trdue'
-        },
-        {
-            'FJSrc': 'demo/videos/ikea-twins.mp4',
-            'FJType': 'video/mp4',
-            'FJClass': 'post-roll',
-            'FJUrl': 'http://www.google.com',
-            'FJCanEscape': ''
-        },
-        {
-            'FJSrc': 'demo/videos/ikea-twins.mp4',
-            'FJType': 'video/mp4',
-            'FJClass': 'post-roll',
-            'FJUrl': 'http://www.google.com'
-        }
+    {
+        'FJSrc': 'demo/videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscap': true
+    },
+    {
+        'FJSrc': 'demo/videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': 'trdue'
+    },
+    {
+        'FJSrc': 'demo/videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com',
+        'FJCanEscape': ''
+    },
+    {
+        'FJSrc': 'demo/videos/ikea-twins.mp4',
+        'FJType': 'video/mp4',
+        'FJClass': 'post-roll',
+        'FJUrl': 'http://www.google.com'
+    }
     ];
 
     var items = [{
-            'FJType': 'dash',
-            'FJPoster': 'demo/img/sintel.jpg',
-            'FJTitle': ' title of movie itemDash 2',
-            'FJClass': 'vod',
-            'FJThumbs': 'demo/vtt/thumbs.vtt',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        },
+        'FJType': 'dash',
+        'FJPoster': 'demo/img/sintel.jpg',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJClass': 'vod',
+        'FJThumbs': 'demo/vtt/thumbs.vtt',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    },
 
-        {
-            'FJTyp': 'dash',
-            'FJPoster': 'demo/img/sintel.jpg',
-            'FJTitle': ' title of movie itemDash 2',
-            'FJClass': 'vod',
-            'FJThumbs': 'demo/vtt/thumbs.vtt',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        }, {
-            'FJType': 'dashoood',
-            'FJPoster': 'demo/img/sintel.jpg',
-            'FJTitle': ' title of movie itemDash 2',
-            'FJClass': 'vod',
-            'FJThumbs': 'demo/vtt/thumbs.vtt',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        }, {
-            'FJType': '',
-            'FJPoster': 'demo/img/sintel.jpg',
-            'FJTitle': ' title of movie itemDash 2',
-            'FJClass': 'vod',
-            'FJThumbs': 'demo/vtt/thumbs.vtt',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        }, {
-            'FJPoster': 'demo/img/sintel.jpg',
-            'FJTitle': ' title of movie itemDash 2',
-            'FJClass': 'vod',
-            'FJThumbs': 'demo/vtt/thumbs.vtt',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        },
+    {
+        'FJTyp': 'dash',
+        'FJPoster': 'demo/img/sintel.jpg',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJClass': 'vod',
+        'FJThumbs': 'demo/vtt/thumbs.vtt',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    }, {
+        'FJType': 'dashoood',
+        'FJPoster': 'demo/img/sintel.jpg',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJClass': 'vod',
+        'FJThumbs': 'demo/vtt/thumbs.vtt',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    }, {
+        'FJType': '',
+        'FJPoster': 'demo/img/sintel.jpg',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJClass': 'vod',
+        'FJThumbs': 'demo/vtt/thumbs.vtt',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    }, {
+        'FJPoster': 'demo/img/sintel.jpg',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJClass': 'vod',
+        'FJThumbs': 'demo/vtt/thumbs.vtt',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    },
 
-        {
-            'FJType': 'dash',
-            'FJPoste': 'demo/img/sintel.jpg',
-            'FJTitle': ' title of movie itemDash 2',
-            'FJClass': 'vod',
-            'FJThumbs': 'demo/vtt/thumbs.vtt',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        }, {
-            'FJType': 'dash',
-            'FJPoster': '',
-            'FJTitle': ' title of movie itemDash 2',
-            'FJClass': 'vod',
-            'FJThumbs': 'demo/vtt/thumbs.vtt',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        }, {
-            'FJType': 'dash',
-            'FJTitle': ' title of movie itemDash 2',
-            'FJClass': 'vod',
-            'FJThumbs': 'demo/vtt/thumbs.vtt',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        },
+    {
+        'FJType': 'dash',
+        'FJPoste': 'demo/img/sintel.jpg',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJClass': 'vod',
+        'FJThumbs': 'demo/vtt/thumbs.vtt',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    }, {
+        'FJType': 'dash',
+        'FJPoster': '',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJClass': 'vod',
+        'FJThumbs': 'demo/vtt/thumbs.vtt',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    }, {
+        'FJType': 'dash',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJClass': 'vod',
+        'FJThumbs': 'demo/vtt/thumbs.vtt',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    },
 
-        {
-            'FJType': 'dash',
-            'FJPoster': 'demo/img/sintel.jpg',
-            'FJTitleddd': ' title of movie itemDash 2',
-            'FJClass': 'vod',
-            'FJThumbs': 'demo/vtt/thumbs.vtt',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        }, {
-            'FJType': 'dash',
-            'FJPoster': 'demo/img/sintel.jpg',
-            'FJTitle': '',
-            'FJClass': 'vod',
-            'FJThumbs': 'demo/vtt/thumbs.vtt',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        }, {
-            'FJType': 'dash',
-            'FJPoster': 'demo/img/sintel.jpg',
-            'FJClass': 'vod',
-            'FJThumbs': 'demo/vtt/thumbs.vtt',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        },
+    {
+        'FJType': 'dash',
+        'FJPoster': 'demo/img/sintel.jpg',
+        'FJTitleddd': ' title of movie itemDash 2',
+        'FJClass': 'vod',
+        'FJThumbs': 'demo/vtt/thumbs.vtt',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    }, {
+        'FJType': 'dash',
+        'FJPoster': 'demo/img/sintel.jpg',
+        'FJTitle': '',
+        'FJClass': 'vod',
+        'FJThumbs': 'demo/vtt/thumbs.vtt',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    }, {
+        'FJType': 'dash',
+        'FJPoster': 'demo/img/sintel.jpg',
+        'FJClass': 'vod',
+        'FJThumbs': 'demo/vtt/thumbs.vtt',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    },
 
-        {
-            'FJType': 'dash',
-            'FJPoster': 'demo/img/sintel.jpg',
-            'FJTitle': ' title of movie itemDash 2',
-            'FJCla': 'vod',
-            'FJThumbs': 'demo/vtt/thumbs.vtt',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        }, {
-            'FJType': 'dash',
-            'FJPoster': 'demo/img/sintel.jpg',
-            'FJTitle': ' title of movie itemDash 2',
-            'FJClass': 'voddf',
-            'FJThumbs': 'demo/vtt/thumbs.vtt',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        }, {
-            'FJType': 'dash',
-            'FJPoster': 'demo/img/sintel.jpg',
-            'FJTitle': ' title of movie itemDash 2',
-            'FJClass': '',
-            'FJThumbs': 'demo/vtt/thumbs.vtt',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        }, {
-            'FJType': 'dash',
-            'FJPoster': 'demo/img/sintel.jpg',
-            'FJTitle': ' title of movie itemDash 2',
-            'FJThumbs': 'demo/vtt/thumbs.vtt',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        },
+    {
+        'FJType': 'dash',
+        'FJPoster': 'demo/img/sintel.jpg',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJCla': 'vod',
+        'FJThumbs': 'demo/vtt/thumbs.vtt',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    }, {
+        'FJType': 'dash',
+        'FJPoster': 'demo/img/sintel.jpg',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJClass': 'voddf',
+        'FJThumbs': 'demo/vtt/thumbs.vtt',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    }, {
+        'FJType': 'dash',
+        'FJPoster': 'demo/img/sintel.jpg',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJClass': '',
+        'FJThumbs': 'demo/vtt/thumbs.vtt',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    }, {
+        'FJType': 'dash',
+        'FJPoster': 'demo/img/sintel.jpg',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJThumbs': 'demo/vtt/thumbs.vtt',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    },
 
-        {
-            'FJType': 'dash',
-            'FJPoster': 'demo/img/sintel.jpg',
-            'FJTitle': ' title of movie itemDash 2',
-            'FJClass': 'vod',
-            'FJThum': 'demo/vtt/thumbs.vtt',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        }, {
-            'FJType': 'dash',
-            'FJPoster': 'demo/img/sintel.jpg',
-            'FJTitle': ' title of movie itemDash 2',
-            'FJClass': 'vod',
-            'FJThumbs': '',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        }, {
-            'FJType': 'dash',
-            'FJPoster': 'demo/img/sintel.jpg',
-            'FJTitle': ' title of movie itemDash 2',
-            'FJClass': 'vod',
-            'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        },
+    {
+        'FJType': 'dash',
+        'FJPoster': 'demo/img/sintel.jpg',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJClass': 'vod',
+        'FJThum': 'demo/vtt/thumbs.vtt',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    }, {
+        'FJType': 'dash',
+        'FJPoster': 'demo/img/sintel.jpg',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJClass': 'vod',
+        'FJThumbs': '',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    }, {
+        'FJType': 'dash',
+        'FJPoster': 'demo/img/sintel.jpg',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJClass': 'vod',
+        'FJSrc': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    },
 
-        {
-            'FJType': 'dash',
-            'FJPoster': 'demo/img/sintel.jpg',
-            'FJTitle': ' title of movie itemDash 2',
-            'FJClass': 'vod',
-            'FJThumbs': 'demo/vtt/thumbs.vtt',
-            'FJSrcXX': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        }, {
-            'FJType': 'dash',
-            'FJPoster': 'demo/img/sintel.jpg',
-            'FJTitle': ' title of movie itemDash 2',
-            'FJClass': 'vod',
-            'FJThumbs': 'demo/vtt/thumbs.vtt',
-            'FJSrc': ''
-        }, {
-            'FJType': 'dash',
-            'FJPoster': 'demo/img/sintel.jpg',
-            'FJTitle': ' title of movie itemDash 2',
-            'FJClass': 'vod',
-            'FJThumbs': 'demo/vtt/thumbs.vtt'
-        }
+    {
+        'FJType': 'dash',
+        'FJPoster': 'demo/img/sintel.jpg',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJClass': 'vod',
+        'FJThumbs': 'demo/vtt/thumbs.vtt',
+        'FJSrcXX': 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    }, {
+        'FJType': 'dash',
+        'FJPoster': 'demo/img/sintel.jpg',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJClass': 'vod',
+        'FJThumbs': 'demo/vtt/thumbs.vtt',
+        'FJSrc': ''
+    }, {
+        'FJType': 'dash',
+        'FJPoster': 'demo/img/sintel.jpg',
+        'FJTitle': ' title of movie itemDash 2',
+        'FJClass': 'vod',
+        'FJThumbs': 'demo/vtt/thumbs.vtt'
+    }
     ];
 
     var itemDash = {
@@ -639,7 +639,8 @@ function DataPlaylist() {
             'FJDuration': 11,
             'FJShowAt': 33
         }, {
-            'FJData': '<div  style="cursor:pointer;"> <img src="img/2000px-Smiley.svg.png" alt="Smiley face" width="20" height="30"> Your ADS is Here; clikc to go to google !</div> ',
+            'FJData': '<div  style="cursor:pointer;"> <img src="img/2000px-Smiley.svg.png"' +
+            'alt="Smiley face" width="20" height="30"> Your ADS is Here; clikc to go to google !</div> ',
             'FJShowAt': 45,
             'FJDuration': 10,
             'FJUrl': 'http://www.google.com'

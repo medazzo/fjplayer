@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 import 'babel-polyfill';
-import Version from '../src/js/Version';
-import * as Utils from '../src/js/Utils';
+import Version from '../src/Version';
+import * as Utils from '../src/js/utils/Utils';
 import chai from 'chai';
 
 chai.expect();
@@ -20,7 +20,7 @@ describe('FjTestUtils', function() {
 
     // Version test
     describe('when I need the version', function() {
-        console.log(" Version is ", ver);
+        console.log(' Version is ', ver);
         it('should return the version', () => {
             expect(ver).to.be.equal('0.2.9');
         });
@@ -29,11 +29,10 @@ describe('FjTestUtils', function() {
     // Utils test
     describe('when I need the utils Duration', function() {
 
-        console.log(" Time is ", Utils.duration(time));
+        console.log(' Time is ', Utils.duration(time));
         it('should return transform duration', () => {
             expect(Utils.duration(time)).to.be.equal('05:05:05');
         });
     });
-
 
 });

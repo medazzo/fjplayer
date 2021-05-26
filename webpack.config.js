@@ -1,80 +1,99 @@
+
+var config = {};
 var webpack = require('webpack');
 var path = require('path');
-var plugins = [];
+const ESLintPlugin = require('eslint-webpack-plugin');
 
-console.error("############################################");
-console.error(" Building in Development Mode ");
-console.error("############################################");
+console.error('############################################');
+console.error(' Building in Development Mode ');
+console.error('############################################');
 
-
-var config = {
+config = {
     entry: {
-        fjplayer: "./src/index.js"
+        fjplayer: './src/index.js'
     },
-    devtool: 'source-map',
+    mode: 'development',
     output: {
-        path: path.resolve(__dirname, "dist"),
+        path: path.resolve(__dirname, 'dist'),
         filename: 'fjplayer.js',
-        publicPath: "/dist/",
+        publicPath: '/dist/',
         library: 'fjplayer',
         libraryTarget: 'umd',
         pathinfo: true,
         umdNamedDefine: true
     },
     module: {
-        rules: [{
+        rules: [
+            {
                 test: /(\.jsx|\.js)$/,
                 loader: 'babel-loader',
                 options: {
-                    presets: ["es2015"]
-                },
-                exclude: [
-                    path.resolve("./node_modules"),
-                    path.resolve("./bower_components"),
-                    path.resolve("./tests")
-                ]
+                    presets: ['@babel/preset-env']
+                }
             },
-            { test: /\.png$/, loader: "file-loader?name=img/[name].png" },
-            { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
+            { test: /\.png$/, use: ['file-loader?name=img/[name].png'] },
+            { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
             {
                 test: /\.css$/,
-                use: [{
-                        loader: "style-loader"
+                use: [
+                    {
+                        loader: 'style-loader'
                     },
                     {
-                        loader: "css-loader",
+                        loader: 'css-loader',
                         options: {
                             modules: false
                         }
                     }
                 ]
             },
-            { test: /bootstrap\/js\//, loader: 'imports?jQuery=jquery' },
-            { test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
-            { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream' },
-            { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader' },
-            { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml' }
+            { test: /bootstrap\/js\//, use: ['imports?jQuery=jquery'] },
+            {
+                test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
+                loader: 'url-loader',
+                options: {
+                    limit: 10000,
+                    mimetype: 'application/font-woff'
+                }
+            },
+            {
+                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+                loader: 'url-loader',
+                options: {
+                    limit: 10000,
+                    mimetype: 'application/octet-stream'
+                }
+            },
+            { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, use: ['file-loader'] },
+            {
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                loader: 'url-loader',
+                options: {
+                    limit: 10000,
+                    mimetype: 'svg+xml'
+                }
+            }
         ]
     },
     resolve: {
         modules: [
-            path.resolve(__dirname, "./node_modules"),
-            path.resolve(__dirname, "./src")
+            path.resolve(__dirname, './node_modules'),
+            path.resolve(__dirname, './src')
         ],
-        extensions: [".js", ".json", ".jsx", ".css"],
+        extensions: ['.js', '.json', '.jsx', '.css']
     },
     plugins: [
+        new ESLintPlugin(),
         new webpack.LoaderOptionsPlugin({ debug: true }),
-        new webpack.DefinePlugin({ "global.GENTLY": false }),
-        new webpack.DefinePlugin({ 'process.env.NODE_ENV': '"developpment"' })
+        new webpack.DefinePlugin({ 'global.GENTLY': false })
     ],
     node: {
-        __dirname: true,
+        __dirname: true
     },
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     stats: 'verbose',
     context: __dirname,
-    target: "web",
+    target: 'web',
     devServer: {
         contentBase: path.join(__dirname, '/demo/'),
         compress: true,

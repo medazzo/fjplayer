@@ -1,0 +1,5 @@
+var context;
+require('babel-polyfill');
+
+context = require.context('./tests', true, /-spec\.js$/);
+context.keys().forEach(context);

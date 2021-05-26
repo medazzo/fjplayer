@@ -1,26 +1,26 @@
-"use strict";
-import Playlist from '../src/js/playlist';
-import * as Const from '../src/js/constants';
-import Player from '../src/js/player';
+'use strict';
+import Playlist from '../src/js/player/playlist';
+import * as Const from '../src/js/defs/constants';
+import Player from '../src/js/player/player';
 import chai from 'chai';
 import DataPlaylist from './data.spec';
 
 const expect = chai.expect;
-var player, P, time = 18305;
+var player, P;
 var data = new DataPlaylist();
 
-/**********************************************************
+/** ********************************************************
  *  *  *  *  *  *  *  *  unitary tests  *  *  *  *  *  *  *
  **********************************************************/
 describe('FjTestPlayer', function() {
 
     // inject the HTML fixture for the tests
     beforeEach(function() {
-        console.error(" Before  Test !");
+        var fixture = '<div id="fixture"><div id="playercontainer"></div></div>';
+        console.error(' Before  Test !');
         // length of berber video
         window.jasmine.DEFAULT_TIMEOUT_INTERVAL = 70000;
         P = new Playlist();
-        var fixture = '<div id=\"fixture\"><div id=\"playercontainer\"></div></div>';
         document.body.insertAdjacentHTML(
             'afterbegin',
             fixture);
@@ -28,10 +28,9 @@ describe('FjTestPlayer', function() {
 
     // remove the html fixture from the DOM
     afterEach(function() {
-        console.error(" After  Test !");
+        console.error(' After  Test !');
         document.body.removeChild(document.getElementById('fixture'));
     });
-
 
     it('Simple Player Loaded Event', function(done) {
         expect(P.addItem(data.itemOnly)).to.be.equal(true);
@@ -45,7 +44,7 @@ describe('FjTestPlayer', function() {
 
         player.on(Const.PlayerEvents.STREAM_LOADED,
             function(e, args) {
-                console.warn(" *********************************** Having event LOADED ", e);
+                console.warn(' *********************************** Having event LOADED ', e);
                 done();
             });
     });
@@ -62,11 +61,10 @@ describe('FjTestPlayer', function() {
 
         player.on(Const.PlayerEvents.PLAYBACK_STARTED,
             function(e, args) {
-                console.warn(" *********************************** Having event STARTED ", e);
+                console.warn(' *********************************** Having event STARTED ', e);
                 done();
             });
     });
-
 
     it('Simple Player Ended Event', function(done) {
         expect(P.addItem(data.itemOnly)).to.be.equal(true);
@@ -82,11 +80,10 @@ describe('FjTestPlayer', function() {
 
         player.on(Const.PlayerEvents.PLAYBACK_ENDED,
             function(e, args) {
-                console.warn(" *********************************** Having event ENDED ", e);
+                console.warn(' *********************************** Having event ENDED ', e);
                 done();
             });
     });
-
 
     it('Simple Player ADS Started Event', function(done) {
         expect(P.addItem(data.itemOnlyAds)).to.be.equal(true);
@@ -100,7 +97,7 @@ describe('FjTestPlayer', function() {
 
         player.on(Const.AdsEvents.ADS_PLAYBACK_STARTED,
             function(e, args) {
-                console.warn(" *********************************** Having event Ads STARTED ", e);
+                console.warn(' *********************************** Having event Ads STARTED ', e);
                 done();
             });
     });
@@ -119,7 +116,7 @@ describe('FjTestPlayer', function() {
 
         player.on(Const.AdsEvents.ADS_PLAYBACK_ENDED,
             function(e, args) {
-                console.warn(" *********************************** Having event Ads ENDED ", e);
+                console.warn(' *********************************** Having event Ads ENDED ', e);
                 done();
             });
     });

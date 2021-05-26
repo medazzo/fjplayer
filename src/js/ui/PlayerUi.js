@@ -2,10 +2,9 @@ import Logger from '../utils/Logger';
 import Thumbs from '../ui//Thumbs';
 import Menus from '../ui/Menus';
 import * as Utils from '../utils/Utils';
-import tmpl from '../ui/fjplayer-tmpl';
+import PlayerTemplate from '../ui/fjplayer-tmpl';
 require('../../css/player.less');
 // require('../css/fjfa.css');
-
 
 /**
  * @module PlayerUi
@@ -20,8 +19,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         videoContainerId = videoContId,
         fullScreenOnStart = false,
         vwidth = VWidth,
-        vheight = WHeight,
-        expandScreen = false,
         playerMenus = null,
         timeout = null,
         initialized = false,
@@ -64,8 +61,8 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         spinner = null,
         videoControllerFigure,
         playpauseBtn,
-        playpreviousBtn,
-        playforwardBtn,
+        playpreviousBtn = null,
+        playforwardBtn = null,
         muteBtn,
         volumeBar,
         progressBar,
@@ -123,7 +120,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             throw new Error('The video container element still null');
         }
         videoContainer.classList.add('fjPlayer');
-        videoContainer.innerHTML = new tmpl().GetHtml(data);
+        videoContainer.innerHTML = new PlayerTemplate().GetHtml(data);
         video = null;
         videoContainer = null;
         videoController = document.getElementById(videoControlsId);
@@ -176,6 +173,14 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         } else {
             fjMainPlayer.pause();
         }
+    }
+
+    function onperviousClick() {
+        fjMainPlayer.playPrev();
+    }
+
+    function onforwardClick() {
+        fjMainPlayer.playNext();
     }
 
     function toggleplaypauseBtn() {
@@ -320,7 +325,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
     // SEEKING
     // ************************************************************************************
     function onprogressClick(event) {
-        var val = 0;
         // var p = progressBar.value;
         var rect = progressBar.getBoundingClientRect();
         var p = (event.pageX - rect.left) * (mediaDuration / (rect.right - rect.left));
@@ -377,19 +381,19 @@ function PlayerUi(videoContId, VWidth, WHeight) {
 
     function onFullScreenChange(e) {
         if (e.type === 'fullscreenchange') {
-            logger.log(" fullscreenchange >>> Full Scren changed Status ", !!(document.fullScreen || document.fullscreenElement));
+            logger.log(' fullscreenchange >>> Full Scren changed Status ', !!(document.fullScreen || document.fullscreenElement));
             setFullscreenData(!!(document.fullScreen || document.fullscreenElement));
         }
         if (e.type === 'webkitfullscreenchange') {
-            logger.log(" webkitfullscreenchange >>> Full Scren changed Status ", !!document.webkitIsFullScreen);
+            logger.log(' webkitfullscreenchange >>> Full Scren changed Status ', !!document.webkitIsFullScreen);
             setFullscreenData(!!document.webkitIsFullScreen);
         }
         if (e.type === 'mozfullscreenchange') {
-            logger.log(" mozfullscreenchange >>> Full Scren changed Status ", !!document.mozFullScreen);
+            logger.log(' mozfullscreenchange >>> Full Scren changed Status ', !!document.mozFullScreen);
             setFullscreenData(!!document.mozFullScreen);
         }
         if (e.type === 'msfullscreenchange') {
-            logger.log(" msfullscreenchange >>> Full Scren changed Status ", !!document.msFullscreenElement);
+            logger.log(' msfullscreenchange >>> Full Scren changed Status ', !!document.msFullscreenElement);
             setFullscreenData(!!document.msFullscreenElement);
         }
 
@@ -405,7 +409,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
     }
 
     function setVolume(value) {
-        var pos, val;
+        var pos;
         if (typeof value === 'number') {
             volumebar.value = value;
         }
@@ -529,15 +533,15 @@ function PlayerUi(videoContId, VWidth, WHeight) {
 
     function onResizeWindow() {
         var intViewportWidth = window.innerWidth;
-        var intViewportHeight = window.innerHeight;
-        var newPercentage = ((intViewportWidth / holdWidth) * 100) + "%";
+        // var intViewportHeight = window.innerHeight;
+        var newPercentage = ((intViewportWidth / holdWidth) * 100) + '%';
         var fjplayer = document.getElementById('playercontainer');
         fjplayer.style.fontSize = newPercentage;
-        console.error(holdWidth, " RESIED !!!!!!!!!!!!! ", intViewportWidth, '/', holdWidth, '>>>>>', newPercentage);
+        console.error(holdWidth, ' RESIED !!!!!!!!!!!!! ', intViewportWidth, '/', holdWidth, '>>>>>', newPercentage);
     }
 
     function onLoadWindow() {
-        console.error(holdWidth, " LOADED ##########################");
+        console.error(holdWidth, ' LOADED ##########################');
         holdWidth = window.innerWidth;
     }
 
@@ -560,11 +564,13 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         volumeBar.addEventListener('click', OnvbClick);
         playpauseBtn.addEventListener('click', onplaypauseClick);
         muteBtn.addEventListener('click', onmuteClick);
+        playpreviousBtn.addEventListener('click', onperviousClick);
+        playforwardBtn.addEventListener('click', onforwardClick);
         fullScreenBtn.addEventListener('click', handleFullscreen);
         progressBar.addEventListener('click', onprogressClick);
 
-        // window.addEventListener('resize', onResizeWindow);
-        // window.addEventListener('load', onResizeWindow); // too late to catch event
+        window.addEventListener('resize', onResizeWindow);
+        window.addEventListener('load', onLoadWindow); // too late to catch event
 
         document.addEventListener('fullscreenchange', onFullScreenChange);
         document.addEventListener('MSFullscreenChange', onFullScreenChange);
@@ -600,7 +606,6 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         videoController.style.display = 'block';
     }
 
-
     function ShowSpinner() {
         spinner.classList.remove('fj-hide');
     }
@@ -629,7 +634,7 @@ function PlayerUi(videoContId, VWidth, WHeight) {
             logger.warn('not yet initialized');
             return;
         }
-        console.warn(" >>> Resetting player ui !!");
+        console.warn(' >>> Resetting player ui !!');
         ThumbsMgr.reset();
         // OverlaysMgr = new Overlays(this.video, document.getElementById(this.overlaysContainerDivId));
         videoControllerFigure.removeEventListener('mouseleave', magicMouseLeave);
@@ -645,10 +650,8 @@ function PlayerUi(videoContId, VWidth, WHeight) {
         fullScreenBtn.removeEventListener('click', handleFullscreen);
         progressBar.removeEventListener('click', onprogressClick);
 
-        /*
         window.removeEventListener('resize', onResizeWindow);
-        window.removeEventListener('load', onResizeWindow);
-        */
+        window.removeEventListener('load', onLoadWindow);
 
         document.removeEventListener('fullscreenchange', onFullScreenChange);
         document.removeEventListener('MSFullscreenChange', onFullScreenChange);

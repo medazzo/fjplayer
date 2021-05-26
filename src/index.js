@@ -22,7 +22,6 @@ fjplayer.PlayerEvents = PlayerEvents;
 fjplayer.AdsEvents = AdsEvents;
 fjplayer.OverlayEvents = OverlayEvents;
 
-
 export default fjplayer;
 export { Playlist };
 export { Player };

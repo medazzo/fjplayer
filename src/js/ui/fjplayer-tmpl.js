@@ -4,7 +4,7 @@
  * @description The playerTemplate
  *
  */
-function playerTemplate() {
+function PlayerTemplate() {
     var _OPEN_DELIMITER = '<%=',
         _CLOSE_DELIMITER = '%>',
         _REGEX_STRING = '(<%=|%>)',
@@ -53,7 +53,7 @@ function playerTemplate() {
         '            <input class=" fj-control-embd fj-video-progress" id=\"<%=progressBarId%>\" type="range" min="0" /> ' +
         '        </div> ' +
         '        <!--  play,previous and next controls  --> ' +
-        '        <span class=" fj-vertical-left fj-control-embd fj-btn  fj-icon-playPrevious" aria-hidden="true" id=\"<%=playpreviousBtnId%>\" title="previous"> </span> ' +
+        '     <span class=" fj-vertical-left fj-control-embd fj-btn  fj-icon-playPrevious" aria-hidden="true" id=\"<%=playpreviousBtnId%>\" title="previous"> </span> ' +
         '        <span class=" fj-vertical-left fj-control-embd fj-btn  fj-icon-play" aria-hidden="true" id=\"<%=playpauseBtnId%>\" title="Play"> </span> ' +
         '        <span class=" fj-vertical-left fj-control-embd fj-btn  fj-icon-playNext" aria-hidden="true" id=\"<%=playforwardBtnId%>\" title="next"> </span> ' +
         '        <!--  mute and volume bar controls  --> ' +
@@ -66,7 +66,7 @@ function playerTemplate() {
         '            <span></span> ' +
         '        </div> ' +
         '        <!--  full screen, audio and subtitles controls  --> ' +
-        '        <span class=" fj-vertical-right fj-control-embd fj-btn  fj-icon-fullScreen " aria-hidden="true" id=\"<%=fullScreenBtnId%>\" title="Fullscreen"> </span> ' +
+        '    <span class=" fj-vertical-right fj-control-embd fj-btn  fj-icon-fullScreen " aria-hidden="true" id=\"<%=fullScreenBtnId%>\" title="Fullscreen"> </span> ' +
         '        <span class=" fj-vertical-right fj-control-embd fj-btn  fj-icon-subs" aria-hidden="true" id=\"<%=subtitlesBtnId%>\" title="Subtitles"> </span> ' +
         '        <span class=" fj-vertical-right fj-control-embd fj-btn  fj-icon-audios" aria-hidden="true" id=\"<%=audiosBtnId%>\" title="Audios"> </span> ' +
         '        <!--  timers   --> ' +
@@ -121,27 +121,25 @@ function playerTemplate() {
      */
     function generateHtml(matchedArr, dataObj) {
         var newArr = [],
-            k = 0,
+            i, k = 0,
             opening = false,
-            closing = false,
             key,
             done = '';
-        for (var i in matchedArr) {
+        for (i in matchedArr) {
             if (matchedArr[i] === _OPEN_DELIMITER) {
                 opening = true;
             } else if (matchedArr[i] === _CLOSE_DELIMITER) {
                 opening = false;
-                closing = true;
             } else {
 
                 if (opening === true && closed === false) { // wr'in key
                     key = matchedArr[i];
-                    key = key.replace(/ +/g, "");
+                    key = key.replace(/ +/g, '');
                     // console.error(" W>>>>>>>><>  ", key);
                     if (dataObj.hasOwnProperty(key)) {
                         newArr[k] = dataObj[key];
                     } else {
-                        throw new Error(" Needed Key is Not found key for html player template :", matchedArr[i]);
+                        throw new Error(' Needed Key is Not found key for html player template :', matchedArr[i]);
                     }
                 } else {
                     newArr[k] = matchedArr[i];
@@ -149,12 +147,12 @@ function playerTemplate() {
                 k++;
             }
         }
-        done = newArr.join("");
+        done = newArr.join('');
         return done;
     }
     /**
-     * 
-     * @param {*} data 
+     *
+     * @param {*} data
      */
     function GetHtml(data) {
         var matches = parseTemplateText(template);
@@ -165,7 +163,7 @@ function playerTemplate() {
     // ************************************************************************************
     return {
         GetHtml: GetHtml,
-        constructor: playerTemplate
+        constructor: PlayerTemplate
     };
 };
-export default playerTemplate;
+export default PlayerTemplate;

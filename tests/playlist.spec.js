@@ -1,12 +1,12 @@
-"use strict";
-import Playlist from '../src/js/playlist';
+'use strict';
+import Playlist from '../src/js/player/playlist';
 import chai from 'chai';
 import DataPlaylist from './data.spec';
 
 const expect = chai.expect;
-let P, data, time = 18305;
+let P, data;
 
-/**********************************************************
+/** ********************************************************
  *  *  *  *  *  *  *  *  unitary tests  *  *  *  *  *  *  *
  **********************************************************/
 describe('FjTestlaylist', function() {
@@ -157,7 +157,7 @@ describe('FjTestlaylist', function() {
         });
     });
 
-    // checks Drm 
+    // checks Drm
     describe('when I check on Drm', function() {
         it('should return false on null item', () => {
             expect(P.checkDrm(null)).to.be.equal(false);

@@ -40,18 +40,19 @@ function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
     };
 
     /**
-     * 
+     *
      * @param {*Funtion Callback used to activate item of list
      */
     function activate(item, isItSubs) {
         var i, litem, k, list;
+        var index, tindex;
         if (isItSubs === true) {
             list = subsList;
         } else {
             list = audsList;
         }
-        var index = Array.prototype.indexOf.call(list.childNodes, item);
-        var tindex = item.getAttribute('index');
+        index = Array.prototype.indexOf.call(list.childNodes, item);
+        tindex = item.getAttribute('index');
         logger.info('clicked is  selected @ index ', index, ' text index ', tindex);
 
         if (isItSubs === true) {
@@ -103,19 +104,18 @@ function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
         HideMenusAuds();
     };
     /**
-     * 
-     * @param {*} playerMedia 
+     *
+     * @param {*} playerMedia
      */
     function SetupSubs(playerMedia) {
-        logger.info('Calling for setup Subs !!!');
         var subtitlesBtn = null;
         var i = 0;
         var activated = false;
         var item = null;
+        var textTracks = null;
         mediaPlayer = playerMedia;
-        var textTracks = mediaPlayer.getTextTracks();
+        textTracks = mediaPlayer.getTextTracks();
         SubsExist = false;
-
 
         logger.info(' Trying to setup menu subs , text tracks length : ', textTracks);
         // check if exist
@@ -210,12 +210,12 @@ function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
      * Setting Auds menu and cbx
      */
     function SetupAuds(playerMedia) {
-        logger.info('Calling for setup Auds !!!');
         var audsBtn = null;
         var i = 0;
         var item = null;
+        var audioTracks = null;
         mediaPlayer = playerMedia;
-        var audioTracks = mediaPlayer.getAudioLanguages();
+        audioTracks = mediaPlayer.getAudioLanguages();
         audsExist = false;
         logger.info(' Trying to setup menu Auds , text tracks length : ', audioTracks);
 
@@ -251,7 +251,6 @@ function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
             //  audios list
             audsList = document.getElementById(audsMenuListId);
         }
-
 
         for (i = 0; i < audioTracks.length; i++) {
             item = document.createElement('li');

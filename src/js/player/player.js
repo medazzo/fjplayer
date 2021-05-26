@@ -17,7 +17,6 @@ function Player(fjID, vidContainerId) {
         loopingList = false,
         currentPlaying = -1,
         isPlaying = false,
-        currentIsDash = false,
         playlistLoaded = false,
         playingAds = false,
         // default values
@@ -89,7 +88,6 @@ function Player(fjID, vidContainerId) {
         if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
             if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
                 // clear dash
-                currentIsDash = true;
                 logger.warn(' will play a clear dash on caption obect ', playerUi.getVideoCaption());
                 playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER],
                     item[Const.FJCONFIG_SUBTITLES], playerUi.getVideoCaption(), start, item[Const.FJCONFIG_DRM]);
@@ -178,8 +176,6 @@ function Player(fjID, vidContainerId) {
         return ok;
     }
 
-
-
     function playPrev() {
         if (!playlistLoaded) {
             logger.error(' No playlist is loaded on player ');
@@ -227,7 +223,7 @@ function Player(fjID, vidContainerId) {
                 isPlaying = false;
             }
             if (e === Const.PlayerEvents.PLAYBACK_STARTED) {
-                // first starting  only                
+                // first starting  only
                 if (args === 1) {
                     isPlaying = true;
                     if (AdsMgr.CheckPreAds() === false) {
@@ -269,7 +265,6 @@ function Player(fjID, vidContainerId) {
                 isPlaying = true;
                 playerUi.HideSpinner();
             }
-
 
             // send Event to listener
             logger.info('[Event] [trigger] > ', e);
@@ -364,7 +359,6 @@ function Player(fjID, vidContainerId) {
         if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
             if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
                 // clear dash
-                currentIsDash = true;
                 playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER],
                     item[Const.FJCONFIG_SUBTITLES], playerUi.getVideoCaption(), start, item[Const.FJCONFIG_DRM]);
             } else {

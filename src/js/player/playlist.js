@@ -149,7 +149,8 @@ function Playlist() {
             logger.error('Missing Show At for mid Roll Class ! ');
             return false;
         }
-        if (item[Const.FJCONFIG_URL] !== undefined && item[Const.FJCONFIG_URL] !== null && item[Const.FJCONFIG_URL] !== '') {
+        if (item[Const.FJCONFIG_URL] !== undefined &&
+            item[Const.FJCONFIG_URL] !== null && item[Const.FJCONFIG_URL] !== '') {
             logger.log(' playlist Overlay url ', item[Const.FJCONFIG_URL]);
         } else {
             logger.error('Empty Overlay url');

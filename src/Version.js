@@ -9,5 +9,4 @@ Version.prototype.getVersion = function() {
     return pjson.version;
 };
 
-
 export default Version;

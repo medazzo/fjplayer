@@ -14,14 +14,14 @@ import * as Langs from '../defs/isoLangs';
 function PlayerMedia(fjPlayerId) {
     var video = null,
         FjPlayerId = fjPlayerId,
-        FjSessionToken = "notSettled",
+        FjSessionToken = 'notSettled',
         initialized = false,
         startingCount = 0,
         thumbsTrackUrl = null,
         thumbsTrackIndex = -1,
-        getEndedEvent = false,
+        // getEndedEvent = false,
         CurrentUrl = null,
-        CurrentProtection = null,
+        // CurrentProtection = null,
         CurrentStreamType = PlayerMedia.UNKNOWN,
         DashPlayer = null,
         logger = new Logger(this),
@@ -61,6 +61,7 @@ function PlayerMedia(fjPlayerId) {
         // done
         initialized = true;
         logger.debug(' Media player just initialized with playerUiVideo');
+        return true;
     };
     /**
      *
@@ -93,6 +94,7 @@ function PlayerMedia(fjPlayerId) {
             return video.currentTime;
         }
         logger.warn(' No Media Loaded ! ');
+        return 0;
     };
     /**
      *
@@ -142,6 +144,7 @@ function PlayerMedia(fjPlayerId) {
             return video.duration;
         }
         logger.warn(' No Media Loaded ! ');
+        return 0;
     };
     /**
      *
@@ -151,6 +154,7 @@ function PlayerMedia(fjPlayerId) {
             return video.volume;
         }
         logger.warn(' No Media Loaded ! ');
+        return 0;
     };
 
     function setThumbsUrl(url) {
@@ -166,9 +170,9 @@ function PlayerMedia(fjPlayerId) {
     /*                               TXT TRACKS                               */
     /* ********************************************************************** */
     function setTextTrack(textTrackIndex) {
-        var index = parseInt(textTrackIndex);
+        var index = parseInt(textTrackIndex, 10);
         var i = 0;
-        logger.warn(" Setting text track to index : ", index);
+        logger.warn(' Setting text track to index : ', index);
         if (initialized === true) {
             if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
                 for (i = 0; i < video.textTracks.length; i++) {
@@ -226,9 +230,9 @@ function PlayerMedia(fjPlayerId) {
     /*                               AUD LANGS                               */
     /* ********************************************************************** */
     function setAudioLang(AudLangIndex) {
-        var index = parseInt(AudLangIndex);
+        var index = parseInt(AudLangIndex, 10);
         var i = 0;
-        logger.warn(" Setting text track to index : ", index);
+        logger.warn(' Setting text track to index : ', index);
         if (initialized === true) {
             if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
                 for (i = 0; i < video.textTracks.length; i++) {
@@ -257,7 +261,7 @@ function PlayerMedia(fjPlayerId) {
     };
 
     function isAudioLangEnabled(AudLangIndex) {
-        var index = parseInt(AudLangIndex);
+        var index = parseInt(AudLangIndex, 10);
         if (initialized === true) {
             if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
                 return (video.audioTracks[index].enabled === true);
@@ -270,7 +274,7 @@ function PlayerMedia(fjPlayerId) {
     };
 
     function getAudioLangLabel(AudLangIndex) {
-        var index = parseInt(AudLangIndex);
+        var index = parseInt(AudLangIndex, 10);
         if (initialized === true) {
             if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
                 return (video.audioTracks[index].label);
@@ -313,9 +317,6 @@ function PlayerMedia(fjPlayerId) {
     /**
      * Callbacks
      */
-    function onShakaError(e) {
-        onShError(e.detail);
-    };
 
     function onShakaEvent(e) {
         logger.warn('Eventing  [', event.type, ']:', event);
@@ -324,6 +325,10 @@ function PlayerMedia(fjPlayerId) {
     function onShError(error) {
         // Log the error.
         logger.error('Error code', error.code, 'object', error);
+    };
+
+    function onShakaError(e) {
+        onShError(e.detail);
     };
 
     function onPlayStart(e) {
@@ -336,7 +341,7 @@ function PlayerMedia(fjPlayerId) {
     };
 
     function onPlaybackEnded(e) {
-        getEndedEvent = true;
+        // getEndedEvent = true;
         events.fireEvent(Const.PlayerEvents.PLAYBACK_ENDED);
     };
 
@@ -360,14 +365,14 @@ function PlayerMedia(fjPlayerId) {
     }
 
     function onError(e) {
-        var msg = e.event.message;
+        var args, msg = e.event.message;
         if (e.event.message === undefined) {
             msg = e.event;
         }
-        var args = {
+        args = {
             'type': e.type,
             'code': e.error,
-            'message': msgonStreamInitialized
+            'message': msg
         };
         logger.error('>>>>>>>>>>>>>>> ERROR !!:', e);
         events.fireEvent(Const.PlayerEvents.PLAYBACK_ERROR, args);
@@ -375,7 +380,6 @@ function PlayerMedia(fjPlayerId) {
 
     function onStreamInitialized() {
         var i = 0;
-        var availableTracks = null;
         // video tracks
         thumbsTrackIndex = -1;
         if (thumbsTrackUrl !== null) {
@@ -421,9 +425,9 @@ function PlayerMedia(fjPlayerId) {
                 track.srclang = item[Const.FJCONFIG_LANG];
                 tmp = Langs.isoLangs[item[Const.FJCONFIG_LANG]];
                 logger.log(' Appending track substitles with Label', tmp.name);
-                n = tmp.name.indexOf(",");
+                n = tmp.name.indexOf(',');
                 if (n === -1) {
-                    n = tmp.name.indexOf(";");
+                    n = tmp.name.indexOf(';');
                 }
                 if (n === -1) {
                     label = tmp.name;
@@ -438,7 +442,7 @@ function PlayerMedia(fjPlayerId) {
         }
     };
 
-    function doesTimeMarchesOn() {
+    /* function doesTimeMarchesOn() {
         var version;
         var REQUIRED_VERSION = 49.0;
 
@@ -453,7 +457,9 @@ function PlayerMedia(fjPlayerId) {
                 return true;
             }
         }
-    };
+        return false ;
+    };*/
+
     /**
      * Used to Clean loaded data video
      */
@@ -551,8 +557,7 @@ function PlayerMedia(fjPlayerId) {
      * Used for loading mpeg Dash
      */
     function loadDash(url, poster, subs, videoCaption, autoplay, drm) {
-        var track = null,
-            k = null;
+        var track = null;
         if (poster !== null && poster !== undefined && poster !== '') {
             video.setAttribute('poster', poster);
         }
@@ -590,11 +595,11 @@ function PlayerMedia(fjPlayerId) {
         CurrentUrl = url;
         if ((drm === undefined) || (drm === null)) {
             CurrentStreamType = StreamTypes.DASH_CLEAR;
-            CurrentProtection = null;
+            // CurrentProtection = null;
             logger.info(' Loading CLEAR Dash @', CurrentUrl);
         } else {
             CurrentStreamType = StreamTypes.DASH_ENCRYPTED;
-            CurrentProtection = drm;
+            // CurrentProtection = drm;
             logger.info(' drm are ::: ', drm);
             DashPlayer.configure({
                 drm: {
@@ -624,7 +629,6 @@ function PlayerMedia(fjPlayerId) {
                 logger.warn(' UPDATING Session Token  : ', FjSessionToken);
             }
         });
-
 
         // set thumbs
         if (thumbsTrackUrl !== null && thumbsTrackUrl !== undefined) {
