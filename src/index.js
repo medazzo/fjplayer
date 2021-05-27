@@ -7,12 +7,13 @@ import Version from './Version';
 import { PlayerEvents, AdsEvents, OverlayEvents } from './js/defs/constants';
 
 // Shove both of these into the global scope
-var context = (typeof window !== 'undefined' && window) || global;
+const context = (typeof window !== 'undefined' && window) || global;
 
-var fjplayer = context.fjplayer;
+let { fjplayer } = context;
 
 if (!fjplayer) {
-    fjplayer = context.fjplayer = {};
+    fjplayer = {};
+    context.fjplayer = {};
 }
 
 fjplayer.Playlist = Playlist;

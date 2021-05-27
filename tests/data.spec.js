@@ -565,7 +565,7 @@ function DataPlaylist() {
         }]
     };
     var itemOnly = {
-        'FJSrc': 'demo/videos/berber_pub.mp4',
+        'FJSrc': '/demo/videos/berber_pub.mp4',
         'FJTitle': ' title of movie itemOnly 1',
         'FJClass': 'vod',
         'FJType': 'video/mp4'

@@ -1,12 +1,22 @@
-/* Version.js File */
-'use strict';
+const pjson = require('../package.json');
+/**
+ *
+ */
+class Version {
+    /**
+     *
+     */
+    constructor() {
+        this.version = pjson.version;
+    }
 
-var pjson = require('../package.json');
+    /**
+     * Get Player Version
+     * @returns the current verision of teh package
+     */
+    getVersion() {
+        return this.version;
+    }
+}
 
-function Version() {};
-
-Version.prototype.getVersion = function() {
-    return pjson.version;
-};
-
-export default Version;
+module.exports = Version;

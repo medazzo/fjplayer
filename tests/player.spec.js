@@ -18,8 +18,6 @@ describe('FjTestPlayer', function() {
     beforeEach(function() {
         var fixture = '<div id="fixture"><div id="playercontainer"></div></div>';
         console.error(' Before  Test !');
-        // length of berber video
-        window.jasmine.DEFAULT_TIMEOUT_INTERVAL = 70000;
         P = new Playlist();
         document.body.insertAdjacentHTML(
             'afterbegin',
