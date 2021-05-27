@@ -35,3 +35,10 @@ tmp
 .idea
 .nyc_output
 .tmp
+# ioignore karmle tests 
+dist/commons.js
+dist/commons.js.map
+dist/*.spec.*.js
+dist/*.spec.*.js.map
+dist/runtime.js
+dist/runtime.js.map
