@@ -23,13 +23,9 @@ fjplayer.PlayerEvents = PlayerEvents;
 fjplayer.AdsEvents = AdsEvents;
 fjplayer.OverlayEvents = OverlayEvents;
 
-export default fjplayer;
-export { Playlist };
-export { Player };
-export { Version };
-export { PlayerEvents };
-export { AdsEvents };
-export { OverlayEvents };
+module.exports = {
+  fjplayer, Playlist, Player, Version, PlayerEvents, AdsEvents, OverlayEvents,
+};
 
 /*
 Next version like this  + playlist must be detached
