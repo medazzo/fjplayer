@@ -1,127 +1,119 @@
-const env = process.env.NODE_ENV || "test";
-const expect = require("chai").expect;
+import puppeteer from 'puppeteer';
 
-const Playlist = require("../src/js/player/playlist");
-const Player = require("../src/js/player/player");
-const TestsData  = require("./data.test");
+const Const = require('../src/js/defs/constants');
+const Playlist = require('../src/js/player/playlist');
+const Player = require('../src/js/player/player');
+const TestsData = require('./data.test');
 
-var player, P, time = 18305;
-var data = new TestsData();
-/**********************************************************
+let player; let P;
+const data = new TestsData();
+/** ********************************************************
  *  *  *  *  *  *  *  *  unitary tests  *  *  *  *  *  *  *
- **********************************************************/
-describe('FjTestPlayer', function() {
+ ********************************************************* */
+describe('FjTestPlayer', async () => {
+  // inject the HTML fixture for the tests
+  beforeEach(() => {
+    const browser = puppeteer.launch();
+    const page = await browser.newPage();
+    await page.goto()
+    P = new Playlist();
+    const fixture = '<div id=\"fixture\"><div id=\"playercontainer\"></div></div>';
+    document.body.insertAdjacentHTML(
+      'afterbegin',
+      fixture,
+    );
+  });
 
+  // remove the html fixture from the DOM
+  afterEach(() => {
+    document.body.removeChild(document.getElementById('fixture'));
+  });
 
+  test('Simple Player Loaded Event', (done) => {
+    expect(P.addItem(data.itemOnly)).toEqual(true);
+    player = new Player('fjserverID1', 'playercontainer');
+    expect(player.isReady()).toEqual(false);
 
-    // inject the HTML fixture for the tests
-    beforeEach(function() {
-        console.error(" Before  Test !");
-        // length of berber video
-        window.jasmine.DEFAULT_TIMEOUT_INTERVAL = 70000;
-        P = new Playlist();
-        var fixture = '<div id=\"fixture\"><div id=\"playercontainer\"></div></div>';
-        document.body.insertAdjacentHTML(
-            'afterbegin',
-            fixture);
-    });
+    expect(player.loadPlaylist(P)).toEqual(true);
 
-    // remove the html fixture from the DOM
-    afterEach(function() {
-        console.error(" After  Test !");
-        document.body.removeChild(document.getElementById('fixture'));
-    });
+    expect(player.startPlaylist(0, false, false, true)).toEqual(true);
 
+    player.on(Const.PlayerEvents.STREAM_LOADED,
+      (e, args) => {
+        console.warn(' *********************************** Having event LOADED ', e);
+        done();
+      });
+  });
 
-    it('Simple Player Loaded Event', function(done) {
-        expect(P.addItem(data.itemOnly)).to.be.equal(true);
+  test('Simple Player Started Event', (done) => {
+    expect(P.addItem(data.itemOnly)).toEqual(true);
 
-        player = new Player('fjserverID1', 'playercontainer');
-        expect(player.isReady()).to.be.equal(false);
+    player = new Player('fjserverID1', 'playercontainer');
+    expect(player.isReady()).toEqual(false);
 
-        expect(player.loadPlaylist(P)).to.be.equal(true);
+    expect(player.loadPlaylist(P)).toEqual(true);
 
-        expect(player.startPlaylist(0, false, false, true)).to.be.equal(true);
+    expect(player.startPlaylist(0, false, false, true)).toEqual(true);
 
-        player.on(Const.PlayerEvents.STREAM_LOADED,
-            function(e, args) {
-                console.warn(" *********************************** Having event LOADED ", e);
-                done();
-            });
-    });
+    player.on(Const.PlayerEvents.PLAYBACK_STARTED,
+      (e, args) => {
+        console.warn(' *********************************** Having event STARTED ', e);
+        done();
+      });
+  });
 
-    it('Simple Player Started Event', function(done) {
-        expect(P.addItem(data.itemOnly)).to.be.equal(true);
+  test('Simple Player Ended Event', (done) => {
+    expect(P.addItem(data.itemOnly)).toEqual(true);
 
-        player = new Player('fjserverID1', 'playercontainer');
-        expect(player.isReady()).to.be.equal(false);
+    player = new Player('fjserverID1', 'playercontainer');
+    expect(player.isReady()).toEqual(false);
 
-        expect(player.loadPlaylist(P)).to.be.equal(true);
+    expect(player.loadPlaylist(P)).toEqual(true);
 
-        expect(player.startPlaylist(0, false, false, true)).to.be.equal(true);
+    expect(player.startPlaylist(0, false, false, true)).toEqual(true);
 
-        player.on(Const.PlayerEvents.PLAYBACK_STARTED,
-            function(e, args) {
-                console.warn(" *********************************** Having event STARTED ", e);
-                done();
-            });
-    });
+    setTimeout(done, 70000);
 
+    player.on(Const.PlayerEvents.PLAYBACK_ENDED,
+      (e, args) => {
+        console.warn(' *********************************** Having event ENDED ', e);
+        done();
+      });
+  });
 
-    it('Simple Player Ended Event', function(done) {
-        expect(P.addItem(data.itemOnly)).to.be.equal(true);
+  test('Simple Player ADS Started Event', (done) => {
+    expect(P.addItem(data.itemOnlyAds)).toEqual(true);
 
-        player = new Player('fjserverID1', 'playercontainer');
-        expect(player.isReady()).to.be.equal(false);
+    player = new Player('fjserverID1', 'playercontainer');
+    expect(player.isReady()).toEqual(false);
 
-        expect(player.loadPlaylist(P)).to.be.equal(true);
+    expect(player.loadPlaylist(P)).toEqual(true);
 
-        expect(player.startPlaylist(0, false, false, true)).to.be.equal(true);
+    expect(player.startPlaylist(0, false, false, true)).toEqual(true);
 
-        setTimeout(done, 70000);
+    player.on(Const.AdsEvents.ADS_PLAYBACK_STARTED,
+      (e, args) => {
+        console.warn(' *********************************** Having event Ads STARTED ', e);
+        done();
+      });
+  });
 
-        player.on(Const.PlayerEvents.PLAYBACK_ENDED,
-            function(e, args) {
-                console.warn(" *********************************** Having event ENDED ", e);
-                done();
-            });
-    });
+  test('Simple Player ADS ENDED Event', (done) => {
+    expect(P.addItem(data.itemOnlyAds)).toEqual(true);
 
+    player = new Player('fjserverID1', 'playercontainer');
+    expect(player.isReady()).toEqual(false);
 
-    it('Simple Player ADS Started Event', function(done) {
-        expect(P.addItem(data.itemOnlyAds)).to.be.equal(true);
+    expect(player.loadPlaylist(P)).toEqual(true);
 
-        player = new Player('fjserverID1', 'playercontainer');
-        expect(player.isReady()).to.be.equal(false);
+    expect(player.startPlaylist(0, false, false, true)).toEqual(true);
 
-        expect(player.loadPlaylist(P)).to.be.equal(true);
+    setTimeout(done, 70000);
 
-        expect(player.startPlaylist(0, false, false, true)).to.be.equal(true);
-
-        player.on(Const.AdsEvents.ADS_PLAYBACK_STARTED,
-            function(e, args) {
-                console.warn(" *********************************** Having event Ads STARTED ", e);
-                done();
-            });
-    });
-
-    it('Simple Player ADS ENDED Event', function(done) {
-        expect(P.addItem(data.itemOnlyAds)).to.be.equal(true);
-
-        player = new Player('fjserverID1', 'playercontainer');
-        expect(player.isReady()).to.be.equal(false);
-
-        expect(player.loadPlaylist(P)).to.be.equal(true);
-
-        expect(player.startPlaylist(0, false, false, true)).to.be.equal(true);
-
-        setTimeout(done, 70000);
-
-        player.on(Const.AdsEvents.ADS_PLAYBACK_ENDED,
-            function(e, args) {
-                console.warn(" *********************************** Having event Ads ENDED ", e);
-                done();
-            });
-    });
-
+    player.on(Const.AdsEvents.ADS_PLAYBACK_ENDED,
+      (e, args) => {
+        console.warn(' *********************************** Having event Ads ENDED ', e);
+        done();
+      });
+  });
 });

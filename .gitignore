@@ -2,6 +2,7 @@ package-lock.json
 # Logs
 logs
 *.log
+cache
 
 # Runtime data
 pids
@@ -37,3 +38,4 @@ tmp
 .nyc_output
 .tmp
 .nyc_output
+docs/generated/** 

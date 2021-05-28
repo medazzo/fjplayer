@@ -2,7 +2,7 @@ const shaka = require('shaka-player');
 const Logger = require('../utils/Logger');
 const Eventing = require('../utils/Eventing');
 const Const = require('../defs/constants');
-const Langs = require('../defs/isoLangs');
+const IsoLangs = require('../defs/isoLangs');
 
 /**
  * @module PlayerMedia
@@ -429,7 +429,7 @@ class PlayerMedia {
         track.kind = 'subtitles';
         track.src = item[Const.FJCONFIG_SRC];
         track.srclang = item[Const.FJCONFIG_LANG];
-        tmp = Langs.isoLangs[item[Const.FJCONFIG_LANG]];
+        tmp = IsoLangs[item[Const.FJCONFIG_LANG]];
         this.logger.log(' Appending track substitles with Label', tmp.name);
         n = tmp.name.indexOf(',');
         if (n === -1) {

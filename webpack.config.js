@@ -1,86 +1,87 @@
-var webpack = require("webpack");
-var path = require("path");
-var plugins = [];
+const webpack = require('webpack');
+const path = require('path');
 
-console.error("############################################");
-console.error(" Building in Development Mode ");
-console.error("############################################");
+const plugins = [];
 
-var config = {
+console.error('############################################');
+console.error(' Building in Development Mode ');
+console.error('############################################');
+
+const config = {
   entry: {
-    fjplayer: "./src/index.js",
+    fjplayer: './src/index.js',
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "fjplayer.js",
-    publicPath: "/dist/",
-    library: "fjplayer",
-    libraryTarget: "umd",
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'fjplayer.js',
+    publicPath: '/dist/',
+    library: 'fjplayer',
+    libraryTarget: 'umd',
     umdNamedDefine: true,
   },
   module: {
     rules: [
       {
         test: /(\.jsx|\.js)$/,
-        loader: "babel-loader",
-        options: {   
-          presets: ["@babel/preset-env"],       
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env'],
         },
         exclude: [
-          path.resolve("./node_modules"),
-          path.resolve("./bower_components"),
-          path.resolve("./tests"),
+          path.resolve('./node_modules'),
+          path.resolve('./bower_components'),
+          path.resolve('./tests'),
         ],
       },
-      { test: /\.png$/, use: ["file-loader?name=img/[name].png"] },
-      { test: /\.less$/, use: ["style-loader", "css-loader", "less-loader"] },
+      { test: /\.png$/, use: ['file-loader?name=img/[name].png'] },
+      { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
       {
         test: /\.css$/,
         use: [
           {
-            loader: "style-loader",
+            loader: 'style-loader',
           },
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               modules: false,
             },
           },
         ],
       },
-      { test: /bootstrap\/js\//, use: ["imports?jQuery=jquery"] },
+      { test: /bootstrap\/js\//, use: ['imports?jQuery=jquery'] },
       {
         test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-        use: ["url-loader?limit=10000&mimetype=application/font-woff"],
+        use: ['url-loader?limit=10000&mimetype=application/font-woff'],
       },
       {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        use: ["url-loader?limit=10000&mimetype=application/octet-stream"],
+        use: ['url-loader?limit=10000&mimetype=application/octet-stream'],
       },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, use: ["file-loader"] },
+      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, use: ['file-loader'] },
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        use: ["url-loader?limit=10000&mimetype=image/svg+xml"],
+        use: ['url-loader?limit=10000&mimetype=image/svg+xml'],
       },
     ],
   },
   resolve: {
     modules: [
-      path.resolve(__dirname, "./node_modules"),
-      path.resolve(__dirname, "./src"),
+      path.resolve(__dirname, './node_modules'),
+      path.resolve(__dirname, './src'),
     ],
-    extensions: [".js", ".json", ".jsx", ".css"],
+    extensions: ['.js', '.json', '.jsx', '.css'],
   },
   node: {
     __dirname: true,
   },
-  devtool: "source-map",
+  devtool: 'source-map',
   watch: true,
-  stats: "verbose",
+  stats: 'verbose',
   context: __dirname,
-  target: "web",
+  target: 'web',
   devServer: {
-    contentBase: path.join(__dirname, "./"),
+    contentBase: path.join(__dirname, './'),
     compress: true,
     port: 9000,
   },

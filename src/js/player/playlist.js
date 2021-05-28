@@ -1,6 +1,6 @@
 const Logger = require('../utils/Logger');
 const Const = require('../defs/constants');
-const Langs = require('../defs/isoLangs');
+const IsoLangs = require('../defs/isoLangs');
 /**
  *  Class playlist in whixh all the playliost will be checked and saved
  */
@@ -53,7 +53,7 @@ class Playlist {
       return false;
     }
     if (subItem[Const.FJCONFIG_LANG]) {
-      tmp = Langs.isoLangs[subItem[Const.FJCONFIG_LANG]];
+      tmp = IsoLangs[subItem[Const.FJCONFIG_LANG]];
       this.logger.log(tmp, ' playlist Subtitle lang is',
         subItem[Const.FJCONFIG_LANG]);
       if (tmp === null || tmp === undefined) {
@@ -69,6 +69,13 @@ class Playlist {
         subItem[Const.FJCONFIG_SRC]);
     } else {
       this.logger.error('Empty Subtitle src ');
+      return false;
+    }
+    if (subItem[Const.FJCONFIG_LABEL]) {
+      this.logger.log(' playlist Subtitle label is',
+        subItem[Const.FJCONFIG_LABEL]);
+    } else {
+      this.logger.error('Empty Subtitle label ');
       return false;
     }
     return true;
@@ -133,9 +140,18 @@ class Playlist {
     }
     this.logger.debug('Cheking DRM > ', drm);
 
+    tmp = drm[Const.FJCONFIG_DRM_SCHEME];
+    this.logger.info('Cheking DRM scheme > ', tmp);
+    if ((tmp !== undefined) && (tmp !== null) && (tmp === Const.FJCONFIG_DRM_SCHEME_FORJA)) {
+      this.logger.log(' Supported DRM scheme   ', tmp);
+    } else {
+      this.logger.error('Unsupported DRM Scheme ! ');
+      return false;
+    }
+
     tmp = drm[Const.FJCONFIG_DRM_LICENSE_SERVER];
     this.logger.info('Cheking DRM LA Server > ', tmp);
-    if ((tmp !== undefined) && (tmp !== null)) {
+    if ((tmp !== undefined) && (tmp !== null) && (tmp !== '')) {
       this.logger.log(' playlist LA Server is  ', tmp);
     } else {
       this.logger.error('Empty LA Server  ! ');
@@ -163,7 +179,7 @@ class Playlist {
       this.logger.error(item[Const.FJCONFIG_CLASS], ':BAD class Value ! ');
       return false;
     }
-    if ((item[Const.FJCONFIG_SRC] === Const.FJCONFIG_ADS_CLASS_MID_ROLL)
+    if ((item[Const.FJCONFIG_CLASS] === Const.FJCONFIG_ADS_CLASS_MID_ROLL)
             && (item[Const.FJCONFIG_SHOW_AT] === null
                 || item[Const.FJCONFIG_SHOW_AT] === undefined)) {
       this.logger.error('Missing Show At for mid Roll Class ! ');
@@ -314,15 +330,16 @@ class Playlist {
 
   /**
      *  used to add an subtitle to item at index in the playlist
+     *  TODO lock this function  when playlist start to play !
      */
   addSubtitle(index, subtitle) {
     const item = this.items[index];
-    let list = item[Const.FJCONFIG_SUBTITLES];
     if (item === undefined) {
       return false;
     } if (this.checkSubtitle(subtitle) === false) {
       return false;
     }
+    let list = item[Const.FJCONFIG_SUBTITLES];
     if ((list === undefined) || (list.length === 0)) {
       list = [];
     }
@@ -332,15 +349,16 @@ class Playlist {
 
   /**
      *  used to add an Overlay to item at index in the playlist
+     *  TODO lock this function  when playlist start to play !
      */
   addOverlay(index, overlay) {
     const item = this.items[index];
-    let list = item[Const.FJCONFIG_OVERLAYS];
     if (item === undefined) {
       return false;
     } if (this.checkOverlay(overlay) === false) {
       return false;
     }
+    let list = item[Const.FJCONFIG_OVERLAYS];
     if ((list === undefined) || (list.length === 0)) {
       list = [];
     }
@@ -350,15 +368,16 @@ class Playlist {
 
   /**
      *  used to add an Drm to item at index in the playlist
+     *  TODO lock this function  when playlist start to play !
      */
   setDrm(index, drm) {
     const item = this.items[index];
-    let list = item[Const.FJCONFIG_DRM];
     if (item === undefined) {
       return false;
     } if (this.checkDrm(drm) === false) {
       return false;
     }
+    let list = item[Const.FJCONFIG_DRM];
     if ((list === undefined) || (list.length === 0)) {
       list = [];
     }
@@ -368,15 +387,16 @@ class Playlist {
 
   /**
      *  used to add an ads to item at index in the playlist
+     *  TODO lock this function  when playlist start to play !
      */
   addAds(index, ads) {
     const item = this.items[index];
-    let list = item[Const.FJCONFIG_ADS];
     if (item === undefined) {
       return false;
     } if (this.checkAds(ads) === false) {
       return false;
     }
+    let list = item[Const.FJCONFIG_ADS];
     if ((list === undefined) || (list.length === 0)) {
       list = [];
     }
