@@ -55,6 +55,13 @@ function Playlist() {
             logger.error('Empty Subtitle src ');
             return false;
         }
+        if (subItem[Const.FJCONFIG_LABEL]) {
+            logger.log(' playlist Subtitle label is',
+                subItem[Const.FJCONFIG_LABEL]);
+        } else {
+            logger.error('Empty Subtitle label ');
+            return false;
+        }
         return true;
     };
     /**
@@ -115,9 +122,18 @@ function Playlist() {
         }
         logger.debug('Cheking DRM > ', drm);
 
+        tmp = drm[Const.FJCONFIG_DRM_SCHEME];
+        logger.info('Cheking DRM scheme > ', tmp);
+        if ((tmp !== undefined) && (tmp !== null) && (tmp === Const.FJCONFIG_DRM_SCHEME_FORJA)) {
+            logger.log(' Supported DRM scheme   ', tmp);
+        } else {
+            logger.error('Unsupported DRM Scheme ! ');
+            return false;
+        }
+
         tmp = drm[Const.FJCONFIG_DRM_LICENSE_SERVER];
         logger.info('Cheking DRM LA Server > ', tmp);
-        if ((tmp !== undefined) && (tmp !== null)) {
+        if ((tmp !== undefined) && (tmp !== null) && (tmp !== '')) {
             logger.log(' playlist LA Server is  ', tmp);
         } else {
             logger.error('Empty LA Server  ! ');

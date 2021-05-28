@@ -8,10 +8,8 @@ var request = require('superagent');
  */
 function FjseStats(fjAppId) {
     var logger = new Logger(this),
-        appId = fjAppId,
-        lastToken = null,
-        lastLicense = null;
-    AuthorizePlayer();
+        appId = fjAppId;
+
     /**
      * @description  used to verfiy ajAppId at starting of the player ..
      */
@@ -28,18 +26,16 @@ function FjseStats(fjAppId) {
                     logger.info('yay got ' + JSON.stringify(res.body));
                 }
             });
-
     }
 
+    AuthorizePlayer();
 
     // ************************************************************************************
     // PUBLIC API
     // ************************************************************************************
     return {
-        GetAuthzToken: GetAuthzToken,
         AuthorizePlayer: AuthorizePlayer,
-        GetLicense: GetLicense,
-        constructor: FjseAuthz
+        constructor: FjseStats
     };
 };
-export default FjseAuthz;
+export default FjseStats;

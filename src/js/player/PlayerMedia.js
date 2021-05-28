@@ -5,7 +5,6 @@ import Eventing from '../utils/Eventing';
 import * as Const from '../defs/constants';
 import * as Langs from '../defs/isoLangs';
 
-// import * as Const from '../defs/constants';
 /**
  * @module PlayerMedia
  * @description The PlayerMedia is the html video/dash/drm Media player

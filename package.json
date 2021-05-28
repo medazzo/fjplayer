@@ -2,7 +2,7 @@
     "scripts": {
         "dev": "webpack --mode=development  --color --config webpack.config.js ",
         "build": "webpack  --mode=production --progress  --color --config webpack.prod.config.js",
-        "test": "NODE_ENV=test COVERAGE=true karma start --color -- auto-watch",
+        "test": "NODE_ENV=test COVERAGE=true karma start karma.conf.js --colors -- auto-watch",
         "web": "http-server -a localhost -p 8000 -c-1 ",
         "dist": " concurrently \"npm run build\" \"npm run dev\"",
         "live": "webpack serve --mode=development  --color --config webpack.config.js"
@@ -36,6 +36,7 @@
         "karma-chrome-launcher": "^3.1.0",
         "karma-coverage": "^2.0.3",
         "karma-firefox-launcher": "^2.1.0",
+        "karma-htmlfile-reporter": "^0.3.8",
         "karma-mocha": "^2.0.1",
         "karma-webpack": "^5.0.0",
         "less": "^4.1.1",
@@ -64,6 +65,7 @@
     ],
     "main": "dist/fjplayer.js",
     "dependencies": {
-        "shaka-player": "^3.1.0"
+        "shaka-player": "^3.1.0",
+        "superagent": "^6.1.0"
     }
 }

@@ -2,37 +2,41 @@
 import 'babel-polyfill';
 import Version from '../src/Version';
 import * as Utils from '../src/js/utils/Utils';
+import Logger from '../src/js/utils/Logger';
 import chai from 'chai';
 
 chai.expect();
 
 const expect = chai.expect;
 
-let V, ver, time = 18305;
-
 describe('FjTestUtils', function() {
-    V = new Version();
-    ver = V.getVersion();
-
-    before(function() {
-        // nothing to do
-    });
 
     // Version test
-    describe('when I need the version', function() {
+    it('when I need the version', () => {
+        const V = new Version();
+        const pkg = require('../package.json');
+        const ver = V.getVersion();
         console.log(' Version is ', ver);
-        it('should return the version', () => {
-            expect(ver).to.be.equal('0.2.9');
-        });
+        expect(ver).equal(pkg.version);
+    });
+
+    // Logger
+    it('when I need the Logger ', () => {
+        const l = new Logger(this);
+        l.log('Hello');
+        expect(1 + 2).equal(3);
     });
 
     // Utils test
-    describe('when I need the utils Duration', function() {
-
-        console.log(' Time is ', Utils.duration(time));
-        it('should return transform duration', () => {
-            expect(Utils.duration(time)).to.be.equal('05:05:05');
-        });
+    it('when I need the utils Duration', () => {
+        const secDuration = 3600 + 60 + 1;
+        console.log(' Time is ', Utils.duration(secDuration));
+        expect(Utils.duration(secDuration)).equal('01:01:01');
     });
 
+    it('when I need the utils Duration for minutes and seconds only', () => {
+        const secDuration = 64;
+        console.log(' Time is ', Utils.duration(secDuration));
+        expect(Utils.duration(secDuration)).equal('01:04');
+    });
 });

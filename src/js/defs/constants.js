@@ -21,7 +21,9 @@ export const FJCONFIG_URL = 'FJUrl';
 export const FJCONFIG_DURATION = 'FJDuration';
 export const FJCONFIG_SHOW_AT = 'FJShowAt';
 
-export const FJCONFIG_DRM_LICENSE_SERVER = 'FjLicenseServer';
+export const FJCONFIG_DRM_LICENSE_SERVER = 'FJLicenseServer';
+export const FJCONFIG_DRM_SCHEME = 'FJDrmScheme';
+export const FJCONFIG_DRM_SCHEME_FORJA = 'forja';
 
 export const FJCONFIG_SHOW_UP_TITLE = 'FJUpTitle';
 export const FJCONFIG_DOWNLOAD = 'FJDownload';
