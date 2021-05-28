@@ -77,13 +77,31 @@ describe('FjTestPlayer', function() {
 
             expect(player.startPlaylist(0, false, false, true)).to.be.equal(true);
 
-            setTimeout(done, 70000);
+            expect(player.pause()).to.be.equal(true);
+
+            player.on(Const.PlayerEvents.PLAYBACK_PAUSED,
+                function(e, args) {
+                    console.warn(' *********************************** Having event PAUSED ', e);
+                    done();
+                });
+        });
+
+        it('Simple Player Ended Event', function(done) {
+            expect(P.addItem(data.itemOnly)).to.be.equal(true);
+
+            player = new Player('fjserverID1', 'playercontainer');
+            expect(player.isReady()).to.be.equal(false);
+
+            expect(player.loadPlaylist(P)).to.be.equal(true);
+
+            expect(player.startPlaylist(0, false, false, true)).to.be.equal(true);
 
             player.on(Const.PlayerEvents.PLAYBACK_ENDED,
                 function(e, args) {
-                    console.warn(' *********************************** Having event ENDED ', e);
+                    console.warn(' *********************************** Having event Ended ', e);
                     done();
                 });
+
         });
 
         it('Simple Player ADS Started Event', function(done) {

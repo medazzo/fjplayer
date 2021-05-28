@@ -117,7 +117,7 @@ function DataPlaylist() {
 
     var drms = [{
         'FJDrmScheme': 'forja',
-        'FJLicenceServer': 'http://www.facebook.com',
+        'FJLicenseServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
             'header2': 'value2'
@@ -128,7 +128,7 @@ function DataPlaylist() {
         }
     }, {
         'FJDrmSchem': 'forja',
-        'FJLicenceServer': 'http://www.facebook.com',
+        'FJLicenseServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
             'header2': 'value2'
@@ -139,7 +139,7 @@ function DataPlaylist() {
         }
     }, {
         'FJDrmScheme': '',
-        'FJLicenceServer': 'http://www.facebook.com',
+        'FJLicenseServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
             'header2': 'value2'
@@ -149,7 +149,7 @@ function DataPlaylist() {
             'header-2': 'value-2'
         }
     }, {
-        'FJLicenceServer': 'http://www.facebook.com',
+        'FJLicenseServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
             'header2': 'value2'
@@ -160,7 +160,7 @@ function DataPlaylist() {
         }
     }, {
         'FJDrmScheme': 'dvdvv',
-        'FJLicenceServer': 'http://www.facebook.com',
+        'FJLicenseServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
             'header2': 'value2'
@@ -182,7 +182,7 @@ function DataPlaylist() {
         }
     }, {
         'FJDrmScheme': 'forja',
-        'FJLicenceServer': '',
+        'FJLicenseServer': '',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
             'header2': 'value2'
@@ -203,7 +203,7 @@ function DataPlaylist() {
         }
     }, {
         'FJDrmScheme': 'forja',
-        'FJLicenceServer': 'http://www.facebook.com',
+        'FJLicenseServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequestd': {
             'header1': 'value1',
             'header2': 'value2'
@@ -214,7 +214,7 @@ function DataPlaylist() {
         }
     }, {
         'FJDrmScheme': 'forja',
-        'FJLicenceServer': 'http://www.facebook.com',
+        'FJLicenseServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequest': {},
         'FJHeadersOnSegmentsRequest': {
             'header-1': 'value-1',
@@ -222,14 +222,14 @@ function DataPlaylist() {
         }
     }, {
         'FJDrmScheme': 'forja',
-        'FJLicenceServer': 'http://www.facebook.com',
+        'FJLicenseServer': 'http://www.facebook.com',
         'FJHeadersOnSegmentsRequest': {
             'header-1': 'value-1',
             'header-2': 'value-2'
         }
     }, {
         'FJDrmScheme': 'forja',
-        'FJLicenceServer': 'http://www.facebook.com',
+        'FJLicenseServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
             'header2': 'value2'
@@ -240,7 +240,7 @@ function DataPlaylist() {
         }
     }, {
         'FJDrmScheme': 'forja',
-        'FJLicenceServer': 'http://www.facebook.com',
+        'FJLicenseServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
             'header2': 'value2'
@@ -248,7 +248,7 @@ function DataPlaylist() {
         'FJHeadersOnSegmentsRequest': {}
     }, {
         'FJDrmScheme': 'forja',
-        'FJLicenceServer': 'http://www.facebook.com',
+        'FJLicenseServer': 'http://www.facebook.com',
         'FJHeadersOnLicenseRequest': {
             'header1': 'value1',
             'header2': 'value2'

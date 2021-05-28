@@ -4,14 +4,13 @@ import chai from 'chai';
 import DataPlaylist from './data.spec';
 
 const expect = chai.expect;
-let P, data;
+let P, data = new DataPlaylist();
 
 /** ********************************************************
  *  *  *  *  *  *  *  *  unitary tests  *  *  *  *  *  *  *
  **********************************************************/
 describe('FjTestlaylist', function() {
     P = new Playlist();
-    data = new DataPlaylist();
 
     describe('when I get the size', function() {
         it('should return the empty size', () => {

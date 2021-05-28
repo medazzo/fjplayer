@@ -1,21 +1,34 @@
 {
-    "scripts": {
-        "dev": "webpack --mode=development  --color --config webpack.config.js ",
-        "build": "webpack  --mode=production --progress  --color --config webpack.prod.config.js",
-        "test": "NODE_ENV=test COVERAGE=true karma start karma.conf.js --colors -- auto-watch",
-        "web": "http-server -a localhost -p 8000 -c-1 ",
-        "dist": " concurrently \"npm run build\" \"npm run dev\"",
-        "live": "webpack serve --mode=development  --color --config webpack.config.js"
-    },
-    "version": "0.2.22",
-    "private": true,
+    "name": "fjplayer",
+    "main": "dist/fjplayer.js",
+    "author": "Mohamed Azzouni",    
+    "homepage": "https://www.easysoft-in.com",
+    "license": "MIT",
+    "version": "0.3.0",
     "repository": {
         "type": "git",
-        "url": "https://easysoftin.com"
+        "url": "https://github.com/medazzo/fjplayer"
     },
     "description": "the fjplayer html5 dash video player",
     "bugs": {
         "url": "https://easysoftin.com"
+    },
+    "keywords": [
+        "mpegdash",
+        "es6",
+        "dashjs",
+        "html5",
+        "player",
+        "cenc",
+        "ads"
+    ],
+    "scripts": {
+        "dev": "webpack --mode=development  --color --config webpack.config.js ",
+        "build": "webpack  --mode=production --progress  --color --config webpack.prod.config.js",
+        "test": "NODE_ENV=test COVERAGE=true karma start karma.conf.js --colors -- auto-watch --debug",
+        "web": "http-server -a localhost -p 8000 -c-1 ",
+        "dist": " concurrently \"npm run build\" \"npm run dev\"",
+        "live": "webpack serve --mode=development  --color --config webpack.config.js"
     },
     "devDependencies": {
         "@babel/core": "^7.14.3",
@@ -26,18 +39,25 @@
         "babel-polyfill": "^6.26.0",
         "chai": "^4.3.4",
         "css-loader": "^5.2.6",
+        "eslint": "^7.27.0",
         "eslint-webpack-plugin": "^2.5.4",
         "file-loader": "^6.2.0",
         "font-awesome": "^4.7.0",
         "http-server": "^0.12.3",
+        "jasmine": "^3.7.0",
+        "jasmine-core": "^3.7.1",
         "karma": "^6.3.2",
         "karma-babel-preprocessor": "^8.0.1",
         "karma-chai": "^0.1.0",
         "karma-chrome-launcher": "^3.1.0",
         "karma-coverage": "^2.0.3",
+        "karma-coverage-istanbul-reporter": "^3.0.3",
         "karma-firefox-launcher": "^2.1.0",
         "karma-htmlfile-reporter": "^0.3.8",
+        "karma-jasmine": "^4.0.1",
+        "karma-jasmine-html-reporter": "^1.6.0",
         "karma-mocha": "^2.0.1",
+        "karma-phantomjs-launcher": "^1.0.4",
         "karma-webpack": "^5.0.0",
         "less": "^4.1.1",
         "less-loader": "^9.0.0",
@@ -50,20 +70,6 @@
         "webpack-cli": "^4.7.0",
         "webpack-dev-server": "^3.11.2"
     },
-    "author": "Mohamed Azzouni",
-    "name": "fjplayer",
-    "homepage": "https://easysoftin.com",
-    "license": "MIT",
-    "keywords": [
-        "mpegdash",
-        "es6",
-        "dashjs",
-        "html5",
-        "player",
-        "cenc",
-        "ads"
-    ],
-    "main": "dist/fjplayer.js",
     "dependencies": {
         "shaka-player": "^3.1.0",
         "superagent": "^6.1.0"

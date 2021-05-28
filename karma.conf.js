@@ -1,66 +1,99 @@
-// Karma configuration
-// Generated on Mon May 01 2017 00:53:58 GMT+0200 (CEST)
-
-const src = './src/**/*.js',
-    srcCov = '**/src/**/*.js',
-    tests = './tests/**/*.spec.js';
 
 const karmaConfig = {
-    basePath: './',
-    frameworks: ['mocha'],
-    proxies: {
-        '/demo/videos/berber_pub.mp4': '/base/demo/videos/berber_pub.mp4',
-        '/dist/20fd1704ea223900efa9fd4e869efb08.woff2': '/base/dist/20fd1704ea223900efa9fd4e869efb08.woff2',
-        '/dist/f691f37e57f04c152e2315ab7dbad881.woff': '/base/dist/f691f37e57f04c152e2315ab7dbad881.woff',
-        '/dist/1e59d2330b4c6deb84b340635ed36249.ttf': '/base/dist/1e59d2330b4c6deb84b340635ed36249.ttf'
-    },
-    files: [
-        src,
-        tests,
-        {pattern: './demo/img/*', watched: false, included: false, served: true},
-        {pattern: './demo/videos/*', watched: false, included: false, served: true}
-    ],
-    preprocessors: {
-        src: ['webpack', 'coverage'],
-        tests: ['webpack']
-    },
+    basePath: '',
+    port: 9876,
+    colors: true,
+    autoWatch: true,
+    singleRun: false,
     debugMode: true,
-    webpack: require('./webpack.config.js'),
-    reporters: ['coverage', 'html'],
+    frameworks: ['jasmine'],
     browsers: ['Chrome'],
     client: {
-        captureConsole: false,
-        mocha: {
-            timeout: 10000 // 10 seconds - upped from 2 seconds
+        clearContext: false, // leave Jasmine Spec Runner output visible in browser
+        jasmine: {
+            random: true,
+            seed: '4321',
+            oneFailurePerSpec: true,
+            failFast: true,
+            timeoutInterval: 90000 // 70 sec instead of 5000ms
         }
     },
+    proxies: {
+        '/demo/video': 'http://localhost:9876/base/demo/video',
+        '/dist/': 'http://localhost:9876/base/demo/dist'
+    },
+    files: [
+        {pattern: 'test-context.js', watched: true},
+        {pattern: 'demo/videos/*.mp4', included: false, served: true},
+        {pattern: 'dist/*.woff*', included: false, served: true},
+        {pattern: 'dist/*.ttf', included: false, served: true}
+    ],
+    preprocessors: {
+        'test-context.js': ['webpack']
+    },
+    webpack: {
+        module: {
+            rules: [
+                {
+                    test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
+                }, { test: /\.png$/, use: ['file-loader?name=img/[name].png'] },
+                { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
+                {
+                    test: /\.css$/,
+                    use: [
+                        {
+                            loader: 'style-loader'
+                        },
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                modules: false
+                            }
+                        }
+                    ]
+                }, {
+                    test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
+                    loader: 'url-loader',
+                    options: {
+                        limit: 10000,
+                        mimetype: 'application/font-woff'
+                    }
+                },
+                {
+                    test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+                    loader: 'url-loader',
+                    options: {
+                        limit: 10000,
+                        mimetype: 'application/octet-stream'
+                    }
+                },
+                { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, use: ['file-loader'] },
+                {
+                    test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                    loader: 'url-loader',
+                    options: {
+                        limit: 10000,
+                        mimetype: 'svg+xml'
+                    }
+                }
+            ]
+        },
+        watch: true
+    },
+    reporters: ['coverage', 'progress', 'kjhtml'],
     specReporter: {
         showSpecTiming: true
     },
-    colors: true,
     reportSlowerThan: 25,
-    autoWatch: true,
-    coverageReporter: {
-        dir: 'coverage',
-        reporters: [
-            { type: 'text' },
-            { type: 'text-summary' },
-            { type: 'html' }
-        ]
-    },
-    htmlReporter: {
-        outputFile: 'tests/units.html',
-        // Optional
-        pageTitle: 'Unit Tests',
-        subPageTitle: 'A sample project description',
-        groupSuites: true,
-        useCompactStyle: true
+    coverageIstanbulReporter: {
+        dir: require('path').join(__dirname, './coverage'),
+        fixWebpackSourcePaths: true
     }
-};
 
-karmaConfig.preprocessors[src] = ['webpack'];
-karmaConfig.preprocessors[srcCov] = ['coverage'];
-karmaConfig.preprocessors[tests] = ['webpack'];
+};
 
 module.exports = function (config) {
     // level of logging
