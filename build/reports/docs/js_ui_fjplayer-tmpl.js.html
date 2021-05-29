@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: js/ui/fjplayer-tmpl.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: js/ui/fjplayer-tmpl.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const Logger = require('../utils/Logger');
+
+/**
+ * @module playerTemplate
+ * @description The playerTemplate
+ *
+ */
+class PlayerTemplate {
+    constructor() {
+        this.logger = new Logger(this);
+        this.OPEN_DELIMITER = '&lt;%=';
+        this.CLOSE_DELIMITER = '%>';
+        this.REGEX_STRING = '(&lt;%=|%>)';
+        this.DEFAULT_DELIMITER = '%';
+        this.regExpChars = /[|\\{}()[\]^$+*?.]/g;
+        this.template = '&lt;figure id="&lt;%= videoFigureId %>" class="fj-figure" controls-hidden="true" data-fullscreen="&lt;%= fullScreenOnStart %>"> ' +
+        '    &lt;!-- video element -->  ' +
+        '    &lt;video id="&lt;%= videoId %>" class="fj-video" width="&lt;%= vwidth %>" crossorigin> &lt;/video> ' +
+        '    &lt;!-- Horizental Tpp --> ' +
+        '    &lt;div class="fj-horizental-top" id="&lt;%= videoInfoId %>"> ' +
+        '        &lt;span class="fj-vertical-left  fj-control  fj-btn  fj-icon-leftarrow" aria-hidden="true" id="&lt;%= backId %>"> &lt;/span> ' +
+        '        &lt;div class="fj-vertical-left  fj-vertical-separator ">&lt;/div> ' +
+        '        &lt;div class="fj-vertical-left  fj-control  fj-btn fj-title fj-short-span " id="&lt;%= titleId %>"> &lt;/div> ' +
+        '        &lt;span class="fj-vertical-right fj-control  fj-btn  fj-icon-share  " aria-hidden="true" id="&lt;%= shareId %>"> &lt;/span> ' +
+        '        &lt;div class="fj-vertical-right  fj-vertical-separator ">&lt;/div> ' +
+        '        &lt;span class="fj-vertical-right fj-control  fj-btn  fj-icon-download " aria-hidden="true" id="&lt;%= downloadId %>"> &lt;/span> ' +
+        '    &lt;/div> ' +
+        '    &lt;!-- Horizental Center --> ' +
+        '    &lt;div class="fj-horizental-center"> ' +
+        '       &lt;div class="fj-vertical-center">' +
+        '           &lt;div id="&lt;%= errorDivId %>" class="fj-hide"> &lt;/div> ' +
+        '           &lt;div id="&lt;%= spinnerId %>" class="fj-hide spinner"> &lt;/div> ' +
+        '               &lt;span class="fj-control fj-big-btn  fj-icon-play"  aria-hidden="true" id="&lt;%= BigPlayBtnId %>">&lt;/span> ' +
+        '       &lt;/div> ' +
+        '    &lt;/div> ' +
+        '    &lt;!-- this will contains ads video or ads overlays --> ' +
+        '    &lt;div id="&lt;%= adsContainerDivId %>" class="">&lt;/div> ' +
+        '    &lt;!-- Horizental Bottom Up used for menu  --> ' +
+        '    &lt;div class="fj-horizental-bottomUpper"> ' +
+        '        &lt;!-- video caption ued by dash player for caption --> ' +
+        '        &lt;div id="&lt;%= videoCaptionId %>">&lt;/div> ' +
+        '        &lt;!-- this present the thumbs image if exist--> ' +
+        '        &lt;div class="thumbsBlockDiv  fj-hide" id="&lt;%= thumbsDivId %>" > ' +
+        '            &lt;span class="thumbsBlock" id="&lt;%= thumbsImgId %>">&lt;/span> ' +
+        '            &lt;span class="fjcontrols-control-text" id="&lt;%= thumbstimerId %>">&lt;/span> ' +
+        '        &lt;/div> ' +
+        '        &lt;!-- this present the subtitles or audios menu if exist  and when clicked--> ' +
+        '        &lt;div class="fj-vertical-left" id="&lt;%= menuContainerDivId %>"> ' +
+        '        &lt;/div> ' +
+        '    &lt;/div> ' +
+        '    &lt;!-- Horizental Bottom down used for fj controls  --> ' +
+        '    &lt;div class="fj-horizental-bottomLower"  id="&lt;%= videoControlsId %>"> ' +
+        '        &lt;!--  the video progress Bar --> ' +
+        '        &lt;div class="fj-vertical-center"> ' +
+        '            &lt;input class="fj-control-embd fj-video-progress" id="&lt;%= progressBarId %>" type="range" min="0" /> ' +
+        '        &lt;/div> ' +
+        '        &lt;!--  play,previous and next controls  --> ' +
+        '        &lt;span class="fj-vertical-left fj-control-embd fj-btn fj-icon-playPrevious" aria-hidden="true" id="&lt;%= playpreviousBtnId %>" title="previous"> &lt;/span> ' +
+        '        &lt;span class="fj-vertical-left fj-control-embd fj-btn fj-icon-play" aria-hidden="true" id="&lt;%= playpauseBtnId %>" title="Play"> &lt;/span> ' +
+        '        &lt;span class="fj-vertical-left fj-control-embd fj-btn fj-icon-playNext" aria-hidden="true" id="&lt;%= playforwardBtnId %>" title="next"> &lt;/span> ' +
+        '        &lt;!--  mute and volume bar controls --> ' +
+        '        &lt;span class="fj-vertical-left fj-control-embd fj-btn fj-icon-volUp" aria-hidden="true" id="&lt;%= muteBtnId %>" title="mute"> &lt;/span> ' +
+        '        &lt;div class="fj-vertical-left  volumebar" id="&lt;%= volumeDivId %>"> ' +
+        '            &lt;input id="&lt;%= volumeBarId %>" class="fj-control-embd" type="range" min="0"  /> ' +
+        '        &lt;/div> ' +
+        '        &lt;!--  more description of the stream   --> ' +
+        '        &lt;div class="fj-vertical-left fj-text fj-short-span" title="Description" id="&lt;%= descriptionId %>"> ' +
+        '            &lt;span>&lt;/span> ' +
+        '        &lt;/div> ' +
+        '        &lt;!--  full screen, audio and subtitles controls  --> ' +
+        '        &lt;span class="fj-vertical-right fj-control-embd fj-btn fj-icon-fullScreen " aria-hidden="true" id="&lt;%= fullScreenBtnId %>" title="Fullscreen"> &lt;/span> ' +
+        '        &lt;span class="fj-vertical-right fj-control-embd fj-btn fj-icon-subs" aria-hidden="true" id="&lt;%= subtitlesBtnId %>" title="Subtitles"> &lt;/span> ' +
+        '        &lt;span class="fj-vertical-right fj-control-embd fj-btn fj-icon-audios" aria-hidden="true" id="&lt;%= audiosBtnId %>" title="Audios"> &lt;/span> ' +
+        '        &lt;!--  timers   --> ' +
+        '        &lt;div class="fj-vertical-right fj-text " title="times"> ' +
+        '            &lt;span id="&lt;%= timerId %>">0:00:00&lt;/span>&lt;span>/&lt;/span>&lt;span id="&lt;%= durationId %>">0:00:00&lt;/span> ' +
+        '        &lt;/div> ' +
+        '    &lt;/div> ' +
+        '    &lt;!--  this will contains overlays   --> ' +
+        '    &lt;div id="&lt;%= overlaysContainerDivId %>" class="fj-overlayContainer fj-hide"> ' +
+        '    &lt;/div> ' +
+        '&lt;/figure> ';
+    }
+
+    /**
+     *
+     */
+    createRegex() {
+        let str = this.REGEX_STRING;
+        const delim = String(this.DEFAULT_DELIMITER).replace(this.regExpChars, '\\$&amp;');
+        str = str.replace(/%/g, delim);
+        return new RegExp(str);
+    }
+
+    /**
+     *
+     * @param {*} templateStr
+     */
+    parseTemplateText(templateStr) {
+        const reg = this.createRegex();
+        let str = templateStr;
+        let result = reg.exec(str);
+        const arr = [];
+        let firstPos;
+
+        while (result) {
+            firstPos = result.index;
+            if (firstPos !== 0) {
+                arr.push(str.substring(0, firstPos));
+                str = str.slice(firstPos);
+            }
+            arr.push(result[0]);
+            str = str.slice(result[0].length);
+            result = reg.exec(str);
+        }
+
+        if (str) {
+            arr.push(str);
+        }
+        return arr;
+    }
+
+    /**
+     *
+     * @param {*} matchedArr
+     * @param {*} dataObj
+     */
+    generateHtml(matchedArr, dataObj) {
+        const newArr = [];
+        this.logger.info('Generating html fr player');
+        let k = 0;
+        let opening = false;
+        let key;
+        let done = '';
+        Object.keys(matchedArr).forEach((i) => {
+            if (matchedArr[i] === this.OPEN_DELIMITER) {
+                opening = true;
+            } else if (matchedArr[i] === this.CLOSE_DELIMITER) {
+                opening = false;
+            } else {
+                if (opening === true) { // wr'in key
+                    key = matchedArr[i];
+                    key = key.replace(/ +/g, '');
+                    // this.logger.info('found key  ', key);
+                    if (Object.prototype.hasOwnProperty.call(dataObj, key)) {
+                        newArr[k] = dataObj[key];
+                    } else {
+                        throw new Error(' Needed Key is Not found key for html player template :', matchedArr[i]);
+                    }
+                } else {
+                    newArr[k] = matchedArr[i];
+                }
+                k += 1;
+            }
+        });
+        done = newArr.join('');
+        return done;
+    }
+
+    /**
+     *
+     * @param {*} data
+     */
+    GetHtml(data) {
+        const matches = this.parseTemplateText(this.template);
+        return this.generateHtml(matches, data);
+    }
+}
+module.exports = PlayerTemplate;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AdsManager.html">AdsManager</a></li><li><a href="module-Constants.html">Constants</a></li><li><a href="module-Eventing.html">Eventing</a></li><li><a href="module-FjseAuthz.html">FjseAuthz</a></li><li><a href="module-Logger.html">Logger</a></li><li><a href="module-Overlay.html">Overlay</a></li><li><a href="module-PlayerMedia.html">PlayerMedia</a></li><li><a href="module-playerTemplate.html">playerTemplate</a></li><li><a href="module-PlayerUi.html">PlayerUi</a></li><li><a href="module-Thumbs.html">Thumbs</a></li></ul><h3>Classes</h3><ul><li><a href="Menus.html">Menus</a></li><li><a href="Player.html">Player</a></li><li><a href="global.html#Playlist">Playlist</a></li><li><a href="Version.html">Version</a></li></ul><h3>Global</h3><ul><li><a href="global.html#IsoLangs">IsoLangs</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat May 29 2021 04:03:07 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

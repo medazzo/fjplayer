@@ -1,4 +1,4 @@
-
+const webpackConfig = require('./webpack.prod.config');
 const karmaConfig = {
     basePath: '',
     port: 9876,
@@ -23,73 +23,37 @@ const karmaConfig = {
         '/dist/': 'http://localhost:9876/base/demo/dist'
     },
     files: [
-        {pattern: 'test-context.js', watched: true},
+        {pattern: 'src/**/*.js', watched: true},
         {pattern: 'demo/videos/*.mp4', included: false, served: true},
         {pattern: 'dist/*.woff*', included: false, served: true},
         {pattern: 'dist/*.ttf', included: false, served: true}
     ],
     preprocessors: {
-        'test-context.js': ['webpack', 'coverage']
+        'src/**/*.js': ['webpack']
     },
-    webpack: {
-        module: {
-            rules: [
-                {
-                    test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }, { test: /\.png$/, use: ['file-loader?name=img/[name].png'] },
-                { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
-                {
-                    test: /\.css$/,
-                    use: [
-                        {
-                            loader: 'style-loader'
-                        },
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                modules: false
-                            }
-                        }
-                    ]
-                }, {
-                    test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-                    loader: 'url-loader',
-                    options: {
-                        limit: 10000,
-                        mimetype: 'application/font-woff'
-                    }
-                },
-                {
-                    test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-                    loader: 'url-loader',
-                    options: {
-                        limit: 10000,
-                        mimetype: 'application/octet-stream'
-                    }
-                },
-                { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, use: ['file-loader'] },
-                {
-                    test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                    loader: 'url-loader',
-                    options: {
-                        limit: 10000,
-                        mimetype: 'svg+xml'
-                    }
-                }
-            ]
-        },
-        watch: true
-    },
+    webpack: webpackConfig,
     reporters: ['coverage', 'progress', 'kjhtml'],
+    coverageReporter: {
+        // specify a common output directory
+        dir: 'build/reports/coverage',
+        instrumenterOptions: {
+            istanbul: { noCompact: true }
+        },
+        reporters: [
+            // reporters not supporting the `file` property
+            { type: 'html', subdir: 'report-html' },
+            { type: 'lcov', subdir: 'report-lcov' },
+            // reporters supporting the `file` property, use `subdir` to directly
+            // output them in the `dir` directory
+            { type: 'lcovonly', subdir: '.', file: 'report-lcovonly.txt' },
+            { type: 'text', subdir: '.', file: 'text.txt' },
+            { type: 'text-summary', subdir: '.', file: 'text-summary.txt' }
+        ]
+    },
     specReporter: {
         showSpecTiming: true
     },
-    reportSlowerThan: 25,
-    coverageReporter: { type: 'html', dir: 'coverage/' }
-
+    reportSlowerThan: 25
 };
 
 module.exports = function (config) {

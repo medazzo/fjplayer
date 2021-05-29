@@ -25,11 +25,30 @@ config = {
     module: {
         rules: [
             {
+                // exclude tests from coverage report
+                test: /\.(spec|test)\.js$/,
+                use: [
+                    {
+                        loader: 'babel-loader'
+                    }
+                ]
+            },
+            {
                 test: /(\.jsx|\.js)$/,
-                loader: 'babel-loader',
-                options: {
-                    presets: ['@babel/preset-env']
-                }
+                loader: 'babel-loader'
+            },
+            {
+                // include code
+                test: /\.js$/,
+                exclude: /\.(spec|test)\.js$/,
+                use: [
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            plugins: ['istanbul']
+                        }
+                    }
+                ]
             },
             { test: /\.png$/, use: ['file-loader?name=img/[name].png'] },
             { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },

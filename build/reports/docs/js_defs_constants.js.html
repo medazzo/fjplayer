@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: js/defs/constants.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: js/defs/constants.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module Constants
+ */
+const FJCONFIG_CLASS = 'FJClass';
+const FJCONFIG_TYPE = 'FJType';
+const FJCONFIG_TITLE = 'FJTitle';
+const FJCONFIG_SRC = 'FJSrc';
+const FJCONFIG_POSTER = 'FJPoster';
+const FJCONFIG_ADS_LINK_URL = 'FJAdsLinkUrl';
+const FJCONFIG_CAN_ESCAPE = 'FJCanEscape';
+const FJCONFIG_THUMBS = 'FJThumbs';
+const FJCONFIG_SUBTITLES = 'FJSubtitles';
+const FJCONFIG_ADS = 'FJAds';
+const FJCONFIG_AUDIOS = 'FJAudios';
+const FJCONFIG_OVERLAYS = 'FJOverlays';
+const FJCONFIG_DRM = 'FJDrm';
+const FJCONFIG_LABEL = 'FJLabel';
+const FJCONFIG_LANG = 'FJLang';
+const FJCONFIG_DATA = 'FJData';
+const FJCONFIG_URL = 'FJUrl';
+const FJCONFIG_DURATION = 'FJDuration';
+const FJCONFIG_SHOW_AT = 'FJShowAt';
+
+const FJCONFIG_DRM_LICENSE_SERVER = 'FJLicenseServer';
+const FJCONFIG_DRM_SCHEME = 'FJDrmScheme';
+const FJCONFIG_DRM_SCHEME_FORJA = 'forja';
+
+const FJCONFIG_SHOW_UP_TITLE = 'FJUpTitle';
+const FJCONFIG_DOWNLOAD = 'FJDownload';
+const FJCONFIG_SHARE = 'FJShare';
+const FJCONFIG_BACK = 'FJBack';
+
+const FJCONFIG_TRUE = 'true';
+const FJCONFIG_FALSE = 'false';
+const FJCONFIG_BOOLEAN = { FJCONFIG_TRUE, FJCONFIG_FALSE };
+
+const FJCONFIG_CLASS_VOD = 'vod';
+const FJCONFIG_CLASS_LIVE = 'live';
+const FJCONFIG_CLASSES = [FJCONFIG_CLASS_LIVE, FJCONFIG_CLASS_VOD];
+
+const FJCONFIG_TYPE_MP4 = 'video/mp4';
+const FJCONFIG_TYPE_DASH = 'dash';
+const FJCONFIG_TYPES = [FJCONFIG_TYPE_MP4, FJCONFIG_TYPE_DASH];
+
+const FJCONFIG_ADS_CLASS_PRE_ROLL = 'pre-roll';
+const FJCONFIG_ADS_CLASS_MID_ROLL = 'mid-roll';
+const FJCONFIG_ADS_CLASS_POST_ROLL = 'post-roll';
+const FJCONFIG_ADS_CLASSES = [
+    FJCONFIG_ADS_CLASS_PRE_ROLL,
+    FJCONFIG_ADS_CLASS_MID_ROLL,
+    FJCONFIG_ADS_CLASS_POST_ROLL
+];
+
+const AdsEnum = {
+    ADS_PRE_ROLL: 'ADS_PRE_ROLL',
+    ADS_MID_ROLL: 'ADS_MID_ROLL',
+    ADS_POST_ROLL: 'ADS_POST_ROLL'
+};
+
+const PlayerEvents = {
+    STREAM_LOADED: 'STREAM_LOADED',
+    TRACKS_ADDED: 'TRACKS_ADDED',
+    PLAYBACK_ERROR: 'PLAYBACK_ERROR',
+    PLAYBACK_STARTED: 'PLAYBACK_STARTED',
+    PLAYBACK_PAUSED: 'PLAYBACK_PAUSED',
+    PLAYBACK_SEEKING: 'PLAYBACK_SEEKING',
+    PLAYBACK_SEEKED: 'PLAYBACK_SEEKED',
+    PLAYBACK_ENDED: 'PLAYBACK_ENDED',
+    PLAYBACK_TIME_UPDATE: 'PLAYBACK_TIME_UPDATE'
+};
+
+const AdsEvents = {
+    ADS_USER_CLICKED: 'ADS_USER_CLICKED',
+    ADS_PLAYBACK_STARTED: 'ADS_PLAYBACK_STARTED',
+    ADS_PLAYBACK_ENDED: 'ADS_PLAYBACK_ENDED',
+    ADS_PLAYBACK_ERROR: 'ADS_PLAYBACK_ERROR'
+};
+
+const OverlayEvents = {
+    OVERLAY_USER_CLICKED: 'OVERLAY_USER_CLICKED',
+    OVERLAY_STARTED: 'OVERLAY_STARTED',
+    OVERLAY_ENDED: 'OVERLAY_ENDED',
+    OVERLAY_ERROR: 'OVERLAY_ERROR',
+    OVERLAY_SKIPPED: 'OVERLAY_SKIPPED'
+};
+
+module.exports = {
+    FJCONFIG_CLASS,
+    FJCONFIG_TYPE,
+    FJCONFIG_TITLE,
+    FJCONFIG_SRC,
+    FJCONFIG_POSTER,
+    FJCONFIG_ADS_LINK_URL,
+    FJCONFIG_CAN_ESCAPE,
+    FJCONFIG_THUMBS,
+    FJCONFIG_SUBTITLES,
+    FJCONFIG_ADS,
+    FJCONFIG_AUDIOS,
+    FJCONFIG_OVERLAYS,
+    FJCONFIG_DRM,
+    FJCONFIG_LABEL,
+    FJCONFIG_LANG,
+    FJCONFIG_DATA,
+    FJCONFIG_URL,
+    FJCONFIG_DURATION,
+    FJCONFIG_SHOW_AT,
+    FJCONFIG_DRM_LICENSE_SERVER,
+    FJCONFIG_DRM_SCHEME,
+    FJCONFIG_DRM_SCHEME_FORJA,
+    FJCONFIG_SHOW_UP_TITLE,
+    FJCONFIG_DOWNLOAD,
+    FJCONFIG_SHARE,
+    FJCONFIG_BACK,
+    FJCONFIG_TRUE,
+    FJCONFIG_FALSE,
+    FJCONFIG_BOOLEAN,
+    FJCONFIG_CLASS_VOD,
+    FJCONFIG_CLASS_LIVE,
+    FJCONFIG_CLASSES,
+    FJCONFIG_TYPE_MP4,
+    FJCONFIG_TYPE_DASH,
+    FJCONFIG_TYPES,
+    FJCONFIG_ADS_CLASS_PRE_ROLL,
+    FJCONFIG_ADS_CLASS_MID_ROLL,
+    FJCONFIG_ADS_CLASS_POST_ROLL,
+    FJCONFIG_ADS_CLASSES,
+    AdsEnum,
+    PlayerEvents,
+    AdsEvents,
+    OverlayEvents
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AdsManager.html">AdsManager</a></li><li><a href="module-Constants.html">Constants</a></li><li><a href="module-Eventing.html">Eventing</a></li><li><a href="module-FjseAuthz.html">FjseAuthz</a></li><li><a href="module-Logger.html">Logger</a></li><li><a href="module-Overlay.html">Overlay</a></li><li><a href="module-PlayerMedia.html">PlayerMedia</a></li><li><a href="module-playerTemplate.html">playerTemplate</a></li><li><a href="module-PlayerUi.html">PlayerUi</a></li><li><a href="module-Thumbs.html">Thumbs</a></li></ul><h3>Classes</h3><ul><li><a href="Menus.html">Menus</a></li><li><a href="Player.html">Player</a></li><li><a href="global.html#Playlist">Playlist</a></li><li><a href="Version.html">Version</a></li></ul><h3>Global</h3><ul><li><a href="global.html#IsoLangs">IsoLangs</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat May 29 2021 04:03:07 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
