@@ -10,7 +10,8 @@ const Eventing = require('../utils/Eventing');
  */
 
 class AdsManager {
-    constructor() {
+    constructor(vidContainerId) {
+        this.esacapeAdsBtnId = `escapeAds${vidContainerId}`;;
         this.logger = new Logger(this);
         this.settled = false;
         this.events = new Eventing();
@@ -113,6 +114,7 @@ class AdsManager {
             if (item[Const.FJCONFIG_CAN_ESCAPE] === 'true' || item[Const.FJCONFIG_CAN_ESCAPE] === true) {
                 if (adsvideo.currentTime > 5) {
                     if (!done) {
+                        infoDiv2.setAttribute('id', this.esacapeAdsBtnId);
                         infoDiv2.innerHTML = ', Can be escapped <span class="fj-icon-playNext" ></span>';
                         infoDiv2.addEventListener('click', () => {
                             this.StopAds(index, adsType);

@@ -27,7 +27,7 @@ class Player {
         this.videoContainerId = vidContainerId;
         this.fjPlayerId = fjID;
         this.OverlaysMgr = new Overlays();
-        this.AdsMgr = new AdsManager();
+        this.AdsMgr = new AdsManager(vidContainerId);
         this.supportsVideo = !!document.createElement('video').canPlayType;
         this.playerUi = new PlayerUi(this.videoContainerId, this.videoWidth, this.videoHeight);
         this.playerMedia = new PlayerMedia(this.fjPlayerId);

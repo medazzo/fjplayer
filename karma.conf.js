@@ -29,7 +29,7 @@ const karmaConfig = {
         {pattern: 'dist/*.ttf', included: false, served: true}
     ],
     preprocessors: {
-        'test-context.js': ['webpack']
+        'test-context.js': ['webpack', 'coverage']
     },
     webpack: {
         module: {
@@ -88,10 +88,7 @@ const karmaConfig = {
         showSpecTiming: true
     },
     reportSlowerThan: 25,
-    coverageIstanbulReporter: {
-        dir: require('path').join(__dirname, './coverage'),
-        fixWebpackSourcePaths: true
-    }
+    coverageReporter: { type: 'html', dir: 'coverage/' }
 
 };
 
