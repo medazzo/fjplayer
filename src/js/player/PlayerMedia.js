@@ -1,31 +1,31 @@
-'use strict';
-var shaka = require('shaka-player');
-import Logger from '../utils/Logger';
-import Eventing from '../utils/Eventing';
-import * as Const from '../defs/constants';
-import * as Langs from '../defs/isoLangs';
+const shaka = require('shaka-player');
+const Logger = require('../utils/Logger');
+const Eventing = require('../utils/Eventing');
+const Const = require('../defs/constants');
+const IsoLangs = require('../defs/isoLangs');
 
 /**
  * @module PlayerMedia
  * @description The PlayerMedia is the html video/dash/drm Media player
  *
  */
-function PlayerMedia(fjPlayerId) {
-    var video = null,
-        FjPlayerId = fjPlayerId,
-        FjSessionToken = 'notSettled',
-        initialized = false,
-        startingCount = 0,
-        thumbsTrackUrl = null,
-        thumbsTrackIndex = -1,
-        // getEndedEvent = false,
-        CurrentUrl = null,
-        // CurrentProtection = null,
-        CurrentStreamType = PlayerMedia.UNKNOWN,
-        DashPlayer = null,
-        logger = new Logger(this),
-        events = new Eventing(),
-        StreamTypes = {
+class PlayerMedia {
+    constructor(fjPlayerId) {
+        this.video = null;
+        this.FjPlayerId = fjPlayerId;
+        this.FjSessionToken = 'notSettled';
+        this.initialized = false;
+        this.startingCount = 0;
+        this.thumbsTrackUrl = null;
+        this.thumbsTrackIndex = -1;
+        this.CurrentUrl = false;
+        this.CurrentUrl = null;
+        this.CurrentProtection = null;
+        this.CurrentStreamType = PlayerMedia.UNKNOWN;
+        this.DashPlayer = null;
+        this.logger = new Logger(this);
+        this.events = new Eventing();
+        this.StreamTypes = {
             UNKNOWN: 0,
             MP4_CLEAR: 1,
             DASH_CLEAR: 2,
@@ -37,393 +37,400 @@ function PlayerMedia(fjPlayerId) {
                 3: { name: 'DASH_ENCRYPTED', value: 3, code: 'E' }
             }
         };
+    }
+
     /**
      *
      */
-    function initialize(playerUiVideo) {
-        // Install built-in polyfills to patch browser incompatibilities.
+    initialize(playerUiVideo) {
+    // Install built-in polyfills to patch browser incompatibilities.
         shaka.polyfill.installAll();
         // Debug logs, when the default of INFO isn't enough:
         // shaka.log.setLevel(shaka.log.Level.DEBUG);
         // Check to see if the browser supports the basic APIs Shaka needs.
         if (!shaka.Player.isBrowserSupported()) {
             // This browser does not have the minimum set of APIs we need.
-            logger.error('Browser not supported !');
+            this.logger.error('Browser not supported !');
             return false;
         }
 
-        video = playerUiVideo;
-        if (!video) {
-            throw new Error('Please call initialize with a valid Player UI having a video html 5 element ');
+        this.video = playerUiVideo;
+        if (!this.video) {
+            throw new Error('Please call initialize with a valid Player UI having a this.videohtml 5 element ');
         }
-        // DashPlayer = new shaka.Player(video);
+        // this.DashPlayer= new shaka.Player(video);
         // done
-        initialized = true;
-        logger.debug(' Media player just initialized with playerUiVideo');
+        this.initialized = true;
+        this.logger.debug(' Media player just this.initializedwith playerUiVideo');
         return true;
-    };
-    /**
-     *
-     */
-    function on(name, handler) {
-        return events.on(name, handler);
-    };
-    /**
-     *
-     */
-    function off(name, handler) {
-        return events.off(name, handler);
-    };
+    }
 
     /**
      *
      */
-    function play() {
-        if (initialized === true) {
-            video.play();
-        } else {
-            logger.warn(' No Media Loaded , nothing to play ');
-        }
-    };
-    /**
-     *
-     */
-    function time() {
-        if (initialized === true) {
-            return video.currentTime;
-        }
-        logger.warn(' No Media Loaded ! ');
-        return 0;
-    };
-    /**
-     *
-     */
-    function isPaused() {
-        if (initialized === true) {
-            return (video.paused);
-        }
-        logger.warn(' No Media Loaded ! ');
-        return true;
-    };
-    /**
-     *
-     */
-    function isEnded() {
-        if (initialized === true) {
-            return (video.ended);
-        }
-        logger.warn(' No Media Loaded ! ');
-        return true;
-    };
-    /**
-     *
-     */
-    function isMuted() {
-        if (initialized === true) {
-            return (video.muted);
-        }
-        logger.warn(' No Media Loaded ! ');
-        return true;
-    };
-    /**
-     *
-     */
-    function setVolume(volume) {
-        if (initialized === true) {
-            video.volume = volume;
-        } else {
-            logger.warn(' No Media Loaded ! ');
-        }
-    };
-    /**
-     *
-     */
-    function getDuration() {
-        if (initialized === true) {
-            return video.duration;
-        }
-        logger.warn(' No Media Loaded ! ');
-        return 0;
-    };
-    /**
-     *
-     */
-    function getVolume() {
-        if (initialized === true) {
-            return video.volume;
-        }
-        logger.warn(' No Media Loaded ! ');
-        return 0;
-    };
+    on(name, handler) {
+        return this.events.on(name, handler);
+    }
 
-    function setThumbsUrl(url) {
+    /**
+     *
+     */
+    off(name, handler) {
+        return this.events.off(name, handler);
+    }
+
+    /**
+     *
+     */
+    play() {
+        if (this.initialized === true) {
+            this.video.play();
+        } else {
+            this.logger.warn(' No Media Loaded , nothing to play ');
+        }
+    }
+
+    /**
+     *
+     */
+    time() {
+        if (this.initialized === true) {
+            return this.video.currentTime;
+        }
+        this.logger.warn(' No Media Loaded ! ');
+        return null;
+    }
+
+    /**
+     *
+     */
+    isPaused() {
+        if (this.initialized === true) {
+            return (this.video.paused);
+        }
+        this.logger.warn(' No Media Loaded ! ');
+        return true;
+    }
+
+    /**
+     *
+     */
+    isEnded() {
+        if (this.initialized === true) {
+            return (this.video.ended);
+        }
+        this.logger.warn(' No Media Loaded ! ');
+        return true;
+    }
+
+    /**
+     *
+     */
+    isMuted() {
+        if (this.initialized === true) {
+            return (this.video.muted);
+        }
+        this.logger.warn(' No Media Loaded ! ');
+        return true;
+    }
+
+    /**
+     *
+     */
+    setVolume(volume) {
+        if (this.initialized === true) {
+            this.video.volume = volume;
+        } else {
+            this.logger.warn(' No Media Loaded ! ');
+        }
+    }
+
+    /**
+     *
+     */
+    getDuration() {
+        if (this.initialized === true) {
+            return this.video.duration;
+        }
+        this.logger.warn(' No Media Loaded ! ');
+        return null;
+    }
+
+    /**
+     *
+     */
+    getVolume() {
+        if (this.initialized === true) {
+            return this.video.volume;
+        }
+        this.logger.warn(' No Media Loaded ! ');
+        return null;
+    }
+
+    setThumbsUrl(url) {
         if (url !== null && url !== undefined && url !== '') {
-            thumbsTrackUrl = url;
-            logger.debug(' Setting url for thumbs @', url);
+            this.thumbsTrackUrl = url;
+            this.logger.debug(' Setting url for thumbs @', url);
         } else {
-            thumbsTrackUrl = null;
-            logger.debug(' No Setting url for thumbs ');
+            this.thumbsTrackUrl = null;
+            this.logger.debug(' No Setting url for thumbs ');
         }
-    };
+    }
+
     /* ********************************************************************** */
     /*                               TXT TRACKS                               */
     /* ********************************************************************** */
-    function setTextTrack(textTrackIndex) {
-        var index = parseInt(textTrackIndex, 10);
-        var i = 0;
-        logger.warn(' Setting text track to index : ', index);
-        if (initialized === true) {
-            if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-                for (i = 0; i < video.textTracks.length; i++) {
-                    if ((video.textTracks[i].kind === 'captions') ||
-                        (video.textTracks[i].kind === 'subtitles') ||
-                        (video.textTracks[i].kind === 'subtitle')) {
+    setTextTrack(textTrackIndex) {
+        const index = this.parseInt(textTrackIndex);
+        this.logger.warn(' Setting text track to index : ', index);
+        if (this.initialized === true) {
+            if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
+                for (let i = 0; i < this.video.textTracks.length; i += 1) {
+                    if ((this.video.textTracks[i].kind === 'captions') ||
+                        (this.video.textTracks[i].kind === 'subtitles') ||
+                        (this.video.textTracks[i].kind === 'subtitle')) {
                         if (index === i) {
-                            video.textTracks[i].mode = 'showing';
+                            this.video.textTracks[i].mode = 'showing';
                         } else {
-                            video.textTracks[i].mode = 'hidden';
+                            this.video.textTracks[i].mode = 'hidden';
                         }
                     }
                 }
             } else {
-                DashPlayer.selectTextTrack(DashPlayer.getTextTracks()[index]);
+                this.DashPlayer.selectTextTrack(this.DashPlayer.getTextTracks()[index]);
             }
         }
-    };
+    }
 
-    function getTextTracks() {
-        if (initialized === true) {
-            if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-                return video.textTracks;
+    getTextTracks() {
+        if (this.initialized === true) {
+            if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
+                return this.video.textTracks;
             }
-            return DashPlayer.getTextTracks();
-
+            return this.DashPlayer.getTextTracks();
         }
-        logger.warn(' No Media Loaded ! ');
+        this.logger.warn(' No Media Loaded ! ');
         return [];
-    };
+    }
 
-    function isTextTrackEnabled(textTrackIndex) {
-        if (initialized === true) {
-            if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-                return (video.textTracks[textTrackIndex].enabled === true);
+    isTextTrackEnabled(textTrackIndex) {
+        if (this.initialized === true) {
+            if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
+                return (this.video.textTracks[textTrackIndex].enabled === true);
             }
-            return (DashPlayer.getTextTracks()[textTrackIndex].active === true);
-
+            return (this.DashPlayer.getTextTracks()[textTrackIndex].active === true);
         }
-        logger.warn(' No Media Loaded ! ');
+        this.logger.warn(' No Media Loaded ! ');
         return false;
-    };
+    }
 
-    function getTextTrackLabel(textTrackIndex) {
-        if (initialized === true) {
-            if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-                return (video.textTracks[textTrackIndex].label);
+    getTextTrackLabel(textTrackIndex) {
+        if (this.initialized === true) {
+            if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
+                return (this.video.textTracks[textTrackIndex].label);
             }
-            return (DashPlayer.getTextTracks()[textTrackIndex].language);
+            return (this.DashPlayer.getTextTracks()[textTrackIndex].language);
         }
-        logger.warn(' No Media Loaded ! ');
+        this.logger.warn(' No Media Loaded ! ');
         return 'NaN';
-    };
+    }
+
     /* ********************************************************************** */
     /*                               AUD LANGS                               */
     /* ********************************************************************** */
-    function setAudioLang(AudLangIndex) {
-        var index = parseInt(AudLangIndex, 10);
-        var i = 0;
-        logger.warn(' Setting text track to index : ', index);
-        if (initialized === true) {
-            if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-                for (i = 0; i < video.textTracks.length; i++) {
+    setAudioLang(AudLangIndex) {
+        const index = this.parseInt(AudLangIndex);
+        this.logger.warn(' Setting text track to index : ', index);
+        if (this.initialized === true) {
+            if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
+                for (let i = 0; i < this.video.textTracks.length; i += 1) {
                     if (index === i) {
-                        video.audioTracks[i].enabled = true;
+                        this.video.audioTracks[i].enabled = true;
                     } else {
-                        video.audioTracks[i].enabled = false;
+                        this.video.audioTracks[i].enabled = false;
                     }
                 }
             } else {
-                DashPlayer.selectAudioLanguage(DashPlayer.getAudioLanguages()[index]);
+                this.DashPlayer.selectAudioLanguage(this.DashPlayer.getAudioLanguages()[index]);
             }
         }
-    };
+    }
 
-    function getAudioLanguages() {
-        if (initialized === true) {
-            if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-                return video.audioTracks;
+    getAudioLanguages() {
+        if (this.initialized === true) {
+            if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
+                return this.video.audioTracks;
             }
-            return DashPlayer.getAudioLanguages();
-
+            return this.DashPlayer.getAudioLanguages();
         }
-        logger.warn(' No Media Loaded ! ');
+        this.logger.warn(' No Media Loaded ! ');
         return [];
-    };
+    }
 
-    function isAudioLangEnabled(AudLangIndex) {
-        var index = parseInt(AudLangIndex, 10);
-        if (initialized === true) {
-            if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-                return (video.audioTracks[index].enabled === true);
+    isAudioLangEnabled(AudLangIndex) {
+        const index = this.parseInt(AudLangIndex);
+        if (this.initialized === true) {
+            if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
+                return (this.video.audioTracks[index].enabled === true);
             }
-            return (DashPlayer.getAudioLanguages()[index].enabled === true);
-
+            return (this.DashPlayer.getAudioLanguages()[index].enabled === true);
         }
-        logger.warn(' No Media Loaded ! ');
+        this.logger.warn(' No Media Loaded ! ');
         return false;
-    };
+    }
 
-    function getAudioLangLabel(AudLangIndex) {
-        var index = parseInt(AudLangIndex, 10);
-        if (initialized === true) {
-            if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-                return (video.audioTracks[index].label);
+    getAudioLangLabel(AudLangIndex) {
+        const index = this.parseInt(AudLangIndex);
+        if (this.initialized === true) {
+            if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
+                return (this.video.audioTracks[index].label);
             }
-            return (DashPlayer.getAudioLanguages()[index].label);
+            return (this.DashPlayer.getAudioLanguages()[index].label);
         }
-        logger.warn(' No Media Loaded ! ');
+        this.logger.warn(' No Media Loaded ! ');
         return 'NaN';
-    };
+    }
+
     /**
      *
      */
-    function setMute(mute) {
-        if (initialized === true) {
-            video.muted = mute;
+    setMute(mute) {
+        if (this.initialized === true) {
+            this.video.muted = mute;
         } else {
-            logger.warn(' No Media Loaded ! ');
+            this.logger.warn(' No Media Loaded ! ');
         }
-    };
+    }
+
     /**
      *
      */
-    function pause() {
-        if (initialized === true) {
-            video.pause();
+    pause() {
+        if (this.initialized === true) {
+            this.video.pause();
         } else {
-            logger.warn(' No Media Loaded , nothing to pause ');
+            this.logger.warn(' No Media Loaded , nothing to pause ');
         }
-    };
+    }
+
     /**
      *
      */
-    function seek(position) {
-        if (initialized === true) {
-            video.currentTime = parseFloat(position);
+    seek(position) {
+        if (this.initialized === true) {
+            this.video.currentTime = parseFloat(position);
         } else {
-            logger.warn(' No Media Loaded , nothing to seek ');
+            this.logger.warn(' No Media Loaded , nothing to seek ');
         }
-    };
+    }
+
     /**
      * Callbacks
      */
-
-    function onShakaEvent(e) {
-        logger.warn('Eventing  [', event.type, ']:', event);
-    };
-
-    function onShError(error) {
-        // Log the error.
-        logger.error('Error code', error.code, 'object', error);
-    };
-
-    function onShakaError(e) {
-        onShError(e.detail);
-    };
-
-    function onPlayStart(e) {
-        startingCount++;
-        events.fireEvent(Const.PlayerEvents.PLAYBACK_STARTED, startingCount);
-    };
-
-    function onPlaybackPaused(e) {
-        events.fireEvent(Const.PlayerEvents.PLAYBACK_PAUSED);
-    };
-
-    function onPlaybackEnded(e) {
-        // getEndedEvent = true;
-        events.fireEvent(Const.PlayerEvents.PLAYBACK_ENDED);
-    };
-
-    function onPlayTimeUpdate(e) {
-        var time = 0;
-        if (initialized === true) {
-            time = video.currentTime;
-        } else {
-            logger.warn(' Internal error !');
-            return;
-        }
-        events.fireEvent(Const.PlayerEvents.PLAYBACK_TIME_UPDATE, time);
-    };
-
-    function onSeeked(e) {
-        events.fireEvent(Const.PlayerEvents.PLAYBACK_SEEKED);
-    };
-
-    function onSeeking(e) {
-        events.fireEvent(Const.PlayerEvents.PLAYBACK_SEEKING);
+    onShakaError(e) {
+        this.onShError(e.detail);
     }
 
-    function onError(e) {
-        var args, msg = e.event.message;
+    onShakaEvent(event) {
+        this.logger.warn('Eventing  [', event.type, ']:', event);
+    }
+
+    onShError(error) {
+        this.logger.error('Error code', error.code, 'object', error);
+    }
+
+    onPlayStart() {
+        this.startingCount += 1;
+        this.events.fireEvent(Const.PlayerEvents.PLAYBACK_STARTED, this.startingCount);
+    }
+
+    onPlaybackPaused() {
+        this.events.fireEvent(Const.PlayerEvents.PLAYBACK_PAUSED);
+    }
+
+    onPlaybackEnded() {
+        this.getEndedEvent = true;
+        this.events.fireEvent(Const.PlayerEvents.PLAYBACK_ENDED);
+    }
+
+    onPlayTimeUpdate() {
+        let time = 0;
+        if (this.initialized === true) {
+            time = this.video.currentTime;
+        } else {
+            this.logger.warn(' Internal error !');
+            return;
+        }
+        this.events.fireEvent(Const.PlayerEvents.PLAYBACK_TIME_UPDATE, time);
+    }
+
+    onSeeked() {
+        this.events.fireEvent(Const.PlayerEvents.PLAYBACK_SEEKED);
+    }
+
+    onSeeking() {
+        this.events.fireEvent(Const.PlayerEvents.PLAYBACK_SEEKING);
+    }
+
+    onError(e) {
+        let msg = e.event.message;
         if (e.event.message === undefined) {
             msg = e.event;
         }
-        args = {
-            'type': e.type,
-            'code': e.error,
-            'message': msg
+        const args = {
+            type: e.type,
+            code: e.error,
+            message: msg
         };
-        logger.error('>>>>>>>>>>>>>>> ERROR !!:', e);
-        events.fireEvent(Const.PlayerEvents.PLAYBACK_ERROR, args);
-    };
+        this.logger.error('>>>>>>>>>>>>>>> ERROR !!:', e);
+        this.events.fireEvent(Const.PlayerEvents.PLAYBACK_ERROR, args);
+    }
 
-    function onStreamInitialized() {
-        var i = 0;
-        // video tracks
-        thumbsTrackIndex = -1;
-        if (thumbsTrackUrl !== null) {
-            for (i = 0; i < video.textTracks.length; i++) {
-                if (video.textTracks[i].kind === 'metadata') {
-                    thumbsTrackIndex = i;
-                    video.textTracks[i].mode = 'hidden'; // thanks Firefox
-                    logger.warn('find  metadata tumbs  @ ', thumbsTrackIndex,
-                        '/', video.textTracks.length, ' >>> and video duration ;;; ', getDuration());
-                } else if ((video.textTracks[i].kind === 'captions') ||
-                    (video.textTracks[i].kind === 'subtitles')) {
+    onStreamInitialized() {
+        this.thumbsTrackIndex = -1;
+        if (this.thumbsTrackUrl !== null) {
+            for (let i = 0; i < this.video.textTracks.length; i += 1) {
+                if (this.video.textTracks[i].kind === 'metadata') {
+                    this.thumbsTrackIndex = i;
+                    this.video.textTracks[i].mode = 'hidden'; // thanks Firefox
+                    this.logger.warn('find  metadata tumbs  @ ', this.thumbsTrackIndex,
+                        '/', this.video.textTracks.length, ' >>> and this.videoduration ;;; ', this.getDuration());
+                } else if ((this.video.textTracks[i].kind === 'captions') ||
+                    (this.video.textTracks[i].kind === 'subtitles')) {
                     // SubsTrackIndex = i;
-                    logger.warn('find  soustitres  @ ', thumbsTrackIndex,
-                        '/', video.textTracks.length, ' >>> ', video.textTracks[i]);
+                    this.logger.warn('find  soustitres  @ ', this.thumbsTrackIndex,
+                        '/', this.video.textTracks.length, ' >>> ', this.video.textTracks[i]);
 
                     break;
                 }
             }
         }
-        logger.warn(' stream is completly loaded  text tracks are !! ', getTextTracks());
+        this.logger.info('Stream is completly loaded.');
 
-        if ((thumbsTrackIndex !== -1) && (thumbsTrackUrl !== -1)) {
-            events.fireEvent(Const.PlayerEvents.STREAM_LOADED, thumbsTrackIndex);
+        if ((this.thumbsTrackIndex !== -1) && (this.thumbsTrackUrl !== -1)) {
+            this.events.fireEvent(Const.PlayerEvents.STREAM_LOADED, this.thumbsTrackIndex);
         } else {
-            events.fireEvent(Const.PlayerEvents.STREAM_LOADED, null);
+            this.events.fireEvent(Const.PlayerEvents.STREAM_LOADED, null);
         }
-    };
+    }
 
-    function SetManuallysubs(subs, video) {
-        var track = null,
-            item = null,
-            tmp = null,
-            label = null,
-            i = 0,
-            n = 0;
+    SetManuallysubs(subs, video) {
+        let track = null;
+        let item = null;
+        let tmp = null;
+        let label = null;
+        let i = 0;
+        let n = 0;
         // set subs
         if (subs !== null && subs !== undefined) {
-            for (i = 0; i < subs.length; i++) {
+            for (i = 0; i < subs.length; i += 1) {
                 item = subs[i];
                 track = document.createElement('track');
                 track.kind = 'subtitles';
                 track.src = item[Const.FJCONFIG_SRC];
                 track.srclang = item[Const.FJCONFIG_LANG];
-                tmp = Langs.isoLangs[item[Const.FJCONFIG_LANG]];
-                logger.log(' Appending track substitles with Label', tmp.name);
+                tmp = IsoLangs[item[Const.FJCONFIG_LANG]];
+                this.logger.log(' Appending track substitles with Label', tmp.name);
                 n = tmp.name.indexOf(',');
                 if (n === -1) {
                     n = tmp.name.indexOf(';');
@@ -437,260 +444,222 @@ function PlayerMedia(fjPlayerId) {
                 video.appendChild(track);
             }
         } else {
-            logger.debug('no vtt Subs are found in config.');
+            this.logger.debug('no vtt Subs are found in config.');
         }
-    };
+    }
 
-    /* function doesTimeMarchesOn() {
-        var version;
-        var REQUIRED_VERSION = 49.0;
+    doesTimeMarchesOn() {
+        let version;
+        const REQUIRED_VERSION = 49.0;
 
         if (typeof navigator !== 'undefined') {
             if (!navigator.userAgent.match(/Firefox/)) {
                 return true;
             }
 
-            version = parseFloat(navigator.userAgent.match(/rv:([0-9.]+)/)[1]);
+            version = this.parseFloat(navigator.userAgent.match(/rv:([0-9.]+)/)[1]);
 
-            if (!isNaN(version) && version >= REQUIRED_VERSION) {
+            if (!Number.isNaN(version) && version >= REQUIRED_VERSION) {
                 return true;
             }
         }
-        return false ;
-    };*/
+
+        return false;
+    }
 
     /**
      * Used to Clean loaded data video
      */
-    function Unload() {
-        var el = video;
-        var elClone = null;
-        if (initialized !== true) {
-            logger.warn('not yet initialized !');
+    Unload() {
+        const el = this.video;
+        let elClone = null;
+        if (this.initialized !== true) {
+            this.logger.warn('not yet this.initialized!');
             return;
         }
-        // remove all video child
+        // remove all this.videochild
         elClone = el.cloneNode(true);
         el.parentNode.replaceChild(elClone, el);
-        video = elClone;
+        this.video = elClone;
 
         // hide the overlay , empty the div
-        while (video.hasChildNodes()) {
-            video.removeChild(video.firstChild);
+        while (this.video.hasChildNodes()) {
+            this.video.removeChild(this.video.firstChild);
         }
         // unset attr
-        video.removeAttribute('poster');
+        this.video.removeAttribute('poster');
 
-        if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-            video.removeEventListener('loadedmetadata', onStreamInitialized);
-            video.removeEventListener('play', onPlayStart);
-            video.removeEventListener('pause', onPlaybackPaused);
-            video.removeEventListener('ended', onPlaybackEnded);
-            video.removeEventListener('timeupdate', onPlayTimeUpdate);
-            video.removeEventListener('seeking', onSeeking);
-            video.removeEventListener('seeked', onSeeked);
-            video.removeEventListener('error', onError);
+        if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
+            this.video.removeEventListener('loadedmetadata', this.onStreamInitialized);
+            this.video.removeEventListener('play', this.onPlayStart);
+            this.video.removeEventListener('pause', this.onPlaybackPaused);
+            this.video.removeEventListener('ended', this.onPlaybackEnded);
+            this.video.removeEventListener('timeupdate', this.onPlayTimeUpdate);
+            this.video.removeEventListener('seeking', this.onSeeking);
+            this.video.removeEventListener('seeked', this.onSeeked);
+            this.video.removeEventListener('error', this.onError);
         } else {
             // Unsetting Callbacks
-            DashPlayer.removeEventListener('error', onShakaError);
-            DashPlayer.removeEventListener('adaptation', onShakaEvent);
-            DashPlayer.removeEventListener('buffering', onShakaEvent);
-            DashPlayer.removeEventListener('emsg', onShakaEvent);
-            DashPlayer.removeEventListener('expirationupdated', onShakaEvent);
-            DashPlayer.removeEventListener('largegap', onShakaEvent);
-            DashPlayer.removeEventListener('loading', onShakaEvent);
-            DashPlayer.removeEventListener('texttrackvisibility', onShakaEvent);
-            DashPlayer.removeEventListener('timelineregionadded', onShakaEvent);
-            DashPlayer.removeEventListener('timelineregionenter', onShakaEvent);
-            DashPlayer.removeEventListener('timelineregionexit', onShakaEvent);
-            DashPlayer.removeEventListener('trackschanged', onShakaEvent);
-            DashPlayer.removeEventListener('unloading', onShakaEvent);
-            DashPlayer.destroy();
-            DashPlayer = null;
+            this.DashPlayer.removeEventListener('error', this.onShakaError);
+            this.DashPlayer.removeEventListener('adaptation', this.onShakaEvent);
+            this.DashPlayer.removeEventListener('buffering', this.onShakaEvent);
+            this.DashPlayer.removeEventListener('emsg', this.onShakaEvent);
+            this.DashPlayer.removeEventListener('expirationupdated', this.onShakaEvent);
+            this.DashPlayer.removeEventListener('largegap', this.onShakaEvent);
+            this.DashPlayer.removeEventListener('loading', this.onShakaEvent);
+            this.DashPlayer.removeEventListener('texttrackvisibility', this.onShakaEvent);
+            this.DashPlayer.removeEventListener('timelineregionadded', this.onShakaEvent);
+            this.DashPlayer.removeEventListener('timelineregionenter', this.onShakaEvent);
+            this.DashPlayer.removeEventListener('timelineregionexit', this.onShakaEvent);
+            this.DashPlayer.removeEventListener('trackschanged', this.onShakaEvent);
+            this.DashPlayer.removeEventListener('unloading', this.onShakaEvent);
+            this.DashPlayer.destroy();
+            this.DashPlayer = null;
         }
-        CurrentStreamType = PlayerMedia.UNKNOWN;
+        this.CurrentStreamType = PlayerMedia.UNKNOWN;
     }
 
     /**
      * Used for clear video/mp4
      */
-    function load(url, type, poster, subs, autoplay) {
-        var track = null;
-        var source = document.createElement('source');
+    load(url, type, poster, subs, autoplay) {
+        let track = null;
+        const source = document.createElement('source');
         source.type = type;
         source.src = url;
-        video.preload = true;
-        video.controls = false;
-        video.autoplay = autoplay;
-        video.appendChild(source);
+        this.video.preload = true;
+        this.video.controls = false;
+        this.video.autoplay = autoplay;
+        this.video.appendChild(source);
         if (poster !== null && poster !== undefined && poster !== '') {
-            video.setAttribute('poster', poster);
+            this.video.setAttribute('poster', poster);
         }
-        CurrentStreamType = StreamTypes.MP4_CLEAR;
+        this.CurrentStreamType = this.StreamTypes.MP4_CLEAR;
         // set thumbs
-        if (thumbsTrackUrl !== null && thumbsTrackUrl !== undefined) {
+        if (this.thumbsTrackUrl !== null && this.thumbsTrackUrl !== undefined) {
             track = document.createElement('track');
             track.kind = 'metadata';
-            track.src = thumbsTrackUrl;
-            logger.log(' Appending source thumbs to video', track);
-            video.appendChild(track);
+            track.src = this.thumbsTrackUrl;
+            this.logger.log(' Appending source thumbs to video', track);
+            this.video.appendChild(track);
         } else {
-            logger.warn(' Thumbs was not found .');
+            this.logger.warn(' Thumbs was not found .');
         }
         // set subs
-        SetManuallysubs(subs, video);
+        this.SetManuallysubs(subs, this.video);
         // Setting Callbacks
-        video.addEventListener('loadedmetadata', onStreamInitialized, false);
-        video.addEventListener('play', onPlayStart, false);
-        video.addEventListener('pause', onPlaybackPaused, false);
-        video.addEventListener('ended', onPlaybackEnded, false);
-        video.addEventListener('timeupdate', onPlayTimeUpdate, false);
-        video.addEventListener('seeked', onSeeked, false);
-        video.addEventListener('seeking', onSeeking, false);
-        video.addEventListener('error', onError, false);
+        this.video.addEventListener('loadedmetadata', () => this.onStreamInitialized(), false);
+        this.video.addEventListener('play', () => this.onPlayStart(), false);
+        this.video.addEventListener('pause', () => this.onPlaybackPaused(), false);
+        this.video.addEventListener('ended', () => this.onPlaybackEnded(), false);
+        this.video.addEventListener('timeupdate', () => this.onPlayTimeUpdate(), false);
+        this.video.addEventListener('seeked', () => this.onSeeked(), false);
+        this.video.addEventListener('seeking', () => this.onSeeking(), false);
+        this.video.addEventListener('error', (e) => this.onError(e), false);
 
-        logger.info(' Clear MP4 stream is loaded @ ', url);
-    };
+        this.logger.info(' Clear MP4 stream is loaded @ ', url);
+    }
+
+    responsefilerCbx(type, response) {
+        if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST)) {
+            this.FjSessionToken = response.headers['session-token'];
+            this.logger.warn(' UPDATING Session Token  : ', this.FjSessionToken);
+        }
+    }
 
     /**
      * Used for loading mpeg Dash
      */
-    function loadDash(url, poster, subs, videoCaption, autoplay, drm) {
-        var track = null;
+    loadDash(url, poster, subs, videoCaption, autoplay, drm) {
+        let track = null;
         if (poster !== null && poster !== undefined && poster !== '') {
-            video.setAttribute('poster', poster);
+            this.video.setAttribute('poster', poster);
         }
-        video.preload = true;
-        video.controls = false;
-        video.autoplay = autoplay;
-        if (DashPlayer === null) {
-            DashPlayer = new shaka.Player(video);
+        this.video.preload = true;
+        this.video.controls = false;
+        this.video.autoplay = autoplay;
+        if (this.DashPlayer === null) {
+            this.DashPlayer = new shaka.Player(this.video);
         }
 
         // Setting Callbacks
-        video.addEventListener('loadedmetadata', onStreamInitialized, false);
-        video.addEventListener('play', onPlayStart, false);
-        video.addEventListener('pause', onPlaybackPaused, false);
-        video.addEventListener('ended', onPlaybackEnded, false);
-        video.addEventListener('timeupdate', onPlayTimeUpdate, false);
-        video.addEventListener('seeked', onSeeked, false);
-        video.addEventListener('seeking', onSeeking, false);
-        video.addEventListener('error', onError, false);
+        this.video.addEventListener('loadedmetadata', () => this.onStreamInitialized(), false);
+        this.video.addEventListener('play', () => this.onPlayStart(), false);
+        this.video.addEventListener('pause', () => this.onPlaybackPaused(), false);
+        this.video.addEventListener('ended', () => this.onPlaybackEnded(), false);
+        this.video.addEventListener('timeupdate', () => this.onPlayTimeUpdate(), false);
+        this.video.addEventListener('seeked', () => this.onSeeked(), false);
+        this.video.addEventListener('seeking', () => this.onSeeking(), false);
+        this.video.addEventListener('error', (e) => this.onError(e), false);
         // Setting Callbacks
-        DashPlayer.addEventListener('error', onShakaError);
-        DashPlayer.addEventListener('adaptation', onShakaEvent);
-        DashPlayer.addEventListener('buffering', onShakaEvent);
-        DashPlayer.addEventListener('emsg', onShakaEvent);
-        DashPlayer.addEventListener('expirationupdated', onShakaEvent);
-        DashPlayer.addEventListener('largegap', onShakaEvent);
-        DashPlayer.addEventListener('loading', onShakaEvent);
-        DashPlayer.addEventListener('texttrackvisibility', onShakaEvent);
-        DashPlayer.addEventListener('timelineregionadded', onShakaEvent);
-        DashPlayer.addEventListener('timelineregionenter', onShakaEvent);
-        DashPlayer.addEventListener('timelineregionexit', onShakaEvent);
-        DashPlayer.addEventListener('trackschanged', onShakaEvent);
-        DashPlayer.addEventListener('unloading', onShakaEvent);
+        this.DashPlayer.addEventListener('error', (e) => this.onShakaError(e));
+        this.DashPlayer.addEventListener('adaptation', (e) => this.onShakaEvent(e));
+        this.DashPlayer.addEventListener('buffering', (e) => this.onShakaEvent(e));
+        this.DashPlayer.addEventListener('emsg', (e) => this.onShakaEvent(e));
+        this.DashPlayer.addEventListener('expirationupdated', (e) => this.onShakaEvent(e));
+        this.DashPlayer.addEventListener('largegap', (e) => this.onShakaEvent(e));
+        this.DashPlayer.addEventListener('loading', (e) => this.onShakaEvent(e));
+        this.DashPlayer.addEventListener('texttrackvisibility', (e) => this.onShakaEvent(e));
+        this.DashPlayer.addEventListener('timelineregionadded', (e) => this.onShakaEvent(e));
+        this.DashPlayer.addEventListener('timelineregionenter', (e) => this.onShakaEvent(e));
+        this.DashPlayer.addEventListener('timelineregionexit', (e) => this.onShakaEvent(e));
+        this.DashPlayer.addEventListener('trackschanged', (e) => this.onShakaEvent(e));
+        this.DashPlayer.addEventListener('unloading', (e) => this.onShakaEvent(e));
 
-        CurrentUrl = url;
+        this.CurrentUrl = url;
         if ((drm === undefined) || (drm === null)) {
-            CurrentStreamType = StreamTypes.DASH_CLEAR;
-            // CurrentProtection = null;
-            logger.info(' Loading CLEAR Dash @', CurrentUrl);
+            this.CurrentStreamType = this.StreamTypes.DASH_CLEAR;
+            this.CurrentProtection = null;
+            this.logger.info(' Loading CLEAR Dash @', this.CurrentUrl);
         } else {
-            CurrentStreamType = StreamTypes.DASH_ENCRYPTED;
-            // CurrentProtection = drm;
-            logger.info(' drm are ::: ', drm);
-            DashPlayer.configure({
+            this.CurrentStreamType = this.StreamTypes.DASH_ENCRYPTED;
+            this.CurrentProtection = drm;
+            this.logger.info(' drm are ::: ', drm);
+            this.DashPlayer.configure({
                 drm: {
                     servers: {
                         'org.w3.clearkey': drm[Const.FJCONFIG_DRM_LICENSE_SERVER]
                     }
                 }
             });
-            logger.debug(' To Encrypt : using Forja System Key !.');
-            logger.info(' Loading ENCRYPTED Dash @', CurrentUrl);
+            this.logger.debug(' To Encrypt : using Forja System Key !.');
+            this.logger.info(' Loading ENCRYPTED Dash @', this.CurrentUrl);
         }
 
-        DashPlayer.getNetworkingEngine().registerRequestFilter(function(type, request) {
+        this.DashPlayer.getNetworkingEngine().registerRequestFilter((type, request) => {
             if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST) ||
                 (type === shaka.net.NetworkingEngine.RequestType.LICENSE)) {
-                request.headers['Player-Key'] = FjPlayerId;
+                request.headers['Player-Key'] = this.FjPlayerId;
             }
             if (type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
-                request.headers['Player-Key'] = FjPlayerId;
-                request.headers['Session-Token'] = FjSessionToken;
+                request.headers['Player-Key'] = this.FjPlayerId;
+                request.headers['Session-Token'] = this.FjSessionToken;
             }
         });
 
-        DashPlayer.getNetworkingEngine().registerResponseFilter(function(type, response) {
-            if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST)) {
-                FjSessionToken = response.headers['session-token'];
-                logger.warn(' UPDATING Session Token  : ', FjSessionToken);
-            }
-        });
+        this.DashPlayer.getNetworkingEngine().registerResponseFilter(this.responsefilerCbx);
 
         // set thumbs
-        if (thumbsTrackUrl !== null && thumbsTrackUrl !== undefined) {
+        if (this.thumbsTrackUrl !== null && this.thumbsTrackUrl !== undefined) {
             track = document.createElement('track');
             track.kind = 'metadata';
-            track.src = thumbsTrackUrl;
-            logger.log(' Appending source thumbs to video', track);
-            video.appendChild(track);
+            track.src = this.thumbsTrackUrl;
+            this.logger.log(' Appending source thumbs to video', track);
+            this.video.appendChild(track);
         } else {
-            logger.debug(' Thumbs was not found .');
+            this.logger.debug(' Thumbs was not found .');
         }
         // set subs
-        SetManuallysubs(subs, video);
+        this.SetManuallysubs(subs, this.video);
 
         // Try to load a manifest.
         // This is an asynchronous process.
-        DashPlayer.load(url).then(function() {
+        this.DashPlayer.load(url).then(() => {
             // This runs if the asynchronous load is successful.
-            logger.log('The video has now been loaded!');
-        }).catch(onShError); // onError is executed if the asynchronous load fails.
-        logger.info('  DASH stream is loaded @ ', url);
-    };
-    // ************************************************************************************
-    // PUBLIC API
-    // ************************************************************************************
-    return {
-        initialize: initialize,
+            this.logger.log('The this.videohas now been loaded!');
+        }).catch(this.onShError); // onError is executed if the asynchronous load fails.
+        this.logger.info('  DASH stream is loaded @ ', url);
+    }
+}
 
-        on: on,
-        off: off,
-
-        StreamTypes: StreamTypes,
-        CurrentStreamType: CurrentStreamType,
-
-        play: play,
-        stop: stop,
-        pause: pause,
-        isPaused: isPaused,
-        isEnded: isEnded,
-        isMuted: isMuted,
-        setMute: setMute,
-        setVolume: setVolume,
-        getVolume: getVolume,
-        setThumbsUrl: setThumbsUrl,
-        getDuration: getDuration,
-        time: time,
-        seek: seek,
-
-        Unload: Unload,
-        load: load,
-        loadDash: loadDash,
-
-        setAudioLang: setAudioLang,
-        getAudioLanguages: getAudioLanguages,
-        isAudioLangEnabled: isAudioLangEnabled,
-        getAudioLangLabel: getAudioLangLabel,
-
-        setTextTrack: setTextTrack,
-        getTextTracks: getTextTracks,
-        isTextTrackEnabled: isTextTrackEnabled,
-        getTextTrackLabel: getTextTrackLabel,
-
-        constructor: PlayerMedia
-    };
-};
-export default PlayerMedia;
+module.exports = PlayerMedia;

@@ -1,8 +1,8 @@
-import Logger from '../utils/Logger';
-import Thumbs from '../ui//Thumbs';
-import Menus from '../ui/Menus';
-import * as Utils from '../utils/Utils';
-import PlayerTemplate from '../ui/fjplayer-tmpl';
+const Logger = require('../utils/Logger');
+const Thumbs = require('./Thumbs');
+const Menus = require('./Menus');
+const Utils = require('../utils/Utils');
+const PlayerTemplate = require('./fjplayer-tmpl');
 require('../../css/player.less');
 // require('../css/fjfa.css');
 
@@ -11,687 +11,676 @@ require('../../css/player.less');
  * @description The PlayerUi is the html UI for the player
  *
  */
-function PlayerUi(videoContId, VWidth, WHeight) {
-    var logger = new Logger(this),
-        mediaDuration = 0,
-        holdWidth = 0,
-        fjMainPlayer = null,
-        videoContainerId = videoContId,
-        fullScreenOnStart = false,
-        vwidth = VWidth,
-        playerMenus = null,
-        timeout = null,
-        initialized = false,
-        HideControlsTimeout = 1500,
-        id = Date.now().toString().substr(6),
-        timerId = 'trd' + id,
-        durationId = 'drd' + id,
-        titleId = 'tld' + id,
-        errorDivId = 'errd' + id,
-        spinnerId = 'spin' + id,
-        BigPlayBtnId = 'bp' + id,
-        videoCaptionId = 'vcp' + id,
-        videoInfoId = 'vif' + id,
-        videoFigureId = 'vfg' + id,
-        videoId = 'voi' + id,
-        videoControlsId = 'vct' + id,
-        playpauseBtnId = 'ppb' + id,
-        playpreviousBtnId = 'pprb' + id,
-        playforwardBtnId = 'ppfb' + id,
-        muteBtnId = 'mbt' + id,
-        volumeBarId = 'vbr' + id,
-        volumeDivId = 'vvd' + id,
-        subtitlesBtnId = 'subd' + id,
-        audiosBtnId = 'audb' + id,
-        progressBarId = 'pgb' + id,
-        fullScreenBtnId = 'fsb' + id,
-        thumbsDivId = 'tbd' + id,
-        thumbsImgId = 'tbi' + id,
-        thumbstimerId = 'tbt' + id,
-        adsContainerDivId = 'adscd' + id,
-        overlaysContainerDivId = 'ovscd' + id,
-        menuContainerDivId = 'mncd' + id,
-        descriptionId = 'desc' + id,
-        backId = 'backId' + id,
-        shareId = 'shareId' + id,
-        downloadId = 'downloadId' + id,
-        videoContainer,
-        video = null,
-        videoController,
-        spinner = null,
-        videoControllerFigure,
-        playpauseBtn,
-        playpreviousBtn = null,
-        playforwardBtn = null,
-        muteBtn,
-        volumeBar,
-        progressBar,
-        fullScreenBtn,
-        timer,
-        durationDisplay,
-        videoFigure,
-        BigPlayBtn,
-        volumebar,
-        ThumbsMgr = null,
-        videoControls,
-        videoInfo,
-        fullScreenEnabled = true;
+class PlayerUi {
+    constructor(videoContId, VWidth, WHeight) {
+        this.logger = new Logger(this);
+        this.mediaDuration = 0;
+        this.holdWidth = 0;
+        this.fjMainPlayer = null;
+        this.videoContainerId = videoContId;
+        this.fullScreenOnStart = false;
+        this.vwidth = VWidth;
+        this.vheight = WHeight;
+        this.expandScreen = false;
+        this.playerMenus = null;
+        this.timeout = null;
+        this.initialized = false;
+        this.HideControlsTimeout = 1500;
+        this.id = this.videoContainerId ;
+        this.timerId = `trd${this.id}`;
+        this.durationId = `drd${this.id}`;
+        this.titleId = `tld${this.id}`;
+        this.errorDivId = `errd${this.id}`;
+        this.spinnerId = `spin${this.id}`;
+        this.BigPlayBtnId = `bp${this.id}`;
+        this.videoCaptionId = `vcp${this.id}`;
+        this.videoInfoId = `vif${this.id}`;
+        this.videoFigureId = `vfg${this.id}`;
+        this.videoId = `voi${this.id}`;
+        this.videoControlsId = `vct${this.id}`;
+        this.playpauseBtnId = `ppb${this.id}`;
+        this.playpreviousBtnId = `pprb${this.id}`;
+        this.playforwardBtnId = `ppfb${this.id}`;
+        this.muteBtnId = `mbt${this.id}`;
+        this.volumeBarId = `vbr${this.id}`;
+        this.volumeDivId = `vvd${this.id}`;
+        this.subtitlesBtnId = `subd${this.id}`;
+        this.audiosBtnId = `audb${this.id}`;
+        this.progressBarId = `pgb${this.id}`;
+        this.fullScreenBtnId = `fsb${this.id}`;
+        this.thumbsDivId = `tbd${this.id}`;
+        this.thumbsImgId = `tbi${this.id}`;
+        this.thumbstimerId = `tbt${this.id}`;
+        this.adsContainerDivId = `adscd${this.id}`;
+        this.overlaysContainerDivId = `ovscd${this.id}`;
+        this.menuContainerDivId = `mncd${this.id}`;
+        this.descriptionId = `desc${this.id}`;
+        this.backId = `backId${this.id}`;
+        this.shareId = `shareId${this.id}`;
+        this.downloadId = `downloadId${this.id}`;
+        this.videoContainer = null;
+        this.video = null;
+        this.videoController = null;
+        this.spinner = null;
+        this.videoControllerFigure = null;
+        this.playpauseBtn = null;
+        this.playpreviousBtn = null;
+        this.playforwardBtn = null;
+        this.muteBtn = null;
+        this.volumeBar = null;
+        this.progressBar = null;
+        this.fullScreenBtn = null;
+        this.timer = null;
+        this.durationDisplay = null;
+        this.videoFigurev = null;
+        this.BigPlayBtn = null;
+        this.volumebar = null;
+        this.ThumbsMgr = null;
+        this.videoControls = null;
+        this.videoInfo = null;
+        this.fullScreenEnabled = true;
+    }
 
-    function create() {
-        var data = {
-            'videoFigureId': videoFigureId,
-            'fullScreenOnStart': fullScreenOnStart,
-            'videoId': videoId,
-            'vwidth': vwidth,
-            'videoInfoId': videoInfoId,
-            'backId': backId,
-            'titleId': titleId,
-            'shareId': shareId,
-            'downloadId': downloadId,
-            'errorDivId': errorDivId,
-            'spinnerId': spinnerId,
-            'BigPlayBtnId': BigPlayBtnId,
-            'videoCaptionId': videoCaptionId,
-            'thumbsDivId': thumbsDivId,
-            'thumbsImgId': thumbsImgId,
-            'thumbstimerId': thumbstimerId,
-            'menuContainerDivId': menuContainerDivId,
-            'adsContainerDivId': adsContainerDivId,
-            'videoControlsId': videoControlsId,
-            'progressBarId': progressBarId,
-            'playpreviousBtnId': playpreviousBtnId,
-            'playpauseBtnId': playpauseBtnId,
-            'playforwardBtnId': playforwardBtnId,
-            'muteBtnId': muteBtnId,
-            'volumeDivId': volumeDivId,
-            'volumeBarId': volumeBarId,
-            'descriptionId': descriptionId,
-            'fullScreenBtnId': fullScreenBtnId,
-            'subtitlesBtnId': subtitlesBtnId,
-            'audiosBtnId': audiosBtnId,
-            'timerId': timerId,
-            'durationId': durationId,
-            'overlaysContainerDivId': overlaysContainerDivId
+    create() {
+        const data = {
+            videoFigureId: this.videoFigureId,
+            fullScreenOnStart: this.fullScreenOnStart,
+            videoId: this.videoId,
+            vwidth: this.vwidth,
+            videoInfoId: this.videoInfoId,
+            backId: this.backId,
+            titleId: this.titleId,
+            shareId: this.shareId,
+            downloadId: this.downloadId,
+            errorDivId: this.errorDivId,
+            spinnerId: this.spinnerId,
+            BigPlayBtnId: this.BigPlayBtnId,
+            videoCaptionId: this.videoCaptionId,
+            thumbsDivId: this.thumbsDivId,
+            thumbsImgId: this.thumbsImgId,
+            thumbstimerId: this.thumbstimerId,
+            menuContainerDivId: this.menuContainerDivId,
+            adsContainerDivId: this.adsContainerDivId,
+            videoControlsId: this.videoControlsId,
+            progressBarId: this.progressBarId,
+            playpreviousBtnId: this.playpreviousBtnId,
+            playpauseBtnId: this.playpauseBtnId,
+            playforwardBtnId: this.playforwardBtnId,
+            muteBtnId: this.muteBtnId,
+            volumeDivId: this.volumeDivId,
+            volumeBarId: this.volumeBarId,
+            descriptionId: this.descriptionId,
+            fullScreenBtnId: this.fullScreenBtnId,
+            subtitlesBtnId: this.subtitlesBtnId,
+            audiosBtnId: this.audiosBtnId,
+            timerId: this.timerId,
+            durationId: this.durationId,
+            overlaysContainerDivId: this.overlaysContainerDivId
         };
 
-        logger.info(' container if of the player ', videoContainerId);
-        videoContainer = document.getElementById(videoContainerId);
-        if (!videoContainer) {
-            throw new Error('The video container element still null');
+        this.logger.info(' container if of the player ', this.videoContainerId);
+        this.videoContainer = document.getElementById(this.videoContainerId);
+        if (!this.videoContainer) {
+            throw new Error('The this.video container element still null');
         }
-        videoContainer.classList.add('fjPlayer');
-        videoContainer.innerHTML = new PlayerTemplate().GetHtml(data);
-        video = null;
-        videoContainer = null;
-        videoController = document.getElementById(videoControlsId);
-        videoControllerFigure = document.getElementById(videoFigureId);
-        spinner = document.getElementById(spinnerId);
-        video = document.getElementById(videoId);
-        if (!video) {
-            throw new Error('The video element still null');
+        this.videoContainer.classList.add('fjPlayer');
+        this.videoContainer.innerHTML = new PlayerTemplate().GetHtml(data);
+        this.video = null;
+        this.videoContainer = null;
+        this.videoController = document.getElementById(this.videoControlsId);
+        this.videoControllerFigure = document.getElementById(this.videoFigureId);
+        this.spinner = document.getElementById(this.spinnerId);
+        this.video = document.getElementById(this.videoId);
+        if (!this.video) {
+            throw new Error(`The this.video element still null using id${this.videoId}`);
         }
-        playpauseBtn = document.getElementById(playpauseBtnId);
-        playpreviousBtn = document.getElementById(playpreviousBtnId);
-        playforwardBtn = document.getElementById(playforwardBtnId);
+        this.playpauseBtn = document.getElementById(this.playpauseBtnId);
+        this.playpreviousBtn = document.getElementById(this.playpreviousBtnId);
+        this.playforwardBtn = document.getElementById(this.playforwardBtnId);
 
-        muteBtn = document.getElementById(muteBtnId);
-        volumeBar = document.getElementById(volumeBarId);
-        progressBar = document.getElementById(progressBarId);
-        fullScreenBtn = document.getElementById(fullScreenBtnId);
-        timer = document.getElementById(timerId);
-        durationDisplay = document.getElementById(durationId);
+        this.muteBtn = document.getElementById(this.muteBtnId);
+        this.volumeBar = document.getElementById(this.volumeBarId);
+        this.progressBar = document.getElementById(this.progressBarId);
+        this.fullScreenBtn = document.getElementById(this.fullScreenBtnId);
+        this.timer = document.getElementById(this.timerId);
+        this.durationDisplay = document.getElementById(this.durationId);
 
-        videoFigure = document.getElementById(videoFigureId);
-        BigPlayBtn = document.getElementById(BigPlayBtnId);
+        this.videoFigure = document.getElementById(this.videoFigureId);
+        this.BigPlayBtn = document.getElementById(this.BigPlayBtnId);
 
-        videoControls = document.getElementById(videoControlsId);
-        videoInfo = document.getElementById(videoInfoId);
+        this.videoControls = document.getElementById(this.videoControlsId);
+        this.videoInfo = document.getElementById(this.videoInfoId);
         // Hide the default controls
-        video.controls = false;
-        // Display the user defined video controls
-        videoFigure.setAttribute('controls-hidden', true);
-        videoControls.classList.add('fj-hide');
-        videoInfo.classList.remove('fj-hide');
+        this.video.controls = false;
+        // Display the user defined this.video controls
+        this.videoFigure.setAttribute('controls-hidden', true);
+        this.videoControls.classList.add('fj-hide');
+        this.videoInfo.classList.remove('fj-hide');
         // Create Thumbs Object
-        ThumbsMgr = new Thumbs(document.getElementById(thumbstimerId),
-            document.getElementById(thumbsImgId), document.getElementById(thumbsDivId), progressBar);
+        this.ThumbsMgr = new Thumbs(document.getElementById(this.thumbstimerId),
+            document.getElementById(this.thumbsImgId),
+            document.getElementById(this.thumbsDivId), this.progressBar);
 
-        if (fullScreenOnStart === 'true') {
-            videoFigure.setAttribute('data-fullscreen', 'true');
+        if (this.fullScreenOnStart === 'true') {
+            this.videoFigure.setAttribute('data-fullscreen', 'true');
         }
         // If the browser doesn't support the Fulscreen API then hide the fullscreen button
-        if (!fullScreenEnabled) {
-            fullScreenBtn.style.display = 'none';
+        if (!this.fullScreenEnabled) {
+            this.fullScreenBtn.style.display = 'none';
         }
     }
+
     // ************************************************************************************
     // PLAYBACK
     // ************************************************************************************
-    function onplaypauseClick() {
-        if (fjMainPlayer.isPaused() || fjMainPlayer.isEnded()) {
-            fjMainPlayer.play();
+    onplaypauseClick() {
+        if (this.fjMainPlayer.isPaused() || this.fjMainPlayer.isEnded()) {
+            this.fjMainPlayer.play();
         } else {
-            fjMainPlayer.pause();
+            this.fjMainPlayer.pause();
         }
     }
 
-    function onperviousClick() {
-        fjMainPlayer.playPrev();
+    onperviousClick() {
+        this.fjMainPlayer.playPrev();
     }
 
-    function onforwardClick() {
-        fjMainPlayer.playNext();
+    onforwardClick() {
+        this.fjMainPlayer.playNext();
     }
 
-    function toggleplaypauseBtn() {
-        if (fjMainPlayer.isPlayingAds()) {
+    toggleplaypauseBtn() {
+        if (this.fjMainPlayer.isPlayingAds()) {
             // hide big play button
-            BigPlayBtn.classList.add('fj-hide');
-            // hide video controls
-            videoFigure.setAttribute('controls-hidden', true);
-            videoControls.classList.add('fj-hide');
-            playerMenus.HideMenus();
+            this.BigPlayBtn.classList.add('fj-hide');
+            // hide this.video controls
+            this.videoFigure.setAttribute('controls-hidden', true);
+            this.videoControls.classList.add('fj-hide');
+            this.playerMenus.HideMenus();
+        } else if (this.fjMainPlayer.isPaused() || this.fjMainPlayer.isEnded()) {
+            this.playpauseBtn.classList.add('fj-icon-play');
+            this.playpauseBtn.classList.remove('fj-icon-pause');
+            // show big play button
+            this.BigPlayBtn.classList.remove('fj-hide');
+            // hide this.video controls
+            this.videoFigure.setAttribute('controls-hidden', true);
+            this.videoControls.classList.add('fj-hide');
+            this.playerMenus.HideMenus();
+            this.logger.log('UI is pausing !');
         } else {
-            if (fjMainPlayer.isPaused() || fjMainPlayer.isEnded()) {
-                playpauseBtn.classList.add('fj-icon-play');
-                playpauseBtn.classList.remove('fj-icon-pause');
-                // show big play button
-                BigPlayBtn.classList.remove('fj-hide');
-                // hide video controls
-                videoFigure.setAttribute('controls-hidden', true);
-                videoControls.classList.add('fj-hide');
-                playerMenus.HideMenus();
-                logger.log('UI is pausing !');
-            } else {
-                playpauseBtn.classList.remove('fj-icon-play');
-                playpauseBtn.classList.add('fj-icon-pause');
-                // hide big play button
-                BigPlayBtn.classList.add('fj-hide');
-                // show video controls
-                videoFigure.setAttribute('controls-hidden', false);
-                videoControls.classList.remove('fj-hide');
-                logger.log('UI is playing !');
-            }
+            this.playpauseBtn.classList.remove('fj-icon-play');
+            this.playpauseBtn.classList.add('fj-icon-pause');
+            // hide big play button
+            this.BigPlayBtn.classList.add('fj-hide');
+            // show this.video controls
+            this.videoFigure.setAttribute('controls-hidden', false);
+            this.videoControls.classList.remove('fj-hide');
+            this.logger.log('UI is playing !');
         }
     }
 
-    function magicMouseLeave() {
-        if (!fjMainPlayer.isPaused() && !fjMainPlayer.isEnded() && !fjMainPlayer.isPlayingAds()) {
-            videoFigure.setAttribute('controls-hidden', true);
+    magicMouseLeave() {
+        if (!this.fjMainPlayer.isPaused() &&
+    !this.fjMainPlayer.isEnded() &&
+    !this.fjMainPlayer.isPlayingAds()) {
+            this.videoFigure.setAttribute('controls-hidden', true);
             // delete fadeIn
-            videoControls.classList.remove('m-fadeIn');
-            videoInfo.classList.remove('m-fadeIn');
+            this.videoControls.classList.remove('m-fadeIn');
+            this.videoInfo.classList.remove('m-fadeIn');
             // add fadeOut
-            videoControls.classList.add('m-fadeOut');
-            videoInfo.classList.add('m-fadeOut');
+            this.videoControls.classList.add('m-fadeOut');
+            this.videoInfo.classList.add('m-fadeOut');
             // other
-            video.style.cursor = 'none';
-            playerMenus.HideMenus();
-            ThumbsMgr.hideThumbs(ThumbsMgr);
+            this.video.style.cursor = 'none';
+            this.playerMenus.HideMenus();
+            this.ThumbsMgr.hideThumbs(this.ThumbsMgr);
         }
     }
 
-    function magicMouseEnter() {
-        if (!fjMainPlayer.isPaused() && !fjMainPlayer.isEnded() && !fjMainPlayer.isPlayingAds()) {
-            videoFigure.setAttribute('controls-hidden', false);
+    magicMouseEnter() {
+        if (!this.fjMainPlayer.isPaused() &&
+    !this.fjMainPlayer.isEnded() &&
+    !this.fjMainPlayer.isPlayingAds()) {
+            this.videoFigure.setAttribute('controls-hidden', false);
             // delete fadeOut
-            videoControls.classList.remove('m-fadeOut');
-            videoInfo.classList.remove('m-fadeOut');
+            this.videoControls.classList.remove('m-fadeOut');
+            this.videoInfo.classList.remove('m-fadeOut');
             // add fadein
-            videoControls.classList.add('m-fadeIn');
-            videoInfo.classList.add('m-fadeIn');
+            this.videoControls.classList.add('m-fadeIn');
+            this.videoInfo.classList.add('m-fadeIn');
             // other
-            video.style.cursor = 'auto';
+            this.video.style.cursor = 'auto';
         }
     }
 
-    function magicMouseMove() {
-        if (!fjMainPlayer.isPaused() && !fjMainPlayer.isEnded() && !fjMainPlayer.isPlayingAds()) {
-            if (video.style.cursor === 'none') {
-                magicMouseEnter();
+    magicMouseMove() {
+        if (!this.fjMainPlayer.isPaused() &&
+    !this.fjMainPlayer.isEnded() &&
+     !this.fjMainPlayer.isPlayingAds()) {
+            if (this.video.style.cursor === 'none') {
+                this.magicMouseEnter();
             } else {
-                if (timeout) {
-                    clearTimeout(timeout);
+                if (this.timeout) {
+                    clearTimeout(this.timeout);
                 }
-                timeout = setTimeout(function() {
-                    magicMouseLeave();
-                }, HideControlsTimeout);
+                this.timeout = setTimeout(() => {
+                    this.magicMouseLeave();
+                }, this.HideControlsTimeout);
             }
         }
     }
 
-    function SetupSubsAudsManager(mediaplayer) {
-        var done = false;
-        done = playerMenus.SetupAuds(mediaplayer);
-        logger.warn(' Will setup Audio menu  ', done);
+    SetupSubsAudsManager(mediaplayer) {
+        let done = false;
+        done = this.playerMenus.SetupAuds(mediaplayer);
+        this.logger.warn(' Will setup Audio menu  ', done);
         if (done !== true) {
-            document.getElementById(audiosBtnId).classList.add('fj-hide');
+            document.getElementById(this.audiosBtnId).classList.add('fj-hide');
         } else {
-            document.getElementById(audiosBtnId).classList.remove('fj-hide');
+            document.getElementById(this.audiosBtnId).classList.remove('fj-hide');
         }
-        done = playerMenus.SetupSubs(mediaplayer);
-        logger.warn(' Will setup Subs menu  ', done);
+        done = this.playerMenus.SetupSubs(mediaplayer);
+        this.logger.warn(' Will setup Subs menu  ', done);
         if (done !== true) {
-            document.getElementById(subtitlesBtnId).classList.add('fj-hide');
+            document.getElementById(this.subtitlesBtnId).classList.add('fj-hide');
         } else {
-            document.getElementById(subtitlesBtnId).classList.remove('fj-hide');
+            document.getElementById(this.subtitlesBtnId).classList.remove('fj-hide');
         }
-    };
+    }
     // ************************************************************************************
     // VOLUME
     // ************************************************************************************
 
-    function OnvbClick(e) {
-        var pos = volumeBar.value / 100;
-        logger.log(' volume from ', video.volume, ' to ', pos);
+    OnvbClick() {
+        const pos = this.volumeBar.value / 100;
+        this.logger.log(' volume from ', this.video.volume, ' to ', pos);
         if (pos > 0.6) {
-            muteBtn.classList.remove('fj-icon-mute');
-            muteBtn.classList.remove('fj-icon-volDown');
-            muteBtn.classList.add('fj-icon-volUp');
+            this.muteBtn.classList.remove('fj-icon-mute');
+            this.muteBtn.classList.remove('fj-icon-volDown');
+            this.muteBtn.classList.add('fj-icon-volUp');
         } else if (pos > 0) {
-            muteBtn.classList.remove('fj-icon-mute');
-            muteBtn.classList.remove('fj-icon-volUp');
-            muteBtn.classList.add('fj-icon-volDown');
+            this.muteBtn.classList.remove('fj-icon-mute');
+            this.muteBtn.classList.remove('fj-icon-volUp');
+            this.muteBtn.classList.add('fj-icon-volDown');
         } else {
-            muteBtn.classList.remove('fj-icon-volDown');
-            muteBtn.classList.remove('fj-icon-volUp');
-            muteBtn.classList.add('fj-icon-mute');
+            this.muteBtn.classList.remove('fj-icon-volDown');
+            this.muteBtn.classList.remove('fj-icon-volUp');
+            this.muteBtn.classList.add('fj-icon-mute');
         }
-        video.volume = pos;
-        logger.log(' new volume is ', pos);
-    };
+        this.video.volume = pos;
+        this.logger.log(' new volume is ', pos);
+    }
 
-    function onmuteClick(e) {
-        video.muted = !video.muted;
-        if (video.muted) {
-            volumeBar.value = 0;
-            muteBtn.classList.remove('fj-icon-volDown');
-            muteBtn.classList.remove('fj-icon-volUp');
-            muteBtn.classList.add('fj-icon-mute');
-        } else if (video.volume > 0.6) {
-            volumeBar.value = video.volume * 100;
-            muteBtn.classList.remove('fj-icon-mute');
-            muteBtn.classList.remove('fj-icon-volDown');
-            muteBtn.classList.add('fj-icon-volUp');
+    onmuteClick() {
+        this.video.muted = !this.video.muted;
+        if (this.video.muted) {
+            this.volumeBar.value = 0;
+            this.muteBtn.classList.remove('fj-icon-volDown');
+            this.muteBtn.classList.remove('fj-icon-volUp');
+            this.muteBtn.classList.add('fj-icon-mute');
+        } else if (this.video.volume > 0.6) {
+            this.volumeBar.value = this.video.volume * 100;
+            this.muteBtn.classList.remove('fj-icon-mute');
+            this.muteBtn.classList.remove('fj-icon-volDown');
+            this.muteBtn.classList.add('fj-icon-volUp');
         } else {
-            volumeBar.value = video.volume * 100;
-            muteBtn.classList.remove('fj-icon-mute');
-            muteBtn.classList.remove('fj-icon-volUp');
-            muteBtn.classList.add('fj-icon-volDown');
+            this.volumeBar.value = this.video.volume * 100;
+            this.muteBtn.classList.remove('fj-icon-mute');
+            this.muteBtn.classList.remove('fj-icon-volUp');
+            this.muteBtn.classList.add('fj-icon-volDown');
         }
     }
 
     // ************************************************************************************
     // SEEKING
     // ************************************************************************************
-    function onprogressClick(event) {
-        // var p = progressBar.value;
-        var rect = progressBar.getBoundingClientRect();
-        var p = (event.pageX - rect.left) * (mediaDuration / (rect.right - rect.left));
-        logger.log(' Seeking from ', Utils.duration(p), '/',
-            Utils.duration(mediaDuration), 'to', Utils.duration(p), ' sec');
-        fjMainPlayer.seek(p);
+    onprogressClick(event) {
+    // var p = this.progressBar.value;
+        this.logger.info(' onprogressClick event ', event);
+        const rect = this.progressBar.getBoundingClientRect();
+        this.logger.info(' onprogressClick mediaDuration ', this.mediaDuration);
+        this.logger.info(' onprogressClick rect ', rect);
+        const p = (event.pageX - rect.left) * (this.mediaDuration / (rect.right - rect.left));
+        this.logger.log(' Seeking from ', Utils.duration(p), '/',
+            Utils.duration(this.mediaDuration), 'to', Utils.duration(p), ' sec');
+        this.fjMainPlayer.seek(p);
     }
+
     // ************************************************************************************
     // FULLSCREEN
     // ************************************************************************************
-    function isFullScreen() {
+    static isFullScreen() {
         return document.fullscreenElement || document.msFullscreenElement ||
             document.mozFullScreen || document.webkitIsFullScreen;
     }
 
-    function setFullscreenData(state) {
-        videoFigure.setAttribute('data-fullscreen', !!state);
+    setFullscreenData(state) {
+        this.videoFigure.setAttribute('data-fullscreen', !!state);
     }
 
-    function handleFullscreen() {
-        // If fullscreen mode is active...
-        if (isFullScreen()) {
+    handleFullscreen() {
+    // If fullscreen mode is active...
+        if (this.constructor.isFullScreen()) {
             // ...exit fullscreen mode
             // (Note: this can only be called on document)
             if (document.exitFullscreen) document.exitFullscreen();
             else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
             else if (document.webkitCancelFullScreen) document.webkitCancelFullScreen();
             else if (document.msExitFullscreen) document.msExitFullscreen();
-            setFullscreenData(false);
-            fullScreenBtn.classList.remove('fj-icon-compressScreen');
-            fullScreenBtn.classList.add('fj-icon-fullScreen');
+            this.setFullscreenData(false);
+            this.fullScreenBtn.classList.remove('fj-icon-compressScreen');
+            this.fullScreenBtn.classList.add('fj-icon-fullScreen');
         } else {
-            fullScreenBtn.classList.add('fj-icon-compressScreen');
-            fullScreenBtn.classList.remove('fj-icon-fullScreen');
+            this.fullScreenBtn.classList.add('fj-icon-compressScreen');
+            this.fullScreenBtn.classList.remove('fj-icon-fullScreen');
             // ...otherwise enter fullscreen mode
             // (Note: can be called on document, but here the specific element is used as
-            // it will also ensure that the element's children, e.g. the custom controls, go fullscreen also)
-            if (videoFigure.requestFullscreen) videoFigure.requestFullscreen();
-            else if (videoFigure.mozRequestFullScreen) videoFigure.mozRequestFullScreen();
-            else if (videoFigure.webkitRequestFullScreen) {
-                // Safari 5.1 only allows proper fullscreen on the video element.
+            // it will also ensure that the element's
+            // children, e.g. the custom controls, go fullscreen also)
+            if (this.videoFigure.requestFullscreen) this.videoFigure.requestFullscreen();
+            else if (this.videoFigure.mozRequestFullScreen) this.videoFigure.mozRequestFullScreen();
+            else if (this.videoFigure.webkitRequestFullScreen) {
+                // Safari 5.1 only allows proper fullscreen on the this.video element.
                 // This also works fine on other WebKit
                 // Zbrowsers as the following CSS (set in styles.css) hides the default
                 // controls that appear again, and
                 // ensures that our custom controls are visible:
-                // figure[data-fullscreen=true] video::-webkit-media-controls { display:none !important; }
+                // figure[data-fullscreen=true]
+                // this.video::-webkit-media-controls { display:none !important; }
                 // figure[data-fullscreen=true] .controls { z-index:2147483647; }
-                video.webkitRequestFullScreen();
-            } else if (videoFigure.msRequestFullscreen) videoFigure.msRequestFullscreen();
-            setFullscreenData(true);
-
+                this.video.webkitRequestFullScreen();
+            } else if (this.videoFigure.msRequestFullscreen) this.videoFigure.msRequestFullscreen();
+            this.setFullscreenData(true);
         }
     }
 
-    function onFullScreenChange(e) {
+    onFullScreenChange(e) {
         if (e.type === 'fullscreenchange') {
-            logger.log(' fullscreenchange >>> Full Scren changed Status ', !!(document.fullScreen || document.fullscreenElement));
-            setFullscreenData(!!(document.fullScreen || document.fullscreenElement));
+            this.logger.log(' fullscreenchange >>> Full Scren changed Status ', !!(document.fullScreen || document.fullscreenElement));
+            this.setFullscreenData(!!(document.fullScreen || document.fullscreenElement));
         }
         if (e.type === 'webkitfullscreenchange') {
-            logger.log(' webkitfullscreenchange >>> Full Scren changed Status ', !!document.webkitIsFullScreen);
-            setFullscreenData(!!document.webkitIsFullScreen);
+            this.logger.log(' webkitfullscreenchange >>> Full Scren changed Status ', !!document.webkitIsFullScreen);
+            this.setFullscreenData(!!document.webkitIsFullScreen);
         }
         if (e.type === 'mozfullscreenchange') {
-            logger.log(' mozfullscreenchange >>> Full Scren changed Status ', !!document.mozFullScreen);
-            setFullscreenData(!!document.mozFullScreen);
+            this.logger.log(' mozfullscreenchange >>> Full Scren changed Status ', !!document.mozFullScreen);
+            this.setFullscreenData(!!document.mozFullScreen);
         }
         if (e.type === 'msfullscreenchange') {
-            logger.log(' msfullscreenchange >>> Full Scren changed Status ', !!document.msFullscreenElement);
-            setFullscreenData(!!document.msFullscreenElement);
+            this.logger.log(' msfullscreenchange >>> Full Scren changed Status ', !!document.msFullscreenElement);
+            this.setFullscreenData(!!document.msFullscreenElement);
         }
-
     }
+
     // ************************************************************************************
     // PUBLIC API
     // ************************************************************************************
-    function goForError() {
-        // used to prepare to show error
-        magicMouseLeave();
-        BigPlayBtn.classList.add('fj-hide');
-
+    goForError() {
+    // used to prepare to show error
+        this.magicMouseLeave();
+        this.BigPlayBtn.classList.add('fj-hide');
     }
 
-    function setVolume(value) {
-        var pos;
+    setVolume(value) {
         if (typeof value === 'number') {
-            volumebar.value = value;
+            this.volumebar.value = value;
         }
-        pos = volumeBar.value / 100;
-        logger.log(' volume from ', video.volume, ' to ', pos);
+        const pos = this.volumeBar.value / 100;
+        this.logger.log(' volume from ', this.video.volume, ' to ', pos);
 
         if (pos > 0.6) {
-            muteBtn.classList.remove('fj-icon-mute');
-            muteBtn.classList.remove('fj-icon-volDown');
-            muteBtn.classList.add('fj-icon-volUp');
+            this.muteBtn.classList.remove('fj-icon-mute');
+            this.muteBtn.classList.remove('fj-icon-volDown');
+            this.muteBtn.classList.add('fj-icon-volUp');
         } else if (pos > 0) {
-            muteBtn.classList.remove('fj-icon-mute');
-            muteBtn.classList.remove('fj-icon-volUp');
-            muteBtn.classList.add('fj-icon-volDown');
+            this.muteBtn.classList.remove('fj-icon-mute');
+            this.muteBtn.classList.remove('fj-icon-volUp');
+            this.muteBtn.classList.add('fj-icon-volDown');
         } else {
-            muteBtn.classList.remove('fj-icon-volDown');
-            muteBtn.classList.remove('fj-icon-volUp');
-            muteBtn.classList.add('fj-icon-mute');
+            this.muteBtn.classList.remove('fj-icon-volDown');
+            this.muteBtn.classList.remove('fj-icon-volUp');
+            this.muteBtn.classList.add('fj-icon-mute');
         }
 
-        video.volume = pos;
-        logger.log(' new volume is ', pos);
-    };
+        this.video.volume = pos;
+        this.logger.log(' new volume is ', pos);
+    }
 
-    function setDuration(value) {
-        if (!isNaN(value)) {
-            mediaDuration = value;
-            durationDisplay.textContent = Utils.duration(value);
-            progressBar.max = value;
+    setDuration(value) {
+        if (!Number.isNaN(value)) {
+            this.mediaDuration = value;
+            this.durationDisplay.textContent = Utils.duration(value);
+            this.progressBar.max = value;
         }
     }
 
-    function UpdateProgress(value) {
-        if (!isNaN(value)) {
-            timer.textContent = Utils.duration(value);
-            progressBar.value = value;
+    UpdateProgress(value) {
+        if (!Number.isNaN(value)) {
+            this.timer.textContent = Utils.duration(value);
+            this.progressBar.value = value;
         }
     }
 
     // set Sharing icon
-    function setShareIcon(shareUrl) {
+    setShareIcon(shareUrl) {
         if (shareUrl !== null && shareUrl !== undefined && shareUrl !== '') {
-            logger.log('Will show Share icon to ' + shareUrl);
-            document.getElementById(shareId).style.display = 'block';
-            document.getElementById(shareId).addEventListener('click', function() {
+            this.logger.log(`Will show Share icon to ${shareUrl}`);
+            document.getElementById(this.shareId).style.display = 'block';
+            document.getElementById(this.shareId).addEventListener('click', () => {
                 window.open(shareUrl);
             });
         } else {
-            logger.log('Will NOT show Share icon');
-            document.getElementById(shareId).style.display = 'none';
+            this.logger.log('Will NOT show Share icon');
+            document.getElementById(this.shareId).style.display = 'none';
         }
     }
 
     // set Downloading icon
-    function setDownloadIcon(DownUrl) {
+    setDownloadIcon(DownUrl) {
         if (DownUrl !== null && DownUrl !== undefined && DownUrl !== '') {
-            logger.log('Will show Download icon to ' + DownUrl);
-            document.getElementById(downloadId).style.display = 'block';
-            document.getElementById(downloadId).addEventListener('click', function() {
+            this.logger.log(`Will show Download icon to ${DownUrl}`);
+            document.getElementById(this.downloadId).style.display = 'block';
+            document.getElementById(this.downloadId).addEventListener('click', () => {
                 window.open(DownUrl);
             });
         } else {
-            logger.log('Will NOT show Download icon');
-            document.getElementById(downloadId).style.display = 'none';
+            this.logger.log('Will NOT show Download icon');
+            document.getElementById(this.downloadId).style.display = 'none';
         }
     }
 
     // set back icon
-    function setBackIcon(BackUrl) {
+    setBackIcon(BackUrl) {
         if (BackUrl !== null && BackUrl !== undefined && BackUrl !== '') {
-            logger.log('Will show Back icon to ' + BackUrl);
-            document.getElementById(backId).style.display = 'block';
-            document.getElementById(backId).addEventListener('click', function() {
+            this.logger.log(`Will show Back icon to ${BackUrl}`);
+            document.getElementById(this.backId).style.display = 'block';
+            document.getElementById(this.backId).addEventListener('click', () => {
                 window.location = BackUrl;
             });
         } else {
-            logger.log('Will NOT show Back icon');
-            document.getElementById(backId).style.display = 'none';
+            this.logger.log('Will NOT show Back icon');
+            document.getElementById(this.backId).style.display = 'none';
         }
     }
 
-    function setTitle(ltitle, ShowUpTitle) {
-        document.getElementById(titleId).innerHTML = ltitle;
-        document.getElementById(descriptionId).innerHTML = ltitle;
+    setTitle(ltitle, ShowUpTitle) {
+        document.getElementById(this.titleId).innerHTML = ltitle;
+        document.getElementById(this.descriptionId).innerHTML = ltitle;
         if (ShowUpTitle) {
-            logger.log('Will  show title Up');
-            document.getElementById(titleId).style.display = 'block';
+            this.logger.log('Will  show title Up');
+            document.getElementById(this.titleId).style.display = 'block';
         } else {
-            logger.log('Will NOT show title Up');
-            document.getElementById(titleId).style.display = 'none';
+            this.logger.log('Will NOT show title Up');
+            document.getElementById(this.titleId).style.display = 'none';
         }
     }
 
-    function getVideo() {
-        return video;
+    getVideo() {
+        return this.video;
     }
 
-    function getErrorDivId() {
-        return errorDivId;
+    getErrorDivId() {
+        return this.errorDivId;
     }
 
-    function getAdsContainerDivId() {
-        return adsContainerDivId;
+    getAdsContainerDivId() {
+        return this.adsContainerDivId;
     }
 
-    function getOverlaysContainerDivId() {
-        return overlaysContainerDivId;
+    getOverlaysContainerDivId() {
+        return this.overlaysContainerDivId;
     }
 
-    function SetupThumbsManager(videoDuration, thumbsTrackIndex) {
+    SetupThumbsManager(videoDuration, thumbsTrackIndex) {
         if (thumbsTrackIndex !== null) {
-            return ThumbsMgr.Setup(getVideo(), videoDuration, thumbsTrackIndex);
+            return this.ThumbsMgr.Setup(this.getVideo(), videoDuration, thumbsTrackIndex);
         }
-        return ThumbsMgr.reset();
-
+        return this.ThumbsMgr.reset();
     }
 
-    function getVideoFigure() {
-        return videoControllerFigure;
+    getVideoFigure() {
+        return this.videoControllerFigure;
     }
 
-    function onResizeWindow() {
-        var intViewportWidth = window.innerWidth;
-        // var intViewportHeight = window.innerHeight;
-        var newPercentage = ((intViewportWidth / holdWidth) * 100) + '%';
-        var fjplayer = document.getElementById('playercontainer');
+    onResizeWindow() {
+        const intViewportWidth = window.innerWidth;
+        // const intViewportHeight = window.innerHeight;
+        const newPercentage = `${(intViewportWidth / this.holdWidth) * 100}%`;
+        const fjplayer = document.getElementById('playercontainer');
         fjplayer.style.fontSize = newPercentage;
-        console.error(holdWidth, ' RESIED !!!!!!!!!!!!! ', intViewportWidth, '/', holdWidth, '>>>>>', newPercentage);
+        this.logger.log(this.holdWidth, ' RESIED !!!!!!!!!!!!! ', intViewportWidth, '/', this.holdWidth, '>>>>>', newPercentage);
     }
 
-    function onLoadWindow() {
-        console.error(holdWidth, ' LOADED ##########################');
-        holdWidth = window.innerWidth;
+    onLoadWindow() {
+        this.logger.log(this.holdWidth, ' LOADED ##########################');
+        this.holdWidth = window.innerWidth;
     }
 
-    function initialize(mainPlayer) {
-        create(videoContainerId);
-        fjMainPlayer = mainPlayer;
-        if (!fjMainPlayer) {
+    initialize(mainPlayer) {
+        this.create(this.videoContainerId);
+        this.fjMainPlayer = mainPlayer;
+        if (!this.fjMainPlayer) {
             throw new Error('Please pass an instance of player when instantiating');
         }
 
-        playerMenus = new Menus(video, subtitlesBtnId, audiosBtnId, menuContainerDivId);
+        this.playerMenus = new Menus(
+            this.video,
+            this.subtitlesBtnId,
+            this.audiosBtnId,
+            this.menuContainerDivId,
+        );
 
-        // OverlaysMgr = new Overlays(this.video, document.getElementById(this.overlaysContainerDivId));
-        videoControllerFigure.addEventListener('mouseleave', magicMouseLeave);
-        videoControllerFigure.addEventListener('mouseenter', magicMouseEnter);
-        videoControllerFigure.addEventListener('mousemove', magicMouseMove);
-        BigPlayBtn.addEventListener('click', onplaypauseClick);
-        video.addEventListener('click', onplaypauseClick);
-        video.addEventListener('dblclick', handleFullscreen);
-        volumeBar.addEventListener('click', OnvbClick);
-        playpauseBtn.addEventListener('click', onplaypauseClick);
-        muteBtn.addEventListener('click', onmuteClick);
-        playpreviousBtn.addEventListener('click', onperviousClick);
-        playforwardBtn.addEventListener('click', onforwardClick);
-        fullScreenBtn.addEventListener('click', handleFullscreen);
-        progressBar.addEventListener('click', onprogressClick);
+        // OverlaysMgr = new Overlays(this.video,
+        //    document.getElementById(this.overlaysContainerDivId));
+        this.videoControllerFigure.addEventListener('mouseleave', () => this.magicMouseLeave());
+        this.videoControllerFigure.addEventListener('mouseenter', () => this.magicMouseEnter());
+        this.videoControllerFigure.addEventListener('mousemove', () => this.magicMouseMove());
+        this.BigPlayBtn.addEventListener('click', () => this.onplaypauseClick());
+        this.video.addEventListener('click', () => this.onplaypauseClick());
+        this.video.addEventListener('dblclick', () => this.handleFullscreen());
+        this.volumeBar.addEventListener('click', () => this.OnvbClick());
+        this.playpauseBtn.addEventListener('click', () => this.onplaypauseClick());
+        this.playpreviousBtn.addEventListener('click', () => this.onperviousClick());
+        this.playforwardBtn.addEventListener('click', () => this.onforwardClick());
+        this.muteBtn.addEventListener('click', () => this.onmuteClick());
+        this.fullScreenBtn.addEventListener('click', () => this.handleFullscreen());
+        this.progressBar.addEventListener('click', (event) => this.onprogressClick(event));
 
-        window.addEventListener('resize', onResizeWindow);
-        window.addEventListener('load', onLoadWindow); // too late to catch event
+        // window.addEventListener('resize', () => onResizeWindow());
+        // window.addEventListener('load', v onResizeWindow()); // too late to catch event
 
-        document.addEventListener('fullscreenchange', onFullScreenChange);
-        document.addEventListener('MSFullscreenChange', onFullScreenChange);
-        document.addEventListener('mozfullscreenchange', onFullScreenChange);
-        document.addEventListener('webkitfullscreenchange', onFullScreenChange);
+        document.addEventListener('fullscreenchange', (event) => this.onFullScreenChange(event));
+        document.addEventListener('MSFullscreenChange', (event) => this.onFullScreenChange(event));
+        document.addEventListener('mozfullscreenchange', (event) => this.onFullScreenChange(event));
+        document.addEventListener('webkitfullscreenchange', (event) => this.onFullScreenChange(event));
 
         // progress bar
-        progressBar.min = 0;
-        progressBar.step = 0.01;
-        progressBar.value = 0;
+        this.progressBar.min = 0;
+        this.progressBar.step = 0.01;
+        this.progressBar.value = 0;
         // volume bar
-        volumeBar.min = 0;
-        volumeBar.step = 1;
-        volumeBar.max = 100;
-        volumeBar.value = 100;
-        initialized = true;
+        this.volumeBar.min = 0;
+        this.volumeBar.step = 1;
+        this.volumeBar.max = 100;
+        this.volumeBar.value = 100;
+        this.initialized = true;
 
         // hide some component
-        document.getElementById(titleId).display = 'none';
+        document.getElementById(this.titleId).display = 'none';
     }
 
-    function hideVideo() {
-        BigPlayBtn.style.display = 'none';
-        videoInfo.style.display = 'none';
-        video.style.display = 'none';
-        videoController.style.display = 'none';
+    hideVideo() {
+        this.BigPlayBtn.style.display = 'none';
+        this.videoInfo.style.display = 'none';
+        this.video.style.display = 'none';
+        this.videoController.style.display = 'none';
     }
 
-    function ShowVideo() {
-        BigPlayBtn.style.display = 'block';
-        videoInfo.style.display = 'block';
-        video.style.display = 'block';
-        videoController.style.display = 'block';
+    ShowVideo() {
+        this.BigPlayBtn.style.display = 'block';
+        this.videoInfo.style.display = 'block';
+        this.video.style.display = 'block';
+        this.videoController.style.display = 'block';
     }
 
-    function ShowSpinner() {
-        spinner.classList.remove('fj-hide');
+    ShowSpinner() {
+        this.spinner.classList.remove('fj-hide');
     }
 
-    function HideSpinner() {
-        if (spinner.classList.contains('fj-hide') === false) {
-            spinner.classList.add('fj-hide');
+    HideSpinner() {
+        if (this.spinner.classList.contains('fj-hide') === false) {
+            this.spinner.classList.add('fj-hide');
         }
     }
 
-    function disable() {
-        videoController.classList.add('disable');
+    disable() {
+        this.videoController.classList.add('disable');
     }
 
-    function enable() {
-        videoController.classList.remove('disable');
+    enable() {
+        this.videoController.classList.remove('disable');
     }
 
-    function getVideoCaption() {
-        var ele = document.getElementById(videoCaptionId);
+    getVideoCaption() {
+        const ele = document.getElementById(this.videoCaptionId);
         return ele;
     }
 
-    function reset() {
-        if (initialized !== true) {
-            logger.warn('not yet initialized');
+    reset() {
+        if (this.initialized !== true) {
+            this.logger.warn('not yet this.initialized');
             return;
         }
-        console.warn(' >>> Resetting player ui !!');
-        ThumbsMgr.reset();
-        // OverlaysMgr = new Overlays(this.video, document.getElementById(this.overlaysContainerDivId));
-        videoControllerFigure.removeEventListener('mouseleave', magicMouseLeave);
-        videoControllerFigure.removeEventListener('mouseenter', magicMouseEnter);
-        videoControllerFigure.removeEventListener('mousemove', magicMouseMove);
+        this.logger.warn(' >>> Resetting player ui !!');
+        this.ThumbsMgr.reset();
+        // OverlaysMgr = new Overlays(this.video,
+        //    document.getElementById(this.overlaysContainerDivId));
+        this.videoControllerFigure.removeEventListener('mouseleave', this.magicMouseLeave);
+        this.videoControllerFigure.removeEventListener('mouseenter', this.magicMouseEnter);
+        this.videoControllerFigure.removeEventListener('mousemove', this.magicMouseMove);
 
-        BigPlayBtn.removeEventListener('click', onplaypauseClick);
-        video.removeEventListener('click', onplaypauseClick);
-        video.removeEventListener('dblclick', handleFullscreen);
-        volumeBar.removeEventListener('click', OnvbClick);
-        playpauseBtn.removeEventListener('click', onplaypauseClick);
-        muteBtn.removeEventListener('click', onmuteClick);
-        fullScreenBtn.removeEventListener('click', handleFullscreen);
-        progressBar.removeEventListener('click', onprogressClick);
+        this.BigPlayBtn.removeEventListener('click', this.onplaypauseClick);
+        this.video.removeEventListener('click', this.onplaypauseClick);
+        this.video.removeEventListener('dblclick', this.handleFullscreen);
+        this.volumeBar.removeEventListener('click', this.OnvbClick);
+        this.playpauseBtn.removeEventListener('click', this.onplaypauseClick);
+        this.muteBtn.removeEventListener('click', this.onmuteClick);
+        this.fullScreenBtn.removeEventListener('click', this.handleFullscreen);
+        this.progressBar.removeEventListener('click', this.onprogressClick);
 
+        /*
         window.removeEventListener('resize', onResizeWindow);
-        window.removeEventListener('load', onLoadWindow);
+        window.removeEventListener('load', onResizeWindow);
+        */
 
-        document.removeEventListener('fullscreenchange', onFullScreenChange);
-        document.removeEventListener('MSFullscreenChange', onFullScreenChange);
-        document.removeEventListener('mozfullscreenchange', onFullScreenChange);
-        document.removeEventListener('webkitfullscreenchange', onFullScreenChange);
+        document.removeEventListener('fullscreenchange', this.onFullScreenChange);
+        document.removeEventListener('MSFullscreenChange', this.onFullScreenChange);
+        document.removeEventListener('mozfullscreenchange', this.onFullScreenChange);
+        document.removeEventListener('webkitfullscreenchange', this.onFullScreenChange);
 
-        toggleplaypauseBtn();
+        this.toggleplaypauseBtn();
     }
-    // ************************************************************************************
-    // PUBLIC API
-    // ************************************************************************************
-    return {
-        setVolume: setVolume,
-        setDuration: setDuration,
-        UpdateProgress: UpdateProgress,
-        setTitle: setTitle,
-        setBackIcon: setBackIcon,
-        setDownloadIcon: setDownloadIcon,
-        setShareIcon: setShareIcon,
-        getVideo: getVideo,
-        getAdsContainerDivId: getAdsContainerDivId,
-        getErrorDivId: getErrorDivId,
-        getOverlaysContainerDivId: getOverlaysContainerDivId,
-        SetupThumbsManager: SetupThumbsManager,
-        SetupSubsAudsManager: SetupSubsAudsManager,
-        getVideoFigure: getVideoFigure,
-        initialize: initialize,
-        toggleplaypauseBtn: toggleplaypauseBtn,
-        getVideoCaption: getVideoCaption,
-        hideVideo: hideVideo,
-        ShowVideo: ShowVideo,
-        disable: disable,
-        enable: enable,
-        reset: reset,
-        ShowSpinner: ShowSpinner,
-        HideSpinner: HideSpinner,
-        onplaypauseClick: onplaypauseClick,
-        goForError: goForError,
-        constructor: PlayerUi
-    };
-};
+}
 
-export default PlayerUi;
+module.exports = PlayerUi;

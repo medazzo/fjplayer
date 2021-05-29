@@ -1,23 +1,24 @@
-# **fjplayer.js** #
+# **fjplayer** #
 
-## What is fjplayer.js ##
+## What is fjplayer ##
 
 * it's a 100 % customiazble video player base on html 5 video Player
 * it's support dash and mp4 sources 
 * it support multi subs tracks
-* it support overlays ads or information 
-* it support injection mp4 video ads in preroll,modroll and after roll main video
+* it support overlays ads and any information overlays
+* it support injection mp4 video ads in preroll,modroll or after rolling main video
+* based on sdhakla player
 
-## how to use fjplayer.js ##
+## Using fjplayer ##
 
-### You need to include fjplayer files ##   
-  *  **dist/fjplayer.js** for fjplayer styles and javascript code , no other dependecies is needed
+### include fjplayer file ##   
+  **dist/fjplayer.js** for fjplayer styles and javascript code , no other dependecies is needed
 
 ```html
-<script type="text/javascript" src="/dist/fjplayer.js"></script>
+<script type="text/javascript" src="/dist/fjplayer.min.js"></script>
 ```
 
-### html coding ###
+### html  ###
 In your html code , you need to add a div with a an Id to be used bu the player 
 
 ```html
@@ -100,10 +101,10 @@ player.startPlaylist(0, true, false, true);
 
 ### developping fjplayer  ###
 after doing :
-* npm install 
-* npm run live
+* npm install : to install dependecy
+* npm run live : to run http demo and developiong watching mode for javascript code
 
-We can start demo app at http://localhost:9000
+demo app will be launched at http://localhost:8080
 
 
 ### Playlist Item ###

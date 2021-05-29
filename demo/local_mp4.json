@@ -1,0 +1,35 @@
+{
+  "_comment": " using some shortt mp4 on server",
+  "data": {
+    "Bees3Wmv": {
+      "FJTitle": "Bees mp4",
+      "FJType": "video/mp4",
+      "FJClass": "vod",
+      "FJSrc": "/demo/videos/Bees3Wmv.mp4"
+    },
+    "berber_pub": {
+      "FJTitle": "BerBer ADS",
+      "FJType": "video/mp4",
+      "FJClass": "vod",
+      "FJSrc": "/demo/videos/berber_pub.mp4"
+    },
+    "Best_Ad_2014": {
+      "FJTitle": "Randopm Ads mp4",
+      "FJType": "video/mp4",
+      "FJClass": "vod",
+      "FJSrc": "/demo/videos/Best_Ad_2014.mp4"
+    },
+    "mercedes": {
+      "FJTitle": "Mercedes Mp4",
+      "FJType": "video/mp4",
+      "FJClass": "vod",
+      "FJSrc": "/demo/videos/mercedes.mp4"
+    },
+    "elephants dream": {
+      "FJTitle": "Elephant dream Mp4",
+      "FJType": "video/mp4",
+      "FJClass": "vod",
+      "FJSrc": "/demo/videos/elephants_dream.mp4"
+    }
+  }
+}

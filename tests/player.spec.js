@@ -24,7 +24,6 @@ describe('FjTestPlayer', function() {
             fixture);
         done();
     });
-
     // remove the html fixture from the DOM
     afterEach((done) => {
         console.error(' After  Test !');
@@ -35,16 +34,12 @@ describe('FjTestPlayer', function() {
     describe('Event player ', function() {
         it('Simple Player Loaded Event', function(done) {
             expect(P.addItem(data.itemOnly)).to.be.equal(true);
-
             player = new Player('fjserverID1', 'playercontainer');
             expect(player.isReady()).to.be.equal(false);
-
             expect(player.loadPlaylist(P)).to.be.equal(true);
-
             expect(player.startPlaylist(0, false, false, true)).to.be.equal(true);
-
             player.on(Const.PlayerEvents.STREAM_LOADED,
-                function(e, args) {
+                (e) => {
                     console.warn(' *********************************** Having event LOADED ', e);
                     done();
                 });
@@ -52,70 +47,59 @@ describe('FjTestPlayer', function() {
 
         it('Simple Player Started Event', function(done) {
             expect(P.addItem(data.itemOnly)).to.be.equal(true);
-
             player = new Player('fjserverID1', 'playercontainer');
             expect(player.isReady()).to.be.equal(false);
-
             expect(player.loadPlaylist(P)).to.be.equal(true);
-
             expect(player.startPlaylist(0, false, false, true)).to.be.equal(true);
-
             player.on(Const.PlayerEvents.PLAYBACK_STARTED,
-                function(e, args) {
+                (e) => {
                     console.warn(' *********************************** Having event STARTED ', e);
                     done();
                 });
+
         });
 
-        it('Simple Player Ended Event', function(done) {
+        it('Simple Player Paused Event', function(done) {
             expect(P.addItem(data.itemOnly)).to.be.equal(true);
-
             player = new Player('fjserverID1', 'playercontainer');
             expect(player.isReady()).to.be.equal(false);
-
             expect(player.loadPlaylist(P)).to.be.equal(true);
-
             expect(player.startPlaylist(0, false, false, true)).to.be.equal(true);
-
-            expect(player.pause()).to.be.equal(true);
-
-            player.on(Const.PlayerEvents.PLAYBACK_PAUSED,
-                function(e, args) {
-                    console.warn(' *********************************** Having event PAUSED ', e);
+            player.on(Const.PlayerEvents.PLAYBACK_STARTED,
+                (e) => {
+                    console.warn(' *********************************** Having event STARTED ', e);
+                    // trigger pause button
+                    document.getElementById('ppbplayercontainer').click();
+                    player.on(Const.PlayerEvents.PLAYBACK_PAUSED,
+                        (x) => {
+                            console.warn(' *********************************** Having event PAUSED ', x);
+                            done();
+                        });
                     done();
                 });
         });
 
         it('Simple Player Ended Event', function(done) {
             expect(P.addItem(data.itemOnly)).to.be.equal(true);
-
             player = new Player('fjserverID1', 'playercontainer');
             expect(player.isReady()).to.be.equal(false);
-
             expect(player.loadPlaylist(P)).to.be.equal(true);
-
             expect(player.startPlaylist(0, false, false, true)).to.be.equal(true);
-
             player.on(Const.PlayerEvents.PLAYBACK_ENDED,
-                function(e, args) {
+                (e) => {
                     console.warn(' *********************************** Having event Ended ', e);
                     done();
                 });
-
         });
 
         it('Simple Player ADS Started Event', function(done) {
             expect(P.addItem(data.itemOnlyAds)).to.be.equal(true);
-
             player = new Player('fjserverID1', 'playercontainer');
             expect(player.isReady()).to.be.equal(false);
-
             expect(player.loadPlaylist(P)).to.be.equal(true);
-
             expect(player.startPlaylist(0, false, false, true)).to.be.equal(true);
-
             player.on(Const.AdsEvents.ADS_PLAYBACK_STARTED,
-                function(e, args) {
+                (e) => {
                     console.warn(' *********************************** Having event Ads STARTED ', e);
                     done();
                 });
@@ -123,18 +107,12 @@ describe('FjTestPlayer', function() {
 
         it('Simple Player ADS ENDED Event', function(done) {
             expect(P.addItem(data.itemOnlyAds)).to.be.equal(true);
-
             player = new Player('fjserverID1', 'playercontainer');
             expect(player.isReady()).to.be.equal(false);
-
             expect(player.loadPlaylist(P)).to.be.equal(true);
-
             expect(player.startPlaylist(0, false, false, true)).to.be.equal(true);
-
-            setTimeout(done, 70000);
-
             player.on(Const.AdsEvents.ADS_PLAYBACK_ENDED,
-                function(e, args) {
+                (e) => {
                     console.warn(' *********************************** Having event Ads ENDED ', e);
                     done();
                 });

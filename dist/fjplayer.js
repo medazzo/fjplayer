@@ -22736,57 +22736,103 @@ module.exports = Version;
 
 /***/ }),
 
+/***/ "./src/index.js":
+/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/**
+ * The entry point for the library FJplayer.JS
+ */
+var Playlist = __webpack_require__(/*! ./js/player/playlist */ "./src/js/player/playlist.js");
+
+var Player = __webpack_require__(/*! ./js/player/player */ "./src/js/player/player.js");
+
+var Version = __webpack_require__(/*! ./Version */ "./src/Version.js");
+
+var _require = __webpack_require__(/*! ./js/defs/constants */ "./src/js/defs/constants.js"),
+    PlayerEvents = _require.PlayerEvents,
+    AdsEvents = _require.AdsEvents,
+    OverlayEvents = _require.OverlayEvents; // Shove both of these into the global scope
+
+
+var context = typeof window !== 'undefined' && window || __webpack_require__.g;
+var fjplayer = context.fjplayer;
+
+if (!fjplayer) {
+  fjplayer = {};
+  context.fjplayer = {};
+}
+
+fjplayer.Playlist = Playlist;
+fjplayer.Player = Player;
+fjplayer.Version = Version;
+fjplayer.PlayerEvents = PlayerEvents;
+fjplayer.AdsEvents = AdsEvents;
+fjplayer.OverlayEvents = OverlayEvents;
+module.exports = {
+  fjplayer: fjplayer,
+  Playlist: Playlist,
+  Player: Player,
+  Version: Version,
+  PlayerEvents: PlayerEvents,
+  AdsEvents: AdsEvents,
+  OverlayEvents: OverlayEvents
+};
+/*
+Next version like this  + playlist must be detached
+class fjplayer {
+  constructor() {
+    this.Playlist = new Playlist();
+    this.Player = null;
+    this.Version = new Version();
+    this.PlayerEvents = PlayerEvents;
+    this.AdsEvents = AdsEvents;
+    this.OverlayEvents = OverlayEvents;
+  }
+
+  get playlist() {
+    return this.Playlist;
+  }
+
+  get player() {
+    return this.Player;
+  }
+
+  setPlayer(id, videoContainerId) {
+    this.Player = new Player(id, videoContainerId);
+  }
+
+  get version() {
+    return this.Version.getVersion();
+  }
+
+  get playerEvents() {
+    return this.PlayerEvents;
+  }
+
+  get adsEvents() {
+    return this.AdsEvents;
+  }
+
+  get overlayEvents() {
+    return this.OverlayEvents;
+  }
+}
+
+module.exports = fjplayer;
+s
+*/
+
+/***/ }),
+
 /***/ "./src/js/defs/constants.js":
 /*!**********************************!*\
   !*** ./src/js/defs/constants.js ***!
   \**********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "FJCONFIG_CLASS": () => (/* binding */ FJCONFIG_CLASS),
-/* harmony export */   "FJCONFIG_TYPE": () => (/* binding */ FJCONFIG_TYPE),
-/* harmony export */   "FJCONFIG_TITLE": () => (/* binding */ FJCONFIG_TITLE),
-/* harmony export */   "FJCONFIG_SRC": () => (/* binding */ FJCONFIG_SRC),
-/* harmony export */   "FJCONFIG_POSTER": () => (/* binding */ FJCONFIG_POSTER),
-/* harmony export */   "FJCONFIG_ADS_LINK_URL": () => (/* binding */ FJCONFIG_ADS_LINK_URL),
-/* harmony export */   "FJCONFIG_CAN_ESCAPE": () => (/* binding */ FJCONFIG_CAN_ESCAPE),
-/* harmony export */   "FJCONFIG_THUMBS": () => (/* binding */ FJCONFIG_THUMBS),
-/* harmony export */   "FJCONFIG_SUBTITLES": () => (/* binding */ FJCONFIG_SUBTITLES),
-/* harmony export */   "FJCONFIG_ADS": () => (/* binding */ FJCONFIG_ADS),
-/* harmony export */   "FJCONFIG_AUDIOS": () => (/* binding */ FJCONFIG_AUDIOS),
-/* harmony export */   "FJCONFIG_OVERLAYS": () => (/* binding */ FJCONFIG_OVERLAYS),
-/* harmony export */   "FJCONFIG_DRM": () => (/* binding */ FJCONFIG_DRM),
-/* harmony export */   "FJCONFIG_LABEL": () => (/* binding */ FJCONFIG_LABEL),
-/* harmony export */   "FJCONFIG_LANG": () => (/* binding */ FJCONFIG_LANG),
-/* harmony export */   "FJCONFIG_DATA": () => (/* binding */ FJCONFIG_DATA),
-/* harmony export */   "FJCONFIG_URL": () => (/* binding */ FJCONFIG_URL),
-/* harmony export */   "FJCONFIG_DURATION": () => (/* binding */ FJCONFIG_DURATION),
-/* harmony export */   "FJCONFIG_SHOW_AT": () => (/* binding */ FJCONFIG_SHOW_AT),
-/* harmony export */   "FJCONFIG_DRM_LICENSE_SERVER": () => (/* binding */ FJCONFIG_DRM_LICENSE_SERVER),
-/* harmony export */   "FJCONFIG_SHOW_UP_TITLE": () => (/* binding */ FJCONFIG_SHOW_UP_TITLE),
-/* harmony export */   "FJCONFIG_DOWNLOAD": () => (/* binding */ FJCONFIG_DOWNLOAD),
-/* harmony export */   "FJCONFIG_SHARE": () => (/* binding */ FJCONFIG_SHARE),
-/* harmony export */   "FJCONFIG_BACK": () => (/* binding */ FJCONFIG_BACK),
-/* harmony export */   "FJCONFIG_TRUE": () => (/* binding */ FJCONFIG_TRUE),
-/* harmony export */   "FJCONFIG_FALSE": () => (/* binding */ FJCONFIG_FALSE),
-/* harmony export */   "FJCONFIG_BOOLEAN": () => (/* binding */ FJCONFIG_BOOLEAN),
-/* harmony export */   "FJCONFIG_CLASS_VOD": () => (/* binding */ FJCONFIG_CLASS_VOD),
-/* harmony export */   "FJCONFIG_CLASS_LIVE": () => (/* binding */ FJCONFIG_CLASS_LIVE),
-/* harmony export */   "FJCONFIG_CLASSES": () => (/* binding */ FJCONFIG_CLASSES),
-/* harmony export */   "FJCONFIG_TYPE_MP4": () => (/* binding */ FJCONFIG_TYPE_MP4),
-/* harmony export */   "FJCONFIG_TYPE_DASH": () => (/* binding */ FJCONFIG_TYPE_DASH),
-/* harmony export */   "FJCONFIG_TYPES": () => (/* binding */ FJCONFIG_TYPES),
-/* harmony export */   "FJCONFIG_ADS_CLASS_PRE_ROLL": () => (/* binding */ FJCONFIG_ADS_CLASS_PRE_ROLL),
-/* harmony export */   "FJCONFIG_ADS_CLASS_MID_ROLL": () => (/* binding */ FJCONFIG_ADS_CLASS_MID_ROLL),
-/* harmony export */   "FJCONFIG_ADS_CLASS_POST_ROLL": () => (/* binding */ FJCONFIG_ADS_CLASS_POST_ROLL),
-/* harmony export */   "FJCONFIG_ADS_CLASSES": () => (/* binding */ FJCONFIG_ADS_CLASSES),
-/* harmony export */   "AdsEnum": () => (/* binding */ AdsEnum),
-/* harmony export */   "PlayerEvents": () => (/* binding */ PlayerEvents),
-/* harmony export */   "AdsEvents": () => (/* binding */ AdsEvents),
-/* harmony export */   "OverlayEvents": () => (/* binding */ OverlayEvents)
-/* harmony export */ });
 /**
  * @module Constants
  */
@@ -22809,7 +22855,9 @@ var FJCONFIG_DATA = 'FJData';
 var FJCONFIG_URL = 'FJUrl';
 var FJCONFIG_DURATION = 'FJDuration';
 var FJCONFIG_SHOW_AT = 'FJShowAt';
-var FJCONFIG_DRM_LICENSE_SERVER = 'FjLicenseServer';
+var FJCONFIG_DRM_LICENSE_SERVER = 'FJLicenseServer';
+var FJCONFIG_DRM_SCHEME = 'FJDrmScheme';
+var FJCONFIG_DRM_SCHEME_FORJA = 'forja';
 var FJCONFIG_SHOW_UP_TITLE = 'FJUpTitle';
 var FJCONFIG_DOWNLOAD = 'FJDownload';
 var FJCONFIG_SHARE = 'FJShare';
@@ -22859,7 +22907,51 @@ var OverlayEvents = {
   OVERLAY_ERROR: 'OVERLAY_ERROR',
   OVERLAY_SKIPPED: 'OVERLAY_SKIPPED'
 };
-
+module.exports = {
+  FJCONFIG_CLASS: FJCONFIG_CLASS,
+  FJCONFIG_TYPE: FJCONFIG_TYPE,
+  FJCONFIG_TITLE: FJCONFIG_TITLE,
+  FJCONFIG_SRC: FJCONFIG_SRC,
+  FJCONFIG_POSTER: FJCONFIG_POSTER,
+  FJCONFIG_ADS_LINK_URL: FJCONFIG_ADS_LINK_URL,
+  FJCONFIG_CAN_ESCAPE: FJCONFIG_CAN_ESCAPE,
+  FJCONFIG_THUMBS: FJCONFIG_THUMBS,
+  FJCONFIG_SUBTITLES: FJCONFIG_SUBTITLES,
+  FJCONFIG_ADS: FJCONFIG_ADS,
+  FJCONFIG_AUDIOS: FJCONFIG_AUDIOS,
+  FJCONFIG_OVERLAYS: FJCONFIG_OVERLAYS,
+  FJCONFIG_DRM: FJCONFIG_DRM,
+  FJCONFIG_LABEL: FJCONFIG_LABEL,
+  FJCONFIG_LANG: FJCONFIG_LANG,
+  FJCONFIG_DATA: FJCONFIG_DATA,
+  FJCONFIG_URL: FJCONFIG_URL,
+  FJCONFIG_DURATION: FJCONFIG_DURATION,
+  FJCONFIG_SHOW_AT: FJCONFIG_SHOW_AT,
+  FJCONFIG_DRM_LICENSE_SERVER: FJCONFIG_DRM_LICENSE_SERVER,
+  FJCONFIG_DRM_SCHEME: FJCONFIG_DRM_SCHEME,
+  FJCONFIG_DRM_SCHEME_FORJA: FJCONFIG_DRM_SCHEME_FORJA,
+  FJCONFIG_SHOW_UP_TITLE: FJCONFIG_SHOW_UP_TITLE,
+  FJCONFIG_DOWNLOAD: FJCONFIG_DOWNLOAD,
+  FJCONFIG_SHARE: FJCONFIG_SHARE,
+  FJCONFIG_BACK: FJCONFIG_BACK,
+  FJCONFIG_TRUE: FJCONFIG_TRUE,
+  FJCONFIG_FALSE: FJCONFIG_FALSE,
+  FJCONFIG_BOOLEAN: FJCONFIG_BOOLEAN,
+  FJCONFIG_CLASS_VOD: FJCONFIG_CLASS_VOD,
+  FJCONFIG_CLASS_LIVE: FJCONFIG_CLASS_LIVE,
+  FJCONFIG_CLASSES: FJCONFIG_CLASSES,
+  FJCONFIG_TYPE_MP4: FJCONFIG_TYPE_MP4,
+  FJCONFIG_TYPE_DASH: FJCONFIG_TYPE_DASH,
+  FJCONFIG_TYPES: FJCONFIG_TYPES,
+  FJCONFIG_ADS_CLASS_PRE_ROLL: FJCONFIG_ADS_CLASS_PRE_ROLL,
+  FJCONFIG_ADS_CLASS_MID_ROLL: FJCONFIG_ADS_CLASS_MID_ROLL,
+  FJCONFIG_ADS_CLASS_POST_ROLL: FJCONFIG_ADS_CLASS_POST_ROLL,
+  FJCONFIG_ADS_CLASSES: FJCONFIG_ADS_CLASSES,
+  AdsEnum: AdsEnum,
+  PlayerEvents: PlayerEvents,
+  AdsEvents: AdsEvents,
+  OverlayEvents: OverlayEvents
+};
 
 /***/ }),
 
@@ -22867,18 +22959,13 @@ var OverlayEvents = {
 /*!*********************************!*\
   !*** ./src/js/defs/isoLangs.js ***!
   \*********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "isoLangs": () => (/* binding */ isoLangs)
-/* harmony export */ });
 /**
  * @author Phil Teare
  * using wikipedia data
  */
-var isoLangs = {
+var IsoLangs = {
   ab: {
     name: 'Abkhaz',
     nativeName: 'аҧсуа'
@@ -23608,6 +23695,7 @@ var isoLangs = {
     nativeName: 'Saɯ cueŋƅ, Saw cuengh'
   }
 };
+module.exports = IsoLangs;
 
 /***/ }),
 
@@ -23615,848 +23703,867 @@ var isoLangs = {
 /*!**************************************!*\
   !*** ./src/js/player/PlayerMedia.js ***!
   \**************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _utils_Logger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/Logger */ "./src/js/utils/Logger.js");
-/* harmony import */ var _utils_Eventing__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/Eventing */ "./src/js/utils/Eventing.js");
-/* harmony import */ var _defs_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../defs/constants */ "./src/js/defs/constants.js");
-/* harmony import */ var _defs_isoLangs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../defs/isoLangs */ "./src/js/defs/isoLangs.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var shaka = __webpack_require__(/*! shaka-player */ "./node_modules/shaka-player/dist/shaka-player.compiled.js");
 
+var Logger = __webpack_require__(/*! ../utils/Logger */ "./src/js/utils/Logger.js");
 
+var Eventing = __webpack_require__(/*! ../utils/Eventing */ "./src/js/utils/Eventing.js");
 
+var Const = __webpack_require__(/*! ../defs/constants */ "./src/js/defs/constants.js");
 
- // import * as Const from '../defs/constants';
-
+var IsoLangs = __webpack_require__(/*! ../defs/isoLangs */ "./src/js/defs/isoLangs.js");
 /**
  * @module PlayerMedia
  * @description The PlayerMedia is the html video/dash/drm Media player
  *
  */
 
-function PlayerMedia(fjPlayerId) {
-  var video = null,
-      FjPlayerId = fjPlayerId,
-      FjSessionToken = 'notSettled',
-      initialized = false,
-      startingCount = 0,
-      thumbsTrackUrl = null,
-      thumbsTrackIndex = -1,
-      // getEndedEvent = false,
-  CurrentUrl = null,
-      // CurrentProtection = null,
-  CurrentStreamType = PlayerMedia.UNKNOWN,
-      DashPlayer = null,
-      logger = new _utils_Logger__WEBPACK_IMPORTED_MODULE_0__.default(this),
-      events = new _utils_Eventing__WEBPACK_IMPORTED_MODULE_1__.default(),
-      StreamTypes = {
-    UNKNOWN: 0,
-    MP4_CLEAR: 1,
-    DASH_CLEAR: 2,
-    DASH_ENCRYPTED: 3,
-    properties: {
-      0: {
-        name: 'UNKNOWN',
-        value: 0,
-        code: 'U'
-      },
-      1: {
-        name: 'MP4_CLEAR',
-        value: 1,
-        code: 'M'
-      },
-      2: {
-        name: 'DASH_CLEAR',
-        value: 2,
-        code: 'D'
-      },
-      3: {
-        name: 'DASH_ENCRYPTED',
-        value: 3,
-        code: 'E'
+
+var PlayerMedia = /*#__PURE__*/function () {
+  function PlayerMedia(fjPlayerId) {
+    _classCallCheck(this, PlayerMedia);
+
+    this.video = null;
+    this.FjPlayerId = fjPlayerId;
+    this.FjSessionToken = 'notSettled';
+    this.initialized = false;
+    this.startingCount = 0;
+    this.thumbsTrackUrl = null;
+    this.thumbsTrackIndex = -1;
+    this.CurrentUrl = false;
+    this.CurrentUrl = null;
+    this.CurrentProtection = null;
+    this.CurrentStreamType = PlayerMedia.UNKNOWN;
+    this.DashPlayer = null;
+    this.logger = new Logger(this);
+    this.events = new Eventing();
+    this.StreamTypes = {
+      UNKNOWN: 0,
+      MP4_CLEAR: 1,
+      DASH_CLEAR: 2,
+      DASH_ENCRYPTED: 3,
+      properties: {
+        0: {
+          name: 'UNKNOWN',
+          value: 0,
+          code: 'U'
+        },
+        1: {
+          name: 'MP4_CLEAR',
+          value: 1,
+          code: 'M'
+        },
+        2: {
+          name: 'DASH_CLEAR',
+          value: 2,
+          code: 'D'
+        },
+        3: {
+          name: 'DASH_ENCRYPTED',
+          value: 3,
+          code: 'E'
+        }
+      }
+    };
+  }
+  /**
+   *
+   */
+
+
+  _createClass(PlayerMedia, [{
+    key: "initialize",
+    value: function initialize(playerUiVideo) {
+      // Install built-in polyfills to patch browser incompatibilities.
+      shaka.polyfill.installAll(); // Debug logs, when the default of INFO isn't enough:
+      // shaka.log.setLevel(shaka.log.Level.DEBUG);
+      // Check to see if the browser supports the basic APIs Shaka needs.
+
+      if (!shaka.Player.isBrowserSupported()) {
+        // This browser does not have the minimum set of APIs we need.
+        this.logger.error('Browser not supported !');
+        return false;
+      }
+
+      this.video = playerUiVideo;
+
+      if (!this.video) {
+        throw new Error('Please call initialize with a valid Player UI having a this.videohtml 5 element ');
+      } // this.DashPlayer= new shaka.Player(video);
+      // done
+
+
+      this.initialized = true;
+      this.logger.debug(' Media player just this.initializedwith playerUiVideo');
+      return true;
+    }
+    /**
+     *
+     */
+
+  }, {
+    key: "on",
+    value: function on(name, handler) {
+      return this.events.on(name, handler);
+    }
+    /**
+     *
+     */
+
+  }, {
+    key: "off",
+    value: function off(name, handler) {
+      return this.events.off(name, handler);
+    }
+    /**
+     *
+     */
+
+  }, {
+    key: "play",
+    value: function play() {
+      if (this.initialized === true) {
+        this.video.play();
+      } else {
+        this.logger.warn(' No Media Loaded , nothing to play ');
       }
     }
-  };
-  /**
-   *
-   */
+    /**
+     *
+     */
 
-  function initialize(playerUiVideo) {
-    // Install built-in polyfills to patch browser incompatibilities.
-    shaka.polyfill.installAll(); // Debug logs, when the default of INFO isn't enough:
-    // shaka.log.setLevel(shaka.log.Level.DEBUG);
-    // Check to see if the browser supports the basic APIs Shaka needs.
+  }, {
+    key: "time",
+    value: function time() {
+      if (this.initialized === true) {
+        return this.video.currentTime;
+      }
 
-    if (!shaka.Player.isBrowserSupported()) {
-      // This browser does not have the minimum set of APIs we need.
-      logger.error('Browser not supported !');
-      return false;
+      this.logger.warn(' No Media Loaded ! ');
+      return null;
     }
+    /**
+     *
+     */
 
-    video = playerUiVideo;
+  }, {
+    key: "isPaused",
+    value: function isPaused() {
+      if (this.initialized === true) {
+        return this.video.paused;
+      }
 
-    if (!video) {
-      throw new Error('Please call initialize with a valid Player UI having a video html 5 element ');
-    } // DashPlayer = new shaka.Player(video);
-    // done
-
-
-    initialized = true;
-    logger.debug(' Media player just initialized with playerUiVideo');
-    return true;
-  }
-
-  ;
-  /**
-   *
-   */
-
-  function on(name, handler) {
-    return events.on(name, handler);
-  }
-
-  ;
-  /**
-   *
-   */
-
-  function off(name, handler) {
-    return events.off(name, handler);
-  }
-
-  ;
-  /**
-   *
-   */
-
-  function play() {
-    if (initialized === true) {
-      video.play();
-    } else {
-      logger.warn(' No Media Loaded , nothing to play ');
+      this.logger.warn(' No Media Loaded ! ');
+      return true;
     }
-  }
+    /**
+     *
+     */
 
-  ;
-  /**
-   *
-   */
+  }, {
+    key: "isEnded",
+    value: function isEnded() {
+      if (this.initialized === true) {
+        return this.video.ended;
+      }
 
-  function time() {
-    if (initialized === true) {
-      return video.currentTime;
+      this.logger.warn(' No Media Loaded ! ');
+      return true;
     }
+    /**
+     *
+     */
 
-    logger.warn(' No Media Loaded ! ');
-    return 0;
-  }
+  }, {
+    key: "isMuted",
+    value: function isMuted() {
+      if (this.initialized === true) {
+        return this.video.muted;
+      }
 
-  ;
-  /**
-   *
-   */
-
-  function isPaused() {
-    if (initialized === true) {
-      return video.paused;
+      this.logger.warn(' No Media Loaded ! ');
+      return true;
     }
+    /**
+     *
+     */
 
-    logger.warn(' No Media Loaded ! ');
-    return true;
-  }
-
-  ;
-  /**
-   *
-   */
-
-  function isEnded() {
-    if (initialized === true) {
-      return video.ended;
+  }, {
+    key: "setVolume",
+    value: function setVolume(volume) {
+      if (this.initialized === true) {
+        this.video.volume = volume;
+      } else {
+        this.logger.warn(' No Media Loaded ! ');
+      }
     }
+    /**
+     *
+     */
 
-    logger.warn(' No Media Loaded ! ');
-    return true;
-  }
+  }, {
+    key: "getDuration",
+    value: function getDuration() {
+      if (this.initialized === true) {
+        return this.video.duration;
+      }
 
-  ;
-  /**
-   *
-   */
-
-  function isMuted() {
-    if (initialized === true) {
-      return video.muted;
+      this.logger.warn(' No Media Loaded ! ');
+      return null;
     }
+    /**
+     *
+     */
 
-    logger.warn(' No Media Loaded ! ');
-    return true;
-  }
+  }, {
+    key: "getVolume",
+    value: function getVolume() {
+      if (this.initialized === true) {
+        return this.video.volume;
+      }
 
-  ;
-  /**
-   *
-   */
-
-  function setVolume(volume) {
-    if (initialized === true) {
-      video.volume = volume;
-    } else {
-      logger.warn(' No Media Loaded ! ');
+      this.logger.warn(' No Media Loaded ! ');
+      return null;
     }
-  }
-
-  ;
-  /**
-   *
-   */
-
-  function getDuration() {
-    if (initialized === true) {
-      return video.duration;
+  }, {
+    key: "setThumbsUrl",
+    value: function setThumbsUrl(url) {
+      if (url !== null && url !== undefined && url !== '') {
+        this.thumbsTrackUrl = url;
+        this.logger.debug(' Setting url for thumbs @', url);
+      } else {
+        this.thumbsTrackUrl = null;
+        this.logger.debug(' No Setting url for thumbs ');
+      }
     }
+    /* ********************************************************************** */
 
-    logger.warn(' No Media Loaded ! ');
-    return 0;
-  }
+    /*                               TXT TRACKS                               */
 
-  ;
-  /**
-   *
-   */
+    /* ********************************************************************** */
 
-  function getVolume() {
-    if (initialized === true) {
-      return video.volume;
-    }
+  }, {
+    key: "setTextTrack",
+    value: function setTextTrack(textTrackIndex) {
+      var index = this.parseInt(textTrackIndex);
+      this.logger.warn(' Setting text track to index : ', index);
 
-    logger.warn(' No Media Loaded ! ');
-    return 0;
-  }
-
-  ;
-
-  function setThumbsUrl(url) {
-    if (url !== null && url !== undefined && url !== '') {
-      thumbsTrackUrl = url;
-      logger.debug(' Setting url for thumbs @', url);
-    } else {
-      thumbsTrackUrl = null;
-      logger.debug(' No Setting url for thumbs ');
-    }
-  }
-
-  ;
-  /* ********************************************************************** */
-
-  /*                               TXT TRACKS                               */
-
-  /* ********************************************************************** */
-
-  function setTextTrack(textTrackIndex) {
-    var index = parseInt(textTrackIndex, 10);
-    var i = 0;
-    logger.warn(' Setting text track to index : ', index);
-
-    if (initialized === true) {
-      if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-        for (i = 0; i < video.textTracks.length; i++) {
-          if (video.textTracks[i].kind === 'captions' || video.textTracks[i].kind === 'subtitles' || video.textTracks[i].kind === 'subtitle') {
-            if (index === i) {
-              video.textTracks[i].mode = 'showing';
-            } else {
-              video.textTracks[i].mode = 'hidden';
+      if (this.initialized === true) {
+        if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
+          for (var i = 0; i < this.video.textTracks.length; i += 1) {
+            if (this.video.textTracks[i].kind === 'captions' || this.video.textTracks[i].kind === 'subtitles' || this.video.textTracks[i].kind === 'subtitle') {
+              if (index === i) {
+                this.video.textTracks[i].mode = 'showing';
+              } else {
+                this.video.textTracks[i].mode = 'hidden';
+              }
             }
           }
+        } else {
+          this.DashPlayer.selectTextTrack(this.DashPlayer.getTextTracks()[index]);
         }
+      }
+    }
+  }, {
+    key: "getTextTracks",
+    value: function getTextTracks() {
+      if (this.initialized === true) {
+        if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
+          return this.video.textTracks;
+        }
+
+        return this.DashPlayer.getTextTracks();
+      }
+
+      this.logger.warn(' No Media Loaded ! ');
+      return [];
+    }
+  }, {
+    key: "isTextTrackEnabled",
+    value: function isTextTrackEnabled(textTrackIndex) {
+      if (this.initialized === true) {
+        if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
+          return this.video.textTracks[textTrackIndex].enabled === true;
+        }
+
+        return this.DashPlayer.getTextTracks()[textTrackIndex].active === true;
+      }
+
+      this.logger.warn(' No Media Loaded ! ');
+      return false;
+    }
+  }, {
+    key: "getTextTrackLabel",
+    value: function getTextTrackLabel(textTrackIndex) {
+      if (this.initialized === true) {
+        if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
+          return this.video.textTracks[textTrackIndex].label;
+        }
+
+        return this.DashPlayer.getTextTracks()[textTrackIndex].language;
+      }
+
+      this.logger.warn(' No Media Loaded ! ');
+      return 'NaN';
+    }
+    /* ********************************************************************** */
+
+    /*                               AUD LANGS                               */
+
+    /* ********************************************************************** */
+
+  }, {
+    key: "setAudioLang",
+    value: function setAudioLang(AudLangIndex) {
+      var index = this.parseInt(AudLangIndex);
+      this.logger.warn(' Setting text track to index : ', index);
+
+      if (this.initialized === true) {
+        if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
+          for (var i = 0; i < this.video.textTracks.length; i += 1) {
+            if (index === i) {
+              this.video.audioTracks[i].enabled = true;
+            } else {
+              this.video.audioTracks[i].enabled = false;
+            }
+          }
+        } else {
+          this.DashPlayer.selectAudioLanguage(this.DashPlayer.getAudioLanguages()[index]);
+        }
+      }
+    }
+  }, {
+    key: "getAudioLanguages",
+    value: function getAudioLanguages() {
+      if (this.initialized === true) {
+        if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
+          return this.video.audioTracks;
+        }
+
+        return this.DashPlayer.getAudioLanguages();
+      }
+
+      this.logger.warn(' No Media Loaded ! ');
+      return [];
+    }
+  }, {
+    key: "isAudioLangEnabled",
+    value: function isAudioLangEnabled(AudLangIndex) {
+      var index = this.parseInt(AudLangIndex);
+
+      if (this.initialized === true) {
+        if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
+          return this.video.audioTracks[index].enabled === true;
+        }
+
+        return this.DashPlayer.getAudioLanguages()[index].enabled === true;
+      }
+
+      this.logger.warn(' No Media Loaded ! ');
+      return false;
+    }
+  }, {
+    key: "getAudioLangLabel",
+    value: function getAudioLangLabel(AudLangIndex) {
+      var index = this.parseInt(AudLangIndex);
+
+      if (this.initialized === true) {
+        if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
+          return this.video.audioTracks[index].label;
+        }
+
+        return this.DashPlayer.getAudioLanguages()[index].label;
+      }
+
+      this.logger.warn(' No Media Loaded ! ');
+      return 'NaN';
+    }
+    /**
+     *
+     */
+
+  }, {
+    key: "setMute",
+    value: function setMute(mute) {
+      if (this.initialized === true) {
+        this.video.muted = mute;
       } else {
-        DashPlayer.selectTextTrack(DashPlayer.getTextTracks()[index]);
+        this.logger.warn(' No Media Loaded ! ');
       }
     }
-  }
+    /**
+     *
+     */
 
-  ;
+  }, {
+    key: "pause",
+    value: function pause() {
+      if (this.initialized === true) {
+        this.video.pause();
+      } else {
+        this.logger.warn(' No Media Loaded , nothing to pause ');
+      }
+    }
+    /**
+     *
+     */
 
-  function getTextTracks() {
-    if (initialized === true) {
-      if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-        return video.textTracks;
+  }, {
+    key: "seek",
+    value: function seek(position) {
+      if (this.initialized === true) {
+        this.video.currentTime = parseFloat(position);
+      } else {
+        this.logger.warn(' No Media Loaded , nothing to seek ');
+      }
+    }
+    /**
+     * Callbacks
+     */
+
+  }, {
+    key: "onShakaError",
+    value: function onShakaError(e) {
+      this.onShError(e.detail);
+    }
+  }, {
+    key: "onShakaEvent",
+    value: function onShakaEvent(event) {
+      this.logger.warn('Eventing  [', event.type, ']:', event);
+    }
+  }, {
+    key: "onShError",
+    value: function onShError(error) {
+      this.logger.error('Error code', error.code, 'object', error);
+    }
+  }, {
+    key: "onPlayStart",
+    value: function onPlayStart() {
+      this.startingCount += 1;
+      this.events.fireEvent(Const.PlayerEvents.PLAYBACK_STARTED, this.startingCount);
+    }
+  }, {
+    key: "onPlaybackPaused",
+    value: function onPlaybackPaused() {
+      this.events.fireEvent(Const.PlayerEvents.PLAYBACK_PAUSED);
+    }
+  }, {
+    key: "onPlaybackEnded",
+    value: function onPlaybackEnded() {
+      this.getEndedEvent = true;
+      this.events.fireEvent(Const.PlayerEvents.PLAYBACK_ENDED);
+    }
+  }, {
+    key: "onPlayTimeUpdate",
+    value: function onPlayTimeUpdate() {
+      var time = 0;
+
+      if (this.initialized === true) {
+        time = this.video.currentTime;
+      } else {
+        this.logger.warn(' Internal error !');
+        return;
       }
 
-      return DashPlayer.getTextTracks();
+      this.events.fireEvent(Const.PlayerEvents.PLAYBACK_TIME_UPDATE, time);
     }
+  }, {
+    key: "onSeeked",
+    value: function onSeeked() {
+      this.events.fireEvent(Const.PlayerEvents.PLAYBACK_SEEKED);
+    }
+  }, {
+    key: "onSeeking",
+    value: function onSeeking() {
+      this.events.fireEvent(Const.PlayerEvents.PLAYBACK_SEEKING);
+    }
+  }, {
+    key: "onError",
+    value: function onError(e) {
+      var msg = e.event.message;
 
-    logger.warn(' No Media Loaded ! ');
-    return [];
-  }
-
-  ;
-
-  function isTextTrackEnabled(textTrackIndex) {
-    if (initialized === true) {
-      if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-        return video.textTracks[textTrackIndex].enabled === true;
+      if (e.event.message === undefined) {
+        msg = e.event;
       }
 
-      return DashPlayer.getTextTracks()[textTrackIndex].active === true;
+      var args = {
+        type: e.type,
+        code: e.error,
+        message: msg
+      };
+      this.logger.error('>>>>>>>>>>>>>>> ERROR !!:', e);
+      this.events.fireEvent(Const.PlayerEvents.PLAYBACK_ERROR, args);
     }
+  }, {
+    key: "onStreamInitialized",
+    value: function onStreamInitialized() {
+      this.thumbsTrackIndex = -1;
 
-    logger.warn(' No Media Loaded ! ');
-    return false;
-  }
+      if (this.thumbsTrackUrl !== null) {
+        for (var i = 0; i < this.video.textTracks.length; i += 1) {
+          if (this.video.textTracks[i].kind === 'metadata') {
+            this.thumbsTrackIndex = i;
+            this.video.textTracks[i].mode = 'hidden'; // thanks Firefox
 
-  ;
-
-  function getTextTrackLabel(textTrackIndex) {
-    if (initialized === true) {
-      if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-        return video.textTracks[textTrackIndex].label;
-      }
-
-      return DashPlayer.getTextTracks()[textTrackIndex].language;
-    }
-
-    logger.warn(' No Media Loaded ! ');
-    return 'NaN';
-  }
-
-  ;
-  /* ********************************************************************** */
-
-  /*                               AUD LANGS                               */
-
-  /* ********************************************************************** */
-
-  function setAudioLang(AudLangIndex) {
-    var index = parseInt(AudLangIndex, 10);
-    var i = 0;
-    logger.warn(' Setting text track to index : ', index);
-
-    if (initialized === true) {
-      if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-        for (i = 0; i < video.textTracks.length; i++) {
-          if (index === i) {
-            video.audioTracks[i].enabled = true;
-          } else {
-            video.audioTracks[i].enabled = false;
+            this.logger.warn('find  metadata tumbs  @ ', this.thumbsTrackIndex, '/', this.video.textTracks.length, ' >>> and this.videoduration ;;; ', this.getDuration());
+          } else if (this.video.textTracks[i].kind === 'captions' || this.video.textTracks[i].kind === 'subtitles') {
+            // SubsTrackIndex = i;
+            this.logger.warn('find  soustitres  @ ', this.thumbsTrackIndex, '/', this.video.textTracks.length, ' >>> ', this.video.textTracks[i]);
+            break;
           }
         }
+      }
+
+      this.logger.info('Stream is completly loaded.');
+
+      if (this.thumbsTrackIndex !== -1 && this.thumbsTrackUrl !== -1) {
+        this.events.fireEvent(Const.PlayerEvents.STREAM_LOADED, this.thumbsTrackIndex);
       } else {
-        DashPlayer.selectAudioLanguage(DashPlayer.getAudioLanguages()[index]);
+        this.events.fireEvent(Const.PlayerEvents.STREAM_LOADED, null);
       }
     }
-  }
+  }, {
+    key: "SetManuallysubs",
+    value: function SetManuallysubs(subs, video) {
+      var track = null;
+      var item = null;
+      var tmp = null;
+      var label = null;
+      var i = 0;
+      var n = 0; // set subs
 
-  ;
+      if (subs !== null && subs !== undefined) {
+        for (i = 0; i < subs.length; i += 1) {
+          item = subs[i];
+          track = document.createElement('track');
+          track.kind = 'subtitles';
+          track.src = item[Const.FJCONFIG_SRC];
+          track.srclang = item[Const.FJCONFIG_LANG];
+          tmp = IsoLangs[item[Const.FJCONFIG_LANG]];
+          this.logger.log(' Appending track substitles with Label', tmp.name);
+          n = tmp.name.indexOf(',');
 
-  function getAudioLanguages() {
-    if (initialized === true) {
-      if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-        return video.audioTracks;
-      }
+          if (n === -1) {
+            n = tmp.name.indexOf(';');
+          }
 
-      return DashPlayer.getAudioLanguages();
-    }
+          if (n === -1) {
+            label = tmp.name;
+          } else {
+            label = tmp.name.substr(0, n);
+          }
 
-    logger.warn(' No Media Loaded ! ');
-    return [];
-  }
-
-  ;
-
-  function isAudioLangEnabled(AudLangIndex) {
-    var index = parseInt(AudLangIndex, 10);
-
-    if (initialized === true) {
-      if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-        return video.audioTracks[index].enabled === true;
-      }
-
-      return DashPlayer.getAudioLanguages()[index].enabled === true;
-    }
-
-    logger.warn(' No Media Loaded ! ');
-    return false;
-  }
-
-  ;
-
-  function getAudioLangLabel(AudLangIndex) {
-    var index = parseInt(AudLangIndex, 10);
-
-    if (initialized === true) {
-      if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-        return video.audioTracks[index].label;
-      }
-
-      return DashPlayer.getAudioLanguages()[index].label;
-    }
-
-    logger.warn(' No Media Loaded ! ');
-    return 'NaN';
-  }
-
-  ;
-  /**
-   *
-   */
-
-  function setMute(mute) {
-    if (initialized === true) {
-      video.muted = mute;
-    } else {
-      logger.warn(' No Media Loaded ! ');
-    }
-  }
-
-  ;
-  /**
-   *
-   */
-
-  function pause() {
-    if (initialized === true) {
-      video.pause();
-    } else {
-      logger.warn(' No Media Loaded , nothing to pause ');
-    }
-  }
-
-  ;
-  /**
-   *
-   */
-
-  function seek(position) {
-    if (initialized === true) {
-      video.currentTime = parseFloat(position);
-    } else {
-      logger.warn(' No Media Loaded , nothing to seek ');
-    }
-  }
-
-  ;
-  /**
-   * Callbacks
-   */
-
-  function onShakaEvent(e) {
-    logger.warn('Eventing  [', event.type, ']:', event);
-  }
-
-  ;
-
-  function onShError(error) {
-    // Log the error.
-    logger.error('Error code', error.code, 'object', error);
-  }
-
-  ;
-
-  function onShakaError(e) {
-    onShError(e.detail);
-  }
-
-  ;
-
-  function onPlayStart(e) {
-    startingCount++;
-    events.fireEvent(_defs_constants__WEBPACK_IMPORTED_MODULE_2__.PlayerEvents.PLAYBACK_STARTED, startingCount);
-  }
-
-  ;
-
-  function onPlaybackPaused(e) {
-    events.fireEvent(_defs_constants__WEBPACK_IMPORTED_MODULE_2__.PlayerEvents.PLAYBACK_PAUSED);
-  }
-
-  ;
-
-  function onPlaybackEnded(e) {
-    // getEndedEvent = true;
-    events.fireEvent(_defs_constants__WEBPACK_IMPORTED_MODULE_2__.PlayerEvents.PLAYBACK_ENDED);
-  }
-
-  ;
-
-  function onPlayTimeUpdate(e) {
-    var time = 0;
-
-    if (initialized === true) {
-      time = video.currentTime;
-    } else {
-      logger.warn(' Internal error !');
-      return;
-    }
-
-    events.fireEvent(_defs_constants__WEBPACK_IMPORTED_MODULE_2__.PlayerEvents.PLAYBACK_TIME_UPDATE, time);
-  }
-
-  ;
-
-  function onSeeked(e) {
-    events.fireEvent(_defs_constants__WEBPACK_IMPORTED_MODULE_2__.PlayerEvents.PLAYBACK_SEEKED);
-  }
-
-  ;
-
-  function onSeeking(e) {
-    events.fireEvent(_defs_constants__WEBPACK_IMPORTED_MODULE_2__.PlayerEvents.PLAYBACK_SEEKING);
-  }
-
-  function onError(e) {
-    var args,
-        msg = e.event.message;
-
-    if (e.event.message === undefined) {
-      msg = e.event;
-    }
-
-    args = {
-      'type': e.type,
-      'code': e.error,
-      'message': msg
-    };
-    logger.error('>>>>>>>>>>>>>>> ERROR !!:', e);
-    events.fireEvent(_defs_constants__WEBPACK_IMPORTED_MODULE_2__.PlayerEvents.PLAYBACK_ERROR, args);
-  }
-
-  ;
-
-  function onStreamInitialized() {
-    var i = 0; // video tracks
-
-    thumbsTrackIndex = -1;
-
-    if (thumbsTrackUrl !== null) {
-      for (i = 0; i < video.textTracks.length; i++) {
-        if (video.textTracks[i].kind === 'metadata') {
-          thumbsTrackIndex = i;
-          video.textTracks[i].mode = 'hidden'; // thanks Firefox
-
-          logger.warn('find  metadata tumbs  @ ', thumbsTrackIndex, '/', video.textTracks.length, ' >>> and video duration ;;; ', getDuration());
-        } else if (video.textTracks[i].kind === 'captions' || video.textTracks[i].kind === 'subtitles') {
-          // SubsTrackIndex = i;
-          logger.warn('find  soustitres  @ ', thumbsTrackIndex, '/', video.textTracks.length, ' >>> ', video.textTracks[i]);
-          break;
+          track.label = label;
+          video.appendChild(track);
         }
+      } else {
+        this.logger.debug('no vtt Subs are found in config.');
       }
     }
-
-    logger.warn(' stream is completly loaded  text tracks are !! ', getTextTracks());
-
-    if (thumbsTrackIndex !== -1 && thumbsTrackUrl !== -1) {
-      events.fireEvent(_defs_constants__WEBPACK_IMPORTED_MODULE_2__.PlayerEvents.STREAM_LOADED, thumbsTrackIndex);
-    } else {
-      events.fireEvent(_defs_constants__WEBPACK_IMPORTED_MODULE_2__.PlayerEvents.STREAM_LOADED, null);
-    }
-  }
-
-  ;
-
-  function SetManuallysubs(subs, video) {
-    var track = null,
-        item = null,
-        tmp = null,
-        label = null,
-        i = 0,
-        n = 0; // set subs
-
-    if (subs !== null && subs !== undefined) {
-      for (i = 0; i < subs.length; i++) {
-        item = subs[i];
-        track = document.createElement('track');
-        track.kind = 'subtitles';
-        track.src = item[_defs_constants__WEBPACK_IMPORTED_MODULE_2__.FJCONFIG_SRC];
-        track.srclang = item[_defs_constants__WEBPACK_IMPORTED_MODULE_2__.FJCONFIG_LANG];
-        tmp = _defs_isoLangs__WEBPACK_IMPORTED_MODULE_3__.isoLangs[item[_defs_constants__WEBPACK_IMPORTED_MODULE_2__.FJCONFIG_LANG]];
-        logger.log(' Appending track substitles with Label', tmp.name);
-        n = tmp.name.indexOf(',');
-
-        if (n === -1) {
-          n = tmp.name.indexOf(';');
-        }
-
-        if (n === -1) {
-          label = tmp.name;
-        } else {
-          label = tmp.name.substr(0, n);
-        }
-
-        track.label = label;
-        video.appendChild(track);
-      }
-    } else {
-      logger.debug('no vtt Subs are found in config.');
-    }
-  }
-
-  ;
-  /* function doesTimeMarchesOn() {
+  }, {
+    key: "doesTimeMarchesOn",
+    value: function doesTimeMarchesOn() {
       var version;
       var REQUIRED_VERSION = 49.0;
-       if (typeof navigator !== 'undefined') {
-          if (!navigator.userAgent.match(/Firefox/)) {
-              return true;
-          }
-           version = parseFloat(navigator.userAgent.match(/rv:([0-9.]+)/)[1]);
-           if (!isNaN(version) && version >= REQUIRED_VERSION) {
-              return true;
-          }
+
+      if (typeof navigator !== 'undefined') {
+        if (!navigator.userAgent.match(/Firefox/)) {
+          return true;
+        }
+
+        version = this.parseFloat(navigator.userAgent.match(/rv:([0-9.]+)/)[1]);
+
+        if (!Number.isNaN(version) && version >= REQUIRED_VERSION) {
+          return true;
+        }
       }
-      return false ;
-  };*/
 
-  /**
-   * Used to Clean loaded data video
-   */
-
-  function Unload() {
-    var el = video;
-    var elClone = null;
-
-    if (initialized !== true) {
-      logger.warn('not yet initialized !');
-      return;
-    } // remove all video child
-
-
-    elClone = el.cloneNode(true);
-    el.parentNode.replaceChild(elClone, el);
-    video = elClone; // hide the overlay , empty the div
-
-    while (video.hasChildNodes()) {
-      video.removeChild(video.firstChild);
-    } // unset attr
-
-
-    video.removeAttribute('poster');
-
-    if (CurrentStreamType === StreamTypes.MP4_CLEAR) {
-      video.removeEventListener('loadedmetadata', onStreamInitialized);
-      video.removeEventListener('play', onPlayStart);
-      video.removeEventListener('pause', onPlaybackPaused);
-      video.removeEventListener('ended', onPlaybackEnded);
-      video.removeEventListener('timeupdate', onPlayTimeUpdate);
-      video.removeEventListener('seeking', onSeeking);
-      video.removeEventListener('seeked', onSeeked);
-      video.removeEventListener('error', onError);
-    } else {
-      // Unsetting Callbacks
-      DashPlayer.removeEventListener('error', onShakaError);
-      DashPlayer.removeEventListener('adaptation', onShakaEvent);
-      DashPlayer.removeEventListener('buffering', onShakaEvent);
-      DashPlayer.removeEventListener('emsg', onShakaEvent);
-      DashPlayer.removeEventListener('expirationupdated', onShakaEvent);
-      DashPlayer.removeEventListener('largegap', onShakaEvent);
-      DashPlayer.removeEventListener('loading', onShakaEvent);
-      DashPlayer.removeEventListener('texttrackvisibility', onShakaEvent);
-      DashPlayer.removeEventListener('timelineregionadded', onShakaEvent);
-      DashPlayer.removeEventListener('timelineregionenter', onShakaEvent);
-      DashPlayer.removeEventListener('timelineregionexit', onShakaEvent);
-      DashPlayer.removeEventListener('trackschanged', onShakaEvent);
-      DashPlayer.removeEventListener('unloading', onShakaEvent);
-      DashPlayer.destroy();
-      DashPlayer = null;
+      return false;
     }
+    /**
+     * Used to Clean loaded data video
+     */
 
-    CurrentStreamType = PlayerMedia.UNKNOWN;
-  }
-  /**
-   * Used for clear video/mp4
-   */
+  }, {
+    key: "Unload",
+    value: function Unload() {
+      var el = this.video;
+      var elClone = null;
+
+      if (this.initialized !== true) {
+        this.logger.warn('not yet this.initialized!');
+        return;
+      } // remove all this.videochild
 
 
-  function load(url, type, poster, subs, autoplay) {
-    var track = null;
-    var source = document.createElement('source');
-    source.type = type;
-    source.src = url;
-    video.preload = true;
-    video.controls = false;
-    video.autoplay = autoplay;
-    video.appendChild(source);
+      elClone = el.cloneNode(true);
+      el.parentNode.replaceChild(elClone, el);
+      this.video = elClone; // hide the overlay , empty the div
 
-    if (poster !== null && poster !== undefined && poster !== '') {
-      video.setAttribute('poster', poster);
+      while (this.video.hasChildNodes()) {
+        this.video.removeChild(this.video.firstChild);
+      } // unset attr
+
+
+      this.video.removeAttribute('poster');
+
+      if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
+        this.video.removeEventListener('loadedmetadata', this.onStreamInitialized);
+        this.video.removeEventListener('play', this.onPlayStart);
+        this.video.removeEventListener('pause', this.onPlaybackPaused);
+        this.video.removeEventListener('ended', this.onPlaybackEnded);
+        this.video.removeEventListener('timeupdate', this.onPlayTimeUpdate);
+        this.video.removeEventListener('seeking', this.onSeeking);
+        this.video.removeEventListener('seeked', this.onSeeked);
+        this.video.removeEventListener('error', this.onError);
+      } else {
+        // Unsetting Callbacks
+        this.DashPlayer.removeEventListener('error', this.onShakaError);
+        this.DashPlayer.removeEventListener('adaptation', this.onShakaEvent);
+        this.DashPlayer.removeEventListener('buffering', this.onShakaEvent);
+        this.DashPlayer.removeEventListener('emsg', this.onShakaEvent);
+        this.DashPlayer.removeEventListener('expirationupdated', this.onShakaEvent);
+        this.DashPlayer.removeEventListener('largegap', this.onShakaEvent);
+        this.DashPlayer.removeEventListener('loading', this.onShakaEvent);
+        this.DashPlayer.removeEventListener('texttrackvisibility', this.onShakaEvent);
+        this.DashPlayer.removeEventListener('timelineregionadded', this.onShakaEvent);
+        this.DashPlayer.removeEventListener('timelineregionenter', this.onShakaEvent);
+        this.DashPlayer.removeEventListener('timelineregionexit', this.onShakaEvent);
+        this.DashPlayer.removeEventListener('trackschanged', this.onShakaEvent);
+        this.DashPlayer.removeEventListener('unloading', this.onShakaEvent);
+        this.DashPlayer.destroy();
+        this.DashPlayer = null;
+      }
+
+      this.CurrentStreamType = PlayerMedia.UNKNOWN;
     }
+    /**
+     * Used for clear video/mp4
+     */
 
-    CurrentStreamType = StreamTypes.MP4_CLEAR; // set thumbs
+  }, {
+    key: "load",
+    value: function load(url, type, poster, subs, autoplay) {
+      var _this = this;
 
-    if (thumbsTrackUrl !== null && thumbsTrackUrl !== undefined) {
-      track = document.createElement('track');
-      track.kind = 'metadata';
-      track.src = thumbsTrackUrl;
-      logger.log(' Appending source thumbs to video', track);
-      video.appendChild(track);
-    } else {
-      logger.warn(' Thumbs was not found .');
-    } // set subs
+      var track = null;
+      var source = document.createElement('source');
+      source.type = type;
+      source.src = url;
+      this.video.preload = true;
+      this.video.controls = false;
+      this.video.autoplay = autoplay;
+      this.video.appendChild(source);
+
+      if (poster !== null && poster !== undefined && poster !== '') {
+        this.video.setAttribute('poster', poster);
+      }
+
+      this.CurrentStreamType = this.StreamTypes.MP4_CLEAR; // set thumbs
+
+      if (this.thumbsTrackUrl !== null && this.thumbsTrackUrl !== undefined) {
+        track = document.createElement('track');
+        track.kind = 'metadata';
+        track.src = this.thumbsTrackUrl;
+        this.logger.log(' Appending source thumbs to video', track);
+        this.video.appendChild(track);
+      } else {
+        this.logger.warn(' Thumbs was not found .');
+      } // set subs
 
 
-    SetManuallysubs(subs, video); // Setting Callbacks
+      this.SetManuallysubs(subs, this.video); // Setting Callbacks
 
-    video.addEventListener('loadedmetadata', onStreamInitialized, false);
-    video.addEventListener('play', onPlayStart, false);
-    video.addEventListener('pause', onPlaybackPaused, false);
-    video.addEventListener('ended', onPlaybackEnded, false);
-    video.addEventListener('timeupdate', onPlayTimeUpdate, false);
-    video.addEventListener('seeked', onSeeked, false);
-    video.addEventListener('seeking', onSeeking, false);
-    video.addEventListener('error', onError, false);
-    logger.info(' Clear MP4 stream is loaded @ ', url);
-  }
-
-  ;
-  /**
-   * Used for loading mpeg Dash
-   */
-
-  function loadDash(url, poster, subs, videoCaption, autoplay, drm) {
-    var track = null;
-
-    if (poster !== null && poster !== undefined && poster !== '') {
-      video.setAttribute('poster', poster);
+      this.video.addEventListener('loadedmetadata', function () {
+        return _this.onStreamInitialized();
+      }, false);
+      this.video.addEventListener('play', function () {
+        return _this.onPlayStart();
+      }, false);
+      this.video.addEventListener('pause', function () {
+        return _this.onPlaybackPaused();
+      }, false);
+      this.video.addEventListener('ended', function () {
+        return _this.onPlaybackEnded();
+      }, false);
+      this.video.addEventListener('timeupdate', function () {
+        return _this.onPlayTimeUpdate();
+      }, false);
+      this.video.addEventListener('seeked', function () {
+        return _this.onSeeked();
+      }, false);
+      this.video.addEventListener('seeking', function () {
+        return _this.onSeeking();
+      }, false);
+      this.video.addEventListener('error', function (e) {
+        return _this.onError(e);
+      }, false);
+      this.logger.info(' Clear MP4 stream is loaded @ ', url);
     }
+  }, {
+    key: "responsefilerCbx",
+    value: function responsefilerCbx(type, response) {
+      if (type === shaka.net.NetworkingEngine.RequestType.MANIFEST) {
+        this.FjSessionToken = response.headers['session-token'];
+        this.logger.warn(' UPDATING Session Token  : ', this.FjSessionToken);
+      }
+    }
+    /**
+     * Used for loading mpeg Dash
+     */
 
-    video.preload = true;
-    video.controls = false;
-    video.autoplay = autoplay;
+  }, {
+    key: "loadDash",
+    value: function loadDash(url, poster, subs, videoCaption, autoplay, drm) {
+      var _this2 = this;
 
-    if (DashPlayer === null) {
-      DashPlayer = new shaka.Player(video);
-    } // Setting Callbacks
+      var track = null;
+
+      if (poster !== null && poster !== undefined && poster !== '') {
+        this.video.setAttribute('poster', poster);
+      }
+
+      this.video.preload = true;
+      this.video.controls = false;
+      this.video.autoplay = autoplay;
+
+      if (this.DashPlayer === null) {
+        this.DashPlayer = new shaka.Player(this.video);
+      } // Setting Callbacks
 
 
-    video.addEventListener('loadedmetadata', onStreamInitialized, false);
-    video.addEventListener('play', onPlayStart, false);
-    video.addEventListener('pause', onPlaybackPaused, false);
-    video.addEventListener('ended', onPlaybackEnded, false);
-    video.addEventListener('timeupdate', onPlayTimeUpdate, false);
-    video.addEventListener('seeked', onSeeked, false);
-    video.addEventListener('seeking', onSeeking, false);
-    video.addEventListener('error', onError, false); // Setting Callbacks
+      this.video.addEventListener('loadedmetadata', function () {
+        return _this2.onStreamInitialized();
+      }, false);
+      this.video.addEventListener('play', function () {
+        return _this2.onPlayStart();
+      }, false);
+      this.video.addEventListener('pause', function () {
+        return _this2.onPlaybackPaused();
+      }, false);
+      this.video.addEventListener('ended', function () {
+        return _this2.onPlaybackEnded();
+      }, false);
+      this.video.addEventListener('timeupdate', function () {
+        return _this2.onPlayTimeUpdate();
+      }, false);
+      this.video.addEventListener('seeked', function () {
+        return _this2.onSeeked();
+      }, false);
+      this.video.addEventListener('seeking', function () {
+        return _this2.onSeeking();
+      }, false);
+      this.video.addEventListener('error', function (e) {
+        return _this2.onError(e);
+      }, false); // Setting Callbacks
 
-    DashPlayer.addEventListener('error', onShakaError);
-    DashPlayer.addEventListener('adaptation', onShakaEvent);
-    DashPlayer.addEventListener('buffering', onShakaEvent);
-    DashPlayer.addEventListener('emsg', onShakaEvent);
-    DashPlayer.addEventListener('expirationupdated', onShakaEvent);
-    DashPlayer.addEventListener('largegap', onShakaEvent);
-    DashPlayer.addEventListener('loading', onShakaEvent);
-    DashPlayer.addEventListener('texttrackvisibility', onShakaEvent);
-    DashPlayer.addEventListener('timelineregionadded', onShakaEvent);
-    DashPlayer.addEventListener('timelineregionenter', onShakaEvent);
-    DashPlayer.addEventListener('timelineregionexit', onShakaEvent);
-    DashPlayer.addEventListener('trackschanged', onShakaEvent);
-    DashPlayer.addEventListener('unloading', onShakaEvent);
-    CurrentUrl = url;
+      this.DashPlayer.addEventListener('error', function (e) {
+        return _this2.onShakaError(e);
+      });
+      this.DashPlayer.addEventListener('adaptation', function (e) {
+        return _this2.onShakaEvent(e);
+      });
+      this.DashPlayer.addEventListener('buffering', function (e) {
+        return _this2.onShakaEvent(e);
+      });
+      this.DashPlayer.addEventListener('emsg', function (e) {
+        return _this2.onShakaEvent(e);
+      });
+      this.DashPlayer.addEventListener('expirationupdated', function (e) {
+        return _this2.onShakaEvent(e);
+      });
+      this.DashPlayer.addEventListener('largegap', function (e) {
+        return _this2.onShakaEvent(e);
+      });
+      this.DashPlayer.addEventListener('loading', function (e) {
+        return _this2.onShakaEvent(e);
+      });
+      this.DashPlayer.addEventListener('texttrackvisibility', function (e) {
+        return _this2.onShakaEvent(e);
+      });
+      this.DashPlayer.addEventListener('timelineregionadded', function (e) {
+        return _this2.onShakaEvent(e);
+      });
+      this.DashPlayer.addEventListener('timelineregionenter', function (e) {
+        return _this2.onShakaEvent(e);
+      });
+      this.DashPlayer.addEventListener('timelineregionexit', function (e) {
+        return _this2.onShakaEvent(e);
+      });
+      this.DashPlayer.addEventListener('trackschanged', function (e) {
+        return _this2.onShakaEvent(e);
+      });
+      this.DashPlayer.addEventListener('unloading', function (e) {
+        return _this2.onShakaEvent(e);
+      });
+      this.CurrentUrl = url;
 
-    if (drm === undefined || drm === null) {
-      CurrentStreamType = StreamTypes.DASH_CLEAR; // CurrentProtection = null;
-
-      logger.info(' Loading CLEAR Dash @', CurrentUrl);
-    } else {
-      CurrentStreamType = StreamTypes.DASH_ENCRYPTED; // CurrentProtection = drm;
-
-      logger.info(' drm are ::: ', drm);
-      DashPlayer.configure({
-        drm: {
-          servers: {
-            'org.w3.clearkey': drm[_defs_constants__WEBPACK_IMPORTED_MODULE_2__.FJCONFIG_DRM_LICENSE_SERVER]
+      if (drm === undefined || drm === null) {
+        this.CurrentStreamType = this.StreamTypes.DASH_CLEAR;
+        this.CurrentProtection = null;
+        this.logger.info(' Loading CLEAR Dash @', this.CurrentUrl);
+      } else {
+        this.CurrentStreamType = this.StreamTypes.DASH_ENCRYPTED;
+        this.CurrentProtection = drm;
+        this.logger.info(' drm are ::: ', drm);
+        this.DashPlayer.configure({
+          drm: {
+            servers: {
+              'org.w3.clearkey': drm[Const.FJCONFIG_DRM_LICENSE_SERVER]
+            }
           }
+        });
+        this.logger.debug(' To Encrypt : using Forja System Key !.');
+        this.logger.info(' Loading ENCRYPTED Dash @', this.CurrentUrl);
+      }
+
+      this.DashPlayer.getNetworkingEngine().registerRequestFilter(function (type, request) {
+        if (type === shaka.net.NetworkingEngine.RequestType.MANIFEST || type === shaka.net.NetworkingEngine.RequestType.LICENSE) {
+          request.headers['Player-Key'] = _this2.FjPlayerId;
+        }
+
+        if (type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
+          request.headers['Player-Key'] = _this2.FjPlayerId;
+          request.headers['Session-Token'] = _this2.FjSessionToken;
         }
       });
-      logger.debug(' To Encrypt : using Forja System Key !.');
-      logger.info(' Loading ENCRYPTED Dash @', CurrentUrl);
+      this.DashPlayer.getNetworkingEngine().registerResponseFilter(this.responsefilerCbx); // set thumbs
+
+      if (this.thumbsTrackUrl !== null && this.thumbsTrackUrl !== undefined) {
+        track = document.createElement('track');
+        track.kind = 'metadata';
+        track.src = this.thumbsTrackUrl;
+        this.logger.log(' Appending source thumbs to video', track);
+        this.video.appendChild(track);
+      } else {
+        this.logger.debug(' Thumbs was not found .');
+      } // set subs
+
+
+      this.SetManuallysubs(subs, this.video); // Try to load a manifest.
+      // This is an asynchronous process.
+
+      this.DashPlayer.load(url).then(function () {
+        // This runs if the asynchronous load is successful.
+        _this2.logger.log('The this.videohas now been loaded!');
+      })["catch"](this.onShError); // onError is executed if the asynchronous load fails.
+
+      this.logger.info('  DASH stream is loaded @ ', url);
     }
+  }]);
 
-    DashPlayer.getNetworkingEngine().registerRequestFilter(function (type, request) {
-      if (type === shaka.net.NetworkingEngine.RequestType.MANIFEST || type === shaka.net.NetworkingEngine.RequestType.LICENSE) {
-        request.headers['Player-Key'] = FjPlayerId;
-      }
+  return PlayerMedia;
+}();
 
-      if (type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
-        request.headers['Player-Key'] = FjPlayerId;
-        request.headers['Session-Token'] = FjSessionToken;
-      }
-    });
-    DashPlayer.getNetworkingEngine().registerResponseFilter(function (type, response) {
-      if (type === shaka.net.NetworkingEngine.RequestType.MANIFEST) {
-        FjSessionToken = response.headers['session-token'];
-        logger.warn(' UPDATING Session Token  : ', FjSessionToken);
-      }
-    }); // set thumbs
-
-    if (thumbsTrackUrl !== null && thumbsTrackUrl !== undefined) {
-      track = document.createElement('track');
-      track.kind = 'metadata';
-      track.src = thumbsTrackUrl;
-      logger.log(' Appending source thumbs to video', track);
-      video.appendChild(track);
-    } else {
-      logger.debug(' Thumbs was not found .');
-    } // set subs
-
-
-    SetManuallysubs(subs, video); // Try to load a manifest.
-    // This is an asynchronous process.
-
-    DashPlayer.load(url).then(function () {
-      // This runs if the asynchronous load is successful.
-      logger.log('The video has now been loaded!');
-    })["catch"](onShError); // onError is executed if the asynchronous load fails.
-
-    logger.info('  DASH stream is loaded @ ', url);
-  }
-
-  ; // ************************************************************************************
-  // PUBLIC API
-  // ************************************************************************************
-
-  return {
-    initialize: initialize,
-    on: on,
-    off: off,
-    StreamTypes: StreamTypes,
-    CurrentStreamType: CurrentStreamType,
-    play: play,
-    stop: stop,
-    pause: pause,
-    isPaused: isPaused,
-    isEnded: isEnded,
-    isMuted: isMuted,
-    setMute: setMute,
-    setVolume: setVolume,
-    getVolume: getVolume,
-    setThumbsUrl: setThumbsUrl,
-    getDuration: getDuration,
-    time: time,
-    seek: seek,
-    Unload: Unload,
-    load: load,
-    loadDash: loadDash,
-    setAudioLang: setAudioLang,
-    getAudioLanguages: getAudioLanguages,
-    isAudioLangEnabled: isAudioLangEnabled,
-    getAudioLangLabel: getAudioLangLabel,
-    setTextTrack: setTextTrack,
-    getTextTracks: getTextTracks,
-    isTextTrackEnabled: isTextTrackEnabled,
-    getTextTrackLabel: getTextTrackLabel,
-    constructor: PlayerMedia
-  };
-}
-
-;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PlayerMedia);
+module.exports = PlayerMedia;
 
 /***/ }),
 
@@ -24464,523 +24571,546 @@ function PlayerMedia(fjPlayerId) {
 /*!*********************************!*\
   !*** ./src/js/player/player.js ***!
   \*********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _utils_Logger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/Logger */ "./src/js/utils/Logger.js");
-/* harmony import */ var _ui_Overlays__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../ui/Overlays */ "./src/js/ui/Overlays.js");
-/* harmony import */ var _utils_Eventing__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/Eventing */ "./src/js/utils/Eventing.js");
-/* harmony import */ var _defs_constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../defs/constants */ "./src/js/defs/constants.js");
-/* harmony import */ var _player_PlayerMedia__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../player/PlayerMedia */ "./src/js/player/PlayerMedia.js");
-/* harmony import */ var _ui_PlayerUi__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../ui/PlayerUi */ "./src/js/ui/PlayerUi.js");
-/* harmony import */ var _ui_AdsManager__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ui/AdsManager */ "./src/js/ui/AdsManager.js");
-/* harmony import */ var _utils_FjError__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/FjError */ "./src/js/utils/FjError.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var Logger = __webpack_require__(/*! ../utils/Logger */ "./src/js/utils/Logger.js");
 
+var Overlays = __webpack_require__(/*! ../ui/Overlays */ "./src/js/ui/Overlays.js");
 
+var Eventing = __webpack_require__(/*! ../utils/Eventing */ "./src/js/utils/Eventing.js");
 
+var Const = __webpack_require__(/*! ../defs/constants */ "./src/js/defs/constants.js");
 
+var PlayerMedia = __webpack_require__(/*! ./PlayerMedia */ "./src/js/player/PlayerMedia.js");
 
+var PlayerUi = __webpack_require__(/*! ../ui/PlayerUi */ "./src/js/ui/PlayerUi.js");
 
+var AdsManager = __webpack_require__(/*! ../ui/AdsManager */ "./src/js/ui/AdsManager.js");
 
+var FjError = __webpack_require__(/*! ../utils/FjError */ "./src/js/utils/FjError.js");
 /**
  *  Class player in whinch the player is implemented
  */
 
-function Player(fjID, vidContainerId) {
-  var logger = new _utils_Logger__WEBPACK_IMPORTED_MODULE_0__.default(this),
-      playerPlaylist = null,
-      playingList = false,
-      loopingList = false,
-      currentPlaying = -1,
-      isPlaying = false,
-      playlistLoaded = false,
-      playingAds = false,
-      // default values
-  videoWidth = '100%',
-      videoHeight = '',
-      events = new _utils_Eventing__WEBPACK_IMPORTED_MODULE_2__.default(),
-      videoContainerId = vidContainerId,
-      fjPlayerId = fjID,
-      OverlaysMgr = new _ui_Overlays__WEBPACK_IMPORTED_MODULE_1__.default(),
-      AdsMgr = new _ui_AdsManager__WEBPACK_IMPORTED_MODULE_6__.default(),
-      supportsVideo = !!document.createElement('video').canPlayType,
-      playerUi = new _ui_PlayerUi__WEBPACK_IMPORTED_MODULE_5__.default(videoContainerId, videoWidth, videoHeight),
-      playerMedia = new _player_PlayerMedia__WEBPACK_IMPORTED_MODULE_4__.default(fjPlayerId);
+
+var Player = /*#__PURE__*/function () {
+  function Player(fjID, vidContainerId) {
+    _classCallCheck(this, Player);
+
+    this.logger = new Logger(this);
+    this.playerPlaylist = null;
+    this.playingList = false;
+    this.loopingList = false;
+    this.currentPlaying = -1;
+    this.isPlaying = false;
+    this.currentIsDash = false;
+    this.playlistLoaded = false;
+    this.playingAds = false; // default values
+
+    this.videoWidth = '100%';
+    this.videoHeight = '';
+    this.events = new Eventing();
+    this.videoContainerId = vidContainerId;
+    this.fjPlayerId = fjID;
+    this.OverlaysMgr = new Overlays();
+    this.AdsMgr = new AdsManager();
+    this.supportsVideo = !!document.createElement('video').canPlayType;
+    this.playerUi = new PlayerUi(this.videoContainerId, this.videoWidth, this.videoHeight);
+    this.playerMedia = new PlayerMedia(this.fjPlayerId);
+  }
   /**
    * function  to return a human redeable duration of secondes
    */
 
-  function duration(secDuration) {
-    var secNum = parseInt(secDuration, 10); // don't forget the second param
 
-    var hours = Math.floor(secNum / 3600);
-    var minutes = Math.floor((secNum - hours * 3600) / 60);
-    var seconds = secNum - hours * 3600 - minutes * 60;
+  _createClass(Player, [{
+    key: "playItem",
+    value: function playItem(itemPosition, autostart) {
+      var start = true;
+      this.logger.info("Start Playling Item  itemPosition : ".concat(itemPosition));
 
-    if (minutes < 10) {
-      minutes = '0' + minutes;
-    }
-
-    if (seconds < 10) {
-      seconds = '0' + seconds;
-    }
-
-    if (hours === 0) {
-      return minutes + ':' + seconds;
-    }
-
-    if (hours < 10) {
-      hours = '0' + hours;
-    }
-
-    return hours + ':' + minutes + ':' + seconds;
-  }
-
-  function playItem(itemPosition, autostart) {
-    var item;
-    var start = true;
-    logger.info('Start Playling Item  itemPosition : ' + itemPosition);
-
-    if (autostart !== true) {
-      start = false;
-    }
-
-    currentPlaying = itemPosition;
-
-    if (!playlistLoaded) {
-      logger.error(' No playlist is loaded on player ');
-      return false;
-    }
-
-    item = playerPlaylist.getItem(itemPosition);
-
-    if (item === null) {
-      logger.error(' No item to play at index ', currentPlaying, ' playlist is sized ', playerPlaylist.getSize());
-      return false;
-    } // set title
-
-
-    playerUi.setTitle(item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_TITLE], item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_SHOW_UP_TITLE]); // set share
-
-    playerUi.setShareIcon(item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_SHARE]); // set down
-
-    playerUi.setDownloadIcon(item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_DOWNLOAD]); // set back
-
-    playerUi.setBackIcon(item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_BACK]); // set thumbs
-
-    playerMedia.setThumbsUrl(item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_THUMBS]); // unload old
-
-    playerMedia.Unload(); // load new item
-
-    if (item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_SRC] !== null || item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_SRC] !== undefined) {
-      if (item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_TYPE] === _defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_TYPE_DASH) {
-        // clear dash
-        logger.warn(' will play a clear dash on caption obect ', playerUi.getVideoCaption());
-        playerMedia.loadDash(item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_SRC], item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_POSTER], item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_SUBTITLES], playerUi.getVideoCaption(), start, item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_DRM]);
-      } else {
-        playerMedia.load(item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_SRC], item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_TYPE], item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_POSTER], item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_SUBTITLES], start);
+      if (autostart !== true) {
+        start = false;
       }
 
-      return true;
-    }
+      this.currentPlaying = itemPosition;
 
-    logger.error('src of item is not valid , at index ', currentPlaying);
-    return false;
-  }
-
-  function playNext() {
-    if (!playlistLoaded) {
-      logger.error(' No playlist is loaded on player ');
-      return false;
-    } // set playlist again
-
-
-    playingList = true;
-    currentPlaying++;
-    logger.log(' will play next', currentPlaying, ' in playlist is loaded on player ');
-
-    if (playerPlaylist.getSize() < currentPlaying) {
-      if (loopingList === true) {
-        currentPlaying = 0;
-      } // playlist if ended
-
-
-      return false;
-    } // play next
-
-
-    playItem(currentPlaying); // auto play it
-
-    playerUi.ShowVideo();
-    playerUi.onplaypauseClick();
-    return true;
-  }
-
-  function AdsEventing(e, args) {
-    logger.debug(' just a new event from adsmgr ', e, args); // send Event to listener
-
-    logger.warn('Sending Ads Event >>>>>>>>>>>>>>>>>   ', e);
-    events.fireEvent(e);
-
-    if (e === _defs_constants__WEBPACK_IMPORTED_MODULE_3__.AdsEvents.ADS_PLAYBACK_ENDED) {
-      playingAds = false;
-
-      if (args === _defs_constants__WEBPACK_IMPORTED_MODULE_3__.AdsEnum.ADS_PRE_ROLL) {
-        if (AdsMgr.CheckPreAds() === true) {
-          return;
-        }
-
-        playerUi.ShowVideo();
-        playerMedia.play();
-        playerUi.toggleplaypauseBtn();
-        return; // freezePlayer(false, true, false);
-      } else if (args === _defs_constants__WEBPACK_IMPORTED_MODULE_3__.AdsEnum.ADS_POST_ROLL) {
-        if (AdsMgr.CheckPostAds() === true) {
-          return;
-        } // check if in playlist then play list
-
-
-        if (playingList === true) {
-          playerUi.toggleplaypauseBtn();
-          playerUi.ShowVideo();
-          playNext();
-        } // freezePlayer(false, false, true);
-
-      } else if (args === _defs_constants__WEBPACK_IMPORTED_MODULE_3__.AdsEnum.ADS_MID_ROLL) {
-        playerUi.ShowVideo();
-        playerMedia.play();
-        playerUi.toggleplaypauseBtn(); // freezePlayer(false, false, false);
-      } else {
-        logger.warn(' unknown Ads type !! ', args);
+      if (!this.playlistLoaded) {
+        this.logger.error(' No playlist is loaded on player ');
+        return false;
       }
-    }
 
-    if (e === _defs_constants__WEBPACK_IMPORTED_MODULE_3__.AdsEvents.ADS_PLAYBACK_STARTED) {
-      playingAds = true; // hide the player and pause it
+      var item = this.playerPlaylist.getItem(itemPosition);
 
-      playerMedia.pause();
-      playerUi.hideVideo();
-    }
-  }
-
-  function midPlayingChecks(secondes) {
-    var ok;
-    OverlaysMgr.CheckOverlays(secondes);
-    ok &= AdsMgr.CheckMidAds(secondes);
-    return ok;
-  }
-
-  function playPrev() {
-    if (!playlistLoaded) {
-      logger.error(' No playlist is loaded on player ');
-      return false;
-    } // set playlist again
+      if (item === null) {
+        this.logger.error(' No item to play at index ', this.currentPlaying, ' playlist is sized ', this.playerPlaylist.getSize());
+        return false;
+      } // set title
 
 
-    playingList = true;
-    currentPlaying--;
-    logger.log(' will play next', currentPlaying, ' in playlist is loaded on player ');
+      this.playerUi.setTitle(item[Const.FJCONFIG_TITLE], item[Const.FJCONFIG_SHOW_UP_TITLE]); // set share
 
-    if (currentPlaying < 0) {
-      if (loopingList === true) {
-        currentPlaying = playerPlaylist.getSize() - 1;
-      } // playlist if ended
+      this.playerUi.setShareIcon(item[Const.FJCONFIG_SHARE]); // set down
 
+      this.playerUi.setDownloadIcon(item[Const.FJCONFIG_DOWNLOAD]); // set back
 
-      return false;
-    } // play next
+      this.playerUi.setBackIcon(item[Const.FJCONFIG_BACK]); // set thumbs
 
+      this.playerMedia.setThumbsUrl(item[Const.FJCONFIG_THUMBS]); // unload old
 
-    playItem(currentPlaying); // auto play it
+      this.playerMedia.Unload(); // load new item
 
-    playerUi.ShowVideo();
-    playerUi.onplaypauseClick();
-    return true;
-  }
-
-  function MplayerEventing(e, args) {
-    var item, vid;
-
-    if (e === _defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents.PLAYBACK_TIME_UPDATE) {
-      playerUi.UpdateProgress(playerMedia.time());
-      vid = playerUi.getVideo();
-      playerUi.setDuration(playerMedia.getDuration());
-      midPlayingChecks(Math.round(playerMedia.time()));
-    } else {
-      if (e === _defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents.PLAYBACK_ENDED) {
-        isPlaying = false;
-
-        if (AdsMgr.CheckPostAds() === true) {
-          logger.debug('starting  post ads !!');
+      if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
+        if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
+          // clear dash
+          this.currentIsDash = true;
+          this.logger.warn(' will play a clear dash on caption obect ', this.playerUi.getVideoCaption());
+          this.playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER], item[Const.FJCONFIG_SUBTITLES], this.playerUi.getVideoCaption(), start, item[Const.FJCONFIG_DRM]);
         } else {
-          // check if in playlist then play list
-          if (playingList === true) {
-            playNext();
-          }
-        }
-      }
-
-      if (e === _defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents.PLAYBACK_PAUSED) {
-        isPlaying = false;
-      }
-
-      if (e === _defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents.PLAYBACK_STARTED) {
-        // first starting  only
-        if (args === 1) {
-          isPlaying = true;
-
-          if (AdsMgr.CheckPreAds() === false) {
-            playerMedia.play();
-          } else {
-            playerMedia.pause();
-          }
+          this.playerMedia.load(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_TYPE], item[Const.FJCONFIG_POSTER], item[Const.FJCONFIG_SUBTITLES], start);
         }
 
-        playerUi.HideSpinner();
-        playerUi.toggleplaypauseBtn();
-        playerUi.setDuration(playerMedia.getDuration());
+        return true;
       }
 
-      if (e === _defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents.STREAM_LOADED) {
-        if (isPlaying === false) {
-          logger.warn(' Already Playing ...............');
-          playerUi.ShowSpinner();
-        } // checks thumbs
-
-
-        playerUi.SetupThumbsManager(playerMedia.getDuration(), args); // set subsgetTextTracks()
-
-        playerUi.SetupSubsAudsManager(playerMedia);
-        playerUi.setDuration(playerMedia.getDuration());
-        item = playerPlaylist.getItem(currentPlaying); // Set Overlays
-
-        OverlaysMgr.Setup(item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_OVERLAYS]); // Set ads
-
-        vid = playerUi.getVideo();
-        AdsMgr.Setup(item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_ADS], vid.videoWidth, vid.videoHeight);
-      }
-
-      if (e === _defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents.PLAYBACK_SEEKING) {
-        isPlaying = false;
-        playerUi.ShowSpinner();
-      }
-
-      if (e === _defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents.PLAYBACK_SEEKED) {
-        isPlaying = true;
-        playerUi.HideSpinner();
-      } // send Event to listener
-
-
-      logger.info('[Event] [trigger] > ', e);
-      events.fireEvent(e);
-
-      if (e === _defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents.PLAYBACK_ERROR) {
-        playerUi.goForError();
-        throw new _utils_FjError__WEBPACK_IMPORTED_MODULE_7__.default(args.code, args.type, args.message, document.getElementById(playerUi.getErrorDivId()));
-      }
-    }
-  }
-  /**
-   *
-   */
-
-
-  function loadPlaylist(playlist) {
-    logger.log(' start  function ');
-
-    if (!supportsVideo) {
-      logger.error(' browser did not support video !');
+      this.logger.error('src of item is not valid , at index ', this.currentPlaying);
       return false;
     }
+  }, {
+    key: "playNext",
+    value: function playNext() {
+      if (!this.playlistLoaded) {
+        this.logger.error(' No playlist is loaded on player ');
+        return false;
+      } // set playlist again
 
-    if (playlist.getSize() > 0) {
-      playerPlaylist = playlist;
-      playlistLoaded = true;
-      playerUi.initialize(this);
-      playerMedia.on(_defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents.TRACKS_ADDED, MplayerEventing);
-      playerMedia.on(_defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents.STREAM_LOADED, MplayerEventing);
-      playerMedia.on(_defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents.PLAYBACK_STARTED, MplayerEventing);
-      playerMedia.on(_defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents.PLAYBACK_ERROR, MplayerEventing);
-      playerMedia.on(_defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents.PLAYBACK_PAUSED, MplayerEventing);
-      playerMedia.on(_defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents.PLAYBACK_ENDED, MplayerEventing);
-      playerMedia.on(_defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents.PLAYBACK_SEEKED, MplayerEventing);
-      playerMedia.on(_defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents.PLAYBACK_SEEKING, MplayerEventing);
-      playerMedia.on(_defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents.PLAYBACK_TIME_UPDATE, MplayerEventing);
-      AdsMgr.on(_defs_constants__WEBPACK_IMPORTED_MODULE_3__.AdsEvents.ADS_PLAYBACK_STARTED, AdsEventing);
-      AdsMgr.on(_defs_constants__WEBPACK_IMPORTED_MODULE_3__.AdsEvents.ADS_PLAYBACK_ERROR, AdsEventing);
-      AdsMgr.on(_defs_constants__WEBPACK_IMPORTED_MODULE_3__.AdsEvents.ADS_PLAYBACK_ENDED, AdsEventing);
-      playerMedia.initialize(playerUi.getVideo());
-      OverlaysMgr.initialize(document.getElementById(playerUi.getOverlaysContainerDivId()));
-      AdsMgr.initialize(document.getElementById(playerUi.getAdsContainerDivId()));
+
+      this.playingList = true;
+      this.currentPlaying += 1;
+      this.logger.log(' will play next', this.currentPlaying, ' in playlist is loaded on player ');
+
+      if (this.playerPlaylist.getSize() < this.currentPlaying) {
+        if (this.loopingList === true) {
+          this.currentPlaying = 0;
+        } // playlist if ended
+
+
+        return false;
+      } // play next
+
+
+      this.playItem(this.currentPlaying); // auto play it
+
+      this.playerUi.ShowVideo();
+      this.playerUi.onplaypauseClick();
       return true;
     }
+  }, {
+    key: "AdsEventing",
+    value: function AdsEventing(e, args) {
+      this.logger.debug(' just a new event from this.AdsMgr ', e, args); // send Event to listener
 
-    logger.error(' playlist is empty: ', playlist.getSize());
-    playlistLoaded = false;
-    return false;
-  }
+      this.logger.warn('Sending Ads Event >>>>>>>>>>>>>>>>>   ', e);
+      this.events.fireEvent(e);
 
-  ;
-  /**
-   *
-   */
+      if (e === Const.AdsEvents.ADS_PLAYBACK_ENDED) {
+        this.playingAds = false;
 
-  function playAt(index, autostart) {
-    var start = true;
+        if (args === Const.AdsEnum.ADS_PRE_ROLL) {
+          if (this.AdsMgr.CheckPreAds() === true) {
+            return;
+          }
 
-    if (autostart !== true) {
-      start = false;
+          this.playerUi.ShowVideo();
+          this.playerMedia.play();
+          this.playerUi.toggleplaypauseBtn();
+          return; // freezePlayer(false, true, false);
+        }
+
+        if (args === Const.AdsEnum.ADS_POST_ROLL) {
+          if (this.AdsMgr.CheckPostAds() === true) {
+            return;
+          } // check if in playlist then play list
+
+
+          if (this.playingList === true) {
+            this.playerUi.toggleplaypauseBtn();
+            this.playerUi.ShowVideo();
+            this.playNext();
+          } // freezePlayer(false, false, true);
+
+        } else if (args === Const.AdsEnum.ADS_MID_ROLL) {
+          this.playerUi.ShowVideo();
+          this.playerMedia.play();
+          this.playerUi.toggleplaypauseBtn(); // freezePlayer(false, false, false);
+        } else {
+          this.logger.warn(' unknown Ads type !! ', args);
+        }
+      }
+
+      if (e === Const.AdsEvents.ADS_PLAYBACK_STARTED) {
+        this.playingAds = true; // hide the player and pause it
+
+        this.playerMedia.pause();
+        this.playerUi.hideVideo();
+      }
     }
-
-    playingList = false;
-    return playItem(index, start);
-  }
-
-  ;
-
-  function startPlaylist(positionToStartFrom, loop, randomPlay, autostart) {
-    var item;
-    var start = true;
-
-    if (autostart !== true) {
-      start = false;
+  }, {
+    key: "midPlayingChecks",
+    value: function midPlayingChecks(secondes) {
+      this.OverlaysMgr.CheckOverlays(secondes);
+      return this.AdsMgr.CheckMidAds(secondes);
     }
+  }, {
+    key: "playPrev",
+    value: function playPrev() {
+      if (!this.playlistLoaded) {
+        this.logger.error(' No playlist is loaded on player ');
+        return false;
+      } // set playlist again
 
-    currentPlaying = positionToStartFrom;
 
-    if (!playlistLoaded) {
-      logger.error(' No playlist is loaded on player ');
-      return false;
+      this.playingList = true;
+      this.currentPlaying -= 1;
+      this.logger.log(' will play next', this.currentPlaying, ' in playlist is loaded on player ');
+
+      if (this.currentPlaying < 0) {
+        if (this.loopingList === true) {
+          this.currentPlaying = this.playerPlaylist.getSize() - 1;
+        } // playlist if ended
+
+
+        return false;
+      } // play next
+
+
+      this.playItem(this.currentPlaying); // auto play it
+
+      this.playerUi.ShowVideo();
+      this.playerUi.onplaypauseClick();
+      return true;
     }
+  }, {
+    key: "MplayerEventing",
+    value: function MplayerEventing(e, args) {
+      var item;
+      var vid;
 
-    item = playerPlaylist.getItem(currentPlaying);
-
-    if (item === undefined) {
-      logger.error(' No item to play at index ', currentPlaying, ' playlist is sized ', playerPlaylist.getSize());
-      return false;
-    }
-
-    playingList = true;
-    loopingList = loop; // set title
-
-    playerUi.setTitle(item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_TITLE], item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_SHOW_UP_TITLE]); // set share
-
-    playerUi.setShareIcon(item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_SHARE]); // set down
-
-    playerUi.setDownloadIcon(item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_DOWNLOAD]); // set back
-
-    playerUi.setBackIcon(item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_BACK]); // set thumbs
-
-    playerMedia.setThumbsUrl(item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_THUMBS]); // play item
-
-    if (item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_SRC] !== null || item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_SRC] !== undefined) {
-      if (item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_TYPE] === _defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_TYPE_DASH) {
-        // clear dash
-        playerMedia.loadDash(item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_SRC], item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_POSTER], item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_SUBTITLES], playerUi.getVideoCaption(), start, item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_DRM]);
+      if (e === Const.PlayerEvents.PLAYBACK_TIME_UPDATE) {
+        this.playerUi.UpdateProgress(this.playerMedia.time());
+        vid = this.playerUi.getVideo();
+        this.playerUi.setDuration(this.playerMedia.getDuration());
+        this.midPlayingChecks(Math.round(this.playerMedia.time()));
       } else {
-        playerMedia.load(item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_SRC], item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_TYPE], item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_POSTER], item[_defs_constants__WEBPACK_IMPORTED_MODULE_3__.FJCONFIG_SUBTITLES], start);
+        if (e === Const.PlayerEvents.PLAYBACK_ENDED) {
+          this.isPlaying = false;
+
+          if (this.AdsMgr.CheckPostAds() === true) {
+            this.logger.debug('starting  post ads !!');
+          } else if (this.playingList === true) {
+            this.playNext();
+          }
+        }
+
+        if (e === Const.PlayerEvents.PLAYBACK_PAUSED) {
+          this.isPlaying = false;
+        }
+
+        if (e === Const.PlayerEvents.PLAYBACK_STARTED) {
+          // first starting  only
+          if (args === 1) {
+            this.isPlaying = true;
+
+            if (this.AdsMgr.CheckPreAds() === false) {
+              this.playerMedia.play();
+            } else {
+              this.playerMedia.pause();
+            }
+          }
+
+          this.playerUi.HideSpinner();
+          this.playerUi.toggleplaypauseBtn();
+          this.playerUi.setDuration(this.playerMedia.getDuration());
+        }
+
+        if (e === Const.PlayerEvents.STREAM_LOADED) {
+          if (this.isPlaying === false) {
+            this.logger.warn(' Already Playing ...............');
+            this.playerUi.ShowSpinner();
+          } // checks thumbs
+
+
+          this.playerUi.SetupThumbsManager(this.playerMedia.getDuration(), args); // set subsgetTextTracks()
+
+          this.playerUi.SetupSubsAudsManager(this.playerMedia);
+          this.playerUi.setDuration(this.playerMedia.getDuration());
+          item = this.playerPlaylist.getItem(this.currentPlaying); // Set Overlays
+
+          this.OverlaysMgr.Setup(item[Const.FJCONFIG_OVERLAYS]); // Set ads
+
+          vid = this.playerUi.getVideo();
+          this.AdsMgr.Setup(item[Const.FJCONFIG_ADS], vid.videoWidth, vid.videoHeight);
+        }
+
+        if (e === Const.PlayerEvents.PLAYBACK_SEEKING) {
+          this.isPlaying = false;
+          this.playerUi.ShowSpinner();
+        }
+
+        if (e === Const.PlayerEvents.PLAYBACK_SEEKED) {
+          this.isPlaying = true;
+          this.playerUi.HideSpinner();
+        } // send Event to listener
+
+
+        if (typeof e !== 'undefined') {
+          this.logger.info('[Event] [trigger] > ', e);
+          this.events.fireEvent(e);
+        }
+
+        if (e === Const.PlayerEvents.PLAYBACK_ERROR) {
+          this.playerUi.goForError();
+          throw new FjError(args.code, args.type, args.message, document.getElementById(this.playerUi.getErrorDivId()));
+        }
+      }
+    }
+    /**
+     *
+     */
+
+  }, {
+    key: "loadPlaylist",
+    value: function loadPlaylist(playlist) {
+      var _this = this;
+
+      this.logger.log(' start  function ');
+
+      if (!this.supportsVideo) {
+        this.logger.error(' browser did not support video !');
+        return false;
       }
 
-      return true;
+      if (playlist.getSize() > 0) {
+        this.playerPlaylist = playlist;
+        this.playlistLoaded = true;
+        this.playerUi.initialize(this);
+        this.playerMedia.on(Const.PlayerEvents.TRACKS_ADDED, function (e, a) {
+          return _this.MplayerEventing(e, a);
+        });
+        this.playerMedia.on(Const.PlayerEvents.STREAM_LOADED, function (e, a) {
+          return _this.MplayerEventing(e, a);
+        });
+        this.playerMedia.on(Const.PlayerEvents.PLAYBACK_STARTED, function (e, a) {
+          return _this.MplayerEventing(e, a);
+        });
+        this.playerMedia.on(Const.PlayerEvents.PLAYBACK_ERROR, function (e, a) {
+          return _this.MplayerEventing(e, a);
+        });
+        this.playerMedia.on(Const.PlayerEvents.PLAYBACK_PAUSED, function (e, a) {
+          return _this.MplayerEventing(e, a);
+        });
+        this.playerMedia.on(Const.PlayerEvents.PLAYBACK_ENDED, function (e, a) {
+          return _this.MplayerEventing(e, a);
+        });
+        this.playerMedia.on(Const.PlayerEvents.PLAYBACK_SEEKED, function (e, a) {
+          return _this.MplayerEventing(e, a);
+        });
+        this.playerMedia.on(Const.PlayerEvents.PLAYBACK_SEEKING, function (e, a) {
+          return _this.MplayerEventing(e, a);
+        });
+        this.playerMedia.on(Const.PlayerEvents.PLAYBACK_TIME_UPDATE, function (e, a) {
+          return _this.MplayerEventing(e, a);
+        });
+        this.AdsMgr.on(Const.AdsEvents.ADS_PLAYBACK_STARTED, function (e, a) {
+          return _this.AdsEventing(e, a);
+        });
+        this.AdsMgr.on(Const.AdsEvents.ADS_PLAYBACK_ERROR, function (e, a) {
+          return _this.AdsEventing(e, a);
+        });
+        this.AdsMgr.on(Const.AdsEvents.ADS_PLAYBACK_ENDED, function (e, a) {
+          return _this.AdsEventing(e, a);
+        });
+        this.playerMedia.initialize(this.playerUi.getVideo());
+        this.OverlaysMgr.initialize(document.getElementById(this.playerUi.getOverlaysContainerDivId()));
+        this.AdsMgr.initialize(document.getElementById(this.playerUi.getAdsContainerDivId()));
+        return true;
+      }
+
+      this.logger.error(' playlist is empty: ', playlist.getSize());
+      this.playlistLoaded = false;
+      return false;
     }
+    /**
+     *
+     */
 
-    logger.error('src of item is not valid , at index ', currentPlaying);
-    return false;
-  }
+  }, {
+    key: "playAt",
+    value: function playAt(index, autostart) {
+      var start = true;
 
-  ;
+      if (autostart !== true) {
+        start = false;
+      }
 
-  function seek(time) {
-    playerMedia.seek(time);
-  }
-
-  function reset() {
-    playerMedia.Unload();
-    playerUi.reset();
-  }
-
-  function play() {
-    playerMedia.pause();
-
-    if (AdsMgr.CheckPreAds() === false) {
-      playerMedia.play();
+      this.playingList = false;
+      return this.playItem(index, start);
     }
+  }, {
+    key: "startPlaylist",
+    value: function startPlaylist(positionToStartFrom, loop, randomPlay, autostart) {
+      var start = true;
 
-    playerUi.toggleplaypauseBtn();
-  }
+      if (autostart !== true) {
+        start = false;
+      }
 
-  function pause() {
-    playerMedia.pause();
-    playerUi.toggleplaypauseBtn();
-  }
+      this.currentPlaying = positionToStartFrom;
 
-  function isPlayingAds() {
-    return playingAds;
-  }
+      if (!this.playlistLoaded) {
+        this.logger.error(' No playlist is loaded on player ');
+        return false;
+      }
 
-  function isReady() {
-    return playlistLoaded;
-  }
+      var item = this.playerPlaylist.getItem(this.currentPlaying);
 
-  function isPaused() {
-    return playerMedia.isPaused();
-  }
+      if (item === undefined) {
+        this.logger.error(' No item to play at index ', this.currentPlaying, ' playlist is sized ', this.playerPlaylist.getSize());
+        return false;
+      }
 
-  function isEnded() {
-    return playerMedia.isEnded();
-  }
-  /**
-   *
-   */
+      this.playingList = true;
+      this.loopingList = loop; // set title
 
+      this.playerUi.setTitle(item[Const.FJCONFIG_TITLE], item[Const.FJCONFIG_SHOW_UP_TITLE]); // set share
 
-  function on(name, handler) {
-    return events.on(name, handler);
-  }
+      this.playerUi.setShareIcon(item[Const.FJCONFIG_SHARE]); // set down
 
-  ;
-  /**
-   *
-   */
+      this.playerUi.setDownloadIcon(item[Const.FJCONFIG_DOWNLOAD]); // set back
 
-  function off(name, handler) {
-    return events.off(name, handler);
-  }
+      this.playerUi.setBackIcon(item[Const.FJCONFIG_BACK]); // set thumbs
 
-  ; // ************************************************************************************
-  // PUBLIC API
-  // ************************************************************************************
+      this.playerMedia.setThumbsUrl(item[Const.FJCONFIG_THUMBS]); // play item
 
-  return {
-    duration: duration,
-    loadPlaylist: loadPlaylist,
-    playAt: playAt,
-    startPlaylist: startPlaylist,
-    play: play,
-    reset: reset,
-    seek: seek,
-    playNext: playNext,
-    playPrev: playPrev,
-    pause: pause,
-    isPaused: isPaused,
-    isPlayingAds: isPlayingAds,
-    isReady: isReady,
-    isEnded: isEnded,
-    on: on,
-    off: off,
-    constructor: Player
-  };
-}
+      if (item[Const.FJCONFIG_SRC] !== null || item[Const.FJCONFIG_SRC] !== undefined) {
+        if (item[Const.FJCONFIG_TYPE] === Const.FJCONFIG_TYPE_DASH) {
+          // clear dash
+          this.currentIsDash = true;
+          this.playerMedia.loadDash(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_POSTER], item[Const.FJCONFIG_SUBTITLES], this.playerUi.getVideoCaption(), start, item[Const.FJCONFIG_DRM]);
+        } else {
+          this.playerMedia.load(item[Const.FJCONFIG_SRC], item[Const.FJCONFIG_TYPE], item[Const.FJCONFIG_POSTER], item[Const.FJCONFIG_SUBTITLES], start);
+        }
 
-;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Player);
+        return true;
+      }
+
+      this.logger.error('src of item is not valid , at index ', this.currentPlaying);
+      return false;
+    }
+  }, {
+    key: "seek",
+    value: function seek(time) {
+      this.playerMedia.seek(time);
+    }
+  }, {
+    key: "reset",
+    value: function reset() {
+      this.playerMedia.Unload();
+      this.playerUi.reset();
+    }
+  }, {
+    key: "play",
+    value: function play() {
+      this.playerMedia.pause();
+
+      if (this.AdsMgr.CheckPreAds() === false) {
+        this.playerMedia.play();
+      }
+
+      this.playerUi.toggleplaypauseBtn();
+    }
+  }, {
+    key: "pause",
+    value: function pause() {
+      this.playerMedia.pause();
+      this.playerUi.toggleplaypauseBtn();
+    }
+  }, {
+    key: "isPlayingAds",
+    value: function isPlayingAds() {
+      return this.playingAds;
+    }
+  }, {
+    key: "isReady",
+    value: function isReady() {
+      return this.playlistLoaded;
+    }
+  }, {
+    key: "isPaused",
+    value: function isPaused() {
+      return this.playerMedia.isPaused();
+    }
+  }, {
+    key: "isEnded",
+    value: function isEnded() {
+      return this.playerMedia.isEnded();
+    }
+    /**
+     *
+     */
+
+  }, {
+    key: "on",
+    value: function on(name, handler) {
+      return this.events.on(name, handler);
+    }
+    /**
+     *
+     */
+
+  }, {
+    key: "off",
+    value: function off(name, handler) {
+      return this.events.off(name, handler);
+    }
+  }], [{
+    key: "duration",
+    value: function duration(secDuration) {
+      var secNum = parseInt(secDuration, 10);
+      var hours = Math.floor(secNum / 3600);
+      var minutes = Math.floor((secNum - hours * 3600) / 60);
+      var seconds = secNum - hours * 3600 - minutes * 60;
+
+      if (minutes < 10) {
+        minutes = "0".concat(minutes);
+      }
+
+      if (seconds < 10) {
+        seconds = "0".concat(seconds);
+      }
+
+      if (hours === 0) {
+        return "".concat(minutes, ":").concat(seconds);
+      }
+
+      if (hours < 10) {
+        hours = "0".concat(hours);
+      }
+
+      return "".concat(hours, ":").concat(minutes, ":").concat(seconds);
+    }
+  }]);
+
+  return Player;
+}();
+
+module.exports = Player;
 
 /***/ }),
 
@@ -24988,454 +25118,531 @@ function Player(fjID, vidContainerId) {
 /*!***********************************!*\
   !*** ./src/js/player/playlist.js ***!
   \***********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _utils_Logger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/Logger */ "./src/js/utils/Logger.js");
-/* harmony import */ var _defs_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../defs/constants */ "./src/js/defs/constants.js");
-/* harmony import */ var _defs_isoLangs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../defs/isoLangs */ "./src/js/defs/isoLangs.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var Logger = __webpack_require__(/*! ../utils/Logger */ "./src/js/utils/Logger.js");
+
+var Const = __webpack_require__(/*! ../defs/constants */ "./src/js/defs/constants.js");
+
+var IsoLangs = __webpack_require__(/*! ../defs/isoLangs */ "./src/js/defs/isoLangs.js");
 /**
  *  Class playlist in whixh all the playliost will be checked and saved
  */
 
-function Playlist() {
-  var logger = new _utils_Logger__WEBPACK_IMPORTED_MODULE_0__.default(this),
-      items = [];
+
+var Playlist = /*#__PURE__*/function () {
+  /**
+   *
+   */
+  function Playlist() {
+    _classCallCheck(this, Playlist);
+
+    this.logger = new Logger(this);
+    this.items = [];
+  }
   /**
    * Used to getsize of playlist
    */
 
-  function getSize() {
-    return items.length;
-  }
 
-  ;
-  /**
-   * Used to get item of playlist at position index
-   */
-
-  function getItem(index) {
-    logger.info(' Getting item at position ', index);
-
-    if (items.length > index) {
-      return items[index];
+  _createClass(Playlist, [{
+    key: "getSize",
+    value: function getSize() {
+      return this.items.length;
     }
+    /**
+     * Used  to get  some information about the playlist content
+     */
 
-    logger.error(' No item to play at index ', index, ' playlist is sized ', items.length);
-    return null;
-  }
-
-  ;
-  /* ** ** ** ** ** ** ** CHECK'S ** ** ** ** ** ** ** */
-
-  /**
-   * used to check if an item of subtitle is correct
-   */
-
-  function checkSubtitle(subItem) {
-    var tmp;
-
-    if (subItem === null || subItem === undefined) {
-      return false;
+  }, {
+    key: "getInfo",
+    value: function getInfo() {
+      var info = {};
+      info.size = this.items.length;
+      info.items = this.items;
+      return info;
     }
+    /**
+     * Used to get item of playlist at position index
+     */
 
-    if (subItem[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_LANG]) {
-      tmp = _defs_isoLangs__WEBPACK_IMPORTED_MODULE_2__.isoLangs[subItem[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_LANG]];
-      logger.log(tmp, ' playlist Subtitle lang is', subItem[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_LANG]);
+  }, {
+    key: "getItem",
+    value: function getItem(index) {
+      this.logger.info(' Getting item at position ', index);
 
-      if (tmp === null || tmp === undefined) {
-        logger.error('No ISO code of lang  ', tmp);
+      if (this.items.length > index) {
+        return this.items[index];
+      }
+
+      this.logger.error(' No item to play at index ', index, ' playlist is sized ', this.items.length);
+      return null;
+    }
+    /* ** ** ** ** ** ** ** CHECK'S ** ** ** ** ** ** ** */
+
+    /**
+     * used to check if an item of subtitle is correct
+     */
+
+  }, {
+    key: "checkSubtitle",
+    value: function checkSubtitle(subItem) {
+      var tmp;
+
+      if (subItem === null || subItem === undefined) {
         return false;
       }
-    } else {
-      logger.error('Empty Subtitle lang  ');
-      return false;
-    }
 
-    if (subItem[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SRC]) {
-      logger.log(' playlist Subtitle src is', subItem[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SRC]);
-    } else {
-      logger.error('Empty Subtitle src ');
-      return false;
-    }
+      if (subItem[Const.FJCONFIG_LANG]) {
+        tmp = IsoLangs[subItem[Const.FJCONFIG_LANG]];
+        this.logger.log(tmp, ' playlist Subtitle lang is', subItem[Const.FJCONFIG_LANG]);
 
-    return true;
-  }
-
-  ;
-  /**
-   * used to check if an item of overlay is correct
-   */
-
-  function checkOverlay(subItem) {
-    var val = subItem;
-
-    if (subItem === null || subItem === undefined) {
-      return false;
-    }
-
-    val = subItem[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_DATA];
-
-    if (val !== undefined && val !== null && val !== '') {
-      logger.log(' playlist Overlay data ', val);
-    } else {
-      logger.error('Empty Overlay data');
-      return false;
-    }
-
-    val = subItem[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_URL];
-
-    if (val !== undefined && val !== null && val !== '') {
-      logger.log(' ok playlist Overlay url ', val);
-    } else {
-      logger.error('Empty Overlay url');
-      return false;
-    }
-
-    val = subItem[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_DURATION];
-
-    if (val !== undefined && val !== null && val !== '') {
-      if (val === parseInt(val, 10)) {
-        logger.log(' integer playlist Overlay duration ', val);
+        if (tmp === null || tmp === undefined) {
+          this.logger.error('No ISO code of lang  ', tmp);
+          return false;
+        }
       } else {
-        logger.error(val, ':Empty Overlay duration is not integer !');
+        this.logger.error('Empty Subtitle lang  ');
         return false;
       }
-    } else {
-      logger.error('Empty Overlay duration ');
-      return false;
-    }
 
-    val = subItem[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SHOW_AT];
-
-    if (val !== undefined && val !== null && val !== '') {
-      if (val === parseInt(val, 10)) {
-        logger.log(' integer playlist Overlay show at ', val);
+      if (subItem[Const.FJCONFIG_SRC]) {
+        this.logger.log(' playlist Subtitle src is', subItem[Const.FJCONFIG_SRC]);
       } else {
-        logger.error(val, ':Empty Overlay show at is not integer !');
+        this.logger.error('Empty Subtitle src ');
         return false;
       }
-    } else {
-      logger.error('Empty Overlay show at ');
-      return false;
-    }
 
-    return true;
-  }
-
-  ;
-  /**
-   * used to check if an item of drm is correct
-   */
-
-  function checkDrm(drm) {
-    var tmp = null;
-
-    if (drm === null || drm === undefined) {
-      return false;
-    }
-
-    logger.debug('Cheking DRM > ', drm);
-    tmp = drm[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_DRM_LICENSE_SERVER];
-    logger.info('Cheking DRM LA Server > ', tmp);
-
-    if (tmp !== undefined && tmp !== null) {
-      logger.log(' playlist LA Server is  ', tmp);
-    } else {
-      logger.error('Empty LA Server  ! ');
-      return false;
-    }
-
-    return true;
-  }
-
-  ;
-  /**
-   * used to check if an item of ads is correct
-   */
-
-  function checkAds(item) {
-    if (item === null || item === undefined) {
-      return false;
-    }
-
-    if (_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_TYPES.indexOf(item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_TYPE]) === -1) {
-      logger.error('BAD type Value ! ');
-      return false;
-    }
-
-    if (!item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SRC]) {
-      logger.error('BAD src Value ! ');
-      return false;
-    }
-
-    if (_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_ADS_CLASSES.indexOf(item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_CLASS]) === -1) {
-      logger.error(item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_CLASS], ':BAD class Value ! ');
-      return false;
-    }
-
-    if (item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SRC] === _defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_ADS_CLASS_MID_ROLL && (item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SHOW_AT] === null || item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SHOW_AT] === undefined)) {
-      logger.error('Missing Show At for mid Roll Class ! ');
-      return false;
-    }
-
-    if (item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_URL] !== undefined && item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_URL] !== null && item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_URL] !== '') {
-      logger.log(' playlist Overlay url ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_URL]);
-    } else {
-      logger.error('Empty Overlay url');
-      return false;
-    }
-
-    if (item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_CAN_ESCAPE] !== 'true' && item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_CAN_ESCAPE] !== true && item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_CAN_ESCAPE] !== 'false' && item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_CAN_ESCAPE] !== false) {
-      logger.warn('can Escape is missing , will be set to true ! ');
-      item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_CAN_ESCAPE] = true;
-    } else {
-      logger.debug('can Escape is already there : ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_CAN_ESCAPE]);
-    }
-
-    return true;
-  }
-
-  ;
-  /**
-   * used to check if an item is correct
-   */
-
-  function checkItem(item) {
-    var subItem = {};
-    var drm = {};
-    var j, list;
-
-    if (item === null || item === undefined) {
-      logger.error(' Item is NULL !', item);
-      return false;
-    } // check item
-
-
-    logger.log('  class of item  : ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_CLASS]);
-
-    if (_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_CLASSES.indexOf(item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_CLASS]) === -1) {
-      logger.error('BAD class Value ! ');
-      return false;
-    }
-
-    logger.log('  type of item  ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_TYPE]);
-
-    if (_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_TYPES.indexOf(item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_TYPE]) === -1) {
-      logger.error('BAD type Value ! ');
-      return false;
-    }
-
-    logger.log('  title of item  ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_TITLE]);
-
-    if (item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_TITLE] === undefined || item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_TITLE] === null || item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_TITLE] === '' || !item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_TITLE]) {
-      logger.error('BAD title Value ! ');
-      return false;
-    }
-
-    logger.log('  src of item  ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SRC]);
-
-    if (item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SRC] === undefined || item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SRC] === null || item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SRC] === '' || !item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SRC]) {
-      logger.error('BAD src Value ! ');
-      return false;
-    }
-
-    logger.log('  poster of item  ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_POSTER]);
-    logger.log('  thumbs of item  ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_THUMBS]);
-    logger.log('  download icon  ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_DOWNLOAD]);
-    logger.log('  share icon  ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SHARE]);
-    logger.log('  Back icon  ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_BACK]);
-    logger.log('  UP TITLE  ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SHOW_UP_TITLE]); // check ads
-
-    list = item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_ADS];
-
-    if (list !== null && list !== undefined && list.length > 0) {
-      for (j = 0; j < list.length; j++) {
-        subItem = list[j];
-
-        if (checkAds(subItem) === false) {
-          return false;
-        }
-      }
-    } // check drm
-
-
-    drm = item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_DRM];
-
-    if (drm !== null && drm !== undefined) {
-      if (checkDrm(drm) === false) {
+      if (subItem[Const.FJCONFIG_LABEL]) {
+        this.logger.log(' playlist Subtitle label is', subItem[Const.FJCONFIG_LABEL]);
+      } else {
+        this.logger.error('Empty Subtitle label ');
         return false;
       }
-    } // check subtitles
 
-
-    list = item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SUBTITLES];
-
-    if (list !== null && list !== undefined && list.length > 0) {
-      for (j = 0; j < list.length; j++) {
-        subItem = list[j];
-
-        if (checkSubtitle(subItem) === false) {
-          return false;
-        }
-      }
-    } // check overlays
-
-
-    list = item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_OVERLAYS];
-
-    if (list !== null && list !== undefined && list.length > 0) {
-      for (j = 0; j < list.length; j++) {
-        subItem = list[j];
-
-        if (checkOverlay(subItem) === false) {
-          return false;
-        }
-      }
-    } // done
-
-
-    return true;
-  }
-
-  ;
-  /**
-   * Used to add item to list
-   */
-
-  function addItem(item) {
-    if (checkItem(item) === true) {
-      items.push(item);
-      logger.info('Item added ok ', items.length);
       return true;
     }
+    /**
+     * used to check if an item of overlay is correct
+     */
 
-    logger.error(' Failed to add item');
-    return false;
-  }
+  }, {
+    key: "checkOverlay",
+    value: function checkOverlay(subItem) {
+      var val = subItem;
 
-  ;
-  /**
-   *  used to add an subtitle to item at index in the playlist
-   */
+      if (subItem === null || subItem === undefined) {
+        return false;
+      }
 
-  function addSubtitle(index, subtitle) {
-    var item = items[index];
-    var list = item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SUBTITLES];
+      val = subItem[Const.FJCONFIG_DATA];
 
-    if (item === undefined) {
-      return false;
-    } else if (checkSubtitle(subtitle) === false) {
+      if (val !== undefined && val !== null && val !== '') {
+        this.logger.log(' playlist Overlay data ', val);
+      } else {
+        this.logger.error('Empty Overlay data');
+        return false;
+      }
+
+      val = subItem[Const.FJCONFIG_URL];
+
+      if (val !== undefined && val !== null && val !== '') {
+        this.logger.log(' ok playlist Overlay url ', val);
+      } else {
+        this.logger.error('Empty Overlay url');
+        return false;
+      }
+
+      val = subItem[Const.FJCONFIG_DURATION];
+
+      if (val !== undefined && val !== null && val !== '') {
+        if (val === parseInt(val, 10)) {
+          this.logger.log(' integer playlist Overlay duration ', val);
+        } else {
+          this.logger.error(val, ':Empty Overlay duration is not integer !');
+          return false;
+        }
+      } else {
+        this.logger.error('Empty Overlay duration ');
+        return false;
+      }
+
+      val = subItem[Const.FJCONFIG_SHOW_AT];
+
+      if (val !== undefined && val !== null && val !== '') {
+        if (val === parseInt(val, 10)) {
+          this.logger.log(' integer playlist Overlay show at ', val);
+        } else {
+          this.logger.error(val, ':Empty Overlay show at is not integer !');
+          return false;
+        }
+      } else {
+        this.logger.error('Empty Overlay show at ');
+        return false;
+      }
+
+      return true;
+    }
+    /**
+     * used to check if an item of drm is correct
+     */
+
+  }, {
+    key: "checkDrm",
+    value: function checkDrm(drm) {
+      var tmp = null;
+
+      if (drm === null || drm === undefined) {
+        return false;
+      }
+
+      this.logger.debug('Cheking DRM > ', drm);
+      tmp = drm[Const.FJCONFIG_DRM_SCHEME];
+      this.logger.info('Cheking DRM scheme > ', tmp);
+
+      if (tmp !== undefined && tmp !== null && tmp === Const.FJCONFIG_DRM_SCHEME_FORJA) {
+        this.logger.log(' Supported DRM scheme   ', tmp);
+      } else {
+        this.logger.error('Unsupported DRM Scheme ! ');
+        return false;
+      }
+
+      tmp = drm[Const.FJCONFIG_DRM_LICENSE_SERVER];
+      this.logger.info('Cheking DRM LA Server > ', tmp);
+
+      if (tmp !== undefined && tmp !== null && tmp !== '') {
+        this.logger.log(' playlist LA Server is  ', tmp);
+      } else {
+        this.logger.error('Empty LA Server  ! ');
+        return false;
+      }
+
+      return true;
+    }
+    /**
+     * used to check if an item of ads is correct
+     */
+
+  }, {
+    key: "checkAds",
+    value: function checkAds(item) {
+      if (item === null || item === undefined) {
+        return false;
+      }
+
+      if (Const.FJCONFIG_TYPES.indexOf(item[Const.FJCONFIG_TYPE]) === -1) {
+        this.logger.error('BAD type Value ! ');
+        return false;
+      }
+
+      if (!item[Const.FJCONFIG_SRC]) {
+        this.logger.error('BAD src Value ! ');
+        return false;
+      }
+
+      if (Const.FJCONFIG_ADS_CLASSES.indexOf(item[Const.FJCONFIG_CLASS]) === -1) {
+        this.logger.error(item[Const.FJCONFIG_CLASS], ':BAD class Value ! ');
+        return false;
+      }
+
+      if (item[Const.FJCONFIG_CLASS] === Const.FJCONFIG_ADS_CLASS_MID_ROLL && (item[Const.FJCONFIG_SHOW_AT] === null || item[Const.FJCONFIG_SHOW_AT] === undefined)) {
+        this.logger.error('Missing Show At for mid Roll Class ! ');
+        return false;
+      }
+
+      if (item[Const.FJCONFIG_URL] !== undefined && item[Const.FJCONFIG_URL] !== null && item[Const.FJCONFIG_URL] !== '') {
+        this.logger.log(' playlist Overlay url ', item[Const.FJCONFIG_URL]);
+      } else {
+        this.logger.error('Empty Overlay url');
+        return false;
+      }
+
+      if (item[Const.FJCONFIG_CAN_ESCAPE] !== 'true' && item[Const.FJCONFIG_CAN_ESCAPE] !== true && item[Const.FJCONFIG_CAN_ESCAPE] !== 'false' && item[Const.FJCONFIG_CAN_ESCAPE] !== false) {
+        this.logger.warn('can Escape is missing , will be set to true ! ');
+        item[Const.FJCONFIG_CAN_ESCAPE] = true;
+      } else {
+        this.logger.debug('can Escape is already there : ', item[Const.FJCONFIG_CAN_ESCAPE]);
+      }
+
+      return true;
+    }
+    /**
+     * used to check if an item is correct
+     */
+
+  }, {
+    key: "checkItem",
+    value: function checkItem(item) {
+      var subItem = {};
+      var drm = {};
+      var j;
+      var list;
+
+      if (item === null || item === undefined) {
+        this.logger.error(' Item is NULL !', item);
+        return false;
+      } // check item
+
+
+      this.logger.log('  class of item  : ', item[Const.FJCONFIG_CLASS]);
+
+      if (Const.FJCONFIG_CLASSES.indexOf(item[Const.FJCONFIG_CLASS]) === -1) {
+        this.logger.error('BAD class Value ! ');
+        return false;
+      }
+
+      this.logger.log('  type of item  ', item[Const.FJCONFIG_TYPE]);
+
+      if (Const.FJCONFIG_TYPES.indexOf(item[Const.FJCONFIG_TYPE]) === -1) {
+        this.logger.error('BAD type Value ! ');
+        return false;
+      }
+
+      this.logger.log('  title of item  ', item[Const.FJCONFIG_TITLE]);
+
+      if (item[Const.FJCONFIG_TITLE] === undefined || item[Const.FJCONFIG_TITLE] === null || item[Const.FJCONFIG_TITLE] === '' || !item[Const.FJCONFIG_TITLE]) {
+        this.logger.error('BAD title Value ! ');
+        return false;
+      }
+
+      this.logger.log('  src of item  ', item[Const.FJCONFIG_SRC]);
+
+      if (item[Const.FJCONFIG_SRC] === undefined || item[Const.FJCONFIG_SRC] === null || item[Const.FJCONFIG_SRC] === '' || !item[Const.FJCONFIG_SRC]) {
+        this.logger.error('BAD src Value ! ');
+        return false;
+      }
+
+      this.logger.log('  poster of item  ', item[Const.FJCONFIG_POSTER]);
+      this.logger.log('  thumbs of item  ', item[Const.FJCONFIG_THUMBS]);
+      this.logger.log('  download icon  ', item[Const.FJCONFIG_DOWNLOAD]);
+      this.logger.log('  share icon  ', item[Const.FJCONFIG_SHARE]);
+      this.logger.log('  Back icon  ', item[Const.FJCONFIG_BACK]);
+      this.logger.log('  UP TITLE  ', item[Const.FJCONFIG_SHOW_UP_TITLE]); // check ads
+
+      list = item[Const.FJCONFIG_ADS];
+
+      if (list !== null && list !== undefined && list.length > 0) {
+        for (j = 0; j < list.length; j += 1) {
+          subItem = list[j];
+
+          if (this.checkAds(subItem) === false) {
+            return false;
+          }
+        }
+      } // check drm
+
+
+      drm = item[Const.FJCONFIG_DRM];
+
+      if (drm !== null && drm !== undefined) {
+        if (this.checkDrm(drm) === false) {
+          return false;
+        }
+      } // check subtitles
+
+
+      list = item[Const.FJCONFIG_SUBTITLES];
+
+      if (list !== null && list !== undefined && list.length > 0) {
+        for (j = 0; j < list.length; j += 1) {
+          subItem = list[j];
+
+          if (this.checkSubtitle(subItem) === false) {
+            return false;
+          }
+        }
+      } // check overlays
+
+
+      list = item[Const.FJCONFIG_OVERLAYS];
+
+      if (list !== null && list !== undefined && list.length > 0) {
+        for (j = 0; j < list.length; j += 1) {
+          subItem = list[j];
+
+          if (this.checkOverlay(subItem) === false) {
+            return false;
+          }
+        }
+      } // done
+
+
+      return true;
+    }
+    /**
+     * Used to add item to list
+     */
+
+  }, {
+    key: "addItem",
+    value: function addItem(item) {
+      if (this.checkItem(item) === true) {
+        this.items.push(item);
+        this.logger.info('Item added ok ', this.items.length);
+        return true;
+      }
+
+      this.logger.error(' Failed to add item');
       return false;
     }
+    /**
+     * Used to remove item by index from playlist
+     * @param {*} index
+     */
 
-    if (list === undefined || list.length === 0) {
-      list = [];
+  }, {
+    key: "rmItemIndex",
+    value: function rmItemIndex(index) {
+      var item = this.items[index];
+
+      if (item === undefined || index < 0) {
+        this.logger.error(' Failed to remove item');
+        return false;
+      }
+
+      this.items.splice(index, 1);
+      this.logger.info('Item removed ok ', this.items.length);
+      return true;
     }
+    /**
+     * Used to remove item from playlist
+     * @param {*} item
+     */
 
-    list.push(subtitle);
-    return true;
-  }
+  }, {
+    key: "rmItem",
+    value: function rmItem(item) {
+      var index = this.items.indexOf(item);
 
-  ;
-  /**
-   *  used to add an Overlay to item at index in the playlist
-   */
+      if (index < 0) {
+        this.logger.error(' Failed to remove item');
+        return false;
+      }
 
-  function addOverlay(index, overlay) {
-    var item = items[index];
-    var list = item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_OVERLAYS];
-
-    if (item === undefined) {
-      return false;
-    } else if (checkOverlay(overlay) === false) {
-      return false;
+      this.items.splice(index, 1);
+      this.logger.info('Item removed ok ', this.items.length);
+      return true;
     }
+    /**
+     *  used to add an subtitle to item at index in the playlist
+     *  TODO lock this function  when playlist start to play !
+     */
 
-    if (list === undefined || list.length === 0) {
-      list = [];
+  }, {
+    key: "addSubtitle",
+    value: function addSubtitle(index, subtitle) {
+      var item = this.items[index];
+
+      if (item === undefined) {
+        return false;
+      }
+
+      if (this.checkSubtitle(subtitle) === false) {
+        return false;
+      }
+
+      var list = item[Const.FJCONFIG_SUBTITLES];
+
+      if (list === undefined || list.length === 0) {
+        list = [];
+      }
+
+      list.push(subtitle);
+      return true;
     }
+    /**
+     *  used to add an Overlay to item at index in the playlist
+     *  TODO lock this function  when playlist start to play !
+     */
 
-    list.push(overlay);
-    return true;
-  }
+  }, {
+    key: "addOverlay",
+    value: function addOverlay(index, overlay) {
+      var item = this.items[index];
 
-  ;
-  /**
-   *  used to add an Drm to item at index in the playlist
-   */
+      if (item === undefined) {
+        return false;
+      }
 
-  function setDrm(index, drm) {
-    var item = items[index];
-    var list = item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_DRM];
+      if (this.checkOverlay(overlay) === false) {
+        return false;
+      }
 
-    if (item === undefined) {
-      return false;
-    } else if (checkDrm(drm) === false) {
-      return false;
+      var list = item[Const.FJCONFIG_OVERLAYS];
+
+      if (list === undefined || list.length === 0) {
+        list = [];
+      }
+
+      list.push(overlay);
+      return true;
     }
+    /**
+     *  used to add an Drm to item at index in the playlist
+     *  TODO lock this function  when playlist start to play !
+     */
 
-    if (list === undefined || list.length === 0) {
-      list = [];
+  }, {
+    key: "setDrm",
+    value: function setDrm(index, drm) {
+      var item = this.items[index];
+
+      if (item === undefined) {
+        return false;
+      }
+
+      if (this.checkDrm(drm) === false) {
+        return false;
+      }
+
+      var list = item[Const.FJCONFIG_DRM];
+
+      if (list === undefined || list.length === 0) {
+        list = [];
+      }
+
+      list.push(drm);
+      return true;
     }
+    /**
+     *  used to add an ads to item at index in the playlist
+     *  TODO lock this function  when playlist start to play !
+     */
 
-    list.push(drm);
-    return true;
-  }
+  }, {
+    key: "addAds",
+    value: function addAds(index, ads) {
+      var item = this.items[index];
 
-  ;
-  /**
-   *  used to add an ads to item at index in the playlist
-   */
+      if (item === undefined) {
+        return false;
+      }
 
-  function addAds(index, ads) {
-    var item = items[index];
-    var list = item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_ADS];
+      if (this.checkAds(ads) === false) {
+        return false;
+      }
 
-    if (item === undefined) {
-      return false;
-    } else if (checkAds(ads) === false) {
-      return false;
+      var list = item[Const.FJCONFIG_ADS];
+
+      if (list === undefined || list.length === 0) {
+        list = [];
+      }
+
+      list.push(ads);
+      return true;
     }
+  }]);
 
-    if (list === undefined || list.length === 0) {
-      list = [];
-    }
+  return Playlist;
+}();
 
-    list.push(ads);
-    return true;
-  }
-
-  ; // ************************************************************************************
-  // PUBLIC API
-  // ************************************************************************************
-
-  return {
-    getSize: getSize,
-    getItem: getItem,
-    addItem: addItem,
-    addSubtitle: addSubtitle,
-    addOverlay: addOverlay,
-    setDrm: setDrm,
-    addAds: addAds,
-    checkSubtitle: checkSubtitle,
-    checkOverlay: checkOverlay,
-    checkDrm: checkDrm,
-    checkAds: checkAds,
-    checkItem: checkItem,
-    constructor: Playlist
-  };
-}
-
-;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Playlist);
+module.exports = Playlist;
 
 /***/ }),
 
@@ -25443,21 +25650,21 @@ function Playlist() {
 /*!*********************************!*\
   !*** ./src/js/ui/AdsManager.js ***!
   \*********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _utils_Logger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/Logger */ "./src/js/utils/Logger.js");
-/* harmony import */ var _defs_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../defs/constants */ "./src/js/defs/constants.js");
-/* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/Utils */ "./src/js/utils/Utils.js");
-/* harmony import */ var _utils_Eventing__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/Eventing */ "./src/js/utils/Eventing.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var Logger = __webpack_require__(/*! ../utils/Logger */ "./src/js/utils/Logger.js");
 
+var Const = __webpack_require__(/*! ../defs/constants */ "./src/js/defs/constants.js");
+
+var Utils = __webpack_require__(/*! ../utils/Utils */ "./src/js/utils/Utils.js");
+
+var Eventing = __webpack_require__(/*! ../utils/Eventing */ "./src/js/utils/Eventing.js");
 /**
  * @module AdsManager
  * @description The AdsManager is the class whinch will manage Ads
@@ -25465,310 +25672,319 @@ __webpack_require__.r(__webpack_exports__);
  *  Ads will be played on a another video html overlaying current video
  */
 
-function AdsManager() {
-  var logger = new _utils_Logger__WEBPACK_IMPORTED_MODULE_0__.default(this),
-      settled = false,
-      events = new _utils_Eventing__WEBPACK_IMPORTED_MODULE_3__.default(),
-      mainVideoWidth = 0,
-      mainVideoHeight = 0,
-      midAds = [],
-      postAds = [],
-      preAds = [],
-      localAds = null,
-      AdsContainerdiv = null;
+
+var AdsManager = /*#__PURE__*/function () {
+  function AdsManager() {
+    _classCallCheck(this, AdsManager);
+
+    this.logger = new Logger(this);
+    this.settled = false;
+    this.events = new Eventing();
+    this.mainVideoWidth = 0;
+    this.mainVideoHeight = 0;
+    this.midAds = [];
+    this.postAds = [];
+    this.preAds = [];
+    this.localAds = null;
+    this.AdsContainerdiv = null;
+  }
   /**
    * Function used to stop Ads
    * @param {*} index index of ads in his arry
    * @param {*} adsType type of ads to look into type array
    */
 
-  function StopAds(index, adsType) {
-    var el = AdsContainerdiv;
-    var elClone = null;
-    var item = midAds[index];
 
-    if (settled !== true) {
-      logger.warn(' AdsMgr is not yet settled !');
-      return;
+  _createClass(AdsManager, [{
+    key: "StopAds",
+    value: function StopAds(index, adsType) {
+      var el = this.AdsContainerdiv;
+      var elClone = null;
+      var item = this.midAds[index];
+
+      if (this.settled !== true) {
+        this.logger.warn(' AdsMgr is not yet this.settled!');
+        return;
+      }
+
+      if (adsType === Const.AdsEnum.ADS_PRE_ROLL) {
+        item = this.preAds[index];
+      } else if (adsType === Const.AdsEnum.ADS_MID_ROLL) {
+        item = this.midAds[index];
+      } else {
+        item = this.postAds[index];
+      }
+
+      this.logger.info(index, 'stopping  Ads ', item[Const.FJCONFIG_URL], ' @@ ', item[Const.FJCONFIG_SHOW_AT]); // remove the click event
+
+      el = this.AdsContainerdiv;
+      elClone = el.cloneNode(true);
+      el.parentNode.replaceChild(elClone, el);
+      this.AdsContainerdiv = elClone; // hide the overlay , empty the div
+
+      while (this.AdsContainerdiv.hasChildNodes()) {
+        this.AdsContainerdiv.removeChild(this.AdsContainerdiv.firstChild);
+      }
+
+      this.AdsContainerdiv.innerHTML = '';
+      this.AdsContainerdiv.style.display = 'none';
+      this.events.fireEvent(Const.AdsEvents.ADS_PLAYBACK_ENDED, adsType);
     }
+  }, {
+    key: "StartAds",
+    value: function StartAds(index, adsType) {
+      var _this = this;
 
-    if (adsType === _defs_constants__WEBPACK_IMPORTED_MODULE_1__.AdsEnum.ADS_PRE_ROLL) {
-      item = preAds[index];
-    } else if (adsType === _defs_constants__WEBPACK_IMPORTED_MODULE_1__.AdsEnum.ADS_MID_ROLL) {
-      item = midAds[index];
-    } else {
-      item = postAds[index];
-    }
+      var done = false;
+      var infoDiv = document.createElement('div');
+      var infoDiv2 = document.createElement('span');
+      var adsvideo = document.createElement('video');
+      var source = document.createElement('source');
+      var item = this.midAds[index];
 
-    logger.info(index, 'stopping  Ads ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_URL], ' @@ ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SHOW_AT]); // remove the click event
+      if (this.settled !== true) {
+        this.logger.warn(' AdsMgr is not yet cettled !');
+        return;
+      }
 
-    el = AdsContainerdiv;
-    elClone = el.cloneNode(true);
-    el.parentNode.replaceChild(elClone, el);
-    AdsContainerdiv = elClone; // hide the overlay , empty the div
+      if (adsType === Const.AdsEnum.ADS_PRE_ROLL) {
+        item = this.preAds[index];
+        this.logger.info(index, 'starting PRE Ads ', this.preAds);
+        this.logger.info(index, 'starting PRE Ads ', item[Const.FJCONFIG_SRC]);
+      } else if (adsType === Const.AdsEnum.ADS_MID_ROLL) {
+        item = this.midAds[index];
+        this.logger.info(index, 'starting MId Ads ', item[Const.FJCONFIG_SRC], ' @@ ', item[Const.FJCONFIG_SHOW_AT]);
+      } else {
+        item = this.postAds[index];
+        this.logger.info(index, 'starting POST Ads ', item[Const.FJCONFIG_SRC]);
+      }
 
-    while (AdsContainerdiv.hasChildNodes()) {
-      AdsContainerdiv.removeChild(AdsContainerdiv.firstChild);
-    }
+      item.started = true; // pause current video and play ads
 
-    AdsContainerdiv.innerHTML = '';
-    AdsContainerdiv.style.display = 'none';
-    events.fireEvent(_defs_constants__WEBPACK_IMPORTED_MODULE_1__.AdsEvents.ADS_PLAYBACK_ENDED, adsType);
-  }
+      this.events.fireEvent(Const.AdsEvents.ADS_PLAYBACK_STARTED, adsType); // fill ads container
 
-  function StartAds(index, adsType) {
-    var done = false;
-    var infoDiv = document.createElement('div');
-    var infoDiv2 = document.createElement('span');
-    var adsvideo = document.createElement('video');
-    var source = document.createElement('source');
-    var item = midAds[index];
+      adsvideo.preload = true;
+      adsvideo.controls = false;
+      adsvideo.autoplay = false; // setting W/H !
 
-    if (settled !== true) {
-      logger.warn(' AdsMgr is not yet cettled !');
-      return;
-    }
+      adsvideo.setAttribute('width', this.mainVideoWidth);
+      adsvideo.setAttribute('height', this.mainVideoHeight);
+      this.logger.warn(' ads video width/height is ', this.mainVideoWidth, this.mainVideoHeight);
+      infoDiv.innerHTML = "".concat('<span style="color: rgb(119, 255, 119); font-size: 0.95em;">Annonce</span>' + ' This an Ads for <span style="color: rgb(255, 255, 0)">').concat(item[Const.FJCONFIG_URL], "</span>");
+      this.AdsContainerdiv.style.cursor = 'pointer';
+      this.logger.log(' Can escape this starting Ads ', item[Const.FJCONFIG_CAN_ESCAPE]);
+      infoDiv.style.display = 'block';
+      infoDiv.classList.add('over-DL');
+      source.src = item[Const.FJCONFIG_SRC];
+      source.type = item[Const.FJCONFIG_TYPE];
+      adsvideo.appendChild(source);
+      this.AdsContainerdiv.appendChild(adsvideo);
+      infoDiv.appendChild(infoDiv2);
+      this.AdsContainerdiv.appendChild(infoDiv);
+      this.AdsContainerdiv.style.display = 'block';
+      adsvideo.play(); // this.eventsmanaging
 
-    if (adsType === _defs_constants__WEBPACK_IMPORTED_MODULE_1__.AdsEnum.ADS_PRE_ROLL) {
-      item = preAds[index];
-      logger.info(index, 'starting PRE Ads ', preAds);
-      logger.info(index, 'starting PRE Ads ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SRC]);
-    } else if (adsType === _defs_constants__WEBPACK_IMPORTED_MODULE_1__.AdsEnum.ADS_MID_ROLL) {
-      item = midAds[index];
-      logger.info(index, 'starting MId Ads ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SRC], ' @@ ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SHOW_AT]);
-    } else {
-      item = postAds[index];
-      logger.info(index, 'starting POST Ads ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SRC]);
-    }
-
-    item.started = true; // pause current video and play ads
-
-    events.fireEvent(_defs_constants__WEBPACK_IMPORTED_MODULE_1__.AdsEvents.ADS_PLAYBACK_STARTED, adsType); // fill ads container
-
-    adsvideo.preload = true;
-    adsvideo.controls = false;
-    adsvideo.autoplay = false; // setting W/H !
-
-    adsvideo.setAttribute('width', mainVideoWidth);
-    adsvideo.setAttribute('height', mainVideoHeight);
-    logger.warn(' ads video width/height is ', mainVideoWidth, mainVideoHeight);
-    infoDiv.innerHTML = '<span style=\"color: rgb(119, 255, 119); font-size: 0.95em;\">Annonce</span>' + ' This an Ads for <span style=\"color: rgb(255, 255, 0)\">' + item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_URL] + '</span>';
-    AdsContainerdiv.style.cursor = 'pointer';
-    logger.log(' Can escape this starting Ads ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_CAN_ESCAPE]);
-    infoDiv.style.display = 'block';
-    infoDiv.classList.add('over-DL');
-    source.src = item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SRC];
-    source.type = item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_TYPE];
-    adsvideo.appendChild(source);
-    AdsContainerdiv.appendChild(adsvideo);
-    infoDiv.appendChild(infoDiv2);
-    AdsContainerdiv.appendChild(infoDiv);
-    AdsContainerdiv.style.display = 'block';
-    adsvideo.play(); // events managing
-
-    adsvideo.addEventListener('timeupdate', function (e) {
-      if (item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_CAN_ESCAPE] === 'true' || item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_CAN_ESCAPE] === true) {
-        if (adsvideo.currentTime > 5) {
-          if (!done) {
-            infoDiv2.innerHTML = ', Can be escapped <span class="fj-icon-playNext" ></span>';
-            infoDiv2.addEventListener('click', function () {
-              StopAds(index, adsType);
-            });
-            done = true;
+      adsvideo.addEventListener('timeupdate', function () {
+        if (item[Const.FJCONFIG_CAN_ESCAPE] === 'true' || item[Const.FJCONFIG_CAN_ESCAPE] === true) {
+          if (adsvideo.currentTime > 5) {
+            if (!done) {
+              infoDiv2.innerHTML = ', Can be escapped <span class="fj-icon-playNext" ></span>';
+              infoDiv2.addEventListener('click', function () {
+                _this.StopAds(index, adsType);
+              });
+              done = true;
+            }
+          } else {
+            infoDiv2.innerHTML = ", Can be escapped in ".concat(Math.round(5 - adsvideo.currentTime), " secondes .");
           }
         } else {
-          infoDiv2.innerHTML = ', Can be escapped in ' + Math.round(5 - adsvideo.currentTime) + ' secondes .';
+          infoDiv2.innerHTML = ", it ends after ".concat(Utils.duration(Math.round(adsvideo.duration - adsvideo.currentTime)), " .");
         }
-      } else {
-        infoDiv2.innerHTML = ', it ends after ' + _utils_Utils__WEBPACK_IMPORTED_MODULE_2__.duration(Math.round(adsvideo.duration - adsvideo.currentTime)) + ' .';
-      }
-    });
-    adsvideo.addEventListener('click', function () {
-      item.clicked++;
-      events.fireEvent(_defs_constants__WEBPACK_IMPORTED_MODULE_1__.AdsEvents.ADS_USER_CLICKED);
-      window.open(item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_URL], '_blank');
-    });
-    adsvideo.addEventListener('ended', function (e) {
-      StopAds(index, adsType);
-    });
-  }
-  /**
-   * Function to be called from event 'timeupdate' from video
-   * called to check if ads has to be played
-   */
+      });
+      adsvideo.addEventListener('click', function () {
+        item.clicked += 1;
 
+        _this.events.fireEvent(Const.AdsEvents.ADS_USER_CLICKED);
 
-  function CheckMidAds(secondes) {
-    var i = 0;
-    var item = null;
-    var show = 0;
-
-    if (settled !== true) {
-      return;
+        window.open(item[Const.FJCONFIG_URL], '_blank');
+      });
+      adsvideo.addEventListener('ended', function () {
+        _this.StopAds(index, adsType);
+      });
     }
+    /**
+     * Function to be called from event 'timeupdate' from video
+     * called to check if ads has to be played
+     */
 
-    for (i = 0; i < midAds.length; i++) {
-      item = midAds[i];
-      show = parseInt(item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SHOW_AT], 10);
+  }, {
+    key: "CheckMidAds",
+    value: function CheckMidAds(secondes) {
+      var i = 0;
+      var item = null;
+      var show = 0;
 
-      if (secondes === show) {
-        logger.info(i, ' starting Ads Now .. ');
+      if (this.settled !== true) {
+        return;
+      }
 
-        if (midAds[i].started === false) {
-          logger.info(i, ' starting a new  Mid Ads .. ');
-          midAds[i].started = true;
-          StartAds(i, _defs_constants__WEBPACK_IMPORTED_MODULE_1__.AdsEnum.ADS_MID_ROLL);
+      for (i = 0; i < this.midAds.length; i += 1) {
+        item = this.midAds[i];
+        show = parseInt(item[Const.FJCONFIG_SHOW_AT], 10);
+
+        if (secondes === show) {
+          this.logger.info(i, ' starting Ads Now .. ');
+
+          if (this.midAds[i].started === false) {
+            this.logger.info(i, ' starting a new  Mid Ads .. ');
+            this.midAds[i].started = true;
+            this.StartAds(i, Const.AdsEnum.ADS_MID_ROLL);
+          } else {
+            this.logger.info(i, ' already started ', item[Const.FJCONFIG_URL], ' @@ ', item[Const.FJCONFIG_SHOW_AT]);
+          }
+        }
+      }
+    }
+    /**
+     * Function to be called just before starting video
+     * called to check if ads has to be played
+     */
+
+  }, {
+    key: "CheckPreAds",
+    value: function CheckPreAds() {
+      var i = 0;
+      var item = null;
+      this.logger.info(' Checking Pre Ads Now .. ');
+
+      if (this.settled !== true) {
+        this.logger.warn('not yet Settled !');
+        return false;
+      }
+
+      for (i = 0; i < this.preAds.length; i += 1) {
+        item = this.preAds[i];
+        this.logger.info(i, ' starting Pre Ads Now .. ');
+
+        if (this.preAds[i].started === false) {
+          this.logger.info(i, ' starting a new Pre Ads .. @', i);
+          this.preAds[i].started = true;
+          this.StartAds(i, Const.AdsEnum.ADS_PRE_ROLL);
+          return true;
+        }
+
+        this.logger.info(i, 'Pre already started ', item[Const.FJCONFIG_URL], ' @@ ', item[Const.FJCONFIG_SHOW_AT]);
+      }
+
+      return false;
+    }
+    /**
+     * Function to be called just before starting video
+     * called to check if ads has to be played
+     */
+
+  }, {
+    key: "CheckPostAds",
+    value: function CheckPostAds() {
+      var i = 0;
+      var item = null;
+      this.logger.info(' Checking Post Ads Now .. ');
+
+      if (this.settled !== true) {
+        this.logger.warn(' AdsMgr is not yet this.settled!');
+        return false;
+      }
+
+      for (i = 0; i < this.postAds.length; i += 1) {
+        item = this.postAds[i];
+        this.logger.info(i, ' starting Pre Ads Now .. ');
+
+        if (this.postAds[i].started === false) {
+          this.logger.info(i, ' starting a new Post Ads .. ');
+          this.postAds[i].started = true;
+          this.StartAds(i, Const.AdsEnum.ADS_POST_ROLL);
+          return true;
+        }
+
+        this.logger.info(i, 'Post already started ', item[Const.FJCONFIG_URL], ' @@ ', item[Const.FJCONFIG_SHOW_AT]);
+      }
+
+      return false;
+    }
+  }, {
+    key: "initialize",
+    value: function initialize(AdsContainer) {
+      this.AdsContainerdiv = AdsContainer;
+    }
+  }, {
+    key: "Setup",
+    value: function Setup(ads, videoWidth, videoHeight) {
+      var i = 0;
+      var sz;
+      var item;
+      var clas;
+
+      if (ads === null || ads === undefined) {
+        this.settled = false;
+        return;
+      }
+
+      this.localAds = ads;
+      this.mainVideoWidth = videoWidth;
+      this.mainVideoHeight = videoHeight;
+
+      for (i = 0; i < this.localAds.length; i += 1) {
+        item = this.localAds[i];
+        clas = item[Const.FJCONFIG_CLASS];
+
+        if (clas === Const.FJCONFIG_ADS_CLASS_PRE_ROLL) {
+          this.logger.debug(' found a pre ads !');
+          sz = this.preAds.push(item);
+          this.preAds[sz - 1].started = false;
+          this.preAds[sz - 1].clicked = 0;
+        } else if (clas === Const.FJCONFIG_ADS_CLASS_POST_ROLL) {
+          this.logger.debug(' found a post ads !');
+          sz = this.postAds.push(item);
+          this.postAds[sz - 1].started = false;
+          this.postAds[sz - 1].clicked = 0;
         } else {
-          logger.info(i, ' already started ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_URL], ' @@ ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SHOW_AT]);
+          this.logger.debug(' found a mid ads !');
+          sz = this.midAds.push(item);
+          this.midAds[sz - 1].started = false;
+          this.midAds[sz - 1].clicked = 0;
         }
       }
+
+      this.settled = true;
+      this.logger.info('Ads Setup is this.settled', this.settled);
+      this.logger.warn('Checking PRE ROLL Ads .. ', this.preAds.length);
+      this.logger.warn('Checking MID ROLL Ads .. ', this.midAds.length);
+      this.logger.warn('Checking POST ROLL Ads .. ', this.postAds.length);
     }
-  }
-  /**
-   * Function to be called just before starting video
-   * called to check if ads has to be played
-   */
+    /**
+     *
+     */
 
-
-  function CheckPreAds() {
-    var i = 0;
-    var item = null;
-    logger.info(' Checking Pre Ads Now .. ');
-
-    if (settled !== true) {
-      logger.warn('not yet Settled !');
-      return false;
+  }, {
+    key: "on",
+    value: function on(name, handler) {
+      return this.events.on(name, handler);
     }
+    /**
+     *
+     */
 
-    for (i = 0; i < preAds.length; i++) {
-      item = preAds[i];
-      logger.info(i, ' starting Pre Ads Now .. ');
-
-      if (preAds[i].started === false) {
-        logger.info(i, ' starting a new Pre Ads .. @', i);
-        preAds[i].started = true;
-        StartAds(i, _defs_constants__WEBPACK_IMPORTED_MODULE_1__.AdsEnum.ADS_PRE_ROLL);
-        return true;
-      }
-
-      logger.info(i, 'Pre already started ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_URL], ' @@ ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SHOW_AT]);
+  }, {
+    key: "off",
+    value: function off(name, handler) {
+      return this.events.off(name, handler);
     }
+  }]);
 
-    return false;
-  }
-  /**
-   * Function to be called just before starting video
-   * called to check if ads has to be played
-   */
+  return AdsManager;
+}();
 
-
-  function CheckPostAds() {
-    var i = 0;
-    var item = null;
-    logger.info(' Checking Post Ads Now .. ');
-
-    if (settled !== true) {
-      logger.warn(' AdsMgr is not yet settled !');
-      return false;
-    }
-
-    for (i = 0; i < postAds.length; i++) {
-      item = postAds[i];
-      logger.info(i, ' starting Pre Ads Now .. ');
-
-      if (postAds[i].started === false) {
-        logger.info(i, ' starting a new Post Ads .. ');
-        postAds[i].started = true;
-        StartAds(i, _defs_constants__WEBPACK_IMPORTED_MODULE_1__.AdsEnum.ADS_POST_ROLL);
-        return true;
-      }
-
-      logger.info(i, 'Post already started ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_URL], ' @@ ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SHOW_AT]);
-    }
-
-    return false;
-  }
-
-  function initialize(AdsContainer) {
-    AdsContainerdiv = AdsContainer;
-  }
-
-  function Setup(ads, videoWidth, videoHeight) {
-    var i = 0;
-    var sz;
-    var item;
-    var clas;
-
-    if (ads === null | ads === undefined) {
-      settled = false;
-      return;
-    }
-
-    localAds = ads;
-    mainVideoWidth = videoWidth;
-    mainVideoHeight = videoHeight;
-
-    for (i = 0; i < localAds.length; i++) {
-      item = localAds[i];
-      clas = item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_CLASS];
-
-      if (clas === _defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_ADS_CLASS_PRE_ROLL) {
-        logger.debug(' found a pre ads !');
-        sz = preAds.push(item);
-        preAds[sz - 1].started = false;
-        preAds[sz - 1].clicked = 0;
-      } else if (clas === _defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_ADS_CLASS_POST_ROLL) {
-        logger.debug(' found a post ads !');
-        sz = postAds.push(item);
-        postAds[sz - 1].started = false;
-        postAds[sz - 1].clicked = 0;
-      } else {
-        logger.debug(' found a mid ads !');
-        sz = midAds.push(item);
-        midAds[sz - 1].started = false;
-        midAds[sz - 1].clicked = 0;
-      }
-    }
-
-    settled = true;
-    logger.info('Ads Setup is settled ', settled);
-    logger.warn('Checking PRE ROLL Ads .. ', preAds.length);
-    logger.warn('Checking MID ROLL Ads .. ', midAds.length);
-    logger.warn('Checking POST ROLL Ads .. ', postAds.length);
-  }
-  /**
-   *
-   */
-
-
-  function on(name, handler) {
-    return events.on(name, handler);
-  }
-  /**
-   *
-   */
-
-
-  function off(name, handler) {
-    return events.off(name, handler);
-  } // ************************************************************************************
-  // PUBLIC API
-  // ************************************************************************************
-
-
-  return {
-    CheckMidAds: CheckMidAds,
-    CheckPreAds: CheckPreAds,
-    CheckPostAds: CheckPostAds,
-    Setup: Setup,
-    on: on,
-    off: off,
-    initialize: initialize,
-    constructor: AdsManager
-  };
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AdsManager);
+module.exports = AdsManager;
 
 /***/ }),
 
@@ -25776,15 +25992,15 @@ function AdsManager() {
 /*!****************************!*\
   !*** ./src/js/ui/Menus.js ***!
   \****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _utils_Logger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/Logger */ "./src/js/utils/Logger.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Logger = __webpack_require__(/*! ../utils/Logger */ "./src/js/utils/Logger.js");
 
 __webpack_require__(/*! ../../css/player.less */ "./src/css/player.less");
 /**
@@ -25792,304 +26008,308 @@ __webpack_require__(/*! ../../css/player.less */ "./src/css/player.less");
  */
 
 
-function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
-  var logger = new _utils_Logger__WEBPACK_IMPORTED_MODULE_0__.default(this),
-      video = mainVideo,
-      mediaPlayer = null,
-      subtitlesBtnId = subsBtnId,
-      audsBtnId = audiosBtnId,
-      subsMenuListId = 'smml' + subtitlesBtnId,
-      audsMenuListId = 'amml' + audiosBtnId,
-      MenusContainerDivId = MenusContDivId,
-      menusDiv = document.getElementById(MenusContainerDivId),
-      SubsExist = false,
-      subsMenuDiv = null,
-      subsList = null,
-      audsExist = false,
-      audsMenuDiv = null,
-      audsList = null;
+var Menus = /*#__PURE__*/function () {
+  function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
+    _classCallCheck(this, Menus);
+
+    this.logger = new Logger(this);
+    this.video = mainVideo;
+    this.mediaPlayer = null;
+    this.subtitlesBtnId = subsBtnId;
+    this.audsBtnId = audiosBtnId;
+    this.subsMenuListId = "smml".concat(this.subtitlesBtnId);
+    this.audsMenuListId = "amml".concat(audiosBtnId);
+    this.MenusContainerDivId = MenusContDivId;
+    this.menusDiv = document.getElementById(this.MenusContainerDivId);
+    this.SubsExist = false;
+    this.subsMenuDiv = null;
+    this.subsList = null;
+    this.audsExist = false;
+    this.audsMenuDiv = null;
+    this.audsList = null;
+  }
   /**
    *Hide Menu Subtitles
    */
 
-  function HideMenuSubs() {
-    if (SubsExist === true && subsMenuDiv.classList.contains('fj-hide') === false) {
-      subsMenuDiv.classList.add('fj-hide');
+
+  _createClass(Menus, [{
+    key: "HideMenuSubs",
+    value: function HideMenuSubs() {
+      if (this.SubsExist === true && this.subsMenuDiv.classList.contains('fj-hide') === false) {
+        this.subsMenuDiv.classList.add('fj-hide');
+      }
     }
-  }
+    /**
+     * Hide Menu Audios
+     */
 
-  ;
-  /**
-   * Hide Menu Audios
-   */
-
-  function HideMenusAuds() {
-    if (audsExist === true && audsMenuDiv.classList.contains('fj-hide') === false) {
-      audsMenuDiv.classList.add('fj-hide');
+  }, {
+    key: "HideMenusAuds",
+    value: function HideMenusAuds() {
+      if (this.audsExist === true && this.audsMenuDiv.classList.contains('fj-hide') === false) {
+        this.audsMenuDiv.classList.add('fj-hide');
+      }
     }
-  }
+    /**
+     *
+     * @param {*Funtion Callback used to activate item of list
+     */
 
-  ;
-  /**
-   *
-   * @param {*Funtion Callback used to activate item of list
-   */
+  }, {
+    key: "activate",
+    value: function activate(item, isItSubs) {
+      var i;
+      var litem;
+      var k;
+      var list;
 
-  function activate(item, isItSubs) {
-    var i, litem, k, list;
-    var index, tindex;
-
-    if (isItSubs === true) {
-      list = subsList;
-    } else {
-      list = audsList;
-    }
-
-    index = Array.prototype.indexOf.call(list.childNodes, item);
-    tindex = item.getAttribute('index');
-    logger.info('clicked is  selected @ index ', index, ' text index ', tindex);
-
-    if (isItSubs === true) {
-      mediaPlayer.setTextTrack(tindex);
-    } else {
-      mediaPlayer.setAudioLang(tindex);
-    }
-
-    for (i = 0; i < list.children.length; i++) {
-      litem = list.children[i];
-      k = litem.getAttribute('index');
-
-      if (tindex === k) {
-        litem.classList.remove('subtitles-menu-item');
-        litem.classList.add('subtitles-menu-item-actif');
-        logger.log('Setting item @  ', i);
+      if (isItSubs === true) {
+        list = this.subsList;
       } else {
-        litem.classList.remove('subtitles-menu-item-actif');
-        litem.classList.add('subtitles-menu-item');
-        logger.log('Unsetting item @  ', i);
+        list = this.audsList;
       }
-    }
 
-    if (isItSubs === true) {
-      HideMenuSubs();
-    } else {
-      HideMenusAuds();
-    }
-  }
+      var index = Array.prototype.indexOf.call(list.childNodes, item);
+      var tindex = item.getAttribute('index');
+      this.logger.info('clicked is  selected @ index ', index, ' text index ', tindex);
 
-  ;
-  /**
-   * Event CALLBACK ; called on menu Click
-   */
-
-  function onshowHideMenu(menuContainer, element, ev) {
-    var rectV = video.getBoundingClientRect();
-    var rect = element.getBoundingClientRect();
-
-    if (menuContainer.classList.contains('fj-hide')) {
-      logger.warn('setting left @', rect.right - ev.pageX);
-      logger.warn('setting left @', rect.left - ev.pageX);
-      menuContainer.style.left = ev.pageX - rectV.left - rect.width;
-      menuContainer.classList.remove('fj-hide');
-    } else {
-      menuContainer.classList.add('fj-hide');
-    }
-  }
-
-  ;
-  /**
-   * Used to Hide menu
-   */
-
-  function HideMenus() {
-    HideMenuSubs();
-    HideMenusAuds();
-  }
-
-  ;
-  /**
-   *
-   * @param {*} playerMedia
-   */
-
-  function SetupSubs(playerMedia) {
-    var subtitlesBtn = null;
-    var i = 0;
-    var activated = false;
-    var item = null;
-    var textTracks = null;
-    mediaPlayer = playerMedia;
-    textTracks = mediaPlayer.getTextTracks();
-    SubsExist = false;
-    logger.info(' Trying to setup menu subs , text tracks length : ', textTracks); // check if exist
-
-    if (!textTracks || textTracks.length <= 0) {
-      SubsExist = false;
-      logger.log(' Subs Menu not created !');
-      return false;
-    } // check if video contains subs  exist
-
-
-    for (i = 0; i < textTracks.length; i++) {
-      logger.debug(' @ text track number  ', i, ' and it type is ', textTracks[i].kind);
-
-      if (textTracks[i].kind === 'captions' || textTracks[i].kind === 'subtitle' || textTracks[i].kind === 'subtitles') {
-        SubsExist = true;
-        break;
+      if (isItSubs === true) {
+        this.mediaPlayer.setTextTrack(tindex);
+      } else {
+        this.mediaPlayer.setAudioLang(tindex);
       }
-    }
 
-    if (SubsExist === false) {
-      logger.info(' Subs Menu Not created !! ');
-      return SubsExist;
-    } // Setting btn
+      for (i = 0; i < list.children.length; i += 1) {
+        litem = list.children[i];
+        k = litem.getAttribute('index');
 
-
-    subtitlesBtn = document.getElementById(subtitlesBtnId);
-    logger.info('Setting the btn ', subtitlesBtn, ' from id ', subtitlesBtnId); // video array
-
-    subsList = document.getElementById(subsMenuListId); // clear old
-
-    if (subsList !== null) {
-      while (subsList.firstChild) {
-        subsList.removeChild(subsList.firstChild);
-      }
-    } else {
-      subsMenuDiv = document.createElement('div');
-      subsMenuDiv.classList.add('settingMenuDiv');
-      subsMenuDiv.classList.add('fj-hide');
-      subsMenuDiv.innerHTML = '<div class="fj-list-title"> Soutitres </div> ' + '<ul class=\"fj-list\"  id=\"' + subsMenuListId + '\" >' + '</ul>	';
-      menusDiv.appendChild(subsMenuDiv); // Add events for subtitles button
-
-      subtitlesBtn.addEventListener('click', function (ev) {
-        onshowHideMenu(subsMenuDiv, this, ev);
-      }); //  subs list
-
-      subsList = document.getElementById(subsMenuListId);
-    } // loop
-
-
-    for (i = 0; i < textTracks.length; i++) {
-      if (textTracks[i].kind === 'captions' || textTracks[i].kind === 'subtitle' || textTracks[i].kind === 'subtitles') {
-        item = document.createElement('li');
-
-        if (mediaPlayer.isTextTrackEnabled(i) === true) {
-          item.classList.add('subtitles-menu-item-actif');
-          activated = true;
+        if (tindex === k) {
+          litem.classList.remove('subtitles-menu-item');
+          litem.classList.add('subtitles-menu-item-actif');
+          this.logger.log('Setting item @  ', i);
         } else {
-          item.classList.add('subtitles-menu-item');
+          litem.classList.remove('subtitles-menu-item-actif');
+          litem.classList.add('subtitles-menu-item');
+          this.logger.log('Unsetting item @  ', i);
         }
-
-        item.setAttribute('index', i);
-        item.innerHTML = mediaPlayer.getTextTrackLabel(i);
-        subsList.appendChild(item);
-        item.addEventListener('click', function (ev) {
-          activate(this, true);
-        });
-        logger.debug('Setting Subs List @ ', i, ' item is ', item);
       }
-    } // off item
 
-
-    item = document.createElement('li');
-
-    if (activated === false) {
-      item.classList.add('subtitles-menu-item-actif');
-    } else {
-      item.classList.add('subtitles-menu-item');
-    }
-
-    item.setAttribute('index', -1);
-    item.innerHTML = 'off';
-    subsList.appendChild(item);
-    item.addEventListener('click', function (ev) {
-      activate(this);
-    });
-    logger.log('Setting Subs List @ ', -1, ' item is ', item);
-    logger.log(' Subs Menu  created !! ', subsMenuDiv);
-    return SubsExist;
-  }
-
-  ;
-  /**
-   * Setting Auds menu and cbx
-   */
-
-  function SetupAuds(playerMedia) {
-    var audsBtn = null;
-    var i = 0;
-    var item = null;
-    var audioTracks = null;
-    mediaPlayer = playerMedia;
-    audioTracks = mediaPlayer.getAudioLanguages();
-    audsExist = false;
-    logger.info(' Trying to setup menu Auds , text tracks length : ', audioTracks); // check if exist
-
-    if (!audioTracks || audioTracks.length <= 1) {
-      audsExist = false;
-      logger.log(' Audio Menu not created !');
-      return false;
-    } // Setting inner of btn div
-
-
-    audsBtn = document.getElementById(audsBtnId);
-    logger.info('Setting the btn ', audsBtn, ' from id ', audsBtnId); // video array
-
-    audsList = document.getElementById(audsMenuListId); // clear old
-
-    if (audsList !== null) {
-      while (audsList.firstChild) {
-        audsList.removeChild(audsList.firstChild);
+      if (isItSubs === true) {
+        this.HideMenuSubs();
+      } else {
+        this.HideMenusAuds();
       }
-    } else {
-      audsMenuDiv = document.createElement('div');
-      audsMenuDiv.classList.add('settingMenuDiv');
-      audsMenuDiv.classList.add('fj-hide');
-      audsMenuDiv.innerHTML = '<div class="fj-list-title"> Audios </div> ' + '<ul class=\"fj-list\"  id=\"' + audsMenuListId + '\" >' + '</ul>	';
-      menusDiv.appendChild(audsMenuDiv); // Add events for audios button
-
-      audsBtn.addEventListener('click', function (ev) {
-        onshowHideMenu(audsMenuDiv, this, ev);
-      }); //  audios list
-
-      audsList = document.getElementById(audsMenuListId);
     }
+    /**
+     * Event CALLBACK ; called on menu Click
+     */
 
-    for (i = 0; i < audioTracks.length; i++) {
+  }, {
+    key: "onshowHideMenu",
+    value: function onshowHideMenu(menuContainer, element, ev) {
+      var rectV = this.video.getBoundingClientRect();
+      var rect = element.getBoundingClientRect();
+
+      if (menuContainer.classList.contains('fj-hide')) {
+        this.logger.warn('setting left @', rect.right - ev.pageX);
+        this.logger.warn('setting left @', rect.left - ev.pageX);
+        this.menuContainer.style.left = ev.pageX - rectV.left - rect.width;
+        this.menuContainer.classList.remove('fj-hide');
+      } else {
+        menuContainer.classList.add('fj-hide');
+      }
+    }
+    /**
+     * Used to Hide menu
+     */
+
+  }, {
+    key: "HideMenus",
+    value: function HideMenus() {
+      this.HideMenuSubs();
+      this.HideMenusAuds();
+    }
+    /**
+     *
+     * @param {*} playerMedia
+     */
+
+  }, {
+    key: "SetupSubs",
+    value: function SetupSubs(playerMedia) {
+      var _this = this;
+
+      this.logger.info('Calling for setup Subs !!!');
+      var subtitlesBtn = null;
+      var i = 0;
+      var activated = false;
+      var item = null;
+      this.mediaPlayer = playerMedia;
+      var textTracks = this.mediaPlayer.getTextTracks();
+      this.SubsExist = false;
+      this.logger.info(' Trying to setup menu subs , text tracks length : ', textTracks); // check if exist
+
+      if (!textTracks || textTracks.length <= 0) {
+        this.SubsExist = false;
+        this.logger.log(' Subs Menu not created !');
+        return false;
+      } // check if this.video contains subs  exist
+
+
+      for (i = 0; i < textTracks.length; i += 1) {
+        this.logger.debug(' @ text track number  ', i, ' and it type is ', textTracks[i].kind);
+
+        if (textTracks[i].kind === 'captions' || textTracks[i].kind === 'subtitle' || textTracks[i].kind === 'subtitles') {
+          this.SubsExist = true;
+          break;
+        }
+      }
+
+      if (this.SubsExist === false) {
+        this.logger.info(' Subs Menu Not created !! ');
+        return this.SubsExist;
+      } // Setting btn
+
+
+      subtitlesBtn = document.getElementById(this.subtitlesBtnId);
+      this.logger.info('Setting the btn ', subtitlesBtn, ' from id ', this.subtitlesBtnId); // this.video array
+
+      this.subsList = document.getElementById(this.subsMenuListId); // clear old
+
+      if (this.subsList !== null) {
+        while (this.subsList.firstChild) {
+          this.subsList.removeChild(this.subsList.firstChild);
+        }
+      } else {
+        this.subsMenuDiv = document.createElement('div');
+        this.subsMenuDiv.classList.add('settingMenuDiv');
+        this.subsMenuDiv.classList.add('fj-hide');
+        this.subsMenuDiv.innerHTML = "".concat('<div class="fj-list-title"> Soutitres </div> ' + '<ul class="fj-list"  id="').concat(this.subsMenuListId, "\" >") + '</ul>';
+        this.menusDiv.appendChild(this.subsMenuDiv); // Add events for subtitles button
+
+        subtitlesBtn.addEventListener('click', function (ev) {
+          _this.onshowHideMenu(_this.subsMenuDiv, _this, ev);
+        }); //  subs list
+
+        this.subsList = document.getElementById(this.subsMenuListId);
+      } // loop
+
+
+      for (i = 0; i < textTracks.length; i += 1) {
+        if (textTracks[i].kind === 'captions' || textTracks[i].kind === 'subtitle' || textTracks[i].kind === 'subtitles') {
+          item = document.createElement('li');
+
+          if (this.mediaPlayer.isTextTrackEnabled(i) === true) {
+            item.classList.add('subtitles-menu-item-actif');
+            activated = true;
+          } else {
+            item.classList.add('subtitles-menu-item');
+          }
+
+          item.setAttribute('index', i);
+          item.innerHTML = this.mediaPlayer.getTextTrackLabel(i);
+          this.subsList.appendChild(item);
+          item.addEventListener('click', function () {
+            _this.activate(_this, true);
+          });
+          this.logger.debug('Setting Subs List @ ', i, ' item is ', item);
+        }
+      } // off item
+
+
       item = document.createElement('li');
 
-      if (mediaPlayer.isAudioLangEnabled(i) === true) {
+      if (activated === false) {
         item.classList.add('subtitles-menu-item-actif');
       } else {
         item.classList.add('subtitles-menu-item');
       }
 
-      item.setAttribute('index', i);
-      item.innerHTML = mediaPlayer.getAudioLangLabel(i);
-      audsList.appendChild(item);
-      item.addEventListener('click', function (ev) {
-        activate(this, false);
+      item.setAttribute('index', -1);
+      item.innerHTML = 'off';
+      this.subsList.appendChild(item);
+      item.addEventListener('click', function () {
+        _this.activate(_this);
       });
+      this.logger.log('Setting Subs List @ ', -1, ' item is ', item);
+      this.logger.log(' Subs Menu  created !! ', this.subsMenuDiv);
+      return this.SubsExist;
     }
+    /**
+     * Setting Auds menu and cbx
+     */
 
-    logger.debug(' Audio Menu created !', audioTracks.length, '! ', audsList);
-    return audsExist;
-  }
+  }, {
+    key: "SetupAuds",
+    value: function SetupAuds(playerMedia) {
+      var _this2 = this;
 
-  ; // ************************************************************************************
-  // PUBLIC API
-  // ************************************************************************************
+      this.logger.info('Calling for setup Auds !!!');
+      var audsBtn = null;
+      var i = 0;
+      var item = null;
+      this.mediaPlayer = playerMedia;
+      var audioTracks = this.mediaPlayer.getAudioLanguages();
+      this.audsExist = false;
+      this.logger.info(' Trying to setup menu Auds , text tracks length : ', audioTracks); // check if exist
 
-  return {
-    SetupSubs: SetupSubs,
-    SetupAuds: SetupAuds,
-    HideMenus: HideMenus,
-    constructor: Menus
-  };
-}
+      if (!audioTracks || audioTracks.length <= 1) {
+        this.audsExist = false;
+        this.logger.log(' Audio Menu not created !');
+        return false;
+      } // Setting inner of btn div
 
-;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Menus);
+
+      audsBtn = document.getElementById(this.audsBtnId);
+      this.logger.info('Setting the btn ', audsBtn, ' from id ', this.audsBtnId); // this.video array
+
+      this.audsList = document.getElementById(this.audsMenuListId); // clear old
+
+      if (this.audsList !== null) {
+        while (this.audsList.firstChild) {
+          this.audsList.removeChild(this.audsList.firstChild);
+        }
+      } else {
+        this.audsMenuDiv = document.createElement('div');
+        this.audsMenuDiv.classList.add('settingMenuDiv');
+        this.audsMenuDiv.classList.add('fj-hide');
+        this.audsMenuDiv.innerHTML = "".concat('<div class="fj-list-title"> Audios </div> ' + '<ul class="fj-list"  id="').concat(this.audsMenuListId, "\" >") + '</ul>';
+        this.menusDiv.appendChild(this.audsMenuDiv); // Add events for audios button
+
+        audsBtn.addEventListener('click', function (ev) {
+          _this2.onshowHideMenu(_this2.audsMenuDiv, _this2, ev);
+        }); //  audios list
+
+        this.audsList = document.getElementById(this.audsMenuListId);
+      }
+
+      for (i = 0; i < audioTracks.length; i += 1) {
+        item = document.createElement('li');
+
+        if (this.mediaPlayer.isAudioLangEnabled(i) === true) {
+          item.classList.add('subtitles-menu-item-actif');
+        } else {
+          item.classList.add('subtitles-menu-item');
+        }
+
+        item.setAttribute('index', i);
+        item.innerHTML = this.mediaPlayer.getAudioLangLabel(i);
+        this.audsList.appendChild(item);
+        item.addEventListener('click', function () {
+          _this2.activate(_this2, false);
+        });
+      }
+
+      this.logger.debug(' Audio Menu created !', audioTracks.length, '! ', this.audsList);
+      return this.audsExist;
+    }
+  }]);
+
+  return Menus;
+}();
+
+module.exports = Menus;
 
 /***/ }),
 
@@ -26097,202 +26317,193 @@ function Menus(mainVideo, subsBtnId, audiosBtnId, MenusContDivId) {
 /*!*******************************!*\
   !*** ./src/js/ui/Overlays.js ***!
   \*******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _utils_Logger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/Logger */ "./src/js/utils/Logger.js");
-/* harmony import */ var _defs_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../defs/constants */ "./src/js/defs/constants.js");
-/* harmony import */ var _utils_Eventing__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/Eventing */ "./src/js/utils/Eventing.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Logger = __webpack_require__(/*! ../utils/Logger */ "./src/js/utils/Logger.js");
 
 __webpack_require__(/*! ../../css/player.less */ "./src/css/player.less");
 
+var Const = __webpack_require__(/*! ../defs/constants */ "./src/js/defs/constants.js");
 
-
+var Eventing = __webpack_require__(/*! ../utils/Eventing */ "./src/js/utils/Eventing.js");
 /**
  * @module Overlay
- * @description The Overlays is that manage overlays of a video :
- *     it manage overlays for information ads , media or ovelay on ads video.
+ * @description The Overlays is that manage this.overlaysof a video :
+ *     it manage this.overlaysfor information ads , media or ovelay on ads video.
  */
 
-function Overlays() {
-  var logger = new _utils_Logger__WEBPACK_IMPORTED_MODULE_0__.default(this),
-      overlays = null,
-      settled = false,
-      OverlayDiv = null,
-      OverlayInnerDiv = null,
-      events = new _utils_Eventing__WEBPACK_IMPORTED_MODULE_2__.default(),
-      OverlayClosingDiv = null;
 
-  function Setup(overs) {
-    var i = 0;
+var Overlays = /*#__PURE__*/function () {
+  function Overlays() {
+    _classCallCheck(this, Overlays);
 
-    if (overs === null || overs === undefined) {
-      settled = false;
-      return;
-    }
-
-    overlays = overs;
-    settled = true;
-
-    for (i = 0; i < overlays.length; i++) {
-      overlays[i].started = false;
-      overlays[i].clicked = 0;
-    }
-
-    logger.info('Setup is settled ', settled, ' cheking overlays .. ', overlays);
+    this.logger = new Logger(this);
+    this.overlays = null;
+    this.settled = false;
+    this.OverlayDiv = null;
+    this.OverlayInnerDiv = null;
+    this.events = new Eventing();
+    this.OverlayClosingDiv = null;
   }
 
-  ;
+  _createClass(Overlays, [{
+    key: "Setup",
+    value: function Setup(overs) {
+      var i = 0;
 
-  function clicked(index) {
-    var item = overlays[index];
-    overlays[index].clicked++;
-    events.fireEvent(_defs_constants__WEBPACK_IMPORTED_MODULE_1__.OverlayEvents.OVERLAY_USER_CLICKED);
-    window.open(item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_URL], '_blank');
-  }
+      if (overs === null || overs === undefined) {
+        this.settled = false;
+        return;
+      }
 
-  ;
+      this.overlays = overs;
+      this.settled = true;
 
-  function StopOverlay(index) {
-    var el = OverlayDiv;
-    var elClone = null; // hide the div
+      for (i = 0; i < this.overlays.length; i += 1) {
+        this.overlays[i].started = false;
+        this.overlays[i].clicked = 0;
+      }
 
-    logger.warn(index, 'you overlay  is now stopped ', overlays[index].handler); // remove the click event
-
-    el = OverlayDiv;
-    elClone = el.cloneNode(true);
-    el.parentNode.replaceChild(elClone, el);
-    OverlayDiv = elClone; // hide the overlay , empty the div
-
-    while (OverlayDiv.hasChildNodes()) {
-      OverlayDiv.removeChild(OverlayDiv.firstChild);
+      this.logger.info('Setup is this.settled', this.settled, ' cheking this.overlays.. ', this.overlays);
     }
-
-    OverlayDiv.innerHTML = '';
-    OverlayDiv.classList.add('fj-hide');
-    events.fireEvent(_defs_constants__WEBPACK_IMPORTED_MODULE_1__.OverlayEvents.OVERLAY_ENDED);
-  }
-
-  ;
-  /**
-   * Used to show an Overlay
-   */
-
-  function StartOverlay(index) {
-    var url = null;
-    var item = overlays[index];
-    overlays[index].started = true;
-    overlays[index].endTimer = setTimeout(function () {
-      StopOverlay(index);
-    }, item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_DURATION] * 1000); // empty the div && show the div
-
-    while (OverlayDiv.hasChildNodes()) {
-      OverlayDiv.removeChild(OverlayDiv.firstChild);
+  }, {
+    key: "clicked",
+    value: function clicked(index) {
+      var item = this.overlays[index];
+      this.overlays[index].clicked += 1;
+      this.events.fireEvent(Const.OverlayEvents.OVERLAY_USER_CLICKED);
+      window.open(item[Const.FJCONFIG_URL], '_blank');
     }
+  }, {
+    key: "StopOverlay",
+    value: function StopOverlay(index) {
+      var el = this.OverlayDiv;
+      var elClone = null; // hide the div
 
-    OverlayInnerDiv = document.createElement('div');
-    OverlayClosingDiv = document.createElement('div');
-    OverlayInnerDiv.innerHTML = '' + '<div class="fj-overlay-description">' + '   <p>' + item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_DATA] + '</p> ' + '</div> ' + '<div class="fj-overlay-link">' + item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_URL] + '</div>';
-    OverlayInnerDiv.style.cursor = 'pointer';
-    OverlayClosingDiv.innerHTML = '' + '<div>' + '    <span class=" fj-overlay-closing  fj-control-embd fj-btn fj-icon-windowClose" aria-hidden="true"></span>' + '    <div class="fj-overlay-annonce">Annonce</div>' + '</div>';
-    OverlayClosingDiv.addEventListener('click', function () {
-      StopOverlay(index);
-    });
-    OverlayDiv.appendChild(OverlayClosingDiv);
-    OverlayDiv.appendChild(OverlayInnerDiv);
-    OverlayDiv.classList.remove('fj-hide');
-    OverlayDiv.classList.add('over-HL');
-    events.fireEvent(_defs_constants__WEBPACK_IMPORTED_MODULE_1__.OverlayEvents.OVERLAY_STARTED); // add click
+      this.logger.warn(index, 'you overlay  is now stopped ', this.overlays[index].handler); // remove the click event
 
-    url = item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_URL];
-    logger.info('Setting click on overlay going to  ', url);
-    OverlayInnerDiv.addEventListener('click', function () {
-      clicked(index);
-    });
-    logger.log(index, 'you overlay just started and will end in ' + item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_DURATION] + ' sec', overlays[index].handler);
-  }
+      el = this.OverlayDiv;
+      elClone = el.cloneNode(true);
+      el.parentNode.replaceChild(elClone, el);
+      this.OverlayDiv = elClone; // hide the overlay , empty the div
 
-  ;
-  /**
-   * Function to be called from event 'timeupdate' from video
-   * called to check if overlays has to Start
-   */
+      while (this.OverlayDiv.hasChildNodes()) {
+        this.OverlayDiv.removeChild(this.OverlayDiv.firstChild);
+      }
 
-  function CheckOverlays(secondes) {
-    var i = 0;
-    var item = null;
-    var show = 0;
-
-    if (settled !== true) {
-      return;
+      this.OverlayDiv.innerHTML = '';
+      this.OverlayDiv.classList.add('fj-hide');
+      this.events.fireEvent(Const.OverlayEvents.OVERLAY_ENDED);
     }
+    /**
+     * Used to show an Overlay
+     */
 
-    for (i = 0; i < overlays.length; i++) {
-      item = overlays[i];
-      show = parseInt(item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SHOW_AT], 10);
+  }, {
+    key: "StartOverlay",
+    value: function StartOverlay(index) {
+      var _this = this;
 
-      if (secondes === show) {
-        logger.info(i, ' starting overlay .. ');
+      var url = null;
+      var item = this.overlays[index];
+      this.overlays[index].started = true;
+      this.overlays[index].endTimer = setTimeout(function () {
+        _this.StopOverlay(index);
+      }, item[Const.FJCONFIG_DURATION] * 1000); // empty the div && show the div
 
-        if (overlays[i].started === false) {
-          logger.info(i, ' starting a new  overlay .. ');
-          overlays[i].started = true;
-          StartOverlay(i);
-        } else {
-          logger.info(i, ' already started ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_URL], ' @@ ', item[_defs_constants__WEBPACK_IMPORTED_MODULE_1__.FJCONFIG_SHOW_AT]);
+      while (this.OverlayDiv.hasChildNodes()) {
+        this.OverlayDiv.removeChild(this.OverlayDiv.firstChild);
+      }
+
+      this.OverlayInnerDiv = document.createElement('div');
+      this.OverlayClosingDiv = document.createElement('div');
+      this.OverlayInnerDiv.innerHTML = "".concat('' + '<div class="fj-overlay-description">' + '   <p>').concat(item[Const.FJCONFIG_DATA], "</p> ") + '</div> ' + "<div class=\"fj-overlay-link\">".concat(item[Const.FJCONFIG_URL], "</div>");
+      this.OverlayInnerDiv.style.cursor = 'pointer';
+      this.OverlayClosingDiv.innerHTML = '' + '<div>' + '    <span class=" fj-overlay-closing  fj-control-embd fj-btn fj-icon-windowClose" aria-hidden="true"></span>' + '    <div class="fj-overlay-annonce">Annonce</div>' + '</div>';
+      this.OverlayClosingDiv.addEventListener('click', function () {
+        _this.StopOverlay(index);
+      });
+      this.OverlayDiv.appendChild(this.OverlayClosingDiv);
+      this.OverlayDiv.appendChild(this.OverlayInnerDiv);
+      this.OverlayDiv.classList.remove('fj-hide');
+      this.OverlayDiv.classList.add('over-HL');
+      this.events.fireEvent(Const.OverlayEvents.OVERLAY_STARTED); // add click
+
+      url = item[Const.FJCONFIG_URL];
+      this.logger.info('Setting click on overlay going to  ', url);
+      this.OverlayInnerDiv.addEventListener('click', function () {
+        _this.clicked(index);
+      });
+      this.logger.log(index, "you overlay just started and will end in ".concat(item[Const.FJCONFIG_DURATION], " sec"), this.overlays[index].handler);
+    }
+    /**
+     * Function to be called from event 'timeupdate' from video
+     * called to check if this.overlayshas to Start
+     */
+
+  }, {
+    key: "CheckOverlays",
+    value: function CheckOverlays(secondes) {
+      var i = 0;
+      var item = null;
+      var show = 0;
+
+      if (this.settled !== true) {
+        return;
+      }
+
+      for (i = 0; i < this.overlays.length; i += 1) {
+        item = this.overlays[i];
+        show = parseInt(item[Const.FJCONFIG_SHOW_AT], 10);
+
+        if (secondes === show) {
+          this.logger.info(i, ' starting overlay .. ');
+
+          if (this.overlays[i].started === false) {
+            this.logger.info(i, ' starting a new  overlay .. ');
+            this.overlays[i].started = true;
+            this.StartOverlay(i);
+          } else {
+            this.logger.info(i, ' already started ', item[Const.FJCONFIG_URL], ' @@ ', item[Const.FJCONFIG_SHOW_AT]);
+          }
         }
       }
     }
-  }
+  }, {
+    key: "initialize",
+    value: function initialize(overdiv) {
+      this.OverlayDiv = overdiv;
+    }
+    /**
+     *
+     */
 
-  ;
+  }, {
+    key: "on",
+    value: function on(name, handler) {
+      return this.events.on(name, handler);
+    }
+    /**
+     *
+     */
 
-  function initialize(overdiv) {
-    OverlayDiv = overdiv;
-  }
+  }, {
+    key: "off",
+    value: function off(name, handler) {
+      return this.events.off(name, handler);
+    }
+  }]);
 
-  ;
-  /**
-   *
-   */
+  return Overlays;
+}();
 
-  function on(name, handler) {
-    return events.on(name, handler);
-  }
-
-  ;
-  /**
-   *
-   */
-
-  function off(name, handler) {
-    return events.off(name, handler);
-  }
-
-  ; // ************************************************************************************
-  // PUBLIC API
-  // ************************************************************************************
-
-  return {
-    StartOverlay: StartOverlay,
-    StopOverlay: StopOverlay,
-    clicked: clicked,
-    initialize: initialize,
-    Setup: Setup,
-    on: on,
-    off: off,
-    CheckOverlays: CheckOverlays,
-    constructor: Overlays
-  };
-}
-
-;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Overlays);
+module.exports = Overlays;
 
 /***/ }),
 
@@ -26300,23 +26511,23 @@ function Overlays() {
 /*!*******************************!*\
   !*** ./src/js/ui/PlayerUi.js ***!
   \*******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _utils_Logger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/Logger */ "./src/js/utils/Logger.js");
-/* harmony import */ var _ui_Thumbs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../ui//Thumbs */ "./src/js/ui/Thumbs.js");
-/* harmony import */ var _ui_Menus__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ui/Menus */ "./src/js/ui/Menus.js");
-/* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/Utils */ "./src/js/utils/Utils.js");
-/* harmony import */ var _ui_fjplayer_tmpl__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../ui/fjplayer-tmpl */ "./src/js/ui/fjplayer-tmpl.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var Logger = __webpack_require__(/*! ../utils/Logger */ "./src/js/utils/Logger.js");
 
+var Thumbs = __webpack_require__(/*! ./Thumbs */ "./src/js/ui/Thumbs.js");
 
+var Menus = __webpack_require__(/*! ./Menus */ "./src/js/ui/Menus.js");
+
+var Utils = __webpack_require__(/*! ../utils/Utils */ "./src/js/utils/Utils.js");
+
+var PlayerTemplate = __webpack_require__(/*! ./fjplayer-tmpl */ "./src/js/ui/fjplayer-tmpl.js");
 
 __webpack_require__(/*! ../../css/player.less */ "./src/css/player.less"); // require('../css/fjfa.css');
 
@@ -26327,697 +26538,754 @@ __webpack_require__(/*! ../../css/player.less */ "./src/css/player.less"); // re
  */
 
 
-function PlayerUi(videoContId, VWidth, WHeight) {
-  var logger = new _utils_Logger__WEBPACK_IMPORTED_MODULE_0__.default(this),
-      mediaDuration = 0,
-      holdWidth = 0,
-      fjMainPlayer = null,
-      videoContainerId = videoContId,
-      fullScreenOnStart = false,
-      vwidth = VWidth,
-      playerMenus = null,
-      timeout = null,
-      initialized = false,
-      HideControlsTimeout = 1500,
-      id = Date.now().toString().substr(6),
-      timerId = 'trd' + id,
-      durationId = 'drd' + id,
-      titleId = 'tld' + id,
-      errorDivId = 'errd' + id,
-      spinnerId = 'spin' + id,
-      BigPlayBtnId = 'bp' + id,
-      videoCaptionId = 'vcp' + id,
-      videoInfoId = 'vif' + id,
-      videoFigureId = 'vfg' + id,
-      videoId = 'voi' + id,
-      videoControlsId = 'vct' + id,
-      playpauseBtnId = 'ppb' + id,
-      playpreviousBtnId = 'pprb' + id,
-      playforwardBtnId = 'ppfb' + id,
-      muteBtnId = 'mbt' + id,
-      volumeBarId = 'vbr' + id,
-      volumeDivId = 'vvd' + id,
-      subtitlesBtnId = 'subd' + id,
-      audiosBtnId = 'audb' + id,
-      progressBarId = 'pgb' + id,
-      fullScreenBtnId = 'fsb' + id,
-      thumbsDivId = 'tbd' + id,
-      thumbsImgId = 'tbi' + id,
-      thumbstimerId = 'tbt' + id,
-      adsContainerDivId = 'adscd' + id,
-      overlaysContainerDivId = 'ovscd' + id,
-      menuContainerDivId = 'mncd' + id,
-      descriptionId = 'desc' + id,
-      backId = 'backId' + id,
-      shareId = 'shareId' + id,
-      downloadId = 'downloadId' + id,
-      videoContainer,
-      video = null,
-      videoController,
-      spinner = null,
-      videoControllerFigure,
-      playpauseBtn,
-      playpreviousBtn = null,
-      playforwardBtn = null,
-      muteBtn,
-      volumeBar,
-      progressBar,
-      fullScreenBtn,
-      timer,
-      durationDisplay,
-      videoFigure,
-      BigPlayBtn,
-      volumebar,
-      ThumbsMgr = null,
-      videoControls,
-      videoInfo,
-      fullScreenEnabled = true;
+var PlayerUi = /*#__PURE__*/function () {
+  function PlayerUi(videoContId, VWidth, WHeight) {
+    _classCallCheck(this, PlayerUi);
 
-  function create() {
-    var data = {
-      'videoFigureId': videoFigureId,
-      'fullScreenOnStart': fullScreenOnStart,
-      'videoId': videoId,
-      'vwidth': vwidth,
-      'videoInfoId': videoInfoId,
-      'backId': backId,
-      'titleId': titleId,
-      'shareId': shareId,
-      'downloadId': downloadId,
-      'errorDivId': errorDivId,
-      'spinnerId': spinnerId,
-      'BigPlayBtnId': BigPlayBtnId,
-      'videoCaptionId': videoCaptionId,
-      'thumbsDivId': thumbsDivId,
-      'thumbsImgId': thumbsImgId,
-      'thumbstimerId': thumbstimerId,
-      'menuContainerDivId': menuContainerDivId,
-      'adsContainerDivId': adsContainerDivId,
-      'videoControlsId': videoControlsId,
-      'progressBarId': progressBarId,
-      'playpreviousBtnId': playpreviousBtnId,
-      'playpauseBtnId': playpauseBtnId,
-      'playforwardBtnId': playforwardBtnId,
-      'muteBtnId': muteBtnId,
-      'volumeDivId': volumeDivId,
-      'volumeBarId': volumeBarId,
-      'descriptionId': descriptionId,
-      'fullScreenBtnId': fullScreenBtnId,
-      'subtitlesBtnId': subtitlesBtnId,
-      'audiosBtnId': audiosBtnId,
-      'timerId': timerId,
-      'durationId': durationId,
-      'overlaysContainerDivId': overlaysContainerDivId
-    };
-    logger.info(' container if of the player ', videoContainerId);
-    videoContainer = document.getElementById(videoContainerId);
-
-    if (!videoContainer) {
-      throw new Error('The video container element still null');
-    }
-
-    videoContainer.classList.add('fjPlayer');
-    videoContainer.innerHTML = new _ui_fjplayer_tmpl__WEBPACK_IMPORTED_MODULE_4__.default().GetHtml(data);
-    video = null;
-    videoContainer = null;
-    videoController = document.getElementById(videoControlsId);
-    videoControllerFigure = document.getElementById(videoFigureId);
-    spinner = document.getElementById(spinnerId);
-    video = document.getElementById(videoId);
-
-    if (!video) {
-      throw new Error('The video element still null');
-    }
-
-    playpauseBtn = document.getElementById(playpauseBtnId);
-    playpreviousBtn = document.getElementById(playpreviousBtnId);
-    playforwardBtn = document.getElementById(playforwardBtnId);
-    muteBtn = document.getElementById(muteBtnId);
-    volumeBar = document.getElementById(volumeBarId);
-    progressBar = document.getElementById(progressBarId);
-    fullScreenBtn = document.getElementById(fullScreenBtnId);
-    timer = document.getElementById(timerId);
-    durationDisplay = document.getElementById(durationId);
-    videoFigure = document.getElementById(videoFigureId);
-    BigPlayBtn = document.getElementById(BigPlayBtnId);
-    videoControls = document.getElementById(videoControlsId);
-    videoInfo = document.getElementById(videoInfoId); // Hide the default controls
-
-    video.controls = false; // Display the user defined video controls
-
-    videoFigure.setAttribute('controls-hidden', true);
-    videoControls.classList.add('fj-hide');
-    videoInfo.classList.remove('fj-hide'); // Create Thumbs Object
-
-    ThumbsMgr = new _ui_Thumbs__WEBPACK_IMPORTED_MODULE_1__.default(document.getElementById(thumbstimerId), document.getElementById(thumbsImgId), document.getElementById(thumbsDivId), progressBar);
-
-    if (fullScreenOnStart === 'true') {
-      videoFigure.setAttribute('data-fullscreen', 'true');
-    } // If the browser doesn't support the Fulscreen API then hide the fullscreen button
-
-
-    if (!fullScreenEnabled) {
-      fullScreenBtn.style.display = 'none';
-    }
-  } // ************************************************************************************
-  // PLAYBACK
-  // ************************************************************************************
-
-
-  function onplaypauseClick() {
-    if (fjMainPlayer.isPaused() || fjMainPlayer.isEnded()) {
-      fjMainPlayer.play();
-    } else {
-      fjMainPlayer.pause();
-    }
+    this.logger = new Logger(this);
+    this.mediaDuration = 0;
+    this.holdWidth = 0;
+    this.fjMainPlayer = null;
+    this.videoContainerId = videoContId;
+    this.fullScreenOnStart = false;
+    this.vwidth = VWidth;
+    this.vheight = WHeight;
+    this.expandScreen = false;
+    this.playerMenus = null;
+    this.timeout = null;
+    this.initialized = false;
+    this.HideControlsTimeout = 1500;
+    this.id = this.videoContainerId;
+    this.timerId = "trd".concat(this.id);
+    this.durationId = "drd".concat(this.id);
+    this.titleId = "tld".concat(this.id);
+    this.errorDivId = "errd".concat(this.id);
+    this.spinnerId = "spin".concat(this.id);
+    this.BigPlayBtnId = "bp".concat(this.id);
+    this.videoCaptionId = "vcp".concat(this.id);
+    this.videoInfoId = "vif".concat(this.id);
+    this.videoFigureId = "vfg".concat(this.id);
+    this.videoId = "voi".concat(this.id);
+    this.videoControlsId = "vct".concat(this.id);
+    this.playpauseBtnId = "ppb".concat(this.id);
+    this.playpreviousBtnId = "pprb".concat(this.id);
+    this.playforwardBtnId = "ppfb".concat(this.id);
+    this.muteBtnId = "mbt".concat(this.id);
+    this.volumeBarId = "vbr".concat(this.id);
+    this.volumeDivId = "vvd".concat(this.id);
+    this.subtitlesBtnId = "subd".concat(this.id);
+    this.audiosBtnId = "audb".concat(this.id);
+    this.progressBarId = "pgb".concat(this.id);
+    this.fullScreenBtnId = "fsb".concat(this.id);
+    this.thumbsDivId = "tbd".concat(this.id);
+    this.thumbsImgId = "tbi".concat(this.id);
+    this.thumbstimerId = "tbt".concat(this.id);
+    this.adsContainerDivId = "adscd".concat(this.id);
+    this.overlaysContainerDivId = "ovscd".concat(this.id);
+    this.menuContainerDivId = "mncd".concat(this.id);
+    this.descriptionId = "desc".concat(this.id);
+    this.backId = "backId".concat(this.id);
+    this.shareId = "shareId".concat(this.id);
+    this.downloadId = "downloadId".concat(this.id);
+    this.videoContainer = null;
+    this.video = null;
+    this.videoController = null;
+    this.spinner = null;
+    this.videoControllerFigure = null;
+    this.playpauseBtn = null;
+    this.playpreviousBtn = null;
+    this.playforwardBtn = null;
+    this.muteBtn = null;
+    this.volumeBar = null;
+    this.progressBar = null;
+    this.fullScreenBtn = null;
+    this.timer = null;
+    this.durationDisplay = null;
+    this.videoFigurev = null;
+    this.BigPlayBtn = null;
+    this.volumebar = null;
+    this.ThumbsMgr = null;
+    this.videoControls = null;
+    this.videoInfo = null;
+    this.fullScreenEnabled = true;
   }
 
-  function onperviousClick() {
-    fjMainPlayer.playPrev();
-  }
+  _createClass(PlayerUi, [{
+    key: "create",
+    value: function create() {
+      var data = {
+        videoFigureId: this.videoFigureId,
+        fullScreenOnStart: this.fullScreenOnStart,
+        videoId: this.videoId,
+        vwidth: this.vwidth,
+        videoInfoId: this.videoInfoId,
+        backId: this.backId,
+        titleId: this.titleId,
+        shareId: this.shareId,
+        downloadId: this.downloadId,
+        errorDivId: this.errorDivId,
+        spinnerId: this.spinnerId,
+        BigPlayBtnId: this.BigPlayBtnId,
+        videoCaptionId: this.videoCaptionId,
+        thumbsDivId: this.thumbsDivId,
+        thumbsImgId: this.thumbsImgId,
+        thumbstimerId: this.thumbstimerId,
+        menuContainerDivId: this.menuContainerDivId,
+        adsContainerDivId: this.adsContainerDivId,
+        videoControlsId: this.videoControlsId,
+        progressBarId: this.progressBarId,
+        playpreviousBtnId: this.playpreviousBtnId,
+        playpauseBtnId: this.playpauseBtnId,
+        playforwardBtnId: this.playforwardBtnId,
+        muteBtnId: this.muteBtnId,
+        volumeDivId: this.volumeDivId,
+        volumeBarId: this.volumeBarId,
+        descriptionId: this.descriptionId,
+        fullScreenBtnId: this.fullScreenBtnId,
+        subtitlesBtnId: this.subtitlesBtnId,
+        audiosBtnId: this.audiosBtnId,
+        timerId: this.timerId,
+        durationId: this.durationId,
+        overlaysContainerDivId: this.overlaysContainerDivId
+      };
+      this.logger.info(' container if of the player ', this.videoContainerId);
+      this.videoContainer = document.getElementById(this.videoContainerId);
 
-  function onforwardClick() {
-    fjMainPlayer.playNext();
-  }
+      if (!this.videoContainer) {
+        throw new Error('The this.video container element still null');
+      }
 
-  function toggleplaypauseBtn() {
-    if (fjMainPlayer.isPlayingAds()) {
-      // hide big play button
-      BigPlayBtn.classList.add('fj-hide'); // hide video controls
+      this.videoContainer.classList.add('fjPlayer');
+      this.videoContainer.innerHTML = new PlayerTemplate().GetHtml(data);
+      this.video = null;
+      this.videoContainer = null;
+      this.videoController = document.getElementById(this.videoControlsId);
+      this.videoControllerFigure = document.getElementById(this.videoFigureId);
+      this.spinner = document.getElementById(this.spinnerId);
+      this.video = document.getElementById(this.videoId);
 
-      videoFigure.setAttribute('controls-hidden', true);
-      videoControls.classList.add('fj-hide');
-      playerMenus.HideMenus();
-    } else {
-      if (fjMainPlayer.isPaused() || fjMainPlayer.isEnded()) {
-        playpauseBtn.classList.add('fj-icon-play');
-        playpauseBtn.classList.remove('fj-icon-pause'); // show big play button
+      if (!this.video) {
+        throw new Error("The this.video element still null using id".concat(this.videoId));
+      }
 
-        BigPlayBtn.classList.remove('fj-hide'); // hide video controls
+      this.playpauseBtn = document.getElementById(this.playpauseBtnId);
+      this.playpreviousBtn = document.getElementById(this.playpreviousBtnId);
+      this.playforwardBtn = document.getElementById(this.playforwardBtnId);
+      this.muteBtn = document.getElementById(this.muteBtnId);
+      this.volumeBar = document.getElementById(this.volumeBarId);
+      this.progressBar = document.getElementById(this.progressBarId);
+      this.fullScreenBtn = document.getElementById(this.fullScreenBtnId);
+      this.timer = document.getElementById(this.timerId);
+      this.durationDisplay = document.getElementById(this.durationId);
+      this.videoFigure = document.getElementById(this.videoFigureId);
+      this.BigPlayBtn = document.getElementById(this.BigPlayBtnId);
+      this.videoControls = document.getElementById(this.videoControlsId);
+      this.videoInfo = document.getElementById(this.videoInfoId); // Hide the default controls
 
-        videoFigure.setAttribute('controls-hidden', true);
-        videoControls.classList.add('fj-hide');
-        playerMenus.HideMenus();
-        logger.log('UI is pausing !');
+      this.video.controls = false; // Display the user defined this.video controls
+
+      this.videoFigure.setAttribute('controls-hidden', true);
+      this.videoControls.classList.add('fj-hide');
+      this.videoInfo.classList.remove('fj-hide'); // Create Thumbs Object
+
+      this.ThumbsMgr = new Thumbs(document.getElementById(this.thumbstimerId), document.getElementById(this.thumbsImgId), document.getElementById(this.thumbsDivId), this.progressBar);
+
+      if (this.fullScreenOnStart === 'true') {
+        this.videoFigure.setAttribute('data-fullscreen', 'true');
+      } // If the browser doesn't support the Fulscreen API then hide the fullscreen button
+
+
+      if (!this.fullScreenEnabled) {
+        this.fullScreenBtn.style.display = 'none';
+      }
+    } // ************************************************************************************
+    // PLAYBACK
+    // ************************************************************************************
+
+  }, {
+    key: "onplaypauseClick",
+    value: function onplaypauseClick() {
+      if (this.fjMainPlayer.isPaused() || this.fjMainPlayer.isEnded()) {
+        this.fjMainPlayer.play();
       } else {
-        playpauseBtn.classList.remove('fj-icon-play');
-        playpauseBtn.classList.add('fj-icon-pause'); // hide big play button
-
-        BigPlayBtn.classList.add('fj-hide'); // show video controls
-
-        videoFigure.setAttribute('controls-hidden', false);
-        videoControls.classList.remove('fj-hide');
-        logger.log('UI is playing !');
+        this.fjMainPlayer.pause();
       }
     }
-  }
-
-  function magicMouseLeave() {
-    if (!fjMainPlayer.isPaused() && !fjMainPlayer.isEnded() && !fjMainPlayer.isPlayingAds()) {
-      videoFigure.setAttribute('controls-hidden', true); // delete fadeIn
-
-      videoControls.classList.remove('m-fadeIn');
-      videoInfo.classList.remove('m-fadeIn'); // add fadeOut
-
-      videoControls.classList.add('m-fadeOut');
-      videoInfo.classList.add('m-fadeOut'); // other
-
-      video.style.cursor = 'none';
-      playerMenus.HideMenus();
-      ThumbsMgr.hideThumbs(ThumbsMgr);
+  }, {
+    key: "onperviousClick",
+    value: function onperviousClick() {
+      this.fjMainPlayer.playPrev();
     }
-  }
-
-  function magicMouseEnter() {
-    if (!fjMainPlayer.isPaused() && !fjMainPlayer.isEnded() && !fjMainPlayer.isPlayingAds()) {
-      videoFigure.setAttribute('controls-hidden', false); // delete fadeOut
-
-      videoControls.classList.remove('m-fadeOut');
-      videoInfo.classList.remove('m-fadeOut'); // add fadein
-
-      videoControls.classList.add('m-fadeIn');
-      videoInfo.classList.add('m-fadeIn'); // other
-
-      video.style.cursor = 'auto';
+  }, {
+    key: "onforwardClick",
+    value: function onforwardClick() {
+      this.fjMainPlayer.playNext();
     }
-  }
+  }, {
+    key: "toggleplaypauseBtn",
+    value: function toggleplaypauseBtn() {
+      if (this.fjMainPlayer.isPlayingAds()) {
+        // hide big play button
+        this.BigPlayBtn.classList.add('fj-hide'); // hide this.video controls
 
-  function magicMouseMove() {
-    if (!fjMainPlayer.isPaused() && !fjMainPlayer.isEnded() && !fjMainPlayer.isPlayingAds()) {
-      if (video.style.cursor === 'none') {
-        magicMouseEnter();
+        this.videoFigure.setAttribute('controls-hidden', true);
+        this.videoControls.classList.add('fj-hide');
+        this.playerMenus.HideMenus();
+      } else if (this.fjMainPlayer.isPaused() || this.fjMainPlayer.isEnded()) {
+        this.playpauseBtn.classList.add('fj-icon-play');
+        this.playpauseBtn.classList.remove('fj-icon-pause'); // show big play button
+
+        this.BigPlayBtn.classList.remove('fj-hide'); // hide this.video controls
+
+        this.videoFigure.setAttribute('controls-hidden', true);
+        this.videoControls.classList.add('fj-hide');
+        this.playerMenus.HideMenus();
+        this.logger.log('UI is pausing !');
       } else {
-        if (timeout) {
-          clearTimeout(timeout);
+        this.playpauseBtn.classList.remove('fj-icon-play');
+        this.playpauseBtn.classList.add('fj-icon-pause'); // hide big play button
+
+        this.BigPlayBtn.classList.add('fj-hide'); // show this.video controls
+
+        this.videoFigure.setAttribute('controls-hidden', false);
+        this.videoControls.classList.remove('fj-hide');
+        this.logger.log('UI is playing !');
+      }
+    }
+  }, {
+    key: "magicMouseLeave",
+    value: function magicMouseLeave() {
+      if (!this.fjMainPlayer.isPaused() && !this.fjMainPlayer.isEnded() && !this.fjMainPlayer.isPlayingAds()) {
+        this.videoFigure.setAttribute('controls-hidden', true); // delete fadeIn
+
+        this.videoControls.classList.remove('m-fadeIn');
+        this.videoInfo.classList.remove('m-fadeIn'); // add fadeOut
+
+        this.videoControls.classList.add('m-fadeOut');
+        this.videoInfo.classList.add('m-fadeOut'); // other
+
+        this.video.style.cursor = 'none';
+        this.playerMenus.HideMenus();
+        this.ThumbsMgr.hideThumbs(this.ThumbsMgr);
+      }
+    }
+  }, {
+    key: "magicMouseEnter",
+    value: function magicMouseEnter() {
+      if (!this.fjMainPlayer.isPaused() && !this.fjMainPlayer.isEnded() && !this.fjMainPlayer.isPlayingAds()) {
+        this.videoFigure.setAttribute('controls-hidden', false); // delete fadeOut
+
+        this.videoControls.classList.remove('m-fadeOut');
+        this.videoInfo.classList.remove('m-fadeOut'); // add fadein
+
+        this.videoControls.classList.add('m-fadeIn');
+        this.videoInfo.classList.add('m-fadeIn'); // other
+
+        this.video.style.cursor = 'auto';
+      }
+    }
+  }, {
+    key: "magicMouseMove",
+    value: function magicMouseMove() {
+      var _this = this;
+
+      if (!this.fjMainPlayer.isPaused() && !this.fjMainPlayer.isEnded() && !this.fjMainPlayer.isPlayingAds()) {
+        if (this.video.style.cursor === 'none') {
+          this.magicMouseEnter();
+        } else {
+          if (this.timeout) {
+            clearTimeout(this.timeout);
+          }
+
+          this.timeout = setTimeout(function () {
+            _this.magicMouseLeave();
+          }, this.HideControlsTimeout);
         }
-
-        timeout = setTimeout(function () {
-          magicMouseLeave();
-        }, HideControlsTimeout);
       }
     }
-  }
+  }, {
+    key: "SetupSubsAudsManager",
+    value: function SetupSubsAudsManager(mediaplayer) {
+      var done = false;
+      done = this.playerMenus.SetupAuds(mediaplayer);
+      this.logger.warn(' Will setup Audio menu  ', done);
 
-  function SetupSubsAudsManager(mediaplayer) {
-    var done = false;
-    done = playerMenus.SetupAuds(mediaplayer);
-    logger.warn(' Will setup Audio menu  ', done);
+      if (done !== true) {
+        document.getElementById(this.audiosBtnId).classList.add('fj-hide');
+      } else {
+        document.getElementById(this.audiosBtnId).classList.remove('fj-hide');
+      }
 
-    if (done !== true) {
-      document.getElementById(audiosBtnId).classList.add('fj-hide');
-    } else {
-      document.getElementById(audiosBtnId).classList.remove('fj-hide');
+      done = this.playerMenus.SetupSubs(mediaplayer);
+      this.logger.warn(' Will setup Subs menu  ', done);
+
+      if (done !== true) {
+        document.getElementById(this.subtitlesBtnId).classList.add('fj-hide');
+      } else {
+        document.getElementById(this.subtitlesBtnId).classList.remove('fj-hide');
+      }
+    } // ************************************************************************************
+    // VOLUME
+    // ************************************************************************************
+
+  }, {
+    key: "OnvbClick",
+    value: function OnvbClick() {
+      var pos = this.volumeBar.value / 100;
+      this.logger.log(' volume from ', this.video.volume, ' to ', pos);
+
+      if (pos > 0.6) {
+        this.muteBtn.classList.remove('fj-icon-mute');
+        this.muteBtn.classList.remove('fj-icon-volDown');
+        this.muteBtn.classList.add('fj-icon-volUp');
+      } else if (pos > 0) {
+        this.muteBtn.classList.remove('fj-icon-mute');
+        this.muteBtn.classList.remove('fj-icon-volUp');
+        this.muteBtn.classList.add('fj-icon-volDown');
+      } else {
+        this.muteBtn.classList.remove('fj-icon-volDown');
+        this.muteBtn.classList.remove('fj-icon-volUp');
+        this.muteBtn.classList.add('fj-icon-mute');
+      }
+
+      this.video.volume = pos;
+      this.logger.log(' new volume is ', pos);
     }
+  }, {
+    key: "onmuteClick",
+    value: function onmuteClick() {
+      this.video.muted = !this.video.muted;
 
-    done = playerMenus.SetupSubs(mediaplayer);
-    logger.warn(' Will setup Subs menu  ', done);
+      if (this.video.muted) {
+        this.volumeBar.value = 0;
+        this.muteBtn.classList.remove('fj-icon-volDown');
+        this.muteBtn.classList.remove('fj-icon-volUp');
+        this.muteBtn.classList.add('fj-icon-mute');
+      } else if (this.video.volume > 0.6) {
+        this.volumeBar.value = this.video.volume * 100;
+        this.muteBtn.classList.remove('fj-icon-mute');
+        this.muteBtn.classList.remove('fj-icon-volDown');
+        this.muteBtn.classList.add('fj-icon-volUp');
+      } else {
+        this.volumeBar.value = this.video.volume * 100;
+        this.muteBtn.classList.remove('fj-icon-mute');
+        this.muteBtn.classList.remove('fj-icon-volUp');
+        this.muteBtn.classList.add('fj-icon-volDown');
+      }
+    } // ************************************************************************************
+    // SEEKING
+    // ************************************************************************************
 
-    if (done !== true) {
-      document.getElementById(subtitlesBtnId).classList.add('fj-hide');
-    } else {
-      document.getElementById(subtitlesBtnId).classList.remove('fj-hide');
+  }, {
+    key: "onprogressClick",
+    value: function onprogressClick(event) {
+      // var p = this.progressBar.value;
+      this.logger.info(' onprogressClick event ', event);
+      var rect = this.progressBar.getBoundingClientRect();
+      this.logger.info(' onprogressClick mediaDuration ', this.mediaDuration);
+      this.logger.info(' onprogressClick rect ', rect);
+      var p = (event.pageX - rect.left) * (this.mediaDuration / (rect.right - rect.left));
+      this.logger.log(' Seeking from ', Utils.duration(p), '/', Utils.duration(this.mediaDuration), 'to', Utils.duration(p), ' sec');
+      this.fjMainPlayer.seek(p);
+    } // ************************************************************************************
+    // FULLSCREEN
+    // ************************************************************************************
+
+  }, {
+    key: "setFullscreenData",
+    value: function setFullscreenData(state) {
+      this.videoFigure.setAttribute('data-fullscreen', !!state);
     }
-  }
+  }, {
+    key: "handleFullscreen",
+    value: function handleFullscreen() {
+      // If fullscreen mode is active...
+      if (this.constructor.isFullScreen()) {
+        // ...exit fullscreen mode
+        // (Note: this can only be called on document)
+        if (document.exitFullscreen) document.exitFullscreen();else if (document.mozCancelFullScreen) document.mozCancelFullScreen();else if (document.webkitCancelFullScreen) document.webkitCancelFullScreen();else if (document.msExitFullscreen) document.msExitFullscreen();
+        this.setFullscreenData(false);
+        this.fullScreenBtn.classList.remove('fj-icon-compressScreen');
+        this.fullScreenBtn.classList.add('fj-icon-fullScreen');
+      } else {
+        this.fullScreenBtn.classList.add('fj-icon-compressScreen');
+        this.fullScreenBtn.classList.remove('fj-icon-fullScreen'); // ...otherwise enter fullscreen mode
+        // (Note: can be called on document, but here the specific element is used as
+        // it will also ensure that the element's
+        // children, e.g. the custom controls, go fullscreen also)
 
-  ; // ************************************************************************************
-  // VOLUME
-  // ************************************************************************************
-
-  function OnvbClick(e) {
-    var pos = volumeBar.value / 100;
-    logger.log(' volume from ', video.volume, ' to ', pos);
-
-    if (pos > 0.6) {
-      muteBtn.classList.remove('fj-icon-mute');
-      muteBtn.classList.remove('fj-icon-volDown');
-      muteBtn.classList.add('fj-icon-volUp');
-    } else if (pos > 0) {
-      muteBtn.classList.remove('fj-icon-mute');
-      muteBtn.classList.remove('fj-icon-volUp');
-      muteBtn.classList.add('fj-icon-volDown');
-    } else {
-      muteBtn.classList.remove('fj-icon-volDown');
-      muteBtn.classList.remove('fj-icon-volUp');
-      muteBtn.classList.add('fj-icon-mute');
+        if (this.videoFigure.requestFullscreen) this.videoFigure.requestFullscreen();else if (this.videoFigure.mozRequestFullScreen) this.videoFigure.mozRequestFullScreen();else if (this.videoFigure.webkitRequestFullScreen) {
+          // Safari 5.1 only allows proper fullscreen on the this.video element.
+          // This also works fine on other WebKit
+          // Zbrowsers as the following CSS (set in styles.css) hides the default
+          // controls that appear again, and
+          // ensures that our custom controls are visible:
+          // figure[data-fullscreen=true]
+          // this.video::-webkit-media-controls { display:none !important; }
+          // figure[data-fullscreen=true] .controls { z-index:2147483647; }
+          this.video.webkitRequestFullScreen();
+        } else if (this.videoFigure.msRequestFullscreen) this.videoFigure.msRequestFullscreen();
+        this.setFullscreenData(true);
+      }
     }
+  }, {
+    key: "onFullScreenChange",
+    value: function onFullScreenChange(e) {
+      if (e.type === 'fullscreenchange') {
+        this.logger.log(' fullscreenchange >>> Full Scren changed Status ', !!(document.fullScreen || document.fullscreenElement));
+        this.setFullscreenData(!!(document.fullScreen || document.fullscreenElement));
+      }
 
-    video.volume = pos;
-    logger.log(' new volume is ', pos);
-  }
+      if (e.type === 'webkitfullscreenchange') {
+        this.logger.log(' webkitfullscreenchange >>> Full Scren changed Status ', !!document.webkitIsFullScreen);
+        this.setFullscreenData(!!document.webkitIsFullScreen);
+      }
 
-  ;
+      if (e.type === 'mozfullscreenchange') {
+        this.logger.log(' mozfullscreenchange >>> Full Scren changed Status ', !!document.mozFullScreen);
+        this.setFullscreenData(!!document.mozFullScreen);
+      }
 
-  function onmuteClick(e) {
-    video.muted = !video.muted;
+      if (e.type === 'msfullscreenchange') {
+        this.logger.log(' msfullscreenchange >>> Full Scren changed Status ', !!document.msFullscreenElement);
+        this.setFullscreenData(!!document.msFullscreenElement);
+      }
+    } // ************************************************************************************
+    // PUBLIC API
+    // ************************************************************************************
 
-    if (video.muted) {
-      volumeBar.value = 0;
-      muteBtn.classList.remove('fj-icon-volDown');
-      muteBtn.classList.remove('fj-icon-volUp');
-      muteBtn.classList.add('fj-icon-mute');
-    } else if (video.volume > 0.6) {
-      volumeBar.value = video.volume * 100;
-      muteBtn.classList.remove('fj-icon-mute');
-      muteBtn.classList.remove('fj-icon-volDown');
-      muteBtn.classList.add('fj-icon-volUp');
-    } else {
-      volumeBar.value = video.volume * 100;
-      muteBtn.classList.remove('fj-icon-mute');
-      muteBtn.classList.remove('fj-icon-volUp');
-      muteBtn.classList.add('fj-icon-volDown');
+  }, {
+    key: "goForError",
+    value: function goForError() {
+      // used to prepare to show error
+      this.magicMouseLeave();
+      this.BigPlayBtn.classList.add('fj-hide');
     }
-  } // ************************************************************************************
-  // SEEKING
-  // ************************************************************************************
+  }, {
+    key: "setVolume",
+    value: function setVolume(value) {
+      if (typeof value === 'number') {
+        this.volumebar.value = value;
+      }
 
+      var pos = this.volumeBar.value / 100;
+      this.logger.log(' volume from ', this.video.volume, ' to ', pos);
 
-  function onprogressClick(event) {
-    // var p = progressBar.value;
-    var rect = progressBar.getBoundingClientRect();
-    var p = (event.pageX - rect.left) * (mediaDuration / (rect.right - rect.left));
-    logger.log(' Seeking from ', _utils_Utils__WEBPACK_IMPORTED_MODULE_3__.duration(p), '/', _utils_Utils__WEBPACK_IMPORTED_MODULE_3__.duration(mediaDuration), 'to', _utils_Utils__WEBPACK_IMPORTED_MODULE_3__.duration(p), ' sec');
-    fjMainPlayer.seek(p);
-  } // ************************************************************************************
-  // FULLSCREEN
-  // ************************************************************************************
+      if (pos > 0.6) {
+        this.muteBtn.classList.remove('fj-icon-mute');
+        this.muteBtn.classList.remove('fj-icon-volDown');
+        this.muteBtn.classList.add('fj-icon-volUp');
+      } else if (pos > 0) {
+        this.muteBtn.classList.remove('fj-icon-mute');
+        this.muteBtn.classList.remove('fj-icon-volUp');
+        this.muteBtn.classList.add('fj-icon-volDown');
+      } else {
+        this.muteBtn.classList.remove('fj-icon-volDown');
+        this.muteBtn.classList.remove('fj-icon-volUp');
+        this.muteBtn.classList.add('fj-icon-mute');
+      }
 
-
-  function isFullScreen() {
-    return document.fullscreenElement || document.msFullscreenElement || document.mozFullScreen || document.webkitIsFullScreen;
-  }
-
-  function setFullscreenData(state) {
-    videoFigure.setAttribute('data-fullscreen', !!state);
-  }
-
-  function handleFullscreen() {
-    // If fullscreen mode is active...
-    if (isFullScreen()) {
-      // ...exit fullscreen mode
-      // (Note: this can only be called on document)
-      if (document.exitFullscreen) document.exitFullscreen();else if (document.mozCancelFullScreen) document.mozCancelFullScreen();else if (document.webkitCancelFullScreen) document.webkitCancelFullScreen();else if (document.msExitFullscreen) document.msExitFullscreen();
-      setFullscreenData(false);
-      fullScreenBtn.classList.remove('fj-icon-compressScreen');
-      fullScreenBtn.classList.add('fj-icon-fullScreen');
-    } else {
-      fullScreenBtn.classList.add('fj-icon-compressScreen');
-      fullScreenBtn.classList.remove('fj-icon-fullScreen'); // ...otherwise enter fullscreen mode
-      // (Note: can be called on document, but here the specific element is used as
-      // it will also ensure that the element's children, e.g. the custom controls, go fullscreen also)
-
-      if (videoFigure.requestFullscreen) videoFigure.requestFullscreen();else if (videoFigure.mozRequestFullScreen) videoFigure.mozRequestFullScreen();else if (videoFigure.webkitRequestFullScreen) {
-        // Safari 5.1 only allows proper fullscreen on the video element.
-        // This also works fine on other WebKit
-        // Zbrowsers as the following CSS (set in styles.css) hides the default
-        // controls that appear again, and
-        // ensures that our custom controls are visible:
-        // figure[data-fullscreen=true] video::-webkit-media-controls { display:none !important; }
-        // figure[data-fullscreen=true] .controls { z-index:2147483647; }
-        video.webkitRequestFullScreen();
-      } else if (videoFigure.msRequestFullscreen) videoFigure.msRequestFullscreen();
-      setFullscreenData(true);
+      this.video.volume = pos;
+      this.logger.log(' new volume is ', pos);
     }
-  }
+  }, {
+    key: "setDuration",
+    value: function setDuration(value) {
+      this.logger.log("Will setDuration to ".concat(value));
 
-  function onFullScreenChange(e) {
-    if (e.type === 'fullscreenchange') {
-      logger.log(' fullscreenchange >>> Full Scren changed Status ', !!(document.fullScreen || document.fullscreenElement));
-      setFullscreenData(!!(document.fullScreen || document.fullscreenElement));
+      if (!Number.isNaN(value)) {
+        this.mediaDuration = value;
+        this.durationDisplay.textContent = Utils.duration(value);
+        this.progressBar.max = value;
+      }
     }
+  }, {
+    key: "UpdateProgress",
+    value: function UpdateProgress(value) {
+      if (!Number.isNaN(value)) {
+        this.timer.textContent = Utils.duration(value);
+        this.progressBar.value = value;
+      }
+    } // set Sharing icon
 
-    if (e.type === 'webkitfullscreenchange') {
-      logger.log(' webkitfullscreenchange >>> Full Scren changed Status ', !!document.webkitIsFullScreen);
-      setFullscreenData(!!document.webkitIsFullScreen);
+  }, {
+    key: "setShareIcon",
+    value: function setShareIcon(shareUrl) {
+      if (shareUrl !== null && shareUrl !== undefined && shareUrl !== '') {
+        this.logger.log("Will show Share icon to ".concat(shareUrl));
+        document.getElementById(this.shareId).style.display = 'block';
+        document.getElementById(this.shareId).addEventListener('click', function () {
+          window.open(shareUrl);
+        });
+      } else {
+        this.logger.log('Will NOT show Share icon');
+        document.getElementById(this.shareId).style.display = 'none';
+      }
+    } // set Downloading icon
+
+  }, {
+    key: "setDownloadIcon",
+    value: function setDownloadIcon(DownUrl) {
+      if (DownUrl !== null && DownUrl !== undefined && DownUrl !== '') {
+        this.logger.log("Will show Download icon to ".concat(DownUrl));
+        document.getElementById(this.downloadId).style.display = 'block';
+        document.getElementById(this.downloadId).addEventListener('click', function () {
+          window.open(DownUrl);
+        });
+      } else {
+        this.logger.log('Will NOT show Download icon');
+        document.getElementById(this.downloadId).style.display = 'none';
+      }
+    } // set back icon
+
+  }, {
+    key: "setBackIcon",
+    value: function setBackIcon(BackUrl) {
+      if (BackUrl !== null && BackUrl !== undefined && BackUrl !== '') {
+        this.logger.log("Will show Back icon to ".concat(BackUrl));
+        document.getElementById(this.backId).style.display = 'block';
+        document.getElementById(this.backId).addEventListener('click', function () {
+          window.location = BackUrl;
+        });
+      } else {
+        this.logger.log('Will NOT show Back icon');
+        document.getElementById(this.backId).style.display = 'none';
+      }
     }
+  }, {
+    key: "setTitle",
+    value: function setTitle(ltitle, ShowUpTitle) {
+      document.getElementById(this.titleId).innerHTML = ltitle;
+      document.getElementById(this.descriptionId).innerHTML = ltitle;
 
-    if (e.type === 'mozfullscreenchange') {
-      logger.log(' mozfullscreenchange >>> Full Scren changed Status ', !!document.mozFullScreen);
-      setFullscreenData(!!document.mozFullScreen);
+      if (ShowUpTitle) {
+        this.logger.log('Will  show title Up');
+        document.getElementById(this.titleId).style.display = 'block';
+      } else {
+        this.logger.log('Will NOT show title Up');
+        document.getElementById(this.titleId).style.display = 'none';
+      }
     }
-
-    if (e.type === 'msfullscreenchange') {
-      logger.log(' msfullscreenchange >>> Full Scren changed Status ', !!document.msFullscreenElement);
-      setFullscreenData(!!document.msFullscreenElement);
+  }, {
+    key: "getVideo",
+    value: function getVideo() {
+      return this.video;
     }
-  } // ************************************************************************************
-  // PUBLIC API
-  // ************************************************************************************
-
-
-  function goForError() {
-    // used to prepare to show error
-    magicMouseLeave();
-    BigPlayBtn.classList.add('fj-hide');
-  }
-
-  function setVolume(value) {
-    var pos;
-
-    if (typeof value === 'number') {
-      volumebar.value = value;
+  }, {
+    key: "getErrorDivId",
+    value: function getErrorDivId() {
+      return this.errorDivId;
     }
-
-    pos = volumeBar.value / 100;
-    logger.log(' volume from ', video.volume, ' to ', pos);
-
-    if (pos > 0.6) {
-      muteBtn.classList.remove('fj-icon-mute');
-      muteBtn.classList.remove('fj-icon-volDown');
-      muteBtn.classList.add('fj-icon-volUp');
-    } else if (pos > 0) {
-      muteBtn.classList.remove('fj-icon-mute');
-      muteBtn.classList.remove('fj-icon-volUp');
-      muteBtn.classList.add('fj-icon-volDown');
-    } else {
-      muteBtn.classList.remove('fj-icon-volDown');
-      muteBtn.classList.remove('fj-icon-volUp');
-      muteBtn.classList.add('fj-icon-mute');
+  }, {
+    key: "getAdsContainerDivId",
+    value: function getAdsContainerDivId() {
+      return this.adsContainerDivId;
     }
-
-    video.volume = pos;
-    logger.log(' new volume is ', pos);
-  }
-
-  ;
-
-  function setDuration(value) {
-    if (!isNaN(value)) {
-      mediaDuration = value;
-      durationDisplay.textContent = _utils_Utils__WEBPACK_IMPORTED_MODULE_3__.duration(value);
-      progressBar.max = value;
+  }, {
+    key: "getOverlaysContainerDivId",
+    value: function getOverlaysContainerDivId() {
+      return this.overlaysContainerDivId;
     }
-  }
+  }, {
+    key: "SetupThumbsManager",
+    value: function SetupThumbsManager(videoDuration, thumbsTrackIndex) {
+      if (thumbsTrackIndex !== null) {
+        return this.ThumbsMgr.Setup(this.getVideo(), videoDuration, thumbsTrackIndex);
+      }
 
-  function UpdateProgress(value) {
-    if (!isNaN(value)) {
-      timer.textContent = _utils_Utils__WEBPACK_IMPORTED_MODULE_3__.duration(value);
-      progressBar.value = value;
+      return this.ThumbsMgr.reset();
     }
-  } // set Sharing icon
+  }, {
+    key: "getVideoFigure",
+    value: function getVideoFigure() {
+      return this.videoControllerFigure;
+    }
+  }, {
+    key: "onResizeWindow",
+    value: function onResizeWindow() {
+      var intViewportWidth = window.innerWidth; // const intViewportHeight = window.innerHeight;
 
+      var newPercentage = "".concat(intViewportWidth / this.holdWidth * 100, "%");
+      var fjplayer = document.getElementById('playercontainer');
+      fjplayer.style.fontSize = newPercentage;
+      this.logger.log(this.holdWidth, ' RESIED !!!!!!!!!!!!! ', intViewportWidth, '/', this.holdWidth, '>>>>>', newPercentage);
+    }
+  }, {
+    key: "onLoadWindow",
+    value: function onLoadWindow() {
+      this.logger.log(this.holdWidth, ' LOADED ##########################');
+      this.holdWidth = window.innerWidth;
+    }
+  }, {
+    key: "initialize",
+    value: function initialize(mainPlayer) {
+      var _this2 = this;
 
-  function setShareIcon(shareUrl) {
-    if (shareUrl !== null && shareUrl !== undefined && shareUrl !== '') {
-      logger.log('Will show Share icon to ' + shareUrl);
-      document.getElementById(shareId).style.display = 'block';
-      document.getElementById(shareId).addEventListener('click', function () {
-        window.open(shareUrl);
+      this.create(this.videoContainerId);
+      this.fjMainPlayer = mainPlayer;
+
+      if (!this.fjMainPlayer) {
+        throw new Error('Please pass an instance of player when instantiating');
+      }
+
+      this.playerMenus = new Menus(this.video, this.subtitlesBtnId, this.audiosBtnId, this.menuContainerDivId); // OverlaysMgr = new Overlays(this.video,
+      //    document.getElementById(this.overlaysContainerDivId));
+
+      this.videoControllerFigure.addEventListener('mouseleave', function () {
+        return _this2.magicMouseLeave();
       });
-    } else {
-      logger.log('Will NOT show Share icon');
-      document.getElementById(shareId).style.display = 'none';
-    }
-  } // set Downloading icon
-
-
-  function setDownloadIcon(DownUrl) {
-    if (DownUrl !== null && DownUrl !== undefined && DownUrl !== '') {
-      logger.log('Will show Download icon to ' + DownUrl);
-      document.getElementById(downloadId).style.display = 'block';
-      document.getElementById(downloadId).addEventListener('click', function () {
-        window.open(DownUrl);
+      this.videoControllerFigure.addEventListener('mouseenter', function () {
+        return _this2.magicMouseEnter();
       });
-    } else {
-      logger.log('Will NOT show Download icon');
-      document.getElementById(downloadId).style.display = 'none';
-    }
-  } // set back icon
-
-
-  function setBackIcon(BackUrl) {
-    if (BackUrl !== null && BackUrl !== undefined && BackUrl !== '') {
-      logger.log('Will show Back icon to ' + BackUrl);
-      document.getElementById(backId).style.display = 'block';
-      document.getElementById(backId).addEventListener('click', function () {
-        window.location = BackUrl;
+      this.videoControllerFigure.addEventListener('mousemove', function () {
+        return _this2.magicMouseMove();
       });
-    } else {
-      logger.log('Will NOT show Back icon');
-      document.getElementById(backId).style.display = 'none';
+      this.BigPlayBtn.addEventListener('click', function () {
+        return _this2.onplaypauseClick();
+      });
+      this.video.addEventListener('click', function () {
+        return _this2.onplaypauseClick();
+      });
+      this.video.addEventListener('dblclick', function () {
+        return _this2.handleFullscreen();
+      });
+      this.volumeBar.addEventListener('click', function () {
+        return _this2.OnvbClick();
+      });
+      this.playpauseBtn.addEventListener('click', function () {
+        return _this2.onplaypauseClick();
+      });
+      this.playpreviousBtn.addEventListener('click', function () {
+        return _this2.onperviousClick();
+      });
+      this.playforwardBtn.addEventListener('click', function () {
+        return _this2.onforwardClick();
+      });
+      this.muteBtn.addEventListener('click', function () {
+        return _this2.onmuteClick();
+      });
+      this.fullScreenBtn.addEventListener('click', function () {
+        return _this2.handleFullscreen();
+      });
+      this.progressBar.addEventListener('click', function (event) {
+        return _this2.onprogressClick(event);
+      }); // window.addEventListener('resize', () => onResizeWindow());
+      // window.addEventListener('load', v onResizeWindow()); // too late to catch event
+
+      document.addEventListener('fullscreenchange', function (event) {
+        return _this2.onFullScreenChange(event);
+      });
+      document.addEventListener('MSFullscreenChange', function (event) {
+        return _this2.onFullScreenChange(event);
+      });
+      document.addEventListener('mozfullscreenchange', function (event) {
+        return _this2.onFullScreenChange(event);
+      });
+      document.addEventListener('webkitfullscreenchange', function (event) {
+        return _this2.onFullScreenChange(event);
+      }); // progress bar
+
+      this.progressBar.min = 0;
+      this.progressBar.step = 0.01;
+      this.progressBar.value = 0; // volume bar
+
+      this.volumeBar.min = 0;
+      this.volumeBar.step = 1;
+      this.volumeBar.max = 100;
+      this.volumeBar.value = 100;
+      this.initialized = true; // hide some component
+
+      document.getElementById(this.titleId).display = 'none';
     }
-  }
-
-  function setTitle(ltitle, ShowUpTitle) {
-    document.getElementById(titleId).innerHTML = ltitle;
-    document.getElementById(descriptionId).innerHTML = ltitle;
-
-    if (ShowUpTitle) {
-      logger.log('Will  show title Up');
-      document.getElementById(titleId).style.display = 'block';
-    } else {
-      logger.log('Will NOT show title Up');
-      document.getElementById(titleId).style.display = 'none';
+  }, {
+    key: "hideVideo",
+    value: function hideVideo() {
+      this.BigPlayBtn.style.display = 'none';
+      this.videoInfo.style.display = 'none';
+      this.video.style.display = 'none';
+      this.videoController.style.display = 'none';
     }
-  }
-
-  function getVideo() {
-    return video;
-  }
-
-  function getErrorDivId() {
-    return errorDivId;
-  }
-
-  function getAdsContainerDivId() {
-    return adsContainerDivId;
-  }
-
-  function getOverlaysContainerDivId() {
-    return overlaysContainerDivId;
-  }
-
-  function SetupThumbsManager(videoDuration, thumbsTrackIndex) {
-    if (thumbsTrackIndex !== null) {
-      return ThumbsMgr.Setup(getVideo(), videoDuration, thumbsTrackIndex);
+  }, {
+    key: "ShowVideo",
+    value: function ShowVideo() {
+      this.BigPlayBtn.style.display = 'block';
+      this.videoInfo.style.display = 'block';
+      this.video.style.display = 'block';
+      this.videoController.style.display = 'block';
     }
-
-    return ThumbsMgr.reset();
-  }
-
-  function getVideoFigure() {
-    return videoControllerFigure;
-  }
-
-  function onResizeWindow() {
-    var intViewportWidth = window.innerWidth; // var intViewportHeight = window.innerHeight;
-
-    var newPercentage = intViewportWidth / holdWidth * 100 + '%';
-    var fjplayer = document.getElementById('playercontainer');
-    fjplayer.style.fontSize = newPercentage;
-    console.error(holdWidth, ' RESIED !!!!!!!!!!!!! ', intViewportWidth, '/', holdWidth, '>>>>>', newPercentage);
-  }
-
-  function onLoadWindow() {
-    console.error(holdWidth, ' LOADED ##########################');
-    holdWidth = window.innerWidth;
-  }
-
-  function initialize(mainPlayer) {
-    create(videoContainerId);
-    fjMainPlayer = mainPlayer;
-
-    if (!fjMainPlayer) {
-      throw new Error('Please pass an instance of player when instantiating');
+  }, {
+    key: "ShowSpinner",
+    value: function ShowSpinner() {
+      this.spinner.classList.remove('fj-hide');
     }
-
-    playerMenus = new _ui_Menus__WEBPACK_IMPORTED_MODULE_2__.default(video, subtitlesBtnId, audiosBtnId, menuContainerDivId); // OverlaysMgr = new Overlays(this.video, document.getElementById(this.overlaysContainerDivId));
-
-    videoControllerFigure.addEventListener('mouseleave', magicMouseLeave);
-    videoControllerFigure.addEventListener('mouseenter', magicMouseEnter);
-    videoControllerFigure.addEventListener('mousemove', magicMouseMove);
-    BigPlayBtn.addEventListener('click', onplaypauseClick);
-    video.addEventListener('click', onplaypauseClick);
-    video.addEventListener('dblclick', handleFullscreen);
-    volumeBar.addEventListener('click', OnvbClick);
-    playpauseBtn.addEventListener('click', onplaypauseClick);
-    muteBtn.addEventListener('click', onmuteClick);
-    playpreviousBtn.addEventListener('click', onperviousClick);
-    playforwardBtn.addEventListener('click', onforwardClick);
-    fullScreenBtn.addEventListener('click', handleFullscreen);
-    progressBar.addEventListener('click', onprogressClick);
-    window.addEventListener('resize', onResizeWindow);
-    window.addEventListener('load', onLoadWindow); // too late to catch event
-
-    document.addEventListener('fullscreenchange', onFullScreenChange);
-    document.addEventListener('MSFullscreenChange', onFullScreenChange);
-    document.addEventListener('mozfullscreenchange', onFullScreenChange);
-    document.addEventListener('webkitfullscreenchange', onFullScreenChange); // progress bar
-
-    progressBar.min = 0;
-    progressBar.step = 0.01;
-    progressBar.value = 0; // volume bar
-
-    volumeBar.min = 0;
-    volumeBar.step = 1;
-    volumeBar.max = 100;
-    volumeBar.value = 100;
-    initialized = true; // hide some component
-
-    document.getElementById(titleId).display = 'none';
-  }
-
-  function hideVideo() {
-    BigPlayBtn.style.display = 'none';
-    videoInfo.style.display = 'none';
-    video.style.display = 'none';
-    videoController.style.display = 'none';
-  }
-
-  function ShowVideo() {
-    BigPlayBtn.style.display = 'block';
-    videoInfo.style.display = 'block';
-    video.style.display = 'block';
-    videoController.style.display = 'block';
-  }
-
-  function ShowSpinner() {
-    spinner.classList.remove('fj-hide');
-  }
-
-  function HideSpinner() {
-    if (spinner.classList.contains('fj-hide') === false) {
-      spinner.classList.add('fj-hide');
+  }, {
+    key: "HideSpinner",
+    value: function HideSpinner() {
+      if (this.spinner.classList.contains('fj-hide') === false) {
+        this.spinner.classList.add('fj-hide');
+      }
     }
-  }
-
-  function disable() {
-    videoController.classList.add('disable');
-  }
-
-  function enable() {
-    videoController.classList.remove('disable');
-  }
-
-  function getVideoCaption() {
-    var ele = document.getElementById(videoCaptionId);
-    return ele;
-  }
-
-  function reset() {
-    if (initialized !== true) {
-      logger.warn('not yet initialized');
-      return;
+  }, {
+    key: "disable",
+    value: function disable() {
+      this.videoController.classList.add('disable');
     }
+  }, {
+    key: "enable",
+    value: function enable() {
+      this.videoController.classList.remove('disable');
+    }
+  }, {
+    key: "getVideoCaption",
+    value: function getVideoCaption() {
+      var ele = document.getElementById(this.videoCaptionId);
+      return ele;
+    }
+  }, {
+    key: "reset",
+    value: function reset() {
+      if (this.initialized !== true) {
+        this.logger.warn('not yet this.initialized');
+        return;
+      }
 
-    console.warn(' >>> Resetting player ui !!');
-    ThumbsMgr.reset(); // OverlaysMgr = new Overlays(this.video, document.getElementById(this.overlaysContainerDivId));
+      this.logger.warn(' >>> Resetting player ui !!');
+      this.ThumbsMgr.reset(); // OverlaysMgr = new Overlays(this.video,
+      //    document.getElementById(this.overlaysContainerDivId));
 
-    videoControllerFigure.removeEventListener('mouseleave', magicMouseLeave);
-    videoControllerFigure.removeEventListener('mouseenter', magicMouseEnter);
-    videoControllerFigure.removeEventListener('mousemove', magicMouseMove);
-    BigPlayBtn.removeEventListener('click', onplaypauseClick);
-    video.removeEventListener('click', onplaypauseClick);
-    video.removeEventListener('dblclick', handleFullscreen);
-    volumeBar.removeEventListener('click', OnvbClick);
-    playpauseBtn.removeEventListener('click', onplaypauseClick);
-    muteBtn.removeEventListener('click', onmuteClick);
-    fullScreenBtn.removeEventListener('click', handleFullscreen);
-    progressBar.removeEventListener('click', onprogressClick);
-    window.removeEventListener('resize', onResizeWindow);
-    window.removeEventListener('load', onLoadWindow);
-    document.removeEventListener('fullscreenchange', onFullScreenChange);
-    document.removeEventListener('MSFullscreenChange', onFullScreenChange);
-    document.removeEventListener('mozfullscreenchange', onFullScreenChange);
-    document.removeEventListener('webkitfullscreenchange', onFullScreenChange);
-    toggleplaypauseBtn();
-  } // ************************************************************************************
-  // PUBLIC API
-  // ************************************************************************************
+      this.videoControllerFigure.removeEventListener('mouseleave', this.magicMouseLeave);
+      this.videoControllerFigure.removeEventListener('mouseenter', this.magicMouseEnter);
+      this.videoControllerFigure.removeEventListener('mousemove', this.magicMouseMove);
+      this.BigPlayBtn.removeEventListener('click', this.onplaypauseClick);
+      this.video.removeEventListener('click', this.onplaypauseClick);
+      this.video.removeEventListener('dblclick', this.handleFullscreen);
+      this.volumeBar.removeEventListener('click', this.OnvbClick);
+      this.playpauseBtn.removeEventListener('click', this.onplaypauseClick);
+      this.muteBtn.removeEventListener('click', this.onmuteClick);
+      this.fullScreenBtn.removeEventListener('click', this.handleFullscreen);
+      this.progressBar.removeEventListener('click', this.onprogressClick);
+      /*
+      window.removeEventListener('resize', onResizeWindow);
+      window.removeEventListener('load', onResizeWindow);
+      */
 
+      document.removeEventListener('fullscreenchange', this.onFullScreenChange);
+      document.removeEventListener('MSFullscreenChange', this.onFullScreenChange);
+      document.removeEventListener('mozfullscreenchange', this.onFullScreenChange);
+      document.removeEventListener('webkitfullscreenchange', this.onFullScreenChange);
+      this.toggleplaypauseBtn();
+    }
+  }], [{
+    key: "isFullScreen",
+    value: function isFullScreen() {
+      return document.fullscreenElement || document.msFullscreenElement || document.mozFullScreen || document.webkitIsFullScreen;
+    }
+  }]);
 
-  return {
-    setVolume: setVolume,
-    setDuration: setDuration,
-    UpdateProgress: UpdateProgress,
-    setTitle: setTitle,
-    setBackIcon: setBackIcon,
-    setDownloadIcon: setDownloadIcon,
-    setShareIcon: setShareIcon,
-    getVideo: getVideo,
-    getAdsContainerDivId: getAdsContainerDivId,
-    getErrorDivId: getErrorDivId,
-    getOverlaysContainerDivId: getOverlaysContainerDivId,
-    SetupThumbsManager: SetupThumbsManager,
-    SetupSubsAudsManager: SetupSubsAudsManager,
-    getVideoFigure: getVideoFigure,
-    initialize: initialize,
-    toggleplaypauseBtn: toggleplaypauseBtn,
-    getVideoCaption: getVideoCaption,
-    hideVideo: hideVideo,
-    ShowVideo: ShowVideo,
-    disable: disable,
-    enable: enable,
-    reset: reset,
-    ShowSpinner: ShowSpinner,
-    HideSpinner: HideSpinner,
-    onplaypauseClick: onplaypauseClick,
-    goForError: goForError,
-    constructor: PlayerUi
-  };
-}
+  return PlayerUi;
+}();
 
-;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PlayerUi);
+module.exports = PlayerUi;
 
 /***/ }),
 
@@ -27025,146 +27293,146 @@ function PlayerUi(videoContId, VWidth, WHeight) {
 /*!*****************************!*\
   !*** ./src/js/ui/Thumbs.js ***!
   \*****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _utils_Logger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/Logger */ "./src/js/utils/Logger.js");
-/* harmony import */ var _utils_Utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/Utils */ "./src/js/utils/Utils.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Logger = __webpack_require__(/*! ../utils/Logger */ "./src/js/utils/Logger.js");
+
+var Utils = __webpack_require__(/*! ../utils/Utils */ "./src/js/utils/Utils.js");
 
 __webpack_require__(/*! ../../css/player.less */ "./src/css/player.less");
 /**
  * @module Thumbs
  * @description The Thumbs module is responsible for rendering
  *  showing and hiding vtt pictures based on mousing mouse on progress bar.
- * @param vidElement the video element
- * @param vttThumbsTrackIndex the index of Vtt thumbs track in textTracks list of video
+ * @param vidElement the this.video element
+ * @param vttThumbsTrackIndex the index of Vtt thumbs track in textTracks list of this.video
  * @param thumbImgElement the img element used for thumbs
  * @param thumbImgElement the div element used for thumbs
  * @param progressBarElement the progress element used for thumbs
  */
 
 
-function Thumbs(thtimer, thumbImgElement, thumbDivElement, progressBarElement) {
-  var logger = new _utils_Logger__WEBPACK_IMPORTED_MODULE_0__.default(this),
-      thumbsTrackIndex = -1,
-      video = null,
-      vidDuration = 0,
-      progressBar = progressBarElement,
-      thumbstimer = thtimer,
-      thumbsDiv = thumbDivElement,
-      thumbsImg = thumbImgElement;
+var Thumbs = /*#__PURE__*/function () {
+  function Thumbs(thtimer, thumbImgElement, thumbDivElement, progressBarElement) {
+    _classCallCheck(this, Thumbs);
 
-  function showThumbs() {
-    thumbsDiv.classList.remove('fj-hide');
-    thumbsDiv.classList.add('fj-show');
+    this.logger = new Logger(this);
+    this.thumbsTrackIndex = -1;
+    this.video = null;
+    this.vidDuration = 0;
+    this.progressBar = progressBarElement;
+    this.thumbstimer = thtimer;
+    this.thumbsDiv = thumbDivElement;
+    this.thumbsImg = thumbImgElement;
   }
 
-  ;
-
-  function hideThumbs() {
-    thumbsDiv.classList.remove('fj-show');
-    thumbsDiv.classList.add('fj-hide');
-  }
-
-  ;
-
-  function renderThumbs(event) {
-    var c, i, url, xywh, left, rect, p, dur;
-    rect = progressBar.getBoundingClientRect();
-    p = (event.pageX - rect.left) * (vidDuration / (rect.right - rect.left));
-    dur = _utils_Utils__WEBPACK_IMPORTED_MODULE_1__.duration(parseFloat(p));
-
-    if (p > vidDuration + 2 || p < 0) {
-      // some error ?
-      logger.warn(' Position is bigger than duration >>', p, vidDuration);
-      return;
+  _createClass(Thumbs, [{
+    key: "showThumbs",
+    value: function showThumbs() {
+      this.thumbsDiv.classList.remove('fj-hide');
+      this.thumbsDiv.classList.add('fj-show');
     }
-
-    logger.log(' current clicked  ', dur); // update ui ..then we find the matching cue..
-
-    c = video.textTracks[thumbsTrackIndex].cues;
-
-    if (c === null) {
-      // track eleme,t is not supprted : Firefox
-      logger.error(' cues is null @ ', thumbsTrackIndex, ' not supported , Firefox ?');
-      return;
+  }, {
+    key: "hideThumbs",
+    value: function hideThumbs() {
+      this.thumbsDiv.classList.remove('fj-show');
+      this.thumbsDiv.classList.add('fj-hide');
     }
+  }, {
+    key: "renderThumbs",
+    value: function renderThumbs(event) {
+      this.logger.warn('eventing Thumbs is', event); // first we convert from mouse to time position ..
 
-    for (i = 0; i < c.length; i++) {
-      if (c[i].startTime <= p && c[i].endTime > p) {
-        break;
+      var i;
+      var rect = this.progressBar.getBoundingClientRect();
+      var p = (event.pageX - rect.left) * (this.vidDuration / (rect.right - rect.left));
+      var dur = Utils.duration(parseFloat(p));
+
+      if (p > this.vidDuration + 2 || p < 0) {
+        // some error ?
+        this.logger.warn(' Position is bigger than duration >>', p, this.vidDuration);
+        return;
       }
 
-      ;
-    } // ..next we unravel the JPG url and fragment query..
+      this.logger.log(' current clicked  ', dur); // update ui ..then we find the matching cue..
+
+      var c = this.video.textTracks[this.thumbsTrackIndex].cues;
+
+      if (c === null) {
+        // track eleme,t is not supprted : Firefox
+        this.logger.error(' cues is null @ ', this.thumbsTrackIndex, ' not supported , Firefox ?');
+        return;
+      }
+
+      for (i = 0; i < c.length; i += 1) {
+        if (c[i].startTime <= p && c[i].endTime > p) {
+          break;
+        }
+      } // ..next we unravel the JPG url and fragment query..
 
 
-    xywh = c[i].text.substr(c[i].text.indexOf('=') + 1).split(',');
-    left = -(rect.left - event.pageX + xywh[2] / 2); // logger.log(' Render Thumbs  @ ', p, '#', dur, '  where pgX', event.pageX, ', displayed on left: ', left);
-    // ..and last we style the thumbnail overlay
+      var xywh = c[i].text.substr(c[i].text.indexOf('=') + 1).split(',');
+      var left = -(rect.left - event.pageX + xywh[2] / 2); // this.logger.log(' Render Thumbs  @ ', p, '#', dur,
+      // '  where pgX', event.pageX, ', displayed on left: ', left);
+      // ..and last we style the thumbnail overlay
 
-    url = 'url(' + c[i].text.split('#')[0] + ')'; // logger.log(' fetching thum from ', url);
+      var url = "url(".concat(c[i].text.split('#')[0], ")"); // this.logger.log(' fetching thum from ', url);
 
-    thumbsImg.style.backgroundImage = url;
-    thumbsImg.style.backgroundPosition = '-' + xywh[0] + 'px -' + xywh[1] + 'px';
-    thumbsImg.style.width = xywh[2] + 'px';
-    thumbsImg.style.height = xywh[3] + 'px';
-    thumbstimer.innerHTML = dur;
-    thumbsDiv.style.left = left; // thumbsDiv.style.top = top;
+      this.thumbsImg.style.backgroundImage = url;
+      this.thumbsImg.style.backgroundPosition = "-".concat(xywh[0], "px -").concat(xywh[1], "px");
+      this.thumbsImg.style.width = "".concat(xywh[2], "px");
+      this.thumbsImg.style.height = "".concat(xywh[3], "px");
+      this.thumbstimer.innerHTML = dur;
+      this.thumbsDiv.style.left = left; // this.thumbsDiv.style.top = top;
 
-    thumbsDiv.style.width = xywh[2] + 'px';
-  }
-
-  ;
-
-  function reset() {
-    thumbsTrackIndex = -1;
-    progressBar.removeEventListener('mousemove', renderThumbs);
-    progressBar.removeEventListener('mouseleave', hideThumbs);
-    progressBar.removeEventListener('mouseover', showThumbs);
-  }
-
-  ;
-
-  function Setup(vidElement, videoDuration, thumbsTrindex) {
-    reset();
-    video = vidElement;
-    vidDuration = videoDuration;
-    thumbsTrackIndex = thumbsTrindex;
-    logger.info(' Setting index thumbs tracks on ', thumbsTrackIndex, ' and video duration ', vidDuration);
-
-    if (progressBar && thumbsTrackIndex !== -1) {
-      progressBar.addEventListener('mousemove', renderThumbs);
-      progressBar.addEventListener('mouseleave', hideThumbs);
-      progressBar.addEventListener('mouseover', showThumbs);
-      return true;
+      this.thumbsDiv.style.width = "".concat(xywh[2], "px");
     }
+  }, {
+    key: "reset",
+    value: function reset() {
+      this.thumbsTrackIndex = -1;
+      this.progressBar.removeEventListener('mousemove', this.renderThumbs);
+      this.progressBar.removeEventListener('mouseleave', this.hideThumbs);
+      this.progressBar.removeEventListener('mouseover', this.showThumbs);
+    }
+  }, {
+    key: "Setup",
+    value: function Setup(vidElement, videoDuration, thumbsTrindex) {
+      var _this = this;
 
-    return false;
-  }
+      this.reset();
+      this.video = vidElement;
+      this.vidDuration = videoDuration;
+      this.thumbsTrackIndex = thumbsTrindex;
+      this.logger.info(' Setting index thumbs tracks on ', this.thumbsTrackIndex, ' and this.video duration ', this.vidDuration);
 
-  ; // ************************************************************************************
-  // PUBLIC API
-  // ************************************************************************************
+      if (this.progressBar && this.thumbsTrackIndex !== -1) {
+        this.progressBar.addEventListener('mousemove', function () {
+          return _this.renderThumbs();
+        });
+        this.progressBar.addEventListener('mouseleave', function () {
+          return _this.hideThumbs();
+        });
+        this.progressBar.addEventListener('mouseover', function () {
+          return _this.showThumbs();
+        });
+        return true;
+      }
 
-  return {
-    Setup: Setup,
-    reset: reset,
-    hideThumbs: hideThumbs,
-    showThumbs: showThumbs,
-    off: removeEventListener,
-    constructor: Thumbs
-  };
-}
+      return false;
+    }
+  }]);
 
-;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Thumbs);
+  return Thumbs;
+}();
+
+module.exports = Thumbs;
 
 /***/ }),
 
@@ -27172,136 +27440,140 @@ function Thumbs(thtimer, thumbImgElement, thumbDivElement, progressBarElement) {
 /*!************************************!*\
   !*** ./src/js/ui/fjplayer-tmpl.js ***!
   \************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Logger = __webpack_require__(/*! ../utils/Logger */ "./src/js/utils/Logger.js");
 /**
  * @module playerTemplate
  * @description The playerTemplate
  *
  */
 
-function PlayerTemplate() {
-  var _OPEN_DELIMITER = '<%=',
-      _CLOSE_DELIMITER = '%>',
-      _REGEX_STRING = '(<%=|%>)',
-      _DEFAULT_DELIMITER = '%',
-      regExpChars = /[|\\{}()[\]^$+*?.]/g,
-      template = '<figure id=\"<%= videoFigureId %>\" class="fj-figure" controls-hidden="true" data-fullscreen=\"<%= fullScreenOnStart %>\"> ' + '    <!-- video element -->  ' + '    <video id=\"<%= videoId %>\" class="fj-video" width=\ "<%= vwidth %>\" crossorigin> </video> ' + '    <!-- Horizental Tpp --> ' + '    <div class="fj-horizental-top" id=\"<%= videoInfoId %>\"> ' + '        <span class=" fj-vertical-left  fj-control  fj-btn  fj-icon-leftarrow" aria-hidden="true" id=\"<%= backId %>\"> </span> ' + '        <div class=" fj-vertical-left  fj-vertical-separator "></div> ' + '        <div class=" fj-vertical-left  fj-control  fj-btn fj-title fj-short-span " id=\"<%= titleId %>\"> </div> ' + '        <span class=" fj-vertical-right fj-control  fj-btn  fj-icon-share  " aria-hidden="true" id=\"<%= shareId %>\"> </span> ' + '        <div class=" fj-vertical-right  fj-vertical-separator "></div> ' + '        <span class=" fj-vertical-right fj-control  fj-btn  fj-icon-download " aria-hidden="true" id=\"<%= downloadId %>\"> </span> ' + '    </div> ' + '    <!-- Horizental Center --> ' + '    <div class="fj-horizental-center"> ' + '       <div class="fj-vertical-center">' + '           <div id=\"<%= errorDivId %>\" class=" fj-hide"> </div> ' + '           <div id=\"<%= spinnerId %>\" class=" fj-hide spinner"> </div> ' + '               <span class=" fj-control fj-big-btn  fj-icon-play"  aria-hidden="true" id=\"<%= BigPlayBtnId %>\"></span> ' + '       </div> ' + '    </div> ' + '    <!-- this will contains ads video or ads overlays --> ' + '    <div id=\"<%=adsContainerDivId%>\" class=""></div> ' + '    <!-- Horizental Bottom Up used for menu  --> ' + '    <div class="fj-horizental-bottomUpper"> ' + '        <!-- video caption ued by dash player for caption --> ' + '        <div id=\"<%=videoCaptionId %>\"></div> ' + '        <!-- this present the thumbs image if exist--> ' + '        <div class="thumbsBlockDiv  fj-hide" id=\"<%= thumbsDivId %>\" > ' + '            <span class="thumbsBlock" id=\"<%= thumbsImgId %>\"></span> ' + '            <span class="fjcontrols-control-text" id=\"<%= thumbstimerId %>\"></span> ' + '        </div> ' + '        <!-- this present the subtitles or audios menu if exist  and when clicked--> ' + '        <div class="fj-vertical-left" id=\"<%=menuContainerDivId %>\"> ' + '        </div> ' + '    </div> ' + '    <!-- Horizental Bottom down used for fj controls  --> ' + '    <div class="fj-horizental-bottomLower"  id=\"<%=videoControlsId%>\"> ' + '        <!--  the video progress Bar --> ' + '        <div class="fj-vertical-center"> ' + '            <input class=" fj-control-embd fj-video-progress" id=\"<%=progressBarId%>\" type="range" min="0" /> ' + '        </div> ' + '        <!--  play,previous and next controls  --> ' + '     <span class=" fj-vertical-left fj-control-embd fj-btn  fj-icon-playPrevious" aria-hidden="true" id=\"<%=playpreviousBtnId%>\" title="previous"> </span> ' + '        <span class=" fj-vertical-left fj-control-embd fj-btn  fj-icon-play" aria-hidden="true" id=\"<%=playpauseBtnId%>\" title="Play"> </span> ' + '        <span class=" fj-vertical-left fj-control-embd fj-btn  fj-icon-playNext" aria-hidden="true" id=\"<%=playforwardBtnId%>\" title="next"> </span> ' + '        <!--  mute and volume bar controls  --> ' + '        <span class=" fj-vertical-left fj-control-embd fj-btn  fj-icon-volUp" aria-hidden="true" id=\"<%=muteBtnId%>\" title="mute"> </span> ' + '        <div class="fj-vertical-left  volumebar" id=\"<%=volumeDivId%>\"> ' + '            <input id=\"<%=volumeBarId%>\" class="fj-control-embd" type="range" min="0"  /> ' + '        </div> ' + '        <!--  more description of the stream   --> ' + '        <div class=" fj-vertical-left fj-text fj-short-span" title="Description" id=\"<%=descriptionId%>\"> ' + '            <span></span> ' + '        </div> ' + '        <!--  full screen, audio and subtitles controls  --> ' + '    <span class=" fj-vertical-right fj-control-embd fj-btn  fj-icon-fullScreen " aria-hidden="true" id=\"<%=fullScreenBtnId%>\" title="Fullscreen"> </span> ' + '        <span class=" fj-vertical-right fj-control-embd fj-btn  fj-icon-subs" aria-hidden="true" id=\"<%=subtitlesBtnId%>\" title="Subtitles"> </span> ' + '        <span class=" fj-vertical-right fj-control-embd fj-btn  fj-icon-audios" aria-hidden="true" id=\"<%=audiosBtnId%>\" title="Audios"> </span> ' + '        <!--  timers   --> ' + '        <div class=" fj-vertical-right fj-text " title="times"> ' + '            <span id=\"<%= timerId %>\">0:00:00</span><span>/</span><span id=\"<%= durationId %>\">0:00:00</span> ' + '        </div> ' + '    </div> ' + '    <!--  this will contains overlays   --> ' + '    <div id=\"<%= overlaysContainerDivId %>\" class="fj-overlayContainer fj-hide"> ' + '    </div> ' + '</figure> ';
-  /**
-   *
-   */
 
-  function createRegex() {
-    var str = _REGEX_STRING;
-    var delim = String(_DEFAULT_DELIMITER).replace(regExpChars, '\\$&');
-    str = str.replace(/%/g, delim);
-    return new RegExp(str);
+var PlayerTemplate = /*#__PURE__*/function () {
+  function PlayerTemplate() {
+    _classCallCheck(this, PlayerTemplate);
+
+    this.logger = new Logger(this);
+    this.OPEN_DELIMITER = '<%=';
+    this.CLOSE_DELIMITER = '%>';
+    this.REGEX_STRING = '(<%=|%>)';
+    this.DEFAULT_DELIMITER = '%';
+    this.regExpChars = /[|\\{}()[\]^$+*?.]/g;
+    this.template = '<figure id="<%= videoFigureId %>" class="fj-figure" controls-hidden="true" data-fullscreen="<%= fullScreenOnStart %>"> ' + '    <!-- video element -->  ' + '    <video id="<%= videoId %>" class="fj-video" width="<%= vwidth %>" crossorigin> </video> ' + '    <!-- Horizental Tpp --> ' + '    <div class="fj-horizental-top" id="<%= videoInfoId %>"> ' + '        <span class="fj-vertical-left  fj-control  fj-btn  fj-icon-leftarrow" aria-hidden="true" id="<%= backId %>"> </span> ' + '        <div class="fj-vertical-left  fj-vertical-separator "></div> ' + '        <div class="fj-vertical-left  fj-control  fj-btn fj-title fj-short-span " id="<%= titleId %>"> </div> ' + '        <span class="fj-vertical-right fj-control  fj-btn  fj-icon-share  " aria-hidden="true" id="<%= shareId %>"> </span> ' + '        <div class="fj-vertical-right  fj-vertical-separator "></div> ' + '        <span class="fj-vertical-right fj-control  fj-btn  fj-icon-download " aria-hidden="true" id="<%= downloadId %>"> </span> ' + '    </div> ' + '    <!-- Horizental Center --> ' + '    <div class="fj-horizental-center"> ' + '       <div class="fj-vertical-center">' + '           <div id="<%= errorDivId %>" class="fj-hide"> </div> ' + '           <div id="<%= spinnerId %>" class="fj-hide spinner"> </div> ' + '               <span class="fj-control fj-big-btn  fj-icon-play"  aria-hidden="true" id="<%= BigPlayBtnId %>"></span> ' + '       </div> ' + '    </div> ' + '    <!-- this will contains ads video or ads overlays --> ' + '    <div id="<%= adsContainerDivId %>" class=""></div> ' + '    <!-- Horizental Bottom Up used for menu  --> ' + '    <div class="fj-horizental-bottomUpper"> ' + '        <!-- video caption ued by dash player for caption --> ' + '        <div id="<%= videoCaptionId %>"></div> ' + '        <!-- this present the thumbs image if exist--> ' + '        <div class="thumbsBlockDiv  fj-hide" id="<%= thumbsDivId %>" > ' + '            <span class="thumbsBlock" id="<%= thumbsImgId %>"></span> ' + '            <span class="fjcontrols-control-text" id="<%= thumbstimerId %>"></span> ' + '        </div> ' + '        <!-- this present the subtitles or audios menu if exist  and when clicked--> ' + '        <div class="fj-vertical-left" id="<%= menuContainerDivId %>"> ' + '        </div> ' + '    </div> ' + '    <!-- Horizental Bottom down used for fj controls  --> ' + '    <div class="fj-horizental-bottomLower"  id="<%= videoControlsId %>"> ' + '        <!--  the video progress Bar --> ' + '        <div class="fj-vertical-center"> ' + '            <input class="fj-control-embd fj-video-progress" id="<%= progressBarId %>" type="range" min="0" /> ' + '        </div> ' + '        <!--  play,previous and next controls  --> ' + '        <span class="fj-vertical-left fj-control-embd fj-btn fj-icon-playPrevious" aria-hidden="true" id="<%= playpreviousBtnId %>" title="previous"> </span> ' + '        <span class="fj-vertical-left fj-control-embd fj-btn fj-icon-play" aria-hidden="true" id="<%= playpauseBtnId %>" title="Play"> </span> ' + '        <span class="fj-vertical-left fj-control-embd fj-btn fj-icon-playNext" aria-hidden="true" id="<%= playforwardBtnId %>" title="next"> </span> ' + '        <!--  mute and volume bar controls --> ' + '        <span class="fj-vertical-left fj-control-embd fj-btn fj-icon-volUp" aria-hidden="true" id="<%= muteBtnId %>" title="mute"> </span> ' + '        <div class="fj-vertical-left  volumebar" id="<%= volumeDivId %>"> ' + '            <input id="<%= volumeBarId %>" class="fj-control-embd" type="range" min="0"  /> ' + '        </div> ' + '        <!--  more description of the stream   --> ' + '        <div class="fj-vertical-left fj-text fj-short-span" title="Description" id="<%= descriptionId %>"> ' + '            <span></span> ' + '        </div> ' + '        <!--  full screen, audio and subtitles controls  --> ' + '        <span class="fj-vertical-right fj-control-embd fj-btn fj-icon-fullScreen " aria-hidden="true" id="<%= fullScreenBtnId %>" title="Fullscreen"> </span> ' + '        <span class="fj-vertical-right fj-control-embd fj-btn fj-icon-subs" aria-hidden="true" id="<%= subtitlesBtnId %>" title="Subtitles"> </span> ' + '        <span class="fj-vertical-right fj-control-embd fj-btn fj-icon-audios" aria-hidden="true" id="<%= audiosBtnId %>" title="Audios"> </span> ' + '        <!--  timers   --> ' + '        <div class="fj-vertical-right fj-text " title="times"> ' + '            <span id="<%= timerId %>">0:00:00</span><span>/</span><span id="<%= durationId %>">0:00:00</span> ' + '        </div> ' + '    </div> ' + '    <!--  this will contains overlays   --> ' + '    <div id="<%= overlaysContainerDivId %>" class="fj-overlayContainer fj-hide"> ' + '    </div> ' + '</figure> ';
   }
-
-  ;
   /**
    *
-   * @param {*} templateStr
    */
 
-  function parseTemplateText(templateStr) {
-    var reg = createRegex();
-    var str = templateStr;
-    var result = reg.exec(str);
-    var arr = [];
-    var firstPos;
 
-    while (result) {
-      firstPos = result.index;
-
-      if (firstPos !== 0) {
-        arr.push(str.substring(0, firstPos));
-        str = str.slice(firstPos);
-      }
-
-      arr.push(result[0]);
-      str = str.slice(result[0].length);
-      result = reg.exec(str);
+  _createClass(PlayerTemplate, [{
+    key: "createRegex",
+    value: function createRegex() {
+      var str = this.REGEX_STRING;
+      var delim = String(this.DEFAULT_DELIMITER).replace(this.regExpChars, '\\$&');
+      str = str.replace(/%/g, delim);
+      return new RegExp(str);
     }
+    /**
+     *
+     * @param {*} templateStr
+     */
 
-    if (str) {
-      arr.push(str);
-    }
+  }, {
+    key: "parseTemplateText",
+    value: function parseTemplateText(templateStr) {
+      var reg = this.createRegex();
+      var str = templateStr;
+      var result = reg.exec(str);
+      var arr = [];
+      var firstPos;
 
-    return arr;
-  }
+      while (result) {
+        firstPos = result.index;
 
-  ;
-  /**
-   *
-   * @param {*} matchedArr
-   * @param {*} dataObj
-   */
-
-  function generateHtml(matchedArr, dataObj) {
-    var newArr = [],
-        i,
-        k = 0,
-        opening = false,
-        key,
-        done = '';
-
-    for (i in matchedArr) {
-      if (matchedArr[i] === _OPEN_DELIMITER) {
-        opening = true;
-      } else if (matchedArr[i] === _CLOSE_DELIMITER) {
-        opening = false;
-      } else {
-        if (opening === true && closed === false) {
-          // wr'in key
-          key = matchedArr[i];
-          key = key.replace(/ +/g, ''); // console.error(" W>>>>>>>><>  ", key);
-
-          if (dataObj.hasOwnProperty(key)) {
-            newArr[k] = dataObj[key];
-          } else {
-            throw new Error(' Needed Key is Not found key for html player template :', matchedArr[i]);
-          }
-        } else {
-          newArr[k] = matchedArr[i];
+        if (firstPos !== 0) {
+          arr.push(str.substring(0, firstPos));
+          str = str.slice(firstPos);
         }
 
-        k++;
+        arr.push(result[0]);
+        str = str.slice(result[0].length);
+        result = reg.exec(str);
       }
+
+      if (str) {
+        arr.push(str);
+      }
+
+      return arr;
     }
+    /**
+     *
+     * @param {*} matchedArr
+     * @param {*} dataObj
+     */
 
-    done = newArr.join('');
-    return done;
-  }
-  /**
-   *
-   * @param {*} data
-   */
+  }, {
+    key: "generateHtml",
+    value: function generateHtml(matchedArr, dataObj) {
+      var _this = this;
 
+      var newArr = [];
+      this.logger.info('Generating html fr player');
+      var k = 0;
+      var opening = false;
+      var key;
+      var done = '';
+      Object.keys(matchedArr).forEach(function (i) {
+        if (matchedArr[i] === _this.OPEN_DELIMITER) {
+          opening = true;
+        } else if (matchedArr[i] === _this.CLOSE_DELIMITER) {
+          opening = false;
+        } else {
+          if (opening === true) {
+            // wr'in key
+            key = matchedArr[i];
+            key = key.replace(/ +/g, ''); // this.logger.info('found key  ', key);
 
-  function GetHtml(data) {
-    var matches = parseTemplateText(template);
-    return generateHtml(matches, data);
-  }
+            if (Object.prototype.hasOwnProperty.call(dataObj, key)) {
+              newArr[k] = dataObj[key];
+            } else {
+              throw new Error(' Needed Key is Not found key for html player template :', matchedArr[i]);
+            }
+          } else {
+            newArr[k] = matchedArr[i];
+          }
 
-  ; // ************************************************************************************
-  // PUBLIC API
-  // ************************************************************************************
+          k += 1;
+        }
+      });
+      done = newArr.join('');
+      return done;
+    }
+    /**
+     *
+     * @param {*} data
+     */
 
-  return {
-    GetHtml: GetHtml,
-    constructor: PlayerTemplate
-  };
-}
+  }, {
+    key: "GetHtml",
+    value: function GetHtml(data) {
+      var matches = this.parseTemplateText(this.template);
+      return this.generateHtml(matches, data);
+    }
+  }]);
 
-;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PlayerTemplate);
+  return PlayerTemplate;
+}();
+
+module.exports = PlayerTemplate;
 
 /***/ }),
 
@@ -27309,94 +27581,91 @@ function PlayerTemplate() {
 /*!**********************************!*\
   !*** ./src/js/utils/Eventing.js ***!
   \**********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 /**
  * @module Eventing
  * @description The Eventing is the class eventing mgr
  *
  */
-function Eventing() {
-  var events = {};
+var Eventing = /*#__PURE__*/function () {
+  function Eventing() {
+    _classCallCheck(this, Eventing);
+
+    this.events = {};
+  }
   /**
    *
    */
 
-  function addListener(name, handler) {
-    if (events.hasOwnProperty(name)) {
-      events[name].push(handler);
-    } else {
-      events[name] = [handler];
+
+  _createClass(Eventing, [{
+    key: "on",
+    value: function on(name, handler) {
+      if (Object.prototype.hasOwnProperty.call(this.events, name)) {
+        this.events[name].push(handler);
+      } else {
+        this.events[name] = [handler];
+      }
     }
-  }
+    /**
+     *
+     */
 
-  ;
-  /**
-   *
-   */
+  }, {
+    key: "off",
+    value: function off(name, handler) {
+      var index = -1;
+      /* This is a bit tricky, because how would you identify functions?
+         This simple solution should work if you pass THE SAME handler. */
 
-  function removeListener(name, handler) {
-    var index = -1;
-    /* This is a bit tricky, because how would you identify functions?
-       This simple solution should work if you pass THE SAME handler. */
+      if (!Object.prototype.hasOwnProperty.call(this.events, name)) {
+        return;
+      }
 
-    if (!events.hasOwnProperty(name)) {
-      return;
+      index = this.events[name].indexOf(handler);
+
+      if (index !== -1) {
+        this.events[name].splice(index, 1);
+      }
     }
+    /**
+     *
+     */
 
-    index = events[name].indexOf(handler);
+  }, {
+    key: "fireEvent",
+    value: function fireEvent(name, args) {
+      var i;
 
-    if (index !== -1) {
-      events[name].splice(index, 1);
+      if (!Object.prototype.hasOwnProperty.call(this.events, name)) {
+        return;
+      }
+      /* if (!args || !args.length) {
+          logger.debug(' Firing Eventing on event :', name, args);
+          args = [];
+      } */
+
+
+      var evs = this.events[name];
+      var l = evs.length;
+
+      for (i = 0; i < l; i += 1) {
+        evs[i](name, args);
+      }
     }
-  }
+  }]);
 
-  ;
-  /**
-   *
-   */
+  return Eventing;
+}();
 
-  function fireEvent(name, args) {
-    var evs, l, i;
-
-    if (!events.hasOwnProperty(name)) {
-      return;
-    }
-    /* if (!args || !args.length) {
-        logger.debug(' Firing Eventing on event :', name, args);
-        args = [];
-    }*/
-
-
-    evs = events[name];
-    l = evs.length;
-
-    for (i = 0; i < l; i++) {
-      evs[i](name, args);
-    }
-  }
-
-  ; // ************************************************************************************
-  // PUBLIC API
-  // ************************************************************************************
-
-  return {
-    fireEvent: fireEvent,
-    addEventListener: addListener,
-    removeEventListener: removeListener,
-    on: addListener,
-    off: removeListener,
-    constructor: Eventing
-  };
-}
-
-;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Eventing);
+module.exports = Eventing;
 
 /***/ }),
 
@@ -27404,15 +27673,15 @@ function Eventing() {
 /*!*********************************!*\
   !*** ./src/js/utils/FjError.js ***!
   \*********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _utils_Logger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/Logger */ "./src/js/utils/Logger.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Logger = __webpack_require__(/*! ./Logger */ "./src/js/utils/Logger.js");
 
 __webpack_require__(/*! ../../css/player.less */ "./src/css/player.less");
 /**
@@ -27422,74 +27691,76 @@ __webpack_require__(/*! ../../css/player.less */ "./src/css/player.less");
  */
 
 
-function FjError(code, type, message, overlaysDiv) {
-  var logger = new _utils_Logger__WEBPACK_IMPORTED_MODULE_0__.default(this),
-      errorCode = code,
-      errorType = type,
-      errorMsg = message,
-      OverlayDiv = overlaysDiv,
-      OverlayClosingDiv = null,
-      OverlayInnerDiv = null;
+var FjError = /*#__PURE__*/function () {
+  function FjError(code, type, message, overlaysDiv) {
+    _classCallCheck(this, FjError);
 
-  function StopOverlay(index) {
-    var el = OverlayDiv;
-    var elClone = null; // hide the div
-
-    logger.warn(index, 'you overlay  is now stopped '); // remove the click event
-
-    el = OverlayDiv;
-    elClone = el.cloneNode(true);
-    el.parentNode.replaceChild(elClone, el);
-    OverlayDiv = elClone; // hide the overlay , empty the div
-
-    while (OverlayDiv.hasChildNodes()) {
-      OverlayDiv.removeChild(OverlayDiv.firstChild);
-    }
-
-    OverlayDiv.innerHTML = '';
-    OverlayDiv.classList.add('fj-hide');
-    OverlayDiv.classList.remove('over-HL-error');
+    this.logger = new Logger(this);
+    this.errorCode = code;
+    this.errorType = type;
+    this.errorMsg = message;
+    this.OverlayDiv = overlaysDiv;
+    this.OverlayClosingDiv = null;
+    this.OverlayInnerDiv = null;
+    this.StartOverlay();
   }
 
-  ;
-  /**
-   * Used to show an Overlay
-   */
+  _createClass(FjError, [{
+    key: "StopOverlay",
+    value: function StopOverlay(index) {
+      var el = this.OverlayDiv;
+      var elClone = null; // hide the div
 
-  function StartOverlay() {
-    // empty the div && show the div
-    OverlayDiv.classList.add('over-HL-error');
+      this.logger.warn(index, 'you overlay  is now stopped '); // remove the click event
 
-    while (OverlayDiv.hasChildNodes()) {
-      OverlayDiv.removeChild(OverlayDiv.firstChild);
+      el = this.OverlayDiv;
+      elClone = el.cloneNode(true);
+      el.parentNode.replaceChild(elClone, el);
+      this.OverlayDiv = elClone; // hide the overlay , empty the div
+
+      while (this.OverlayDiv.hasChildNodes()) {
+        this.OverlayDiv.removeChild(this.OverlayDiv.firstChild);
+      }
+
+      this.OverlayDiv.innerHTML = '';
+      this.OverlayDiv.classList.add('fj-hide');
+      this.OverlayDiv.classList.remove('over-HL-error');
     }
+    /**
+     * Used to show an Overlay
+     */
 
-    OverlayInnerDiv = document.createElement('div');
-    OverlayClosingDiv = document.createElement('div');
-    OverlayInnerDiv.innerHTML = '' + '<div class="fj-overlay-description">' + '   <p>' + errorMsg + '</p> ' + '</div> ' + '<div class="fj-overlay-link">' + errorCode + '</div>';
-    OverlayInnerDiv.style.cursor = 'pointer';
-    OverlayClosingDiv.innerHTML = '' + '<div>' + '    <span class=" fj-overlay-closing  fj-control-embd fj-btn fj-icon-windowClose" aria-hidden="true"></span>' + '    <div class="fj-overlay-error">' + errorType + '</div>' + '</div>';
-    OverlayClosingDiv.addEventListener('click', function () {
-      StopOverlay();
-    });
-    OverlayDiv.appendChild(OverlayClosingDiv);
-    OverlayDiv.appendChild(OverlayInnerDiv);
-    OverlayDiv.classList.remove('fj-hide');
-    OverlayDiv.classList.add('over-HL');
-  }
+  }, {
+    key: "StartOverlay",
+    value: function StartOverlay() {
+      var _this = this;
 
-  ;
-  StartOverlay(); // ************************************************************************************
-  // PUBLIC API
-  // ************************************************************************************
+      // empty the div && show the div
+      this.OverlayDiv.classList.add('over-HL-error');
 
-  return {
-    constructor: FjError
-  };
-}
+      while (this.OverlayDiv.hasChildNodes()) {
+        this.OverlayDiv.removeChild(this.OverlayDiv.firstChild);
+      }
 
-;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FjError);
+      this.OverlayInnerDiv = document.createElement('div');
+      this.OverlayClosingDiv = document.createElement('div');
+      this.OverlayInnerDiv.innerHTML = "".concat('' + '<div class="fj-overlay-description">' + '   <p>').concat(this.errorMsg, "</p> ") + '</div> ' + "<div class=\"fj-overlay-link\">".concat(this.errorCode, "</div>");
+      this.OverlayInnerDiv.style.cursor = 'pointer';
+      this.OverlayClosingDiv.innerHTML = "".concat('' + '<div>' + '    <span class=" fj-overlay-closing  fj-control-embd fj-btn fj-icon-windowClose" aria-hidden="true"></span>' + '    <div class="fj-overlay-error">').concat(this.errorType, "</div>") + '</div>';
+      this.OverlayClosingDiv.addEventListener('click', function () {
+        _this.StopOverlay();
+      });
+      this.OverlayDiv.appendChild(this.OverlayClosingDiv);
+      this.OverlayDiv.appendChild(this.OverlayInnerDiv);
+      this.OverlayDiv.classList.remove('fj-hide');
+      this.OverlayDiv.classList.add('over-HL');
+    }
+  }]);
+
+  return FjError;
+}();
+
+module.exports = FjError;
 
 /***/ }),
 
@@ -27497,41 +27768,51 @@ function FjError(code, type, message, overlaysDiv) {
 /*!********************************!*\
   !*** ./src/js/utils/Logger.js ***!
   \********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 /**
  * @module Logger
  * @description The Configuration is the primary module used to set configuration and .
  */
-function Logger(klass) {
-  var m;
-  this.gState = true;
-  this.debug = {};
+var Logger = /*#__PURE__*/function () {
+  function Logger(klass) {
+    var _this = this;
 
-  if (this.gState) {
-    for (m in console) {
+    _classCallCheck(this, Logger);
+
+    this.klass = klass;
+    this.debug = {};
+    Object.keys(console).forEach(function (m) {
       if (typeof console[m] === 'function') {
-        this.debug[m] = console[m].bind(window.console, klass.constructor.name + ': ');
+        _this.debug[m] = console[m].bind(window.console, "".concat(klass.constructor.name, ": "));
       }
-    }
-  } else {
-    for (m in console) {
-      if (typeof console[m] === 'function') {
-        this.debug[m] = function () {};
-      }
-    }
+    });
+    return this.debug;
   }
 
-  return this.debug;
-}
+  _createClass(Logger, null, [{
+    key: "Get",
+    value: function Get(tag) {
+      var debug = {};
+      Object.keys(console).forEach(function (m) {
+        if (typeof console[m] === 'function') {
+          debug[m] = console[m].bind(window.console, "".concat(tag, ": "));
+        }
+      });
+      return debug;
+    }
+  }]);
 
-;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Logger);
+  return Logger;
+}();
+
+module.exports = Logger;
 
 /***/ }),
 
@@ -27539,38 +27820,55 @@ function Logger(klass) {
 /*!*******************************!*\
   !*** ./src/js/utils/Utils.js ***!
   \*******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "duration": () => (/* binding */ duration)
-/* harmony export */ });
-function duration(secDuration) {
-  var secNum = parseInt(secDuration, 10); // don't forget the second param
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  var hours = Math.floor(secNum / 3600);
-  var minutes = Math.floor((secNum - hours * 3600) / 60);
-  var seconds = secNum - hours * 3600 - minutes * 60;
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-  if (minutes < 10) {
-    minutes = '0' + minutes;
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Logger = __webpack_require__(/*! ./Logger */ "./src/js/utils/Logger.js");
+
+var Utils = /*#__PURE__*/function () {
+  function Utils() {
+    _classCallCheck(this, Utils);
   }
 
-  if (seconds < 10) {
-    seconds = '0' + seconds;
-  }
+  _createClass(Utils, null, [{
+    key: "duration",
+    value: function duration(secDuration) {
+      Logger.Get('Utils').log('Asking duration for ', secDuration);
+      var secNum = parseInt(secDuration, 10); // don't forget the second param
 
-  if (hours === 0) {
-    return minutes + ':' + seconds;
-  }
+      var hours = Math.floor(secNum / 3600);
+      var minutes = Math.floor((secNum - hours * 3600) / 60);
+      var seconds = secNum - hours * 3600 - minutes * 60;
 
-  if (hours < 10) {
-    hours = '0' + hours;
-  }
+      if (minutes < 10) {
+        minutes = "0".concat(minutes);
+      }
 
-  return hours + ':' + minutes + ':' + seconds;
-}
+      if (seconds < 10) {
+        seconds = "0".concat(seconds);
+      }
+
+      if (hours === 0) {
+        return "".concat(minutes, ":").concat(seconds);
+      }
+
+      if (hours < 10) {
+        hours = "0".concat(hours);
+      }
+
+      return "".concat(hours, ":").concat(minutes, ":").concat(seconds);
+    }
+  }]);
+
+  return Utils;
+}();
+
+module.exports = Utils;
 
 /***/ }),
 
@@ -28028,7 +28326,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"scripts":{"dev":"webpack --mode=development  --color --config webpack.config.js ","test":"NODE_ENV=test COVERAGE=true karma start --color -- auto-watch","build":"webpack  --mode=production --progress  --color --config webpack.prod.config.js","purify":"webpack  --color --config webpack.purifycss.js --progress  --watch -d","dist":" concurrently \\"npm run build\\" \\"npm run dev\\"","live":"webpack serve --mode=development  --color --config webpack.config.js"},"version":"0.2.22","private":true,"repository":{"type":"git","url":"https://easysoftin.com"},"description":"the fjplayer html5 dash video player","bugs":{"url":"https://easysoftin.com"},"devDependencies":{"@babel/core":"^7.14.3","@babel/eslint-parser":"^7.14.3","@babel/preset-env":"^7.14.2","babel":"^6.23.0","babel-loader":"^8.2.2","babel-polyfill":"^6.26.0","chai":"^4.3.4","css-loader":"^5.2.6","eslint-webpack-plugin":"^2.5.4","file-loader":"^6.2.0","font-awesome":"^4.7.0","karma":"^6.3.2","karma-babel-preprocessor":"^8.0.1","karma-chai":"^0.1.0","karma-chrome-launcher":"^3.1.0","karma-coverage":"^2.0.3","karma-firefox-launcher":"^2.1.0","karma-mocha":"^2.0.1","karma-webpack":"^5.0.0","less":"^4.1.1","less-loader":"^9.0.0","mocha":"^8.4.0","mocka":"^0.0.1","style-loader":"^2.0.0","terser-webpack-plugin":"^5.1.2","url-loader":"^4.1.1","webpack":"^5.37.1","webpack-cli":"^4.7.0","webpack-dev-server":"^3.11.2"},"author":"Mohamed Azzouni","name":"fjplayer","homepage":"https://easysoftin.com","license":"MIT","keywords":["mpegdash","es6","dashjs","html5","player","cenc","ads"],"main":"dist/fjplayer.js","dependencies":{"shaka-player":"^3.1.0"}}');
+module.exports = JSON.parse('{"name":"fjplayer","main":"dist/fjplayer.js","author":"Mohamed Azzouni","homepage":"https://www.easysoft-in.com","license":"MIT","version":"0.3.0","repository":{"type":"git","url":"https://github.com/medazzo/fjplayer"},"description":"the fjplayer html5 dash video player","bugs":{"url":"https://easysoftin.com"},"keywords":["mpegdash","es6","dashjs","html5","player","cenc","ads"],"scripts":{"dev":"webpack --mode=development  --color --config webpack.config.js ","build":"webpack  --mode=production --progress  --color --config webpack.prod.config.js","test":"NODE_ENV=test COVERAGE=true karma start karma.conf.js --colors -- auto-watch --debug","web":"http-server -a localhost -p 8000 -c-1 ","dist":" concurrently \\"npm run build\\" \\"npm run dev\\"","live":"webpack serve --mode=development  --color --config webpack.config.js"},"devDependencies":{"@babel/core":"^7.14.3","@babel/eslint-parser":"^7.14.3","@babel/preset-env":"^7.14.2","babel":"^6.23.0","babel-loader":"^8.2.2","babel-polyfill":"^6.26.0","chai":"^4.3.4","css-loader":"^5.2.6","eslint":"^7.27.0","eslint-webpack-plugin":"^2.5.4","file-loader":"^6.2.0","font-awesome":"^4.7.0","http-server":"^0.12.3","jasmine":"^3.7.0","jasmine-core":"^3.7.1","karma":"^6.3.2","karma-babel-preprocessor":"^8.0.1","karma-chai":"^0.1.0","karma-chrome-launcher":"^3.1.0","karma-coverage":"^2.0.3","karma-coverage-istanbul-reporter":"^3.0.3","karma-firefox-launcher":"^2.1.0","karma-htmlfile-reporter":"^0.3.8","karma-jasmine":"^4.0.1","karma-jasmine-html-reporter":"^1.6.0","karma-mocha":"^2.0.1","karma-phantomjs-launcher":"^1.0.4","karma-webpack":"^5.0.0","less":"^4.1.1","less-loader":"^9.0.0","mocha":"^8.4.0","mocka":"^0.0.1","style-loader":"^2.0.0","terser-webpack-plugin":"^5.1.2","url-loader":"^4.1.1","webpack":"^5.37.1","webpack-cli":"^4.7.0","webpack-dev-server":"^3.11.2"},"dependencies":{"shaka-player":"^3.1.0","superagent":"^6.1.0"}}');
 
 /***/ })
 
@@ -28117,59 +28415,12 @@ module.exports = JSON.parse('{"scripts":{"dev":"webpack --mode=development  --co
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
-"use strict";
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   "Playlist": () => (/* reexport safe */ _js_player_playlist__WEBPACK_IMPORTED_MODULE_0__.default),
-/* harmony export */   "Player": () => (/* reexport safe */ _js_player_player__WEBPACK_IMPORTED_MODULE_1__.default),
-/* harmony export */   "Version": () => (/* reexport default from dynamic */ _Version__WEBPACK_IMPORTED_MODULE_2___default.a),
-/* harmony export */   "PlayerEvents": () => (/* reexport safe */ _js_defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents),
-/* harmony export */   "AdsEvents": () => (/* reexport safe */ _js_defs_constants__WEBPACK_IMPORTED_MODULE_3__.AdsEvents),
-/* harmony export */   "OverlayEvents": () => (/* reexport safe */ _js_defs_constants__WEBPACK_IMPORTED_MODULE_3__.OverlayEvents)
-/* harmony export */ });
-/* harmony import */ var _js_player_playlist__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./js/player/playlist */ "./src/js/player/playlist.js");
-/* harmony import */ var _js_player_player__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./js/player/player */ "./src/js/player/player.js");
-/* harmony import */ var _Version__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Version */ "./src/Version.js");
-/* harmony import */ var _Version__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_Version__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _js_defs_constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./js/defs/constants */ "./src/js/defs/constants.js");
-/**
- * The entry point for the library FJplayer.JS
- */
-
-
-
- // Shove both of these into the global scope
-
-var context = typeof window !== 'undefined' && window || __webpack_require__.g;
-var fjplayer = context.fjplayer;
-
-if (!fjplayer) {
-  fjplayer = {};
-  context.fjplayer = {};
-}
-
-fjplayer.Playlist = _js_player_playlist__WEBPACK_IMPORTED_MODULE_0__.default;
-fjplayer.Player = _js_player_player__WEBPACK_IMPORTED_MODULE_1__.default;
-fjplayer.Version = (_Version__WEBPACK_IMPORTED_MODULE_2___default());
-fjplayer.PlayerEvents = _js_defs_constants__WEBPACK_IMPORTED_MODULE_3__.PlayerEvents;
-fjplayer.AdsEvents = _js_defs_constants__WEBPACK_IMPORTED_MODULE_3__.AdsEvents;
-fjplayer.OverlayEvents = _js_defs_constants__WEBPACK_IMPORTED_MODULE_3__.OverlayEvents;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (fjplayer);
-
-
-
-
-
-
-})();
-
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/index.js");
+/******/ 	
 /******/ 	return __webpack_exports__;
 /******/ })()
 ;

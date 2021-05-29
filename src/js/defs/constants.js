@@ -1,57 +1,57 @@
 /**
  * @module Constants
  */
-export const FJCONFIG_CLASS = 'FJClass';
-export const FJCONFIG_TYPE = 'FJType';
-export const FJCONFIG_TITLE = 'FJTitle';
-export const FJCONFIG_SRC = 'FJSrc';
-export const FJCONFIG_POSTER = 'FJPoster';
-export const FJCONFIG_ADS_LINK_URL = 'FJAdsLinkUrl';
-export const FJCONFIG_CAN_ESCAPE = 'FJCanEscape';
-export const FJCONFIG_THUMBS = 'FJThumbs';
-export const FJCONFIG_SUBTITLES = 'FJSubtitles';
-export const FJCONFIG_ADS = 'FJAds';
-export const FJCONFIG_AUDIOS = 'FJAudios';
-export const FJCONFIG_OVERLAYS = 'FJOverlays';
-export const FJCONFIG_DRM = 'FJDrm';
-export const FJCONFIG_LABEL = 'FJLabel';
-export const FJCONFIG_LANG = 'FJLang';
-export const FJCONFIG_DATA = 'FJData';
-export const FJCONFIG_URL = 'FJUrl';
-export const FJCONFIG_DURATION = 'FJDuration';
-export const FJCONFIG_SHOW_AT = 'FJShowAt';
+const FJCONFIG_CLASS = 'FJClass';
+const FJCONFIG_TYPE = 'FJType';
+const FJCONFIG_TITLE = 'FJTitle';
+const FJCONFIG_SRC = 'FJSrc';
+const FJCONFIG_POSTER = 'FJPoster';
+const FJCONFIG_ADS_LINK_URL = 'FJAdsLinkUrl';
+const FJCONFIG_CAN_ESCAPE = 'FJCanEscape';
+const FJCONFIG_THUMBS = 'FJThumbs';
+const FJCONFIG_SUBTITLES = 'FJSubtitles';
+const FJCONFIG_ADS = 'FJAds';
+const FJCONFIG_AUDIOS = 'FJAudios';
+const FJCONFIG_OVERLAYS = 'FJOverlays';
+const FJCONFIG_DRM = 'FJDrm';
+const FJCONFIG_LABEL = 'FJLabel';
+const FJCONFIG_LANG = 'FJLang';
+const FJCONFIG_DATA = 'FJData';
+const FJCONFIG_URL = 'FJUrl';
+const FJCONFIG_DURATION = 'FJDuration';
+const FJCONFIG_SHOW_AT = 'FJShowAt';
 
-export const FJCONFIG_DRM_LICENSE_SERVER = 'FJLicenseServer';
-export const FJCONFIG_DRM_SCHEME = 'FJDrmScheme';
-export const FJCONFIG_DRM_SCHEME_FORJA = 'forja';
+const FJCONFIG_DRM_LICENSE_SERVER = 'FJLicenseServer';
+const FJCONFIG_DRM_SCHEME = 'FJDrmScheme';
+const FJCONFIG_DRM_SCHEME_FORJA = 'forja';
 
-export const FJCONFIG_SHOW_UP_TITLE = 'FJUpTitle';
-export const FJCONFIG_DOWNLOAD = 'FJDownload';
-export const FJCONFIG_SHARE = 'FJShare';
-export const FJCONFIG_BACK = 'FJBack';
+const FJCONFIG_SHOW_UP_TITLE = 'FJUpTitle';
+const FJCONFIG_DOWNLOAD = 'FJDownload';
+const FJCONFIG_SHARE = 'FJShare';
+const FJCONFIG_BACK = 'FJBack';
 
-export const FJCONFIG_TRUE = 'true';
-export const FJCONFIG_FALSE = 'false';
-export const FJCONFIG_BOOLEAN = { FJCONFIG_TRUE, FJCONFIG_FALSE };
+const FJCONFIG_TRUE = 'true';
+const FJCONFIG_FALSE = 'false';
+const FJCONFIG_BOOLEAN = { FJCONFIG_TRUE, FJCONFIG_FALSE };
 
-export const FJCONFIG_CLASS_VOD = 'vod';
-export const FJCONFIG_CLASS_LIVE = 'live';
-export const FJCONFIG_CLASSES = [FJCONFIG_CLASS_LIVE, FJCONFIG_CLASS_VOD];
+const FJCONFIG_CLASS_VOD = 'vod';
+const FJCONFIG_CLASS_LIVE = 'live';
+const FJCONFIG_CLASSES = [FJCONFIG_CLASS_LIVE, FJCONFIG_CLASS_VOD];
 
-export const FJCONFIG_TYPE_MP4 = 'video/mp4';
-export const FJCONFIG_TYPE_DASH = 'dash';
-export const FJCONFIG_TYPES = [FJCONFIG_TYPE_MP4, FJCONFIG_TYPE_DASH];
+const FJCONFIG_TYPE_MP4 = 'video/mp4';
+const FJCONFIG_TYPE_DASH = 'dash';
+const FJCONFIG_TYPES = [FJCONFIG_TYPE_MP4, FJCONFIG_TYPE_DASH];
 
-export const FJCONFIG_ADS_CLASS_PRE_ROLL = 'pre-roll';
-export const FJCONFIG_ADS_CLASS_MID_ROLL = 'mid-roll';
-export const FJCONFIG_ADS_CLASS_POST_ROLL = 'post-roll';
-export const FJCONFIG_ADS_CLASSES = [
+const FJCONFIG_ADS_CLASS_PRE_ROLL = 'pre-roll';
+const FJCONFIG_ADS_CLASS_MID_ROLL = 'mid-roll';
+const FJCONFIG_ADS_CLASS_POST_ROLL = 'post-roll';
+const FJCONFIG_ADS_CLASSES = [
     FJCONFIG_ADS_CLASS_PRE_ROLL,
     FJCONFIG_ADS_CLASS_MID_ROLL,
     FJCONFIG_ADS_CLASS_POST_ROLL
 ];
 
-export const AdsEnum = {
+const AdsEnum = {
     ADS_PRE_ROLL: 'ADS_PRE_ROLL',
     ADS_MID_ROLL: 'ADS_MID_ROLL',
     ADS_POST_ROLL: 'ADS_POST_ROLL'
@@ -84,4 +84,48 @@ const OverlayEvents = {
     OVERLAY_SKIPPED: 'OVERLAY_SKIPPED'
 };
 
-export { PlayerEvents, AdsEvents, OverlayEvents };
+module.exports = {
+    FJCONFIG_CLASS,
+    FJCONFIG_TYPE,
+    FJCONFIG_TITLE,
+    FJCONFIG_SRC,
+    FJCONFIG_POSTER,
+    FJCONFIG_ADS_LINK_URL,
+    FJCONFIG_CAN_ESCAPE,
+    FJCONFIG_THUMBS,
+    FJCONFIG_SUBTITLES,
+    FJCONFIG_ADS,
+    FJCONFIG_AUDIOS,
+    FJCONFIG_OVERLAYS,
+    FJCONFIG_DRM,
+    FJCONFIG_LABEL,
+    FJCONFIG_LANG,
+    FJCONFIG_DATA,
+    FJCONFIG_URL,
+    FJCONFIG_DURATION,
+    FJCONFIG_SHOW_AT,
+    FJCONFIG_DRM_LICENSE_SERVER,
+    FJCONFIG_DRM_SCHEME,
+    FJCONFIG_DRM_SCHEME_FORJA,
+    FJCONFIG_SHOW_UP_TITLE,
+    FJCONFIG_DOWNLOAD,
+    FJCONFIG_SHARE,
+    FJCONFIG_BACK,
+    FJCONFIG_TRUE,
+    FJCONFIG_FALSE,
+    FJCONFIG_BOOLEAN,
+    FJCONFIG_CLASS_VOD,
+    FJCONFIG_CLASS_LIVE,
+    FJCONFIG_CLASSES,
+    FJCONFIG_TYPE_MP4,
+    FJCONFIG_TYPE_DASH,
+    FJCONFIG_TYPES,
+    FJCONFIG_ADS_CLASS_PRE_ROLL,
+    FJCONFIG_ADS_CLASS_MID_ROLL,
+    FJCONFIG_ADS_CLASS_POST_ROLL,
+    FJCONFIG_ADS_CLASSES,
+    AdsEnum,
+    PlayerEvents,
+    AdsEvents,
+    OverlayEvents
+};

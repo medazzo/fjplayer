@@ -1,7 +1,7 @@
 {
     "name": "fjplayer",
     "main": "dist/fjplayer.js",
-    "author": "Mohamed Azzouni",    
+    "author": "Mohamed Azzouni",
     "homepage": "https://www.easysoft-in.com",
     "license": "MIT",
     "version": "0.3.0",
@@ -26,7 +26,9 @@
         "dev": "webpack --mode=development  --color --config webpack.config.js ",
         "build": "webpack  --mode=production --progress  --color --config webpack.prod.config.js",
         "test": "NODE_ENV=test COVERAGE=true karma start karma.conf.js --colors -- auto-watch --debug",
-        "web": "http-server -a localhost -p 8000 -c-1 ",
+        "doc": "jsdoc src -r -R ./README.md -d ./docs/generated --debug",
+        "lint": "eslint",
+        "http": "http-server -a localhost -p 8000 -c-1 ",
         "dist": " concurrently \"npm run build\" \"npm run dev\"",
         "live": "webpack serve --mode=development  --color --config webpack.config.js"
     },
@@ -46,6 +48,7 @@
         "http-server": "^0.12.3",
         "jasmine": "^3.7.0",
         "jasmine-core": "^3.7.1",
+        "jsdoc": "^3.6.7",
         "karma": "^6.3.2",
         "karma-babel-preprocessor": "^8.0.1",
         "karma-chai": "^0.1.0",

@@ -2,25 +2,33 @@
  * @module Logger
  * @description The Configuration is the primary module used to set configuration and .
  */
-function Logger(klass) {
-    var m;
-    this.gState = true;
-    this.debug = {};
-
-    if (this.gState) {
-        for (m in console) {
+class Logger {
+    constructor(klass) {
+        this.klass = klass;
+        this.debug = {};
+        Object.keys(console).forEach((m) => {
             if (typeof console[m] === 'function') {
-                this.debug[m] = console[m].bind(window.console, klass.constructor.name + ': ');
+                this.debug[m] = console[m].bind(
+                    window.console,
+                    `${klass.constructor.name}: `,
+                );
             }
-        }
-    } else {
-        for (m in console) {
-            if (typeof console[m] === 'function') {
-                this.debug[m] = function() {};
-            }
-        }
+        });
+        return this.debug;
     }
-    return this.debug;
-};
 
-export default Logger;
+    static Get(tag) {
+        const debug = {};
+        Object.keys(console).forEach((m) => {
+            if (typeof console[m] === 'function') {
+                debug[m] = console[m].bind(
+                    window.console,
+                    `${tag}: `,
+                );
+            }
+        });
+        return debug;
+    }
+}
+
+module.exports = Logger;

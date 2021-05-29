@@ -2,7 +2,7 @@
  * @author Phil Teare
  * using wikipedia data
  */
-export const isoLangs = {
+const IsoLangs = {
     ab: {
         name: 'Abkhaz',
         nativeName: 'аҧсуа'
@@ -732,3 +732,5 @@ export const isoLangs = {
         nativeName: 'Saɯ cueŋƅ, Saw cuengh'
     }
 };
+
+module.exports = IsoLangs;
