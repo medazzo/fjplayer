@@ -13,5 +13,4 @@ pipelines:
           - npm install
           - npm run build
           - npm run dev
-          #- npm run testServer
-          #- npm run testAll
+          - npm test

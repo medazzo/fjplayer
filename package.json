@@ -25,7 +25,8 @@
     "scripts": {
         "dev": "webpack --mode=development  --color --config webpack.config.js ",
         "build": "webpack  --mode=production --progress  --color --config webpack.prod.config.js",
-        "test": "karma start karma.conf.js --colors -- auto-watch --debug",
+        "test": "karma start karma.conf.js --colors --singleRun",
+        "test:live": "karma start karma.conf.js --colors -- auto-watch --debug",
         "doc": "jsdoc src -r -R ./README.md -d ./build/reports/docs --debug",
         "lint": "eslint",
         "http": "http-server -a localhost -p 8000 -c-1 ",
