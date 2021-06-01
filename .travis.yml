@@ -1,0 +1,9 @@
+language: nodejs
+python:
+  - "2.7"
+  - "3.5"
+install:
+  - npm install
+script:    
+    - npm run build
+    - npm run dev    
