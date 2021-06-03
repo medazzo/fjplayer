@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/medazzo/sbr-generator.svg?branch=master)](https://travis-ci.org/medazzo/fjplayer)
+[![Build Status](https://travis-ci.com/medazzo/fjplayer.svg?branch=master)](https://travis-ci.com/medazzo/fjplayer)
 [![npm version](https://badge.fury.io/js/fjplayer.svg)](https://badge.fury.io/js/fjplayer)
 
 # **fjplayer** #
