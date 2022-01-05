@@ -1,5 +1,8 @@
+# **fjplayer.js** #
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmedazzo%2Ffjplayer.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmedazzo%2Ffjplayer?ref=badge_shield)
 [![Build Status](https://travis-ci.com/medazzo/fjplayer.svg?branch=master)](https://travis-ci.com/medazzo/fjplayer)
 [![npm version](https://badge.fury.io/js/fjplayer.svg)](https://badge.fury.io/js/fjplayer)
+
 
 # **fjplayer** #
 
@@ -101,6 +104,9 @@ finally, you can start playing , in this example we start play at element 0, loo
 ```javascript 
 player.startPlaylist(0, true, false, true);
 ```
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmedazzo%2Ffjplayer.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmedazzo%2Ffjplayer?ref=badge_large)
 
 ### developping fjplayer  ###
 after doing :
