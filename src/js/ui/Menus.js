@@ -55,6 +55,7 @@ class Menus {
       list = this.audsList;
     }
     const index = Array.prototype.indexOf.call(list.childNodes, item);
+    this.logger.info('Item selected ', item);
     const tindex = item.getAttribute('index');
     this.logger.info('clicked is  selected @ index ', index, ' text index ', tindex);
 
@@ -88,13 +89,14 @@ class Menus {
      * Event CALLBACK ; called on menu Click
      */
   onshowHideMenu(menuContainer, element, ev) {
+    this.logger.warn('onshowHideMenu using @', element);
     const rectV = this.video.getBoundingClientRect();
     const rect = element.getBoundingClientRect();
     if (menuContainer.classList.contains('fj-hide')) {
       this.logger.warn('setting left @', (rect.right - ev.pageX));
       this.logger.warn('setting left @', (rect.left - ev.pageX));
-      this.menuContainer.style.left = ev.pageX - rectV.left - rect.width;
-      this.menuContainer.classList.remove('fj-hide');
+      menuContainer.style.left = ev.pageX - rectV.left - rect.width;
+      menuContainer.classList.remove('fj-hide');
     } else {
       menuContainer.classList.add('fj-hide');
     }
@@ -117,7 +119,6 @@ class Menus {
     let subtitlesBtn = null;
     let i = 0;
     let activated = false;
-    let item = null;
     this.mediaPlayer = playerMedia;
     const textTracks = this.mediaPlayer.getTextTracks();
     this.SubsExist = false;
@@ -164,7 +165,7 @@ class Menus {
       this.menusDiv.appendChild(this.subsMenuDiv);
       // Add events for subtitles button
       subtitlesBtn.addEventListener('click', (ev) => {
-        this.onshowHideMenu(this.subsMenuDiv, this, ev);
+        this.onshowHideMenu(this.subsMenuDiv, this.menusDiv, ev);
       });
       //  subs list
       this.subsList = document.getElementById(this.subsMenuListId);
@@ -174,7 +175,7 @@ class Menus {
       if ((textTracks[i].kind === 'captions')
                 || (textTracks[i].kind === 'subtitle')
                 || (textTracks[i].kind === 'subtitles')) {
-        item = document.createElement('li');
+        let item = item = document.createElement('li');
         if (this.mediaPlayer.isTextTrackEnabled(i) === true) {
           item.classList.add('subtitles-menu-item-actif');
           activated = true;
@@ -185,14 +186,14 @@ class Menus {
         item.innerHTML = this.mediaPlayer.getTextTrackLabel(i);
         this.subsList.appendChild(item);
         item.addEventListener('click', () => {
-          this.activate(this, true);
+          this.activate(item, true);
         });
         this.logger.debug('Setting Subs List @ ', i, ' item is ', item);
       }
     }
 
     // off item
-    item = document.createElement('li');
+    const item = document.createElement('li');
     if (activated === false) {
       item.classList.add('subtitles-menu-item-actif');
     } else {
@@ -202,7 +203,7 @@ class Menus {
     item.innerHTML = 'off';
     this.subsList.appendChild(item);
     item.addEventListener('click', () => {
-      this.activate(this);
+      this.activate(item, false);
     });
     this.logger.log('Setting Subs List @ ', -1, ' item is ', item);
 

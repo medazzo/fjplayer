@@ -30,20 +30,16 @@ function playfromList() {
 function updateItemChoice() {
   const select = document.getElementById('Mainsel');
   if (select.selectedIndex > 0) {
-    const keypar = JSON.parse(select.value);
-    console.log(' Title : ', keypar.FJTitle);
-    console.log(' Class : ', keypar.FJClass);
-    console.log(' Type : ', keypar.FJType);
-    console.log(' Src : ', ver.FJSrc);
-    console.log(' Thumbs : ', keypar.FJThumbs);
-    console.log(' Poster : ', keypar.FJPoster);
+    console.log(' Ready to play : ');
+    console.log(JSON.stringify(JSON.parse(select.value), null, 2));
     document.getElementById('itemToplay').value = select.value;
   } else { document.getElementById('itemToplay').value = ''; }
 }
 /** ***************************************** */
 function loadDatset() {
-  $('#datasel').append("<option value='./ITEC_dataset.json'>ITEC dataset</option>");
-  $('#datasel').append("<option value='./Telecom_ParisTech_dataset.json'>Telecom Paris Tech dataset</option>");
+  // theses two set of data server Blocks data from differents server : CORS policy.
+  // $('#datasel').append("<option value='./ITEC_dataset.json'>ITEC dataset</option>");
+  // $('#datasel').append("<option value='./Telecom_ParisTech_dataset.json'>Telecom Paris Tech dataset</option>");
   $('#datasel').append("<option value='./local_mp4.json'>server local short mp4 files</option>");
 }
 
@@ -73,7 +69,7 @@ function updateDataSet() {
 window.onload = function () {
   loadDatset();
   ver = new fjplayer.Version();
-  console.info('VERSION', ver.getVersion());
+  console.info('FJPLAYER VERSION', ver.getVersion());
   playlist = new fjplayer.Playlist();
   player = new fjplayer.Player('fjserverID1', 'playercontainer');
 };
