@@ -10,6 +10,7 @@ module.exports = {
   clearMocks: true,
   cacheDirectory: 'cache',
   coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'json'],
   preset: 'jest-puppeteer',
   setupFilesAfterEnv: ['./jest.setup.js'],
   collectCoverageFrom: [
