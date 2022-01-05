@@ -1,7 +1,0 @@
-*.py[cod]
-.project
-.pydevproject
-.idea
-thumbs/
-githubify.pl
-*.bak
