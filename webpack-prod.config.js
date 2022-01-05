@@ -1,4 +1,5 @@
 var webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
 var path = require('path');
 var plugins = [];
 

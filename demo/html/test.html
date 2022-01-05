@@ -1,51 +1,42 @@
-<!DOCTYPE>
+<!DOCTYPE >
 <html>
-
-<head>
+  <head>
     <title>fjplayer demo</title>
-    <script type="text/javascript" src="demo-data.js"></script>
-    <script type="text/javascript">
-        function fjplayerEvent(e, args) {
-            console.warn(" We are having an event : ", e, args);
-        };
-        window.onload = function() {
-            var ver = new fjplayer.Version();
-            console.info('VERSION', ver.getVersion());
-            var playlist = new fjplayer.Playlist();
-            // playlist.addItem(data.itemDashThumbs);
-            // playlist.addItem(data.itemDashNoThumbs);
-            // playlist.addItem(data.itemDashSubsNoThumbs);
-            // playlist.addItem(data.itemMp4Thumbs);
-            // playlist.addItem(data.itemMp4NoThumbs);
-            // playlist.addItem(data.itemMp4SubsNoThumbs);
-            //playlist.addItem(data.itemMp4Full);
-
-
-            var forjaItemDashEncrypted = {
-                'FJType': 'dash',
-                'FJTitle': 'clear Forja movie itemDash ',
-                'FJClass': 'vod',
-                'FJSrc': 'http://127.0.0.1:8500/dashedCrypted/stream.mpd',
-                'FJDrm': {
-                    "FjLicenseServer": "http://127.0.0.1:3000"
-                }
-            };
-            playlist.addItem(forjaItemDashEncrypted);
-            var player = new fjplayer.Player('fjserverID1', 'playercontainer');
-            player.on(fjplayer.PlayerEvents.STREAM_LOADED, fjplayerEvent);
-            player.loadPlaylist(playlist);
-            //player.playAt(0);
-            player.startPlaylist(0, true, false, true);
-        }
-    </script>
     <script type="text/javascript" src="/dist/fjplayer.js"></script>
-</head>
+    <script type="text/javascript">
+      function fjplayerEvent(e, args) {
+        console.warn(" We are having an event : ", e, args);
+      }
+      window.onload = function () {
+        var ver = new fjplayer.Version();
+        console.info("VERSION", ver.getVersion());
+        var playlist = new fjplayer.Playlist();
+        var item = {
+          FJSrc: "/demo/videos/berber_pub.mp4",
+          FJTitle: " title of movie itemOnly 1",
+          FJClass: "vod",
+          FJType: "video/mp4",
+        };
+        var forjaItemDashEncrypted = {
+          FJType: "dash",
+          FJTitle: "clear Forja movie itemDash ",
+          FJClass: "vod",
+          FJSrc: "http://127.0.0.1:8500/dashedCrypted/stream.mpd",
+          FJDrm: {
+            FjLicenseServer: "http://127.0.0.1:3000",
+          },
+        };
+        playlist.addItem(item);
+        var player = new fjplayer.Player("fjserverID1", "playercontainer");
+        player.on(fjplayer.PlayerEvents.STREAM_LOADED, fjplayerEvent);
+        player.loadPlaylist(playlist);
+        //player.playAt(0);
+        player.startPlaylist(0, true, false, true);
+      };
+    </script>
+  </head>
 
-<div id="playercontainer">
-</div>
+  <div id="playercontainer"></div>
 
-<body>
-
-</body>
-
+  <body></body>
 </html>

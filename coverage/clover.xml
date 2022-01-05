@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1641397537328" clover="3.2.0">
-  <project timestamp="1641397537328" name="All files">
-    <metrics statements="1824" coveredstatements="292" conditionals="680" coveredconditionals="169" methods="257" coveredmethods="23" elements="2761" coveredelements="484" complexity="0" loc="1824" ncloc="1824" packages="6" files="18" classes="18"/>
-    <package name="src">
+<coverage generated="1641422218790" clover="3.2.0">
+  <project timestamp="1641422218790" name="All files">
+    <metrics statements="1824" coveredstatements="292" conditionals="680" coveredconditionals="169" methods="257" coveredmethods="23" elements="2761" coveredelements="484" complexity="0" loc="1824" ncloc="1824" packages="7" files="19" classes="19"/>
+    <package name="fjplayer">
+      <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="karma.conf.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/karma.conf.js">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+    </package>
+    <package name="fjplayer.src">
       <metrics statements="20" coveredstatements="4" conditionals="5" coveredconditionals="0" methods="2" coveredmethods="2"/>
-      <file name="Version.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer-jest-karma-refac/src/Version.js">
+      <file name="Version.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/src/Version.js">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
         <line num="18" count="1" type="stmt"/>
         <line num="22" count="1" type="stmt"/>
       </file>
-      <file name="index.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer-jest-karma-refac/src/index.js">
+      <file name="index.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/src/index.js">
         <metrics statements="16" coveredstatements="0" conditionals="5" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="4" count="0" type="stmt"/>
         <line num="5" count="0" type="stmt"/>
@@ -31,9 +37,9 @@
         <line num="26" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="src.js.defs">
+    <package name="fjplayer.src.js.defs">
       <metrics statements="46" coveredstatements="46" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="constants.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer-jest-karma-refac/src/js/defs/constants.js">
+      <file name="constants.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/src/js/defs/constants.js">
         <metrics statements="44" coveredstatements="44" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
@@ -80,15 +86,15 @@
         <line num="79" count="1" type="stmt"/>
         <line num="87" count="1" type="stmt"/>
       </file>
-      <file name="isoLangs.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer-jest-karma-refac/src/js/defs/isoLangs.js">
+      <file name="isoLangs.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/src/js/defs/isoLangs.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="5" count="1" type="stmt"/>
         <line num="736" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="src.js.player">
+    <package name="fjplayer.src.js.player">
       <metrics statements="789" coveredstatements="215" conditionals="407" coveredconditionals="162" methods="121" coveredmethods="16"/>
-      <file name="PlayerMedia.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer-jest-karma-refac/src/js/player/PlayerMedia.js">
+      <file name="PlayerMedia.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/src/js/player/PlayerMedia.js">
         <metrics statements="329" coveredstatements="0" conditionals="140" coveredconditionals="0" methods="72" coveredmethods="0"/>
         <line num="1" count="0" type="stmt"/>
         <line num="2" count="0" type="stmt"/>
@@ -420,7 +426,7 @@
         <line num="663" count="0" type="stmt"/>
         <line num="667" count="0" type="stmt"/>
       </file>
-      <file name="player.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer-jest-karma-refac/src/js/player/player.js">
+      <file name="player.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/src/js/player/player.js">
         <metrics statements="245" coveredstatements="0" conditionals="96" coveredconditionals="0" methods="33" coveredmethods="0"/>
         <line num="1" count="0" type="stmt"/>
         <line num="2" count="0" type="stmt"/>
@@ -668,7 +674,7 @@
         <line num="432" count="0" type="stmt"/>
         <line num="435" count="0" type="stmt"/>
       </file>
-      <file name="playlist.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer-jest-karma-refac/src/js/player/playlist.js">
+      <file name="playlist.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/src/js/player/playlist.js">
         <metrics statements="215" coveredstatements="215" conditionals="171" coveredconditionals="162" methods="16" coveredmethods="16"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -887,9 +893,9 @@
         <line num="408" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="src.js.stats">
+    <package name="fjplayer.src.js.stats">
       <metrics statements="12" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="4" coveredmethods="0"/>
-      <file name="FjseAuthz.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer-jest-karma-refac/src/js/stats/FjseAuthz.js">
+      <file name="FjseAuthz.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/src/js/stats/FjseAuthz.js">
         <metrics statements="12" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="4" coveredmethods="0"/>
         <line num="1" count="0" type="stmt"/>
         <line num="2" count="0" type="stmt"/>
@@ -905,9 +911,9 @@
         <line num="41" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="src.js.ui">
+    <package name="fjplayer.src.js.ui">
       <metrics statements="877" coveredstatements="0" conditionals="244" coveredconditionals="0" methods="117" coveredmethods="0"/>
-      <file name="AdsManager.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer-jest-karma-refac/src/js/ui/AdsManager.js">
+      <file name="AdsManager.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/src/js/ui/AdsManager.js">
         <metrics statements="170" coveredstatements="0" conditionals="42" coveredconditionals="0" methods="14" coveredmethods="0"/>
         <line num="1" count="0" type="stmt"/>
         <line num="2" count="0" type="stmt"/>
@@ -1080,7 +1086,7 @@
         <line num="276" count="0" type="stmt"/>
         <line num="280" count="0" type="stmt"/>
       </file>
-      <file name="Menus.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer-jest-karma-refac/src/js/ui/Menus.js">
+      <file name="Menus.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/src/js/ui/Menus.js">
         <metrics statements="153" coveredstatements="0" conditionals="48" coveredconditionals="0" methods="13" coveredmethods="0"/>
         <line num="1" count="0" type="stmt"/>
         <line num="2" count="0" type="stmt"/>
@@ -1236,7 +1242,7 @@
         <line num="276" count="0" type="stmt"/>
         <line num="280" count="0" type="stmt"/>
       </file>
-      <file name="Overlays.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer-jest-karma-refac/src/js/ui/Overlays.js">
+      <file name="Overlays.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/src/js/ui/Overlays.js">
         <metrics statements="77" coveredstatements="0" conditionals="10" coveredconditionals="0" methods="12" coveredmethods="0"/>
         <line num="1" count="0" type="stmt"/>
         <line num="2" count="0" type="stmt"/>
@@ -1316,7 +1322,7 @@
         <line num="145" count="0" type="stmt"/>
         <line num="148" count="0" type="stmt"/>
       </file>
-      <file name="PlayerUi.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer-jest-karma-refac/src/js/ui/PlayerUi.js">
+      <file name="PlayerUi.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/src/js/ui/PlayerUi.js">
         <metrics statements="371" coveredstatements="0" conditionals="118" coveredconditionals="0" methods="63" coveredmethods="0"/>
         <line num="1" count="0" type="stmt"/>
         <line num="2" count="0" type="stmt"/>
@@ -1690,7 +1696,7 @@
         <line num="683" count="0" type="stmt"/>
         <line num="687" count="0" type="stmt"/>
       </file>
-      <file name="Thumbs.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer-jest-karma-refac/src/js/ui/Thumbs.js">
+      <file name="Thumbs.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/src/js/ui/Thumbs.js">
         <metrics statements="56" coveredstatements="0" conditionals="14" coveredconditionals="0" methods="9" coveredmethods="0"/>
         <line num="1" count="0" type="stmt"/>
         <line num="2" count="0" type="stmt"/>
@@ -1749,7 +1755,7 @@
         <line num="99" count="0" type="stmt"/>
         <line num="103" count="0" type="stmt"/>
       </file>
-      <file name="fjplayer-tmpl.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer-jest-karma-refac/src/js/ui/fjplayer-tmpl.js">
+      <file name="fjplayer-tmpl.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/src/js/ui/fjplayer-tmpl.js">
         <metrics statements="50" coveredstatements="0" conditionals="12" coveredconditionals="0" methods="6" coveredmethods="0"/>
         <line num="1" count="0" type="stmt"/>
         <line num="10" count="0" type="stmt"/>
@@ -1803,9 +1809,9 @@
         <line num="169" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="src.js.utils">
+    <package name="fjplayer.src.js.utils">
       <metrics statements="80" coveredstatements="27" conditionals="20" coveredconditionals="7" methods="13" coveredmethods="5"/>
-      <file name="Eventing.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer-jest-karma-refac/src/js/utils/Eventing.js">
+      <file name="Eventing.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/src/js/utils/Eventing.js">
         <metrics statements="17" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="4" coveredmethods="0"/>
         <line num="8" count="0" type="stmt"/>
         <line num="15" count="0" type="cond" truecount="0" falsecount="2"/>
@@ -1825,7 +1831,7 @@
         <line num="53" count="0" type="stmt"/>
         <line num="57" count="0" type="stmt"/>
       </file>
-      <file name="FjError.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer-jest-karma-refac/src/js/utils/FjError.js">
+      <file name="FjError.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/src/js/utils/FjError.js">
         <metrics statements="36" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="0"/>
         <line num="1" count="0" type="stmt"/>
         <line num="2" count="0" type="stmt"/>
@@ -1864,7 +1870,7 @@
         <line num="67" count="0" type="stmt"/>
         <line num="70" count="0" type="stmt"/>
       </file>
-      <file name="Logger.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer-jest-karma-refac/src/js/utils/Logger.js">
+      <file name="Logger.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/src/js/utils/Logger.js">
         <metrics statements="12" coveredstatements="12" conditionals="4" coveredconditionals="2" methods="4" coveredmethods="4"/>
         <line num="7" count="2" type="stmt"/>
         <line num="8" count="2" type="stmt"/>
@@ -1879,7 +1885,7 @@
         <line num="30" count="1" type="stmt"/>
         <line num="34" count="2" type="stmt"/>
       </file>
-      <file name="Utils.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer-jest-karma-refac/src/js/utils/Utils.js">
+      <file name="Utils.js" path="/home/medazzo/Documents/EasySoftIn/Github/fjplayer/src/js/utils/Utils.js">
         <metrics statements="15" coveredstatements="15" conditionals="8" coveredconditionals="5" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="6" count="4" type="stmt"/>
