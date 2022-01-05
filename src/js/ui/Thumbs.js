@@ -91,9 +91,9 @@ class Thumbs {
     this.thumbsTrackIndex = thumbsTrindex;
     this.logger.info(' Setting index thumbs tracks on ', this.thumbsTrackIndex, ' and this.video duration ', this.vidDuration);
     if (this.progressBar && (this.thumbsTrackIndex !== -1)) {
-      this.progressBar.addEventListener('mousemove', () => this.renderThumbs());
-      this.progressBar.addEventListener('mouseleave', () => this.hideThumbs());
-      this.progressBar.addEventListener('mouseover', () => this.showThumbs());
+      this.progressBar.addEventListener('mousemove', (e) => this.renderThumbs(e));
+      this.progressBar.addEventListener('mouseleave', (e) => this.hideThumbs(e));
+      this.progressBar.addEventListener('mouseover', (e) => this.showThumbs(e));
       return true;
     }
     return false;

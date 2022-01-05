@@ -448,7 +448,7 @@ class PlayerUi {
   }
 
   setDuration(value) {
-    this.logger.log(`Will setDuration to ${value}`);
+    // this.logger.log(`Will setDuration to ${value}`);
     if (!Number.isNaN(value)) {
       this.mediaDuration = value;
       this.durationDisplay.textContent = Utils.duration(value);

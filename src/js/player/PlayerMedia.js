@@ -181,7 +181,8 @@ class PlayerMedia {
   /*                               TXT TRACKS                               */
   /* ********************************************************************** */
   setTextTrack(textTrackIndex) {
-    const index = this.parseInt(textTrackIndex);
+    this.logger.warn(' Setting text track to index : ', textTrackIndex);
+    const index = parseInt(textTrackIndex, 10);
     this.logger.warn(' Setting text track to index : ', index);
     if (this.initialized === true) {
       if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
@@ -239,7 +240,7 @@ class PlayerMedia {
   /*                               AUD LANGS                               */
   /* ********************************************************************** */
   setAudioLang(AudLangIndex) {
-    const index = this.parseInt(AudLangIndex);
+    const index = parseInt(AudLangIndex);
     this.logger.warn(' Setting text track to index : ', index);
     if (this.initialized === true) {
       if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
@@ -268,7 +269,7 @@ class PlayerMedia {
   }
 
   isAudioLangEnabled(AudLangIndex) {
-    const index = this.parseInt(AudLangIndex);
+    const index = parseInt(AudLangIndex);
     if (this.initialized === true) {
       if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
         return (this.video.audioTracks[index].enabled === true);
@@ -280,7 +281,7 @@ class PlayerMedia {
   }
 
   getAudioLangLabel(AudLangIndex) {
-    const index = this.parseInt(AudLangIndex);
+    const index = parseInt(AudLangIndex);
     if (this.initialized === true) {
       if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {
         return (this.video.audioTracks[index].label);
@@ -628,8 +629,9 @@ class PlayerMedia {
 
     this.DashPlayer.getNetworkingEngine().registerRequestFilter((type, request) => {
       if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST)
-                || (type === shaka.net.NetworkingEngine.RequestType.LICENSE)) {
+        || (type === shaka.net.NetworkingEngine.RequestType.LICENSE)) {
         request.headers['Player-Key'] = this.FjPlayerId;
+        request.headers['Access-Control-Allow-Origin'] = '*';
       }
       if (type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
         request.headers['Player-Key'] = this.FjPlayerId;

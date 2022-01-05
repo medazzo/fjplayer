@@ -2,7 +2,7 @@ const Logger = require('./Logger');
 
 class Utils {
   static duration(secDuration) {
-    Logger.Get('Utils').log('Asking duration for ', secDuration);
+    // Logger.Get('Utils').log('Asking duration for ', secDuration);
     const secNum = parseInt(secDuration, 10); // don't forget the second param
     let hours = Math.floor(secNum / 3600);
     let minutes = Math.floor((secNum - (hours * 3600)) / 60);
