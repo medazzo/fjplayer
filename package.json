@@ -1,6 +1,6 @@
 {
   "name": "fjplayer",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A Javascript video player for dash and mp4 videos,  support multi subs tracks , overlays ads or information, injection mp4 video ads in preroll, modroll or after roll.",
   "main": "dist/fjplayer.js",
   "directories": {
