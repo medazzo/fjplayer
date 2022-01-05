@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/359</span>
+                <span class='fraction'>0/361</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/327</span>
+                <span class='fraction'>0/329</span>
             </div>
         
             
@@ -722,7 +722,9 @@
 <a name='L663'></a><a href='#L663'>663</a>
 <a name='L664'></a><a href='#L664'>664</a>
 <a name='L665'></a><a href='#L665'>665</a>
-<a name='L666'></a><a href='#L666'>666</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L666'></a><a href='#L666'>666</a>
+<a name='L667'></a><a href='#L667'>667</a>
+<a name='L668'></a><a href='#L668'>668</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -911,6 +913,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1353,6 +1356,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1570,7 +1574,8 @@ class PlayerMedia {
   /*                               TXT TRACKS                               */
   /* ********************************************************************** */
 <span class="fstat-no" title="function not covered" >  se</span>tTextTrack(textTrackIndex) {
-    const index = <span class="cstat-no" title="statement not covered" >this.parseInt(textTrackIndex);</span>
+<span class="cstat-no" title="statement not covered" >    this.logger.warn(' Setting text track to index : ', textTrackIndex);</span>
+    const index = <span class="cstat-no" title="statement not covered" >parseInt(textTrackIndex, 10);</span>
 <span class="cstat-no" title="statement not covered" >    this.logger.warn(' Setting text track to index : ', index);</span>
 <span class="cstat-no" title="statement not covered" >    if (this.initialized === true) {</span>
 <span class="cstat-no" title="statement not covered" >      if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {</span>
@@ -1628,7 +1633,7 @@ class PlayerMedia {
   /*                               AUD LANGS                               */
   /* ********************************************************************** */
 <span class="fstat-no" title="function not covered" >  se</span>tAudioLang(AudLangIndex) {
-    const index = <span class="cstat-no" title="statement not covered" >this.parseInt(AudLangIndex);</span>
+    const index = <span class="cstat-no" title="statement not covered" >parseInt(AudLangIndex);</span>
 <span class="cstat-no" title="statement not covered" >    this.logger.warn(' Setting text track to index : ', index);</span>
 <span class="cstat-no" title="statement not covered" >    if (this.initialized === true) {</span>
 <span class="cstat-no" title="statement not covered" >      if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {</span>
@@ -1657,7 +1662,7 @@ class PlayerMedia {
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  is</span>AudioLangEnabled(AudLangIndex) {
-    const index = <span class="cstat-no" title="statement not covered" >this.parseInt(AudLangIndex);</span>
+    const index = <span class="cstat-no" title="statement not covered" >parseInt(AudLangIndex);</span>
 <span class="cstat-no" title="statement not covered" >    if (this.initialized === true) {</span>
 <span class="cstat-no" title="statement not covered" >      if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {</span>
 <span class="cstat-no" title="statement not covered" >        return (this.video.audioTracks[index].enabled === true);</span>
@@ -1669,7 +1674,7 @@ class PlayerMedia {
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  ge</span>tAudioLangLabel(AudLangIndex) {
-    const index = <span class="cstat-no" title="statement not covered" >this.parseInt(AudLangIndex);</span>
+    const index = <span class="cstat-no" title="statement not covered" >parseInt(AudLangIndex);</span>
 <span class="cstat-no" title="statement not covered" >    if (this.initialized === true) {</span>
 <span class="cstat-no" title="statement not covered" >      if (this.CurrentStreamType === this.StreamTypes.MP4_CLEAR) {</span>
 <span class="cstat-no" title="statement not covered" >        return (this.video.audioTracks[index].label);</span>
@@ -2017,8 +2022,9 @@ class PlayerMedia {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    this.DashPlayer.getNetworkingEngine().registerRequestFilter(<span class="fstat-no" title="function not covered" >(t</span>ype, request) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST)</span>
-                || (type === shaka.net.NetworkingEngine.RequestType.LICENSE)) {
+        || (type === shaka.net.NetworkingEngine.RequestType.LICENSE)) {
 <span class="cstat-no" title="statement not covered" >        request.headers['Player-Key'] = this.FjPlayerId;</span>
+<span class="cstat-no" title="statement not covered" >        request.headers['Access-Control-Allow-Origin'] = '*';</span>
       }
 <span class="cstat-no" title="statement not covered" >      if (type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {</span>
 <span class="cstat-no" title="statement not covered" >        request.headers['Player-Key'] = this.FjPlayerId;</span>
@@ -2059,7 +2065,7 @@ class PlayerMedia {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Jan 05 2022 13:44:57 GMT+0100 (Central European Standard Time)
+                at Wed Jan 05 2022 16:45:37 GMT+0100 (Central European Standard Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

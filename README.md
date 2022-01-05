@@ -123,9 +123,18 @@ npm run build
 #### Test ####
 
 Tests are run with Jest and Karma, to run tests :
+
 ```
 npm test
 ```
+
+You can run tests with coverage or tests while watchinf code sources changes :
+
+```
+npm run test:coverage
+npm run test:watch
+```
+
 At the end of the run , result of coverage will be displayed.
 
 #### Build docs ####
