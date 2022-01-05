@@ -1,35 +1,55 @@
 {
-  "_comment": " using some shortt mp4 on server",
+  "_comment": " Short mp4 media from local server",
   "data": {
-    "Bees3Wmv": {
+    "Bees movie": {
       "FJTitle": "Bees mp4",
       "FJType": "video/mp4",
       "FJClass": "vod",
       "FJSrc": "/demo/videos/Bees3Wmv.mp4"
     },
-    "berber_pub": {
+    "berber arab Ads": {
       "FJTitle": "BerBer ADS",
       "FJType": "video/mp4",
       "FJClass": "vod",
       "FJSrc": "/demo/videos/berber_pub.mp4"
     },
-    "Best_Ad_2014": {
-      "FJTitle": "Randopm Ads mp4",
+    "Ads from 2014": {
+      "FJTitle": "Random Ads mp4",
       "FJType": "video/mp4",
       "FJClass": "vod",
       "FJSrc": "/demo/videos/Best_Ad_2014.mp4"
     },
-    "mercedes": {
+    "Mercedes Ads": {
       "FJTitle": "Mercedes Mp4",
       "FJType": "video/mp4",
       "FJClass": "vod",
       "FJSrc": "/demo/videos/mercedes.mp4"
     },
-    "elephants dream": {
+    "Elephants dream": {
       "FJTitle": "Elephant dream Mp4",
       "FJType": "video/mp4",
       "FJClass": "vod",
       "FJSrc": "/demo/videos/elephants_dream.mp4"
+    },
+    "Sintel Mp4 with Subtitles and Thumbnail preview": {
+      "FJTitle": "Sintel",
+      "FJType": "video/mp4",
+      "FJSubtitles": [{
+        "FJLabel": "English",
+        "FJLang": "en",
+        "FJSrc": "/demo/vtt/sintel-en.vtt"
+    }, {
+        "FJLabel": "Espagnol",
+        "FJLang": "es",
+        "FJSrc": "/demo/vtt/sintel-es.vtt"
+    }, {
+        "FJLabel": "Deutsch",
+        "FJLang": "de",
+        "FJSrc": "/demo/vtt/sintel-de.vtt"
+    }],
+      "FJThumbs": "/demo/vtt/thumbs.vtt",
+      "FJClass": "vod",
+      "FJSrc": "/demo/videos/Sintel.2010.720p.mkv"
     }
   }
 }

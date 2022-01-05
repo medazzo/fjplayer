@@ -34,9 +34,11 @@ In your html code , you need to add a div with a an Id to be used bu the player
 
 ### java script coding ###
 In order to create a player and use , we need to create a playlist first :
+ 
  ```javascript
 var playlist = new fjplayer.Playlist();
 ```
+
 Then specify one or more elements and add them to the playlist 
 
 ```javascript
@@ -88,32 +90,78 @@ Then specify one or more elements and add them to the playlist
 ```
 
 Now , you can create player where first argument is the playerKey and the second is the id of the div container in html  and load the playlist;
+
 ```javascript
 var player = new fjplayer.Player('fjserverID1', 'playercontainer');
 player.loadPlaylist(playlist);
 ```
 
 You can also add event listener ;
+
 ```javascript
    function fjplayerEvent(e, args) {
             console.warn(" We are having an event : ", e, args);
         };
    player.on(fjplayer.PlayerEvents.STREAM_LOADED, fjplayerEvent);
 ```
-finally, you can start playing , in this example we start play at element 0, looping is true , random play id false and autostart is true ;
+
+Finally, you can start playing , in this example we start play at element 0, looping is true , random play id false and autostart is true ;
+
 ```javascript 
 player.startPlaylist(0, true, false, true);
 ```
 
+### fjplayer Developing ###
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmedazzo%2Ffjplayer.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmedazzo%2Ffjplayer?ref=badge_large)
+#### Setup ####
 
-### developping fjplayer  ###
-after doing :
-* npm install : to install dependecy
-* npm run live : to run http demo and developiong watching mode for javascript code
+```
+cd fjplayer
+npm install
+```
 
-demo app will be launched at http://localhost:8080
+#### Build min files ####
+
+```
+npm run build
+```
+
+#### Test ####
+
+Tests are run with Jest and Karma, to run tests :
+
+```
+npm test
+```
+
+You can run tests with coverage or tests while watchinf code sources changes :
+
+```
+npm run test:coverage
+npm run test:watch
+```
+
+At the end of the run , result of coverage will be displayed.
+
+#### Build docs ####
+
+To build docs , run :
+```
+npm run doc
+```
+
+Docs will be generated under **docs/generated**, [use browser on the index file](docs/generated/index.html) :
+
+```
+firefox  docs/generated/index.html
+```
+#### Run demo ####
+
+To run http demo and developiong watching mode for javascript code :
+```
+npm run live
+```
+Demo app will be launched at http://localhost:8080
 
 
 ### Playlist Item ###

@@ -12,8 +12,8 @@ const context = (typeof window !== 'undefined' && window) || global;
 let { fjplayer } = context;
 
 if (!fjplayer) {
-    fjplayer = {};
-    context.fjplayer = {};
+  fjplayer = {};
+  context.fjplayer = {};
 }
 
 fjplayer.Playlist = Playlist;
@@ -24,7 +24,7 @@ fjplayer.AdsEvents = AdsEvents;
 fjplayer.OverlayEvents = OverlayEvents;
 
 module.exports = {
-    fjplayer, Playlist, Player, Version, PlayerEvents, AdsEvents, OverlayEvents
+  fjplayer, Playlist, Player, Version, PlayerEvents, AdsEvents, OverlayEvents,
 };
 
 /*

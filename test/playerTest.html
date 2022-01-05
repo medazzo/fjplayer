@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>fjplayer Test</title>
+        <script type="text/javascript" src="/dist/fjplayer.js"></script>
+        <script type="text/javascript">
+            
+        window.onload = function() {
+            const ver = new fjplayer.Version();
+            console.info('VERSION', ver.getVersion());
+            const playlist = new fjplayer.Playlist();
+
+            const SimpleItem = {
+                "FJTitle": "Mercedes Mp4",
+      "FJType": "video/mp4",
+      "FJClass": "vod",
+      "FJSrc": "/demo/videos/mercedes.mp4"          
+            };
+
+            playlist.addItem(SimpleItem);
+            const player = new fjplayer.Player('fjserverID1', 'playercontainer');
+            //player.on(fjplayer.PlayerEvents.STREAM_LOADED, fjplayerEvent);
+            player.loadPlaylist(playlist);
+            // player.playAt(0);
+            player.startPlaylist(0, true, false, true);
+        }
+        </script>
+    </head>
+    </head>
+    <body>
+        <div class="container  ">
+            <div class=" panel-body row"></div>
+            <div class=" panel-body row">
+                <div class="col-md-10">
+                    <!-- container -->        
+                    <div id="fixture">
+                        <div id="playercontainer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class=" panel-body row"></div>
+        </div>
+    </body>
+
+    
+</html>
+

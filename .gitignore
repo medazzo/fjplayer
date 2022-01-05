@@ -2,6 +2,7 @@ package-lock.json
 # Logs
 logs
 *.log
+cache
 
 # Runtime data
 pids
@@ -35,9 +36,5 @@ tmp
 .idea
 .nyc_output
 .tmp
-# ioignore karmle tests 
-dist/*
-!dist/fjplayer.*
-!dist/*.ttf
-!dist/*.eot
-!dist/*.woff2
+.nyc_output
+ 
