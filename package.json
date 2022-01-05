@@ -11,10 +11,10 @@
     "dist": " concurrently \"npm run build\" \"npm run testc\" \"npm run doc\"",
     "live": " concurrently \"npm run dev\" \"npm run http\"",
     "http": "http-server -c-1 -d -o ./demo/ --no-dotfiles",
-    "build": "webpack  --mode=production --color --config webpack-prod.config.js",
+    "build": "npx webpack  --mode=production --color --config webpack-prod.config.js",
     "doc": "jsdoc src -r -R ./README.md -d ./docs/generated --debug",
     "dev": "webpack --mode=development --color --config webpack.config.js",
-    "test": "jest  -c jest.config.js",
+    "test": "npx jest  -c jest.config.js",
     "test:watch": "jest  -c jest.config.js --watch ",
     "test:coverage": "jest  -c jest.config.js --coverage ",
     "lint": "eslint --color"
