@@ -49,6 +49,7 @@
     }],
       "FJThumbs": "/demo/vtt/thumbs.vtt",
       "FJClass": "vod",
+      "_comment":"file can be downloaded from http://ftp.nluug.nl/pub/graphics/blender/demo/movies/Sintel.2010.720p.mkv",
       "FJSrc": "/demo/videos/Sintel.2010.720p.mkv"
     }
   }

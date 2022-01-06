@@ -1,5 +1,4 @@
-docs/**
-demo/**
+/demo/videos/Sintel.2010.720p.mkv
 coverage/**
 cache/**
 .github/**

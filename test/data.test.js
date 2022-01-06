@@ -745,4 +745,14 @@ class TestsData {
   }
 }
 
+describe('dataTests', () => {
+  const data = new TestsData();
+
+  describe('when I chech data infos', () => {
+    test('should return the correct size', () => {
+      expect(data.subs.length).toEqual(11);
+    });
+  });
+});
+
 module.exports = TestsData;

@@ -1,8 +1,5 @@
-import puppeteer from 'puppeteer';
-
 const Const = require('../src/js/defs/constants');
 const Playlist = require('../src/js/player/playlist');
-const Player = require('../src/js/player/player');
 const TestsData = require('./data.test');
 
 let player; let P;
@@ -11,11 +8,11 @@ const data = new TestsData();
  *  *  *  *  *  *  *  *  unitary tests  *  *  *  *  *  *  *
  ********************************************************* */
 describe('FjTestPlayer', async () => {
+  global.URL.createObjectURL = jest.fn();
+  const Player = require('../src/js/player/player');
   // inject the HTML fixture for the tests
-  beforeEach(() => {
-    const browser = puppeteer.launch();
-    const page = await browser.newPage();
-    await page.goto()
+  beforeEach(async () => {
+    await page.goto();
     P = new Playlist();
     const fixture = '<div id=\"fixture\"><div id=\"playercontainer\"></div></div>';
     document.body.insertAdjacentHTML(

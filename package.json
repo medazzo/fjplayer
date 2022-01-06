@@ -14,7 +14,7 @@
     "build": "npx webpack  --mode=production --color --config webpack-prod.config.js",
     "doc": "jsdoc src -r -R ./README.md -d ./docs/generated --debug",
     "dev": "webpack --mode=development --color --config webpack.config.js",
-    "test": "npx jest  -c jest.config.js",
+    "test": "npx jest  -c jest.config.js --",
     "test:watch": "jest  -c jest.config.js --watch ",
     "test:coverage": "jest  -c jest.config.js --coverage ",
     "lint": "eslint --color"
@@ -60,6 +60,7 @@
     "http-server": "^0.12.3",
     "jest": "^26.6.3",
     "jest-css-modules-transform": "^4.2.1",
+    "jest-html-reporter": "^3.4.2",
     "jest-puppeteer": "^5.0.3",
     "jsdoc": "^3.6.7",
     "less": "^4.1.1",

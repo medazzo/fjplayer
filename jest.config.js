@@ -11,6 +11,12 @@ module.exports = {
   cacheDirectory: 'cache',
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'json'],
+  reporters: [
+    'default',
+    ['./node_modules/jest-html-reporter', {
+      pageTitle: 'Test Report',
+    }],
+  ],
   preset: 'jest-puppeteer',
   setupFilesAfterEnv: ['./jest.setup.js'],
   collectCoverageFrom: [

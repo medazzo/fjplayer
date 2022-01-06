@@ -1,16 +1,15 @@
 const Playlist = require('../src/js/player/playlist');
 const TestsData = require('./data.test');
-
 /** ********************************************************
  *  *  *  *  *  * playlist unitary tests *  *  *  *  *  *  *
  ********************************************************* */
-let P;
+let P; // in Browser, the URL in native accessible on window
 describe('FjTestlaylist', () => {
   const data = new TestsData();
 
   beforeAll(async () => {
     P = new Playlist();
-    await page.goto('file:///home/medazzo/Documents/EasySoftIn/github/fjplayer/test/playerTest.html');
+    await page.goto(`file://${__dirname}/playerTest.html`);
   });
 
   describe('when I get the size', () => {
