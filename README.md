@@ -163,6 +163,7 @@ npm run live
 ```
 Demo app will be launched at http://localhost:8080
 
+![Demo application](./docs/fjplayer.png "Demo")
 
 ### Playlist Item ###
 
